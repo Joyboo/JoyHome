@@ -52,12 +52,12 @@
         {{ $t('login.logIn') }}
       </el-button>
 
-      <div style="position:relative;height: 25px;">
+      <!--<div style="position:relative;height: 25px;">
 
         <el-button class="thirdparty-button" type="primary" @click="showDialog=true">
           {{ $t('login.thirdparty') }}
         </el-button>
-      </div>
+      </div>-->
     </el-form>
 
     <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog">

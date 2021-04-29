@@ -71,7 +71,8 @@ export default {
     theme: 'Tema',
     size: 'Tamaño global',
     profile: 'Profile',
-    screenfull: 'Pantalla completa'
+    screenfull: 'Pantalla completa',
+    setting: 'setting'
   },
   login: {
     title: 'Formulario de acceso',

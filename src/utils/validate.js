@@ -15,8 +15,10 @@ export function isExternal(path) {
  * @returns {Boolean}
  */
 export function validUsername(str) {
-  const valid_map = ['admin', 'editor']
-  return valid_map.indexOf(str.trim()) >= 0
+  // const valid_map = ['admin', 'editor']
+  // return valid_map.indexOf(str.trim()) >= 0
+  // add by Joyboo
+  return /^[a-zA-z0-9]{5,16}$/.test(str)
 }
 
 /**

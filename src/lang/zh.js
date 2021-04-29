@@ -71,7 +71,8 @@ export default {
     profile: '个人中心',
     theme: '换肤',
     size: '布局大小',
-    screenfull: '全屏显示'
+    screenfull: '全屏显示',
+    setting: '设置'
   },
   login: {
     title: '系统登录',

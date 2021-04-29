@@ -2,15 +2,18 @@
   <div class="navbar">
     <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
-    <el-menu :default-active="activeIndex"
-             class="header-el-menu" mode="horizontal"
-             background-color="#2b2f3a"
-             text-color="#FFF"
-             active-text-color="#FFF"
-             @select="handleSelect">
-      <el-menu-item index="1"><i class="el-icon-user"></i>运营管理</el-menu-item>
-      <el-menu-item index="3"><i class="el-icon-video-play"></i>广告管理</el-menu-item>
-      <el-menu-item index="4"><i class="el-icon-setting"></i>系统管理</el-menu-item>
+    <el-menu
+      :default-active="activeIndex"
+      class="header-el-menu"
+      mode="horizontal"
+      background-color="#304156"
+      text-color="#FFF"
+      active-text-color="#FFF"
+      @select="handleSelect"
+    >
+      <el-menu-item index="1"><i class="el-icon-user" />运营管理</el-menu-item>
+      <el-menu-item index="3"><i class="el-icon-video-play" />广告管理</el-menu-item>
+      <el-menu-item index="4"><i class="el-icon-setting" />系统管理</el-menu-item>
     </el-menu>
 
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
@@ -33,37 +36,47 @@
           <lang-select class="right-menu-item hover-effect" />
         </el-tooltip>
 
-      </template>
+        <!--todo 触发右边设置框-->
+        <el-tooltip :content="$t('navbar.setting')" placement="bottom">
+          <div class="right-menu-item hover-effect">
+            <i class="el-icon-s-tools" />
+          </div>
+        </el-tooltip>
 
-      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
-        <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
-          <i class="el-icon-caret-bottom" />
-        </div>
-        <el-dropdown-menu slot="dropdown">
-          <router-link to="/profile/index">
-            <el-dropdown-item>
-              {{ $t('navbar.profile') }}
-            </el-dropdown-item>
-          </router-link>
-          <router-link to="/">
-            <el-dropdown-item>
-              {{ $t('navbar.dashboard') }}
-            </el-dropdown-item>
-          </router-link>
-          <a target="_blank" href="https://github.com/PanJiaChen/vue-element-admin/">
-            <el-dropdown-item>
-              {{ $t('navbar.github') }}
-            </el-dropdown-item>
-          </a>
-          <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
-            <el-dropdown-item>Docs</el-dropdown-item>
-          </a>
-          <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">{{ $t('navbar.logOut') }}</span>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+        <el-tooltip content="user" placement="bottom">
+          <template>
+            <el-dropdown class="avatar-container right-menu-item hover-effect" size="medium" trigger="click">
+              <div>
+                <svg-icon icon-class="user" />
+              </div>
+              <el-dropdown-menu slot="dropdown">
+                <router-link to="/profile/index">
+                  <el-dropdown-item>
+                    {{ $t('navbar.profile') }}
+                  </el-dropdown-item>
+                </router-link>
+                <router-link to="/">
+                  <el-dropdown-item>
+                    {{ $t('navbar.dashboard') }}
+                  </el-dropdown-item>
+                </router-link>
+                <a target="_blank" href="https://github.com/PanJiaChen/vue-element-admin/">
+                  <el-dropdown-item>
+                    {{ $t('navbar.github') }}
+                  </el-dropdown-item>
+                </a>
+                <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
+                  <el-dropdown-item>Docs</el-dropdown-item>
+                </a>
+                <el-dropdown-item divided @click.native="logout">
+                  <span style="display:block;">{{ $t('navbar.logOut') }}</span>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </template>
+        </el-tooltip>
+
+      </template>
     </div>
   </div>
 </template>
@@ -109,7 +122,7 @@ export default {
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     },
     handleSelect(key, keyPath) {
-      console.log(key, keyPath);
+      console.log(key, keyPath)
     }
   }
 }
@@ -137,7 +150,8 @@ export default {
     }
     .is-active {
       background-color: #000!important;
-      /*border-bottom: none!important;*/
+      /*去除选中边框*/
+      border-bottom: none!important;
     }
   }
 

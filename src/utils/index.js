@@ -355,3 +355,29 @@ export function removeClass(ele, cls) {
     ele.className = ele.className.replace(reg, ' ')
   }
 }
+
+/**
+ * 将js对象转换为QuerySreing格式
+ * @param data
+ * @returns {string}
+ */
+export function queryParams(data) {
+  const _result = []
+  for (const key in data) {
+    const value = data[key]
+    // 去掉为空的参数
+    if (['', undefined, null].includes(value)) {
+      continue
+    }
+    // 子元素为数组时
+    if (value.constructor === Array) {
+      value.forEach(_value => {
+        _result.push(encodeURIComponent(key) + '[]=' + encodeURIComponent(_value))
+      })
+    } else {
+      _result.push(encodeURIComponent(key) + '=' + encodeURIComponent(value))
+    }
+  }
+
+  return _result.length ? _result.join('&') : ''
+}

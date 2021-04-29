@@ -71,7 +71,8 @@ export default {
     profile: 'プロフィール',
     theme: 'テーマ変更',
     size: '画面サイズ',
-    screenfull: 'フルスクリーン表示'
+    screenfull: 'フルスクリーン表示',
+    setting: 'セットアップ'
   },
   login: {
     title: 'ユーザログイン',
