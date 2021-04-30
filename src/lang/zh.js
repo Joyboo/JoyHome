@@ -75,7 +75,9 @@ export default {
     setting: '设置',
     operation: '运营管理',
     advertising: '广告管理',
-    system: '系统管理'
+    system: '系统管理',
+    language: '语言',
+    user: '用户'
   },
   login: {
     title: '系统登录',

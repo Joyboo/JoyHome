@@ -32,18 +32,17 @@
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
 
-        <el-tooltip content="language" placement="bottom">
+        <el-tooltip :content="$t('navbar.language')" placement="bottom">
           <lang-select class="right-menu-item hover-effect" />
         </el-tooltip>
 
-        <!--todo 触发右边设置框-->
         <el-tooltip :content="$t('navbar.setting')" placement="bottom">
           <div class="right-menu-item hover-effect" @click="rightPanel">
             <i class="el-icon-s-tools" />
           </div>
         </el-tooltip>
 
-        <el-tooltip content="user" placement="bottom">
+        <el-tooltip :content="$t('navbar.user')" placement="bottom">
           <template>
             <el-dropdown class="avatar-container right-menu-item hover-effect" size="medium" trigger="click">
               <div>

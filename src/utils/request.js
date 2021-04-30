@@ -22,7 +22,8 @@ service.interceptors.request.use(
       // please modify it according to the actual situation
       config.headers['Token'] = getToken()
     }
-    // todo 设置服务端语言
+
+    config.headers['Accept-Language'] = store.getters.language
 
     if (config.method.toLowerCase() == 'post') {
       config.headers['Content-Type'] = 'application/x-www-form-urlencoded'

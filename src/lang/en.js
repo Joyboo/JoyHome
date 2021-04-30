@@ -75,7 +75,9 @@ export default {
     setting: 'setting',
     operation: 'operation',
     advertising: 'advertising',
-    system: 'system'
+    system: 'system',
+    language: 'language',
+    user: 'user'
   },
   login: {
     title: 'Login Form',
