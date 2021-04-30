@@ -72,7 +72,10 @@ export default {
     size: 'Tamaño global',
     profile: 'Profile',
     screenfull: 'Pantalla completa',
-    setting: 'setting'
+    setting: 'setting',
+    operation: 'operation',
+    advertising: 'advertising',
+    system: 'system'
   },
   login: {
     title: 'Formulario de acceso',

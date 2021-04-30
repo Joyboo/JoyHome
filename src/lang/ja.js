@@ -72,7 +72,10 @@ export default {
     theme: 'テーマ変更',
     size: '画面サイズ',
     screenfull: 'フルスクリーン表示',
-    setting: 'セットアップ'
+    setting: 'セットアップ',
+    operation: '運用管理',
+    advertising: '広告管理',
+    system: 'システムマネジメント'
   },
   login: {
     title: 'ユーザログイン',

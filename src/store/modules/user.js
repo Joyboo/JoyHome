@@ -7,7 +7,7 @@ const state = {
   name: '',
   avatar: '',
   introduction: '',
-  roles: ['Admin']
+  roles: []
 }
 
 const mutations = {
@@ -54,14 +54,16 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
 
-        const { realname } = data
+        const { realname, roles } = data
 
-        // commit('SET_ROLES', role)
+        commit('SET_ROLES', roles)
         commit('SET_NAME', realname)
-        // commit('SET_AVATAR', avatar)
-        // commit('SET_INTRODUCTION', introduction)
+        // commit('SET_AVATAR', '')
+        // commit('SET_INTRODUCTION', '')
+        // console.log('getInfo resolve', data)
         resolve(data)
       }).catch(error => {
+        // console.log('getInfo catch', error)
         reject(error)
       })
     })
@@ -70,7 +72,7 @@ const actions = {
   // user logout
   logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
+      logout(/* state.token*/).then(() => {
         commit('SET_TOKEN', '')
         commit('SET_ROLES', [])
         removeToken()

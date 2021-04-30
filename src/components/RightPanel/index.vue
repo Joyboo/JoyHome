@@ -2,7 +2,7 @@
   <div ref="rightPanel" :class="{show:show}" class="rightPanel-container">
     <div class="rightPanel-background" />
     <div class="rightPanel">
-      <div class="handle-button" :style="{'top':buttonTop+'px','background-color':theme}" @click="show=!show">
+      <div v-show="showBtn" class="handle-button" :style="{'top':buttonTop+'px','background-color':theme}" @click="chgSetShow">
         <i :class="show?'el-icon-close':'el-icon-setting'" />
       </div>
       <div class="rightPanel-items">
@@ -23,22 +23,26 @@ export default {
       type: Boolean
     },
     buttonTop: {
-      default: 250,
+      default: 0,
       type: Number
     }
   },
   data() {
     return {
-      show: false
+      showBtn: false
     }
   },
   computed: {
     theme() {
       return this.$store.state.settings.theme
+    },
+    show() {
+      return this.$store.state.settings.rightPanel
     }
   },
   watch: {
     show(value) {
+      this.showBtn = value
       if (value && !this.clickNotClose) {
         this.addEventClick()
       }
@@ -57,13 +61,16 @@ export default {
     elx.remove()
   },
   methods: {
+    chgSetShow() {
+      this.$store.dispatch('settings/boolSetting', 'rightPanel')
+    },
     addEventClick() {
       window.addEventListener('click', this.closeSidebar)
     },
     closeSidebar(evt) {
-      const parent = evt.target.closest('.rightPanel')
-      if (!parent) {
-        this.show = false
+      // edit by Joyboo 修改点击window触发关闭的动作
+      if (this.show && evt.target.className == 'rightPanel-background') {
+        this.chgSetShow()
         window.removeEventListener('click', this.closeSidebar)
       }
     },
@@ -77,11 +84,11 @@ export default {
 </script>
 
 <style>
-.showRightPanel {
-  overflow: hidden;
-  position: relative;
-  width: calc(100% - 15px);
-}
+  .showRightPanel {
+    overflow: hidden;
+    position: relative;
+    width: calc(100% - 15px);
+  }
 </style>
 
 <style lang="scss" scoped>
@@ -125,6 +132,9 @@ export default {
 }
 
 .handle-button {
+
+  /* add by  Joyboo 关闭了操作按钮，事件仍在，需要时注释此行 */
+  display: none;
   width: 48px;
   height: 48px;
   position: absolute;

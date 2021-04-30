@@ -71,8 +71,11 @@ export default {
     profile: 'Profile',
     theme: 'Theme',
     size: 'Global Size',
-    screenfull: '全屏显示',
-    setting: 'setting'
+    screenfull: 'screenfull',
+    setting: 'setting',
+    operation: 'operation',
+    advertising: 'advertising',
+    system: 'system'
   },
   login: {
     title: 'Login Form',

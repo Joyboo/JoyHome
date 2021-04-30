@@ -18,7 +18,7 @@ export function getInfo(token) {
 
 export function logout() {
   return request({
-    url: '/admin/logout',
+    url: '/admin/pub/logout',
     method: 'post'
   })
 }

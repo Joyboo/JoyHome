@@ -11,9 +11,9 @@
       active-text-color="#FFF"
       @select="handleSelect"
     >
-      <el-menu-item index="1"><i class="el-icon-user" />运营管理</el-menu-item>
-      <el-menu-item index="3"><i class="el-icon-video-play" />广告管理</el-menu-item>
-      <el-menu-item index="4"><i class="el-icon-setting" />系统管理</el-menu-item>
+      <el-menu-item index="1"><i class="el-icon-user" />{{ $t('navbar.operation') }}</el-menu-item>
+      <el-menu-item index="3"><i class="el-icon-video-play" />{{ $t('navbar.advertising') }}</el-menu-item>
+      <el-menu-item index="4"><i class="el-icon-setting" />{{ $t('navbar.system') }}</el-menu-item>
     </el-menu>
 
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
@@ -38,7 +38,7 @@
 
         <!--todo 触发右边设置框-->
         <el-tooltip :content="$t('navbar.setting')" placement="bottom">
-          <div class="right-menu-item hover-effect">
+          <div class="right-menu-item hover-effect" @click="rightPanel">
             <i class="el-icon-s-tools" />
           </div>
         </el-tooltip>
@@ -123,6 +123,10 @@ export default {
     },
     handleSelect(key, keyPath) {
       console.log(key, keyPath)
+    },
+    // add by Joyboo
+    rightPanel() {
+      this.$store.dispatch('settings/boolSetting', 'rightPanel')
     }
   }
 }

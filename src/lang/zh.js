@@ -72,7 +72,10 @@ export default {
     theme: '换肤',
     size: '布局大小',
     screenfull: '全屏显示',
-    setting: '设置'
+    setting: '设置',
+    operation: '运营管理',
+    advertising: '广告管理',
+    system: '系统管理'
   },
   login: {
     title: '系统登录',

@@ -9,7 +9,8 @@ const state = {
   tagsView,
   fixedHeader,
   sidebarLogo,
-  supportPinyinSearch
+  supportPinyinSearch,
+  rightPanel: false // 右侧设置面板开关
 }
 
 const mutations = {
@@ -18,12 +19,22 @@ const mutations = {
     if (state.hasOwnProperty(key)) {
       state[key] = value
     }
+  },
+  BOOL_SETTING: (state, key) => {
+    if (state.hasOwnProperty(key)) {
+      state[key] = !state[key]
+    }
   }
 }
 
 const actions = {
+  // 设置为某一个值
   changeSetting({ commit }, data) {
     commit('CHANGE_SETTING', data)
+  },
+  // 对布尔值取反
+  boolSetting({ commit }, key) {
+    commit('BOOL_SETTING', key)
   }
 }
 
