@@ -3,7 +3,7 @@
     <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
     <el-menu
-      :default-active="activeIndex"
+      ref="refTopMenu"
       class="header-el-menu"
       mode="horizontal"
       background-color="#304156"
@@ -11,9 +11,8 @@
       active-text-color="#FFF"
       @select="handleSelect"
     >
-      <el-menu-item index="1"><i class="el-icon-user" />{{ $t('navbar.operation') }}</el-menu-item>
-      <el-menu-item index="3"><i class="el-icon-video-play" />{{ $t('navbar.advertising') }}</el-menu-item>
-      <el-menu-item index="4"><i class="el-icon-setting" />{{ $t('navbar.system') }}</el-menu-item>
+      <el-menu-item v-for="menu in topmenu" :index="menu.id">
+        <i :class="menu.clsname" />{{ menu.name }}</el-menu-item>
     </el-menu>
 
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
@@ -101,16 +100,19 @@ export default {
     Search
   },
   data() {
-    return {
-      activeIndex: '1'
-    }
+    return {}
   },
   computed: {
     ...mapGetters([
       'sidebar',
       'avatar',
-      'device'
+      'device',
+      'topmenu'
     ])
+  },
+  mounted() {
+    // add by Joyboo 触发第一个菜单选中事件
+    this.$refs.refTopMenu.$children[0].$el.click()
   },
   methods: {
     toggleSideBar() {

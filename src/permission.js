@@ -32,6 +32,8 @@ router.beforeEach(async(to, from, next) => {
         next()
       } else {
         try {
+          // add by Joyboo 获取top菜单
+          await store.dispatch('node/getTopMenu')
           // get user info
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
           const { roles } = await store.dispatch('user/getInfo')
