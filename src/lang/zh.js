@@ -77,7 +77,8 @@ export default {
     advertising: '广告管理',
     system: '系统管理',
     language: '语言',
-    user: '用户'
+    user: '用户',
+    search: '菜单搜索'
   },
   login: {
     title: '系统登录',

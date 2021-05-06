@@ -97,10 +97,10 @@ const actions = {
       removeToken()
       resolve()
     })
-  },
+  }
 
   // dynamically modify permissions
-  async changeRoles({ commit, dispatch }, role) {
+  /* async changeRoles({ commit, dispatch }, role) {
     const token = role + '-token'
 
     commit('SET_TOKEN', token)
@@ -117,7 +117,7 @@ const actions = {
 
     // reset visited views and cached views
     dispatch('tagsView/delAllViews', null, { root: true })
-  }
+  }*/
 }
 
 export default {

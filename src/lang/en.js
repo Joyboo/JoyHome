@@ -77,7 +77,8 @@ export default {
     advertising: 'advertising',
     system: 'system',
     language: 'language',
-    user: 'user'
+    user: 'user',
+    search: 'menu search'
   },
   login: {
     title: 'Login Form',

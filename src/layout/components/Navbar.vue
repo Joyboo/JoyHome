@@ -12,16 +12,18 @@
       @select="handleSelect"
     >
       <el-menu-item v-for="menu in topmenu" :index="menu.id">
-        <i :class="menu.clsname" />{{ menu.name }}</el-menu-item>
+        <i :class="menu.icon" />{{ menu.title }}</el-menu-item>
     </el-menu>
 
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
 
     <div class="right-menu">
       <template v-if="device!=='mobile'">
-        <search id="header-search" class="right-menu-item" />
+        <el-tooltip :content="$t('navbar.search')" placement="bottom">
+          <search id="header-search" class="right-menu-item" />
+        </el-tooltip>
 
-        <error-log class="errLog-container right-menu-item hover-effect" />
+        <!--        <error-log class="errLog-container right-menu-item hover-effect" />-->
 
         <el-tooltip :content="$t('navbar.screenfull')" placement="bottom">
           <screenfull id="screenfull" class="right-menu-item hover-effect" />
@@ -58,14 +60,6 @@
                     {{ $t('navbar.dashboard') }}
                   </el-dropdown-item>
                 </router-link>
-                <a target="_blank" href="https://github.com/PanJiaChen/vue-element-admin/">
-                  <el-dropdown-item>
-                    {{ $t('navbar.github') }}
-                  </el-dropdown-item>
-                </a>
-                <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
-                  <el-dropdown-item>Docs</el-dropdown-item>
-                </a>
                 <el-dropdown-item divided @click.native="logout">
                   <span style="display:block;">{{ $t('navbar.logOut') }}</span>
                 </el-dropdown-item>
@@ -83,7 +77,7 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-import ErrorLog from '@/components/ErrorLog'
+// import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import LangSelect from '@/components/LangSelect'
@@ -93,7 +87,7 @@ export default {
   components: {
     Breadcrumb,
     Hamburger,
-    ErrorLog,
+    // ErrorLog,
     Screenfull,
     SizeSelect,
     LangSelect,
@@ -111,7 +105,10 @@ export default {
     ])
   },
   mounted() {
-    // add by Joyboo 触发第一个菜单选中事件
+    // add by Joyboo
+    // console.log("%c [Github] %c https://github.com/PanJiaChen/vue-element-admin/ ", "color:red","")
+    // console.log("%c [Doc] %c https://panjiachen.github.io/vue-element-admin-site/#/ ", "color:red","")
+    // 触发第一个菜单选中事件
     this.$refs.refTopMenu.$children[0].$el.click()
   },
   methods: {
@@ -122,8 +119,9 @@ export default {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     },
-    handleSelect(key, keyPath) {
-      console.log(key, keyPath)
+    async handleSelect(key, keyPath) {
+      await this.$store.dispatch('permission/setPid', key)
+      await this.$store.dispatch('permission/generateRoutes')
     },
     // add by Joyboo
     rightPanel() {
