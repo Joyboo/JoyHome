@@ -1,0 +1,161 @@
+<template>
+  <div class="view-container">
+
+    <div class="searchBox">
+      <el-form ref="package-search" :model="search" :size="size" :inline="true">
+
+        <el-form-item>
+          <el-select v-model="search.gameid" filterable clearable placeholder="游戏">
+            <el-option
+              v-for="item in filtergamelist"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item>
+          <el-input placeholder="包名或包id" v-model="search.keyword" clearable></el-input>
+        </el-form-item>
+
+        <el-form-item>
+          <el-input placeholder="id" v-model="search.id" clearable></el-input>
+        </el-form-item>
+
+        <el-form-item>
+          <el-button type="primary" @click="getData">查询</el-button>
+        </el-form-item>
+
+      </el-form>
+    </div>
+
+    <template>
+      <el-table
+        :data="tableData"
+        style="width: 100%"
+        row-key="id"
+        :size="size"
+        border
+        lazy
+        :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+      >
+
+        <el-table-column align="center" width="80" prop="id" label="ID" />
+
+        <el-table-column align="center" prop="gameid" label="所属游戏"  >
+          <template slot-scope="scope">
+            {{gamelist[scope.row.gameid] || ''}}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" prop="name" label="包名" />
+
+        <el-table-column align="center" prop="pkgbnd" label="包id" />
+
+        <el-table-column align="center" width="100" prop="os" label="操作系统" >
+          <template slot-scope="scope">
+            {{pack_os[scope.row.os] || ''}}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="登录密钥">
+          <template slot-scope="scope">
+            <span style="cursor: pointer"
+                  @click="openAlter(scope.row.extension.logkey || '')">
+              {{scope.row.extension.logkey || ''}}
+            </span>
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="支付密钥">
+          <template slot-scope="scope">
+            <span style="cursor: pointer"
+                  @click="openAlter(scope.row.extension.paykey || '')">
+              {{scope.row.extension.paykey || ''}}
+            </span>
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="支付回调">
+          <template slot-scope="scope">
+            {{scope.row.extension.payurl || ''}}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" prop="qzf" label="切支付" />
+
+        <el-table-column align="center" prop="isshow" label="操作">
+          <template slot-scope="scope">
+            <el-button type="primary" :size="size" plain @click="edit(scope.$index, scope.row)">编辑</el-button>
+            <el-popconfirm
+              confirm-button-text="我意已决"
+              cancel-button-text="只是手抖"
+              confirm-button-type="danger"
+              icon="el-icon-info"
+              icon-color="red"
+              title="确定要删除吗？"
+              @onConfirm="confirm(scope.$index, scope.row)"
+            >
+              <el-button slot="reference" type="danger" :size="size" plain>删除</el-button>
+            </el-popconfirm>
+          </template>
+        </el-table-column>
+
+      </el-table>
+    </template>
+  </div>
+</template>
+
+<script>
+    import {mapGetters} from "vuex";
+    import {packageindex} from '@/api/package'
+
+    export default {
+      name: "index",
+      computed: {
+        ...mapGetters([
+          'size',
+          'gamelist',
+          'filtergamelist'
+        ])
+      },
+      data(){
+        return {
+          search: {
+            id: '',
+            gameid: '',
+            keyword: ''
+          },
+          tableData: [],
+
+          pack_os: ['安卓','苹果','微软']
+        }
+      },
+      mounted() {
+        this.$store.dispatch('filter/gameInfo')
+        this.getData()
+      },
+      methods:{
+        getData() {
+          packageindex(this.search).then(resp => {
+            this.tableData = resp.data.data
+          })
+        },
+        openAlter(msg) {
+          this.$alert(msg);
+        },
+        edit(index, row) {
+          this.$router.push({ path: '/package/edit', query: { id: row.id }})
+        },
+        confirm(index, rows) {
+        }
+      }
+    }
+</script>
+
+<style scoped>
+  .el-button {
+    margin: 0 2px;
+  }
+</style>

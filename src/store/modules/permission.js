@@ -2,6 +2,7 @@ import { asyncRoutes, constantRoutes } from '@/router'
 import router from '@/router'
 import { leftmenu, topmenu } from '@/api/menu'
 import Layout from '@/layout'
+import RouterView from '@/layout/components/RouterView'
 
 /**
  * Use meta.role to determine if the current user has permission
@@ -80,6 +81,10 @@ export function adminRouter(asyncRouterMap) {
 
     if (item.component == 'Layout' || item.component == undefined) {
       obj.component = Layout
+    }
+    else if (item.component == 'RouterView')
+    {
+      obj.component = RouterView
     } else if (item.component) {
       obj.component = resolve => require([`@/views/${item.component}.vue`], resolve)
     }

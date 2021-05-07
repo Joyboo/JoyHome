@@ -26,7 +26,12 @@
       </el-form-item>
 
       <el-form-item label="组件">
-        <el-input v-model="form.component" placeholder="Layout" clearable />
+        <el-input v-model="form.component" clearable class="input-with-select">
+          <el-select v-model="form.component" slot="prepend" placeholder="请选择">
+            <el-option label="Layout" value="Layout"></el-option>
+            <el-option label="RouterView" value="RouterView"></el-option>
+          </el-select>
+        </el-input>
       </el-form-item>
 
       <el-form-item label="重定向">
@@ -34,10 +39,11 @@
       </el-form-item>
 
       <el-form-item label="图标">
-        <el-input v-model="form.icon" style="width: 80%" placeholder="el-icon-menu" clearable />
-        <router-link to="/icon/index">
-          <el-button style="margin: 0 5px;" type="primary" icon="el-icon-view" plain />
-        </router-link>
+        <el-input v-model="form.icon" style="width: 80%" placeholder="el-icon-menu" clearable >
+          <router-link slot="prepend" target="_blank"  to="/icon/index">
+            <i class="el-icon-view"></i>
+          </router-link>
+        </el-input>
       </el-form-item>
 
       <el-form-item label="是否隐藏">
@@ -74,7 +80,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'MenuInfo',
+  // name: 'MenuInfo',
   computed: {
     ...mapGetters([
       'size'
@@ -117,5 +123,10 @@ export default {
     .joy-btn {
       margin: 0 10px;
     }
+  }
+
+  .el-input-group__prepend {
+    background-color: #fff!important;
+    width: 120px!important;
   }
 </style>

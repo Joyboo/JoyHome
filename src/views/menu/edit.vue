@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import menuInfo from './component/info'
+import menuInfo from './component'
 import { cascaderTree, menuGetOne, menuEdit } from '@/api/menu'
 import { Loading } from 'element-ui'
 
@@ -30,7 +30,7 @@ export default {
         icon: '',
         hidden: '0',
         breadcrumb: '1',
-        affix: '1',
+        affix: '0',
         sort: 1
       },
 
@@ -81,15 +81,14 @@ export default {
       menuEdit(this.form).then(resp => {
         const { code } = resp
 
-        _this.$nextTick(() => {
-          loadingInstance.close()
-        })
-
         if (code) {
           this.$message({
             type: 'success',
             message: '操作成功',
             onClose: () => {
+              _this.$nextTick(() => {
+                loadingInstance.close()
+              })
               this.$router.push({ path: '/menu/index' })
             }
           })

@@ -8,7 +8,7 @@ const state = {
   },
   device: 'desktop',
   language: getLanguage(),
-  size: Cookies.get('size') || 'medium'
+  size: Cookies.get('size') || 'mini'
 }
 
 const mutations = {
