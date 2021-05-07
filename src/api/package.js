@@ -7,3 +7,12 @@ export function packageindex(query) {
     params: query
   })
 }
+
+// 随机生成key
+export function gkey(column) {
+  return request({
+    url: '/admin/package/gkey',
+    method: 'get',
+    params: {gkey: column + '§'}
+  })
+}

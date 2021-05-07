@@ -12,6 +12,6 @@ export default {
 
 <style lang="scss">
   .view-container {
-    padding: 30px;
+    padding: 15px;
   }
 </style>

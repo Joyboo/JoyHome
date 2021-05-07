@@ -2,7 +2,8 @@ import {gamelist} from '@/api/game'
 
 const state = {
   gamelist: [],
-  filtergamelist: [] // 给选择游戏下拉框使用的，有label和 vlaue属性
+  filtergamelist: [], // 给选择游戏下拉框使用的，有label和 vlaue属性
+  pack_os: ['安卓','苹果','微软']
 }
 
 const mutations = {

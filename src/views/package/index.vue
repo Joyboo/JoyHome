@@ -2,7 +2,7 @@
   <div class="view-container">
 
     <div class="searchBox">
-      <el-form ref="package-search" :model="search" :size="size" :inline="true">
+      <el-form ref="package-search" :model="search" :size="size" :inline="true" height="150">
 
         <el-form-item>
           <el-select v-model="search.gameid" filterable clearable placeholder="游戏">
@@ -55,7 +55,7 @@
 
         <el-table-column align="center" width="100" prop="os" label="操作系统" >
           <template slot-scope="scope">
-            {{pack_os[scope.row.os] || ''}}
+            {{packos[scope.row.os] || ''}}
           </template>
         </el-table-column>
 
@@ -104,6 +104,19 @@
 
       </el-table>
     </template>
+
+    <!-- todo 封装组件 -->
+    <div class="pagination">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="1"
+        :page-sizes="[100, 200, 300, 400]"
+        :page-size="20"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -117,7 +130,8 @@
         ...mapGetters([
           'size',
           'gamelist',
-          'filtergamelist'
+          'filtergamelist',
+          'packos'
         ])
       },
       data(){
@@ -128,8 +142,7 @@
             keyword: ''
           },
           tableData: [],
-
-          pack_os: ['安卓','苹果','微软']
+          total: 0
         }
       },
       mounted() {
@@ -137,9 +150,16 @@
         this.getData()
       },
       methods:{
+        handleSizeChange(val) {
+          console.log(`每页 ${val} 条`);
+        },
+        handleCurrentChange(val) {
+          console.log(`当前页: ${val}`);
+        },
         getData() {
           packageindex(this.search).then(resp => {
             this.tableData = resp.data.data
+            this.total = resp.data.totals
           })
         },
         openAlter(msg) {
@@ -157,5 +177,10 @@
 <style scoped>
   .el-button {
     margin: 0 2px;
+  }
+
+  .pagination {
+    float: right;
+    margin: 10px;
   }
 </style>

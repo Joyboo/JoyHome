@@ -1,11 +1,16 @@
 <template>
-
+  <info></info>
 </template>
 
 <script>
-    export default {
-        name: "edit"
+  import info from './component'
+
+  export default {
+    name: "edit",
+    components: {
+      info
     }
+  }
 </script>
 
 <style scoped>
