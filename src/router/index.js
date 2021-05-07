@@ -83,6 +83,19 @@ export const constantRoutes = [
         meta: { title: 'dashboard', icon: 'dashboard', affix: true }
       }
     ]
+  },
+  {
+    path: '/icon',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/icon/index',
+        component: () => import('@/views/icons/index'),
+        name: 'Icons',
+        meta: { title: 'icons', icon: 'icon', noCache: true }
+      }
+    ]
   }
 ]
 

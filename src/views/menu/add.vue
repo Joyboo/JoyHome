@@ -1,0 +1,102 @@
+<template>
+  <menu-info
+    :form="form"
+    :cascader="cascader"
+    @onsubmit="onSubmit"
+    @changeSwitch="changeSwitch"
+  />
+</template>
+
+<script>
+import menuInfo from './component/info'
+import { cascaderTree, menuAdd } from '@/api/menu'
+import { Loading } from 'element-ui'
+
+export default {
+  name: 'Add',
+  components: {
+    menuInfo
+  },
+  data() {
+    return {
+      form: {
+        pid: 0,
+        title: '',
+        name: '',
+        path: '',
+        component: '',
+        redirect: '',
+        icon: '',
+        hidden: '0',
+        breadcrumb: '1',
+        affix: '1',
+        sort: 9
+      },
+
+      // 级联选择器
+      cascader: {
+        options: [], // 数据
+        optioned: [], // 默认选中, value值
+        props: {
+          checkStrictly: true
+          /* lazy: true, // 懒加载
+            lazyLoad (node, resolve) {
+            }*/
+        }
+      }
+    }
+  },
+  mounted() {
+    /* 上级菜单 级联选择 */
+    var _this = this
+    cascaderTree().then(resp => {
+      const { data } = resp
+      _this.cascader.options = data
+    })
+  },
+  methods: {
+    onSubmit() {
+      if (typeof this.form.pid === 'object') {
+        // 级联选择器传递的是包含父节点的多级数组，取最后一个
+        this.form.pid = this.form.pid[this.form.pid.length - 1]
+      }
+
+      const _this = this
+      const loadingInstance = Loading.service()
+
+      menuAdd(this.form).then(resp => {
+        console.log(resp)
+        const { code } = resp
+
+        _this.$nextTick(() => {
+          loadingInstance.close()
+        })
+
+        if (code) {
+          this.$message({
+            type: 'success',
+            message: '操作成功',
+            onClose: () => {
+              this.$router.push({ path: '/menu/index' })
+            }
+          })
+        } else {
+          this.$message.error('操作失败')
+        }
+      }).catch(error => {
+        _this.$nextTick(() => {
+          loadingInstance.close()
+        })
+        this.$message.error(error)
+      })
+    },
+    changeSwitch(key) {
+      this.form[key] = this.form[key] == '1' ? '0' : '1'
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style>

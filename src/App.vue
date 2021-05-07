@@ -9,3 +9,9 @@ export default {
   name: 'App'
 }
 </script>
+
+<style lang="scss">
+  .view-container {
+    padding: 30px;
+  }
+</style>

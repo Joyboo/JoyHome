@@ -34,10 +34,10 @@ export default {
       this.$ELEMENT.size = size
       this.$store.dispatch('app/setSize', size)
       this.refreshView()
-      this.$message({
+      /* this.$message({
         message: 'Switch Size Success',
         type: 'success'
-      })
+      })*/
     },
     refreshView() {
       // In order to make the cached page re-rendered
