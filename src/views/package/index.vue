@@ -95,7 +95,7 @@
               icon="el-icon-info"
               icon-color="red"
               title="确定要删除吗？"
-              @onConfirm="confirm(scope.$index, scope.row)"
+              @onConfirm="confirmDelete(scope.$index, scope.row)"
             >
               <el-button slot="reference" type="danger" :size="size" plain>删除</el-button>
             </el-popconfirm>
@@ -105,7 +105,7 @@
       </el-table>
     </template>
 
-    <pagination :total="total" :pagesize="search.pagesize" :currentpage="search.currentpage"
+    <pagination :total="total" :pagesize="search.pSize" :currentpage="search.cPage"
                 @handleCurrentChange="handleCurrentChange"
                 @handleSizeChange="handleSizeChange"
     ></pagination>
@@ -114,8 +114,9 @@
 
 <script>
     import {mapGetters} from "vuex";
-    import {packageindex} from '@/api/package'
+    import {packageindex, packageDelete} from '@/api/package'
     import pagination from '@/layout/components/Pagination'
+    import {menuDelete} from "@/api/menu";
 
     export default {
       name: "index",
@@ -136,8 +137,8 @@
             id: '',
             gameid: '',
             keyword: '',
-            pagesize: 20,
-            currentpage: 1
+            pSize: 20,
+            cPage: 1
           },
           total: 0,
           tableData: [],
@@ -148,11 +149,15 @@
         this.getData()
       },
       methods:{
+        // 改变每页大小
         handleSizeChange(val) {
-          console.log(`每页 ${val} 条`);
+          this.search.pSize = val
+          this.getData()
         },
+        // 点击页码
         handleCurrentChange(val) {
-          console.log(`当前页: ${val}`);
+          this.search.cPage = val
+          this.getData()
         },
         getData() {
           packageindex(this.search).then(resp => {
@@ -166,7 +171,17 @@
         edit(index, row) {
           this.$router.push({ path: '/package/edit', query: { id: row.id }})
         },
-        confirm(index, rows) {
+        confirmDelete(index, rows) {
+          packageDelete({ id: rows.id })
+            .then(resp => {
+              if (resp.code) {
+                this.$message.success('操作成功')
+                this.getData()
+              }
+            })
+            .catch(error => {
+              this.$message.success('操作失败')
+            })
         }
       }
     }

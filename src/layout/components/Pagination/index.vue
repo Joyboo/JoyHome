@@ -6,6 +6,7 @@
       :current-page="currentpage"
       :page-sizes="sizes"
       :page-size="pagesize"
+      background
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
     </el-pagination>
@@ -21,9 +22,11 @@
       }
     },
     methods: {
+      // 改变每页大小
       handleSizeChange(val) {
         this.$emit('handleSizeChange', val)
       },
+      // 点击页码
       handleCurrentChange(val) {
         this.$emit('handleCurrentChange', val)
       },

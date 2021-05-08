@@ -1,15 +1,15 @@
 <template>
-  <info :form="form" @submit="submit"></info>
+  <package-info :form="form" @submit="submit"></package-info>
 </template>
 
 <script>
-  import info from './component'
+  import packageInfo from './component'
   import {packageAdd} from '@/api/package'
   import {Loading} from "element-ui";
 
   export default {
     components: {
-      info
+      packageInfo
     },
     name: "add",
     data() {

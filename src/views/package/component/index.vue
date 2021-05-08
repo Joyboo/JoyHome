@@ -137,9 +137,13 @@
 
           <el-form-item >
             <template slot="label">
-              H5支付方式 <i class="labeli">切支付开启时有效</i>
+              H5支付方式 <i class="labeli">切支付开启时有效11</i>
             </template>
-            <el-checkbox v-for="name in h5pf" :key="name" v-model="form.extension.qzf.pf" :label="name">{{name}}</el-checkbox>
+
+            <el-checkbox-group v-model="form.extension.qzf.pf">
+              <el-checkbox v-for="pname in h5pf" :label="pname"></el-checkbox>
+            </el-checkbox-group>
+
           </el-form-item>
 
           <div class="joyline"></div>
@@ -259,6 +263,7 @@
                 action="joyboo"
                 :http-request="uploadBgUrl"
                 :limit="1"
+                :file-list="viewbgurl"
                 list-type="picture">
                 <el-button :size="size" type="primary">点击上传背景图</el-button>
                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2MB</div>
@@ -275,6 +280,7 @@
                 action="joyboo"
                 :http-request="uploadBtnUrl"
                 :limit="1"
+                :file-list="viewbtnurl"
                 list-type="picture">
                 <el-button :size="size" type="primary">点击上传按钮图</el-button>
                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2MB</div>
@@ -291,6 +297,7 @@
                 action="joyboo"
                 :http-request="uploadTitUrl"
                 :limit="1"
+                :file-list="viewtiturl"
                 list-type="picture">
                 <el-button :size="size" type="primary">点击上传标题图</el-button>
                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2MB</div>
@@ -313,6 +320,7 @@
                 action="joyboo"
                 :http-request="uploadShareImg"
                 :limit="1"
+                :file-list="viewshare"
                 list-type="picture">
                 <el-button :size="size" type="primary">点击上传分享图</el-button>
                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2MB</div>
@@ -357,7 +365,7 @@
           h5pf: {
             6: 'paypal',
             7: 'payssion'
-          },
+          }
         }
       },
       computed: {
@@ -366,7 +374,22 @@
           'gamelist',
           'filtergamelist',
           'packos'
-        ])
+        ]),
+        isupd() {
+          return typeof this.form.id !== 'undefined'
+        },
+        viewbgurl() {
+          return this.isupd ? [{url: this.form.default_path + this.form.extension.rating.bgurl}] : []
+        },
+        viewbtnurl() {
+          return this.isupd ? [{url: this.form.default_path + this.form.extension.rating.btnurl}] : []
+        },
+        viewtiturl() {
+          return this.isupd ? [{url: this.form.default_path + this.form.extension.rating.titurl}] : []
+        },
+        viewshare() {
+          return this.isupd ? [{url: this.form.default_path + this.form.extension.share.img}] : []
+        }
       },
       mounted() {
         this.$store.dispatch('filter/gameInfo')

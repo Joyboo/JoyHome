@@ -24,3 +24,27 @@ export function packageAdd(data) {
     data
   })
 }
+
+export function packGetOne(query) {
+  return request({
+    url: '/admin/package/getOne',
+    method: 'get',
+    params: query
+  })
+}
+
+export function packageEdit(data) {
+  return request({
+    url: '/admin/package/edit',
+    method: 'post',
+    data
+  })
+}
+
+export function packageDelete(query) {
+  return request({
+    url: '/admin/package/del',
+    method: 'get',
+    params: query
+  })
+}
