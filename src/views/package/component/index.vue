@@ -15,7 +15,7 @@
           </el-form-item>
 
           <el-form-item  label="包操作系统">
-            <el-radio v-for="(pack, key) in packos" v-model="form.os" :label="key">{{pack}}</el-radio>
+            <el-radio v-for="(pack, key) in packos" v-model="form.os" :label="key" border>{{pack}}</el-radio>
           </el-form-item>
 
           <el-form-item label="包">
@@ -57,9 +57,10 @@
             <template slot="label">
               支付api网址 <i class="labeli">平台会将支付信息传到此网址</i>
             </template>
-            <el-input v-model="form.extension.logurl" clearable ></el-input>
+            <el-input v-model="form.extension.payurl" clearable ></el-input>
           </el-form-item>
 
+          <!-- todo 自动填充域名（直接后端处理？？）-->
           <el-form-item label="report域名">
             <el-input v-model="form.extension.domain.report" clearable />
           </el-form-item>
@@ -218,47 +219,116 @@
             <el-input v-model="form.extension.adjust.currency" clearable />
           </el-form-item>
 
-          <el-form-item >
-            <template slot="label">
-              事件 <el-button @click="cp_param" icon="el-icon-plus" :size="size"></el-button>
-            </template>
-
-            <!--todo 未解决动态生成input -->
-            <el-row v-for="n in adjustEnevtNum" :key="n">
+          <el-form-item label="事件">
+            <el-row>
+              <el-button @click="cp_param" icon="el-icon-plus" :size="size" type="success" plain></el-button>
+            </el-row>
+            <el-row v-for="(ipt, key) in form.extension.adjust.event" :key="key">
               <el-col :span="8">
-                <el-input class="colInput" clearable placeholder="Key"/>
+                <el-input class="colInput" v-model="ipt.Key" clearable placeholder="Key"/>
               </el-col>
               <el-col :span="8">
-                <el-input class="colInput" clearable placeholder="Value"/>
+                <el-input class="colInput" v-model="ipt.Value" clearable placeholder="Value"/>
               </el-col>
               <el-col :span="4">
-                <el-button icon="el-icon-delete" :size="size"></el-button>
+                <el-button icon="el-icon-delete" @click="del_param(ipt)" :size="size" type="danger" plain></el-button>
               </el-col>
             </el-row>
           </el-form-item>
-          <!--
-          <tbody>
-                <tr>
-                    <th>货币类型</th>
-                    <td><input type="text" name="extension[adjust][currency]" value="<?=$data['extension']['adjust']['currency']??''?>"  class="value"  /></td>
-                </tr>
-                <tr>
-                    <th>事件</th>
-                    <td class="params">
-                        <section><i class="aui-iconfont aui-icon-plus hand" onclick="cp_param('','')" title="添加一项参数"></i> <i class="aui-iconfont aui-icon-menu hand" onclick="import_param('','')" title="批量导入参数"></i></section>
-                        <ul id="eventBox"></ul>
-                    </td>
-                </tr>
-            </tbody>
-            -->
+
         </el-tab-pane>
-        <el-tab-pane label="评分配置">定时任务补偿</el-tab-pane>
-        <el-tab-pane label="分享配置">定时任务补偿</el-tab-pane>
-        <el-tab-pane label="aihelp配置">定时任务补偿</el-tab-pane>
+        <el-tab-pane label="评分配置">
+
+          <el-form-item  label="开关">
+            <el-radio v-model="form.extension.rating.pop" label="0" border>关闭</el-radio>
+            <el-radio v-model="form.extension.rating.pop" label="1" border>开启</el-radio>
+          </el-form-item>
+
+          <el-form-item label="定时器">
+            <el-input style="width: 300px;" v-model="form.extension.rating.time" clearable >
+              <span slot="suffix">分钟后弹出（开关打开时有效）</span>
+            </el-input>
+          </el-form-item>
+
+          <div class="joyline"></div>
+
+          <el-form-item label="背景图">
+            <el-col :span="12">
+              <el-upload
+                class="upload-demo"
+                action="joyboo"
+                :http-request="uploadBgUrl"
+                :limit="1"
+                list-type="picture">
+                <el-button :size="size" type="primary">点击上传背景图</el-button>
+                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2MB</div>
+              </el-upload>
+            </el-col>
+          </el-form-item>
+
+          <div class="joyline"></div>
+
+          <el-form-item label="按钮图">
+            <el-col :span="12">
+              <el-upload
+                class="upload-demo"
+                action="joyboo"
+                :http-request="uploadBtnUrl"
+                :limit="1"
+                list-type="picture">
+                <el-button :size="size" type="primary">点击上传按钮图</el-button>
+                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2MB</div>
+              </el-upload>
+            </el-col>
+          </el-form-item>
+
+          <div class="joyline"></div>
+
+          <el-form-item label="标题图">
+            <el-col :span="12">
+              <el-upload
+                class="upload-demo"
+                action="joyboo"
+                :http-request="uploadTitUrl"
+                :limit="1"
+                list-type="picture">
+                <el-button :size="size" type="primary">点击上传标题图</el-button>
+                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2MB</div>
+              </el-upload>
+            </el-col>
+          </el-form-item>
+
+          <div class="joyline"></div>
+
+          <el-form-item label="跳转地址">
+            <el-input v-model="form.extension.rating.storeurl" clearable ></el-input>
+          </el-form-item>
+
+        </el-tab-pane>
+        <el-tab-pane label="分享配置">
+          <el-form-item label="分享图">
+            <el-col :span="12">
+              <el-upload
+                class="upload-demo"
+                action="joyboo"
+                :http-request="uploadShareImg"
+                :limit="1"
+                list-type="picture">
+                <el-button :size="size" type="primary">点击上传分享图</el-button>
+                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2MB</div>
+              </el-upload>
+            </el-col>
+          </el-form-item>
+        </el-tab-pane>
+        <el-tab-pane label="aihelp配置">
+          <el-form-item label="sectionid">
+            <el-input v-model="form.extension.aihelp.sectionid" clearable ></el-input>
+          </el-form-item>
+        </el-tab-pane>
       </el-tabs>
 
       <el-footer>
-        <el-button class="joy-btn" :size="size" type="primary" @click="">提 交</el-button>
+        <el-button class="joy-btn" :size="size" type="primary" @click="submit">提 交</el-button>
 
         <router-link class="joy-btn" :to="{path:'/package/index'}">
           <el-button type="success" :size="size">列 表</el-button>
@@ -272,88 +342,22 @@
 <script>
     import {mapGetters} from "vuex";
     import {gkey} from '@/api/package'
+    import {uploadImage} from "@/api/upload"
 
     export default {
-      // props: ['form'],
+      props: ['form'],
       data(){
         return {
-          form: {
-            gameid: '',
-            os: '',
-            name: '',
-            pkgbnd: '',
-            url: '',
-            extension: {
-              logkey: '',
-              paykey: '',
-              logurl: '',
-              payurl: '',
-              domain: {
-                report: '',
-                sdk: '',
-                pay: ''
-              },
-              google_paykey: '',
-              google: {
-                web_clientid: ''
-              },
-              huawei: {
-                production: {
-                  clientid: '',
-                  clientsecret: ''
-                }
-              },
-              facebook: {
-                bindnotice: '',
-                appid: ''
-              },
-              mg: {
-                publickey: '',
-                appkey: ''
-              },
-              qzf: {
-                enable: '0',
-                pf: []
-              },
-              paypal: {
-                env: '0',
-                production: {
-                  clientid: '',
-                  clientsecret: ''
-                },
-                sandbox: {
-                  clientid: '',
-                  clientsecret: ''
-                }
-              },
-              payssion: {
-                env: '0',
-                production: {
-                  clientid: '',
-                  clientsecret: ''
-                },
-                sandbox: {
-                  clientid: '',
-                  clientsecret: ''
-                }
-              },
-              adjust: {
-                currency: '',
-                enevt: {
-                  Key: ['abd'],
-                  Value: ['111']
-                }
-              }
-            }
-          },
           rules: {
-            // url: {type: 'url', required: false, message: '请填写正确格式的URL', trigger: 'blur' }
+            url: [
+              {required: false, message: '请填写URL', trigger: 'blur' },
+              {type: 'url', message: '请填写正确格式的URL', trigger: 'blur' }
+            ]
           },
           h5pf: {
             6: 'paypal',
             7: 'payssion'
           },
-          adjustEnevtNum: 1,
         }
       },
       computed: {
@@ -368,18 +372,79 @@
         this.$store.dispatch('filter/gameInfo')
       },
       methods: {
+        submit() {
+          this.$emit('submit');
+        },
         // 随机生成key
         get_gkey(column) {
-          let _this = this;
           gkey(column).then(resp => {
-            _this.form.extension[column] = resp.data
+            this.form.extension[column] = resp.data
           }).catch(error => {
-            _this.$message.error(error)
+            this.$message.error(error)
+          })
+        },
+        // 上传背景图
+        uploadBgUrl(params) {
+          this.uploadHttpRequest(params).then(data => {
+            this.form.extension.rating.bgurl = data;
+          })
+        },
+        // 上传按钮图
+        uploadBtnUrl(params) {
+          this.uploadHttpRequest(params).then(data => {
+            this.form.extension.rating.btnurl = data;
+          })
+        },
+        // 上传标题图
+        uploadTitUrl(params) {
+          this.uploadHttpRequest(params).then(data => {
+            this.form.extension.rating.titurl = data;
+          })
+        },
+        // 上传分享图
+        uploadShareImg(params) {
+          this.uploadHttpRequest(params).then(data => {
+            this.form.extension.share.img = data;
+          })
+        },
+        // 覆盖默认的上传行为
+        uploadHttpRequest(params) {
+          return new Promise((resolve) => {
+            const file = params.file,
+              fileType = file.type;
+
+            if (fileType.indexOf("image") == -1) {
+              this.$message.error("只能上传图片格式!");
+              return;
+            }
+            if (file.size / 1024 / 1024 > 2) {
+              this.$message.error("只能上传图片大小小于2M");
+              return;
+            }
+
+            uploadImage('/admin/package/upload', params).then(resp => {
+              const {status, data} = resp
+              if (status == 200) {
+                this.$message.success('上传成功')
+                resolve(data)
+              } else {
+                this.$message.error('上传失败了')
+              }
+            })
           })
         },
         // 复制adjust事件框
         cp_param() {
-          this.adjustEnevtNum++
+          this.form.extension.adjust.event.push({
+            Key: '',
+            Value: ''
+          })
+        },
+        del_param(ipt) {
+          var index = this.form.extension.adjust.event.indexOf(ipt)
+          if (index !== -1) {
+            this.form.extension.adjust.event.splice(index, 1)
+          }
         }
       }
     }

@@ -51,7 +51,7 @@
 
         <el-table-column align="center" prop="name" label="包名" />
 
-        <el-table-column align="center" prop="pkgbnd" label="包id" />
+        <el-table-column align="center" width="200" prop="pkgbnd" label="包id" />
 
         <el-table-column align="center" width="100" prop="os" label="操作系统" >
           <template slot-scope="scope">
@@ -105,27 +105,23 @@
       </el-table>
     </template>
 
-    <!-- todo 封装组件 -->
-    <div class="pagination">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="1"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="20"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total">
-      </el-pagination>
-    </div>
+    <pagination :total="total" :pagesize="search.pagesize" :currentpage="search.currentpage"
+                @handleCurrentChange="handleCurrentChange"
+                @handleSizeChange="handleSizeChange"
+    ></pagination>
   </div>
 </template>
 
 <script>
     import {mapGetters} from "vuex";
     import {packageindex} from '@/api/package'
+    import pagination from '@/layout/components/Pagination'
 
     export default {
       name: "index",
+      components: {
+        pagination
+      },
       computed: {
         ...mapGetters([
           'size',
@@ -139,10 +135,12 @@
           search: {
             id: '',
             gameid: '',
-            keyword: ''
+            keyword: '',
+            pagesize: 20,
+            currentpage: 1
           },
+          total: 0,
           tableData: [],
-          total: 0
         }
       },
       mounted() {
@@ -179,8 +177,5 @@
     margin: 0 2px;
   }
 
-  .pagination {
-    float: right;
-    margin: 10px;
-  }
+
 </style>

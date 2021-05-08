@@ -85,6 +85,7 @@ export default {
           this.$message({
             type: 'success',
             message: '操作成功',
+            duration: 1500,
             onClose: () => {
               _this.$nextTick(() => {
                 loadingInstance.close()

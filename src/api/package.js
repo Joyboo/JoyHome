@@ -16,3 +16,11 @@ export function gkey(column) {
     params: {gkey: column + '§'}
   })
 }
+
+export function packageAdd(data) {
+  return request({
+    url: '/admin/package/add',
+    method: 'post',
+    data
+  })
+}

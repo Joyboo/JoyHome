@@ -2,7 +2,6 @@ import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
-import { queryParams } from '@/utils/index'
 
 // create an axios instance
 const service = axios.create({
@@ -25,12 +24,12 @@ service.interceptors.request.use(
 
     config.headers['Accept-Language'] = store.getters.language
 
-    if (config.method.toLowerCase() == 'post') {
+    /*if (config.method.toLowerCase() == 'post') {
       config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
       if (typeof config.data === 'object') {
         config.data = queryParams(config.data)
       }
-    }
+    }*/
 
     // config.headers['X-Requested-With'] = 'XMLHttpRequest'
     return config
