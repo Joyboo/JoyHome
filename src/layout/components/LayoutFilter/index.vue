@@ -144,7 +144,7 @@
               onClick(picker) {
                 const time = new Date()
                 // 这个月第一天减一天
-                const end = new Date(time.getFullYear(), time.getMonth(), 1).getTime() - 86400 * 1000;
+                const end = new Date(time.getFullYear(), time.getMonth(), 1, 0, 0, 0).getTime() - 86400 * 1000;
                 const lastDate = new Date(end);
                 const start = new Date(lastDate.getFullYear(), lastDate.getMonth(), 1, 0, 0, 0);
                 picker.$emit('pick', [start.getTime(), end]);
@@ -187,7 +187,6 @@
         })
       },
       search(){
-        console.log('query=>', this.query)
         this.$emit('search')
       }
     }

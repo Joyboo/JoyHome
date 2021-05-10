@@ -62,14 +62,7 @@
         <el-input-number v-model="form.sort" :min="1" :max="1000" />
       </el-form-item>
 
-      <el-footer>
-        <el-button class="joy-btn" :size="size" type="primary" @click="onSubmit('menu-info')">提 交</el-button>
-
-        <router-link class="joy-btn" :to="{path:'/menu/index'}">
-          <el-button type="success" :size="size">列 表</el-button>
-        </router-link>
-
-      </el-footer>
+      <button-tpl index="/menu/index" @submit="onSubmit"></button-tpl>
 
     </el-form>
 
@@ -78,6 +71,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import ButtonTpl from '@/layout/components/ButtonTpl'
 
 export default {
   // name: 'MenuInfo',
@@ -87,6 +81,9 @@ export default {
     ])
   },
   props: ['form', 'cascader', 'loading'],
+  components: {
+    ButtonTpl
+  },
   data() {
     return {
       rules: {

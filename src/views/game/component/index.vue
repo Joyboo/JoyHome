@@ -105,14 +105,7 @@
 
       </el-tabs>
 
-      <el-footer>
-        <el-button class="joy-btn" :size="size" type="primary" @click="submit">提 交</el-button>
-
-        <router-link class="joy-btn" :to="{path:'/package/index'}">
-          <el-button type="success" :size="size">列 表</el-button>
-        </router-link>
-
-      </el-footer>
+      <button-tpl index="/game/index" @submit="submit"></button-tpl>
     </el-form>
   </div>
 </template>
@@ -120,10 +113,14 @@
 <script>
 import { mapGetters } from 'vuex'
 import { gkey } from '@/api/game'
+import ButtonTpl from '@/layout/components/ButtonTpl'
 
 export default {
   // name: 'gameInfoComponent',
   props: ['form', 'loading'],
+  components: {
+    ButtonTpl
+  },
   computed: {
     ...mapGetters([
       'size'

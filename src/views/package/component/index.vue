@@ -435,14 +435,7 @@
         </el-tab-pane>
       </el-tabs>
 
-      <el-footer>
-        <el-button class="joy-btn" :size="size" type="primary" @click="submit">提 交</el-button>
-
-        <router-link class="joy-btn" :to="{path:'/package/index'}">
-          <el-button type="success" :size="size">列 表</el-button>
-        </router-link>
-
-      </el-footer>
+      <button-tpl index="/package/index" @submit="submit"></button-tpl>
     </el-form>
   </div>
 </template>
@@ -451,9 +444,13 @@
 import { mapGetters } from 'vuex'
 import { gkey } from '@/api/package'
 import { uploadImage } from '@/api/upload'
+import ButtonTpl from '@/layout/components/ButtonTpl'
 
 export default {
   props: ['form', 'loading'],
+  components: {
+    ButtonTpl
+  },
   data() {
     return {
       rules: {
