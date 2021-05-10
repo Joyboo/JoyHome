@@ -1,11 +1,10 @@
 <template>
-  <package-info :form="form" @submit="submit" />
+  <package-info :form="form" :loading="loading" @submit="submit" />
 </template>
 
 <script>
 import packageInfo from './component'
 import { packageEdit } from '@/api/package'
-import { Loading } from 'element-ui'
 
 export default {
   name: 'Edit',
@@ -14,6 +13,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       form: {
         id: 0,
         default_path: '',
@@ -104,14 +104,16 @@ export default {
     }
   },
   mounted() {
+    this.loading = true
     this.form.id = this.$route.query.id
     packageEdit('get', { id: this.form.id }).then(resp => {
+      this.loading = false
       this.form = resp.data.data
     })
   },
   methods: {
     submit() {
-      const loadingInstance = Loading.service()
+      this.loading = true
 
       packageEdit('post', this.form).then(resp => {
         const { code, msg } = resp
@@ -121,22 +123,16 @@ export default {
             message: '操作成功',
             duration: 1500,
             onClose: () => {
-              this.$nextTick(() => {
-                loadingInstance.close()
-              })
+              this.loading = false
               this.$router.push({ path: '/package/index' })
             }
           })
         } else {
-          this.$nextTick(() => {
-            loadingInstance.close()
-          })
+          this.loading = false
           this.$message.error(msg || '操作失败')
         }
       }).catch(error => {
-        this.$nextTick(() => {
-          loadingInstance.close()
-        })
+        this.loading = false
         this.$message.error(error || '操作失败')
       })
     }

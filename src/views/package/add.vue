@@ -1,19 +1,18 @@
 <template>
-  <package-info :form="form" @submit="submit"></package-info>
+  <package-info :form="form" :loading="loading" @submit="submit"></package-info>
 </template>
 
 <script>
   import packageInfo from './component'
   import {packageAdd} from '@/api/package'
-  import {Loading} from "element-ui";
 
   export default {
     components: {
       packageInfo
     },
-    name: "add",
     data() {
       return {
+        loading: false,
         form: {
           gameid: '',
           os: '',
@@ -103,7 +102,7 @@
     },
     methods: {
       submit() {
-        const loadingInstance = Loading.service()
+        this.loading = true
 
         packageAdd(this.form).then(resp => {
 
@@ -114,22 +113,16 @@
               message: '操作成功',
               duration: 1500,
               onClose: () => {
-                this.$nextTick(() => {
-                  loadingInstance.close()
-                })
+                this.loading = false
                 this.$router.push({ path: '/package/index' })
               }
             })
           } else {
-            this.$nextTick(() => {
-              loadingInstance.close()
-            })
+            this.loading = false
             this.$message.error(msg || '操作失败')
           }
         }).catch(error => {
-          this.$nextTick(() => {
-            loadingInstance.close()
-          })
+          this.loading = false
           this.$message.error(error || '操作失败')
         })
       }

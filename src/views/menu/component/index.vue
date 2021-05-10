@@ -1,5 +1,5 @@
 <template>
-  <div class="view-container">
+  <div class="view-container" v-loading="loading">
     <el-form ref="menu-info" :rules="rules" :model="form" :size="size" label-width="15rem">
 
       <el-form-item label="上级菜单">
@@ -86,7 +86,7 @@ export default {
       'size'
     ])
   },
-  props: ['form', 'cascader'],
+  props: ['form', 'cascader', 'loading'],
   data() {
     return {
       rules: {

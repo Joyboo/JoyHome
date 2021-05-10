@@ -32,6 +32,7 @@
 
     <template>
       <el-table
+        v-loading="loading"
         :data="tableData"
         style="width: 100%"
         row-key="id"
@@ -116,10 +117,8 @@
     import {mapGetters} from "vuex";
     import {packageindex, packageDelete} from '@/api/package'
     import pagination from '@/layout/components/Pagination'
-    import {menuDelete} from "@/api/menu";
 
     export default {
-      name: "index",
       components: {
         pagination
       },
@@ -133,6 +132,7 @@
       },
       data(){
         return {
+          loading: false,
           search: {
             id: '',
             gameid: '',
@@ -160,7 +160,9 @@
           this.getData()
         },
         getData() {
+          this.loading = true
           packageindex(this.search).then(resp => {
+            this.loading = false
             this.tableData = resp.data.data
             this.total = resp.data.totals
           })
@@ -172,14 +174,17 @@
           this.$router.push({ path: '/package/edit', query: { id: row.id }})
         },
         confirmDelete(index, rows) {
+          this.loading = true
           packageDelete({ id: rows.id })
             .then(resp => {
+              this.loading = false
               if (resp.code) {
                 this.$message.success('操作成功')
                 this.getData()
               }
             })
             .catch(error => {
+              this.loading = false
               this.$message.success('操作失败')
             })
         }

@@ -43,3 +43,11 @@ export function packageDelete(query) {
     params: query
   })
 }
+
+export function packageChildOption(query) {
+  return request({
+    url: '/admin/package/childOption',
+    method: 'get',
+    params: query
+  })
+}

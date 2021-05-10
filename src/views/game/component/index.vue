@@ -1,5 +1,5 @@
 <template>
-  <div class="view-container">
+  <div class="view-container" v-loading="loading">
     <el-form ref="game-search" :model="form" :size="size" label-width="15rem">
       <el-tabs type="border-card">
         <el-tab-pane label="对接信息">
@@ -123,7 +123,7 @@ import { gkey } from '@/api/game'
 
 export default {
   // name: 'gameInfoComponent',
-  props: ['form'],
+  props: ['form', 'loading'],
   computed: {
     ...mapGetters([
       'size'

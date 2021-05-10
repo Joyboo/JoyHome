@@ -28,6 +28,7 @@
 
     <template>
       <el-table
+        v-loading="loading"
         :data="tableData"
         style="width: 100%"
         row-key="id"
@@ -139,7 +140,8 @@ export default {
           label: '已删除',
           value: '3'
         }
-      ]
+      ],
+      loading: false
     }
   },
   mounted() {
@@ -158,7 +160,9 @@ export default {
       this.getData()
     },
     getData() {
+      this.loading = true
       gameIndex(this.search).then(resp => {
+        this.loading = false
         this.tableData = resp.data.data
         this.total = resp.data.totals
       })
@@ -170,14 +174,17 @@ export default {
       this.$router.push({ path: '/game/edit', query: { id: row.id }})
     },
     confirmDelete(index, rows) {
+      this.loading = true
       gameDelete({ id: rows.id })
         .then(resp => {
+          this.loading = false
           if (resp.code) {
             this.$message.success('操作成功')
             this.getData()
           }
         })
         .catch(error => {
+          this.loading = false
           this.$message.success('操作失败')
         })
     }

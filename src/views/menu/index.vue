@@ -3,6 +3,7 @@
     <div class="view-container">
       <template>
         <el-table
+          v-loading="loading"
           :data="tableData"
           style="width: 100%"
           row-key="id"
@@ -83,28 +84,34 @@ export default {
   },
   data() {
     return {
-      tableData: []
+      tableData: [],
+      loading: false
     }
   },
   methods: {
     getData() {
+      this.loading = true
       menuIndex().then(resp => {
         const { data } = resp
         this.tableData = data
+        this.loading = false
       })
     },
     edit(scopeIndex, scopeRow) {
       this.$router.push({ path: '/menu/edit', query: { id: scopeRow.id }})
     },
     confirm(index, rows) {
+      this.loading = true
       menuDelete({ id: rows.id })
         .then(resp => {
+          this.loading = false
           if (resp.code) {
             this.$message.success('操作成功')
             this.getData()
           }
         })
         .catch(error => {
+          this.loading = false
           this.$message.success('操作失败')
         })
     }

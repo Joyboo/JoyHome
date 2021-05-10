@@ -12,7 +12,4 @@ export default {
 
 <style lang="scss">
 
-  /* 全局CSS */
-  @import "@/assets/css/global.scss";
-
 </style>

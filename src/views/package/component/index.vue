@@ -1,5 +1,5 @@
 <template>
-  <div class="view-container">
+  <div class="view-container" v-loading="loading">
     <el-form ref="package-search" :model="form" :size="size" :rules="rules" label-width="15rem">
       <el-tabs type="border-card">
         <el-tab-pane label="基本信息">
@@ -453,7 +453,7 @@ import { gkey } from '@/api/package'
 import { uploadImage } from '@/api/upload'
 
 export default {
-  props: ['form'],
+  props: ['form', 'loading'],
   data() {
     return {
       rules: {

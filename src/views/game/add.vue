@@ -1,11 +1,10 @@
 <template>
-  <game-info :form="form" @submit="submit" />
+  <game-info :form="form" :loading="loading" @submit="submit" />
 </template>
 
 <script>
 import gameInfo from './component/index'
 import { gameAdd } from '@/api/game'
-import { Loading } from 'element-ui'
 
 export default {
   name: 'GameAdd',
@@ -36,13 +35,13 @@ export default {
             huawei: 0
           }
         }
-      }
+      },
+      loading: false
     }
   },
   methods: {
     submit() {
-      const loadingInstance = Loading.service()
-
+      this.loading = true
       gameAdd(this.form).then(resp => {
         const { code } = resp
 
@@ -52,9 +51,7 @@ export default {
             message: '操作成功',
             duration: 1500,
             onClose: () => {
-              this.$nextTick(() => {
-                loadingInstance.close()
-              })
+              this.loading = false
               this.$router.push({ path: '/game/index' })
             }
           })
@@ -63,9 +60,7 @@ export default {
         }
       }).catch(error => {
         console.log('error=>', error)
-        this.$nextTick(() => {
-          loadingInstance.close()
-        })
+        this.loading = false
         this.$message.error(error)
       })
     }

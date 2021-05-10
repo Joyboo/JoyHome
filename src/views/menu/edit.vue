@@ -2,6 +2,7 @@
   <menu-info
     :form="form"
     :cascader="cascader"
+    :loading="loading"
     @onsubmit="onSubmit"
     @changeSwitch="changeSwitch"
   />
@@ -10,10 +11,8 @@
 <script>
 import menuInfo from './component'
 import { cascaderTree, menuEdit } from '@/api/menu'
-import { Loading } from 'element-ui'
 
 export default {
-  name: 'Add',
   components: {
     menuInfo
   },
@@ -44,10 +43,12 @@ export default {
             lazyLoad (node, resolve) {
             }*/
         }
-      }
+      },
+      loading: false
     }
   },
   mounted() {
+    this.loading = true
     /* 上级菜单 级联选择 */
     cascaderTree().then(resp => {
       const { data } = resp
@@ -63,6 +64,8 @@ export default {
       }).catch(error => {
         this.$message.error(error)
       })
+
+    this.loading = false
   },
   methods: {
     onSubmit() {
@@ -75,8 +78,7 @@ export default {
         return
       }
 
-      const _this = this
-      const loadingInstance = Loading.service()
+      this.loading = true
 
       menuEdit('post', this.form).then(resp => {
         const { code } = resp
@@ -87,19 +89,16 @@ export default {
             message: '操作成功',
             duration: 1500,
             onClose: () => {
-              _this.$nextTick(() => {
-                loadingInstance.close()
-              })
+              this.loading = false
               this.$router.push({ path: '/menu/index' })
             }
           })
         } else {
+          this.loading = false
           this.$message.error('操作失败')
         }
       }).catch(error => {
-        _this.$nextTick(() => {
-          loadingInstance.close()
-        })
+        this.loading = false
         this.$message.error(error)
       })
     },
