@@ -41,20 +41,15 @@ export function menuAdd(data) {
   })
 }
 
-export function menuEdit(data) {
-  return request({
+export function menuEdit(method, data) {
+  const obj = {
     url: '/admin/menu/edit',
-    method: 'post',
-    data
-  })
-}
+    method: method
+  }
+  const key = method.toLowerCase() == 'get' ? 'params' : 'data'
+  obj[key] = data
 
-export function menuGetOne(query) {
-  return request({
-    url: '/admin/menu/getOne',
-    method: 'get',
-    params: query
-  })
+  return request(obj)
 }
 
 export function menuDelete(query) {

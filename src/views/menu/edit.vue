@@ -9,7 +9,7 @@
 
 <script>
 import menuInfo from './component'
-import { cascaderTree, menuGetOne, menuEdit } from '@/api/menu'
+import { cascaderTree, menuEdit } from '@/api/menu'
 import { Loading } from 'element-ui'
 
 export default {
@@ -56,10 +56,10 @@ export default {
 
     /* 编辑页参数 */
     this.form.id = this.$route.query.id
-    menuGetOne({ id: this.form.id })
+    menuEdit('get', { id: this.form.id })
       .then(resp => {
         const { code, data } = resp
-        this.form = data
+        this.form = data.data
       }).catch(error => {
         this.$message.error(error)
       })
@@ -78,7 +78,7 @@ export default {
       const _this = this
       const loadingInstance = Loading.service()
 
-      menuEdit(this.form).then(resp => {
+      menuEdit('post', this.form).then(resp => {
         const { code } = resp
 
         if (code) {

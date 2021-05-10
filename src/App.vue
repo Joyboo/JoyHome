@@ -11,7 +11,8 @@ export default {
 </script>
 
 <style lang="scss">
-  .view-container {
-    padding: 15px;
-  }
+
+  /* 全局CSS */
+  @import "@/assets/css/global.scss";
+
 </style>

@@ -1,0 +1,38 @@
+/*
+ * 全局CSS
+ * Create By Joyboo 2021-05-10
+*/
+
+.view-container {
+  padding: 15px;
+}
+
+.labeli {
+  font-size: .6rem;
+  font-style: normal;
+  display: block;
+  color: #999;
+}
+
+.cRed {
+  color: red!important;
+}
+
+.colInput {
+  width: 90%;
+  margin: 3px 0;
+}
+
+.el-footer {
+  text-align: center;
+  margin: 30px 10px;
+
+  .joy-btn {
+    margin: 0 10px;
+  }
+}
+
+.joyline {
+  border-top: 1px dashed #eee;
+  padding: 5px;
+}

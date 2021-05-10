@@ -27,9 +27,9 @@
 
       <el-form-item label="组件">
         <el-input v-model="form.component" clearable class="input-with-select">
-          <el-select v-model="form.component" slot="prepend" placeholder="请选择">
-            <el-option label="Layout" value="Layout"></el-option>
-            <el-option label="RouterView" value="RouterView"></el-option>
+          <el-select slot="prepend" v-model="form.component" placeholder="请选择">
+            <el-option label="Layout" value="Layout" />
+            <el-option label="RouterView" value="RouterView" />
           </el-select>
         </el-input>
       </el-form-item>
@@ -39,9 +39,9 @@
       </el-form-item>
 
       <el-form-item label="图标">
-        <el-input v-model="form.icon" style="width: 80%" placeholder="el-icon-menu" clearable >
-          <router-link slot="prepend" target="_blank"  to="/icon/index">
-            <i class="el-icon-view"></i>
+        <el-input v-model="form.icon" style="width: 80%" placeholder="el-icon-menu" clearable>
+          <router-link slot="prepend" target="_blank" to="/icon/index">
+            <i class="el-icon-view" />
           </router-link>
         </el-input>
       </el-form-item>
@@ -117,13 +117,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .el-footer {
-    text-align: center;
-
-    .joy-btn {
-      margin: 0 10px;
-    }
-  }
 
   .el-input-group__prepend {
     background-color: #fff!important;

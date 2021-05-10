@@ -79,11 +79,9 @@ export function adminRouter(asyncRouterMap) {
   asyncRouterMap.forEach(item => {
     const obj = { path: item.path }
 
-    if (item.component == 'Layout' || item.component == undefined) {
+    if (item.component == 'Layout') {
       obj.component = Layout
-    }
-    else if (item.component == 'RouterView')
-    {
+    } else if (item.component == 'RouterView') {
       obj.component = RouterView
     } else if (item.component) {
       obj.component = resolve => require([`@/views/${item.component}.vue`], resolve)

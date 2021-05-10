@@ -13,7 +13,7 @@ export function gkey(column) {
   return request({
     url: '/admin/package/gkey',
     method: 'get',
-    params: {gkey: column + '§'}
+    params: { gkey: column + '§' }
   })
 }
 
@@ -25,20 +25,15 @@ export function packageAdd(data) {
   })
 }
 
-export function packGetOne(query) {
-  return request({
-    url: '/admin/package/getOne',
-    method: 'get',
-    params: query
-  })
-}
-
-export function packageEdit(data) {
-  return request({
+export function packageEdit(method, data) {
+  const obj = {
     url: '/admin/package/edit',
-    method: 'post',
-    data
-  })
+    method: method
+  }
+  const key = method.toLowerCase() == 'get' ? 'params' : 'data'
+  obj[key] = data
+
+  return request(obj)
 }
 
 export function packageDelete(query) {
