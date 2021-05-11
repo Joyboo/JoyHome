@@ -17,7 +17,11 @@
       border
       class="table"
       :size="size"
+      height="200"
       header-row-class-name="list-table-header"
+      :show-summary="true"
+      :span-method="summary"
+      sum-text="这是合计行"
     >
 
       <el-table-column sortable fixed align="center" prop="ymd" label="日期">
@@ -42,7 +46,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column sortable align="center" prop="atv">
+      <el-table-column width="1000" sortable align="center" prop="atv">
 
         <template slot="header" slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="激活设备" placement="top">
@@ -192,12 +196,22 @@ export default {
       }
       this.loading = true
       const { code, msg, data } = await daily(this.query)
+
+      console.log(this.$refs.multipleTable.$el)
+
       this.loading = false
 
       if (!code) {
         return this.$message.error(msg)
       }
       this.tableData = data.data
+    },
+    summary(/*{ row, column, rowIndex, columnIndex }*/row) {
+      console.log("summary=>", row)
+      /*return {
+        login: '10000',
+        money: '20000'
+      };*/
     }
   }
 }

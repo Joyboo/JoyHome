@@ -45,13 +45,13 @@ export default {
       gameAdd(this.form).then(resp => {
         const { code } = resp
 
+        this.loading = false
         if (code) {
           this.$message({
             type: 'success',
             message: '操作成功',
             duration: 1500,
             onClose: () => {
-              this.loading = false
               this.$router.push({ path: '/game/index' })
             }
           })

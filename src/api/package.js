@@ -36,14 +36,6 @@ export function packageEdit(method, data) {
   return request(obj)
 }
 
-export function packageDelete(query) {
-  return request({
-    url: '/admin/package/del',
-    method: 'get',
-    params: query
-  })
-}
-
 export function packageChildOption(query) {
   return request({
     url: '/admin/package/childOption',

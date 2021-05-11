@@ -105,7 +105,7 @@
         this.loading = true
 
         packageAdd(this.form).then(resp => {
-
+          this.loading = false
           const {code, msg} = resp
           if (code) {
             this.$message({
@@ -113,12 +113,10 @@
               message: '操作成功',
               duration: 1500,
               onClose: () => {
-                this.loading = false
                 this.$router.push({ path: '/package/index' })
               }
             })
           } else {
-            this.loading = false
             this.$message.error(msg || '操作失败')
           }
         }).catch(error => {

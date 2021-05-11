@@ -15,23 +15,7 @@
             </el-radio-group>
           </el-form-item>
 
-          <!-- todo 改成插槽-->
-          <template v-if="isupd">
-            <el-form-item label="密钥">
-              <el-col :span="10">
-                <el-input v-model="form.extension.logkey" class="colInput" clearable placeholder="登录密钥">
-                  <el-button slot="prepend" @click="get_gkey('logkey')">随机</el-button>
-                </el-input>
-              </el-col>
-
-              <el-col :span="10">
-                <el-input v-model="form.extension.paykey" class="colInput" clearable placeholder="支付密钥">
-                  <el-button slot="prepend" @click="get_gkey('paykey')">随机</el-button>
-                </el-input>
-              </el-col>
-            </el-form-item>
-
-          </template>
+          <slot></slot>
 
           <el-form-item>
             <template slot="label">
@@ -125,22 +109,11 @@ export default {
   computed: {
     ...mapGetters([
       'size'
-    ]),
-    isupd() {
-      return typeof this.form.id !== 'undefined'
-    }
+    ])
   },
   methods: {
     submit() {
       this.$emit('submit')
-    },
-    // 随机生成key
-    get_gkey(column) {
-      gkey(column).then(resp => {
-        this.form.extension[column] = resp.data
-      }).catch(error => {
-        this.$message.error(error)
-      })
     }
   }
 }

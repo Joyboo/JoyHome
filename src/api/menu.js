@@ -51,11 +51,3 @@ export function menuEdit(method, data) {
 
   return request(obj)
 }
-
-export function menuDelete(query) {
-  return request({
-    url: '/admin/menu/del',
-    method: 'get',
-    params: query
-  })
-}

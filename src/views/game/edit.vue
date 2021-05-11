@@ -1,12 +1,35 @@
 <template>
-  <game-info :form="form" :loading="loading" @submit="submit" />
+  <game-info :form="form" :loading="loading" @submit="submit" >
+
+    <el-form-item label="密钥">
+      <el-col :span="10">
+        <el-input v-model="form.extension.logkey" class="colInput" clearable placeholder="登录密钥">
+          <el-button slot="prepend" @click="get_gkey('logkey')">随机</el-button>
+        </el-input>
+      </el-col>
+
+      <el-col :span="10">
+        <el-input v-model="form.extension.paykey" class="colInput" clearable placeholder="支付密钥">
+          <el-button slot="prepend" @click="get_gkey('paykey')">随机</el-button>
+        </el-input>
+      </el-col>
+    </el-form-item>
+
+    <el-form-item>
+      <template slot="label">
+        ID <i class="labeli">gameid</i>
+      </template>
+      <el-input v-model="form.id" disabled></el-input>
+    </el-form-item>
+
+  </game-info>
 </template>
 
 <script>
-import { gameEdit } from '@/api/game'
-import gameInfo from './component'
+  import {gameEdit, gkey} from '@/api/game'
+  import gameInfo from './component'
 
-export default {
+  export default {
   components: {
     gameInfo
   },
@@ -55,14 +78,13 @@ export default {
 
       gameEdit('post', this.form).then(resp => {
         const { code } = resp
-
+        this.loading = false
         if (code) {
           this.$message({
             type: 'success',
             message: '操作成功',
             duration: 1500,
             onClose: () => {
-              this.loading = false
               this.$router.push({ path: '/game/index' })
             }
           })
@@ -71,6 +93,15 @@ export default {
         }
       }).catch(error => {
         this.loading = false
+        this.$message.error(error)
+      })
+    },
+
+    // 随机生成key
+    get_gkey(column) {
+      gkey(column).then(resp => {
+        this.form.extension[column] = resp.data
+      }).catch(error => {
         this.$message.error(error)
       })
     }

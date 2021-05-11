@@ -103,7 +103,15 @@ export default {
         this.changeGame(this.query.gameid)
       }*/
   },
-  props: ['query'],
+  props: {
+    query: {
+      // required: true,
+      type: Object,
+      default () {
+        return {}
+      }
+    }
+  },
   data() {
     return {
       packagelist: [],
@@ -171,6 +179,12 @@ export default {
   },
   methods: {
     changeGame(gameid) {
+      // 不需要包信息
+      if (typeof this.query.pkgbnd == 'undefined')
+      {
+        return;
+      }
+
       if (gameid.length == 0) {
         // 清空
         this.packagelist = []

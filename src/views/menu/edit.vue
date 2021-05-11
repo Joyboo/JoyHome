@@ -82,19 +82,17 @@ export default {
 
       menuEdit('post', this.form).then(resp => {
         const { code } = resp
-
+        this.loading = false
         if (code) {
           this.$message({
             type: 'success',
             message: '操作成功',
             duration: 1500,
             onClose: () => {
-              this.loading = false
               this.$router.push({ path: '/menu/index' })
             }
           })
         } else {
-          this.loading = false
           this.$message.error('操作失败')
         }
       }).catch(error => {

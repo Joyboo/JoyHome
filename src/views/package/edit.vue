@@ -117,18 +117,17 @@ export default {
 
       packageEdit('post', this.form).then(resp => {
         const { code, msg } = resp
+        this.loading = false
         if (code) {
           this.$message({
             type: 'success',
             message: '操作成功',
             duration: 1500,
             onClose: () => {
-              this.loading = false
               this.$router.push({ path: '/package/index' })
             }
           })
         } else {
-          this.loading = false
           this.$message.error(msg || '操作失败')
         }
       }).catch(error => {
