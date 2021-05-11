@@ -1,5 +1,5 @@
 <template>
-  <div class="view-container" v-loading="loading">
+  <div v-loading="loading" class="view-container">
     <el-form ref="menu-info" :rules="rules" :model="form" :size="size" label-width="15rem">
 
       <el-form-item label="上级菜单">
@@ -62,7 +62,7 @@
         <el-input-number v-model="form.sort" :min="1" :max="1000" />
       </el-form-item>
 
-      <button-tpl index="/menu/index" @submit="onSubmit"></button-tpl>
+      <button-tpl index="/menu/index" @submit="onSubmit" />
 
     </el-form>
 
@@ -71,7 +71,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import ButtonTpl from '@/layout/components/ButtonTpl'
+import ButtonTpl from '@/components/ButtonTpl'
 
 export default {
   // name: 'MenuInfo',
@@ -80,10 +80,10 @@ export default {
       'size'
     ])
   },
-  props: ['form', 'cascader', 'loading'],
   components: {
     ButtonTpl
   },
+  props: ['form', 'cascader', 'loading'],
   data() {
     return {
       rules: {

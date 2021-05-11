@@ -94,17 +94,16 @@
 
     <pagination
       :total="total"
-      :pagesize="search.pSize"
-      :currentpage="search.cPage"
-      @handleCurrentChange="handleCurrentChange"
-      @handleSizeChange="handleSizeChange"
+      :limit="search.pSize"
+      :page="search.cPage"
+      @pagination="pagination"
     />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import pagination from '@/layout/components/Pagination'
+import pagination from '@/components/Pagination'
 import { gameIndex, gameDelete } from '@/api/game'
 
 export default {
@@ -149,14 +148,9 @@ export default {
     this.getData()
   },
   methods: {
-    // 改变每页大小
-    handleSizeChange(val) {
-      this.search.pSize = val
-      this.getData()
-    },
-    // 点击页码
-    handleCurrentChange(val) {
-      this.search.cPage = val
+    pagination({ page, limit }) {
+      this.search.cPage = page
+      this.search.pSize = limit
       this.getData()
     },
     getData() {

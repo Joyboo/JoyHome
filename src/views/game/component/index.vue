@@ -1,5 +1,5 @@
 <template>
-  <div class="view-container" v-loading="loading">
+  <div v-loading="loading" class="view-container">
     <el-form ref="game-search" :model="form" :size="size" label-width="15rem">
       <el-tabs type="border-card">
         <el-tab-pane label="对接信息">
@@ -15,6 +15,7 @@
             </el-radio-group>
           </el-form-item>
 
+          <!-- todo 改成插槽-->
           <template v-if="isupd">
             <el-form-item label="密钥">
               <el-col :span="10">
@@ -105,7 +106,7 @@
 
       </el-tabs>
 
-      <button-tpl index="/game/index" @submit="submit"></button-tpl>
+      <button-tpl index="/game/index" @submit="submit" />
     </el-form>
   </div>
 </template>
@@ -113,14 +114,14 @@
 <script>
 import { mapGetters } from 'vuex'
 import { gkey } from '@/api/game'
-import ButtonTpl from '@/layout/components/ButtonTpl'
+import ButtonTpl from '@/components/ButtonTpl'
 
 export default {
-  // name: 'gameInfoComponent',
-  props: ['form', 'loading'],
   components: {
     ButtonTpl
   },
+  // name: 'gameInfoComponent',
+  props: ['form', 'loading'],
   computed: {
     ...mapGetters([
       'size'

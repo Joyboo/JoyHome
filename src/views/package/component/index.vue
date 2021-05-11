@@ -1,5 +1,5 @@
 <template>
-  <div class="view-container" v-loading="loading">
+  <div v-loading="loading" class="view-container">
     <el-form ref="package-search" :model="form" :size="size" :rules="rules" label-width="15rem">
       <el-tabs type="border-card">
         <el-tab-pane label="基本信息">
@@ -435,7 +435,7 @@
         </el-tab-pane>
       </el-tabs>
 
-      <button-tpl index="/package/index" @submit="submit"></button-tpl>
+      <button-tpl index="/package/index" @submit="submit" />
     </el-form>
   </div>
 </template>
@@ -444,13 +444,13 @@
 import { mapGetters } from 'vuex'
 import { gkey } from '@/api/package'
 import { uploadImage } from '@/api/upload'
-import ButtonTpl from '@/layout/components/ButtonTpl'
+import ButtonTpl from '@/components/ButtonTpl'
 
 export default {
-  props: ['form', 'loading'],
   components: {
     ButtonTpl
   },
+  props: ['form', 'loading'],
   data() {
     return {
       rules: {

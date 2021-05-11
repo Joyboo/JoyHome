@@ -8,14 +8,14 @@
       </el-breadcrumb>
     </div>
 
-    <layout-filter :query="query" @search="search"></layout-filter>
+    <layout-filter :query="query" @search="search" />
 
     <el-table
+      ref="multipleTable"
       v-loading="loading"
       :data="tableData"
       border
       class="table"
-      ref="multipleTable"
       :size="size"
       header-row-class-name="list-table-header"
     >
@@ -28,13 +28,13 @@
           <div v-else-if="scope.row.h === '-'" class="danger">
             总合计
           </div>
-          <div v-else >
-            {{scope.row.ymd}}
+          <div v-else>
+            {{ scope.row.ymd }}
           </div>
         </template>
       </el-table-column>
 
-      <el-table-column sortable align="center" prop="reg" >
+      <el-table-column sortable align="center" prop="reg">
         <template slot="header" slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="新增账号" placement="top">
             <span>新增账号</span>
@@ -51,7 +51,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column sortable align="center" prop="login" >
+      <el-table-column sortable align="center" prop="login">
         <template slot="header" slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="活跃账号" placement="top">
             <span>活跃账号</span>
@@ -59,7 +59,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column sortable align="center" prop="money" >
+      <el-table-column sortable align="center" prop="money">
         <template slot="header" slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="美元" placement="top">
             <span>付费总额</span>
@@ -67,7 +67,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column sortable align="center" prop="nfs" >
+      <el-table-column sortable align="center" prop="nfs">
         <template slot="header" slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="新用户的充值（美元）" placement="top">
             <span>新增付费</span>
@@ -83,7 +83,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" prop="nps" >
+      <el-table-column align="center" prop="nps">
         <template slot="header" slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="新增付费账号" placement="top">
             <span>新增付费账号</span>
@@ -91,7 +91,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" prop="tas" >
+      <el-table-column align="center" prop="tas">
         <template slot="header" slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="付费次数" placement="top">
             <span>付费次数</span>
@@ -152,56 +152,55 @@
 </template>
 
 <script>
-  import { daily } from '@/api/statistics';
-  import LayoutFilter from '@/layout/components/LayoutFilter'
-  import {mapGetters} from "vuex";
+import { daily } from '@/api/statistics'
+import LayoutFilter from '@/components/LayoutFilter'
+import { mapGetters } from 'vuex'
 
-  export default {
-    components: {
-      LayoutFilter
-    },
-    computed: {
-      ...mapGetters([
-        'size',
-      ])
-    },
-    data() {
-      const days = -14
-      const d = new Date();
-      const end = new Date();
-      d.setTime(d.getTime() + 3600 * 1000 * 24 * days);
-      // const range = [d.format(1), end.format(1)]
-      const range = [d.getTime(), end.getTime()]
-      return {
-        loading: false,
-        query: {
-          gameid: [],
-          pkgbnd: [],
-          ProxyRegion: 'omz',
-          tzn: '8',
-          date: range
-        },
-        tableData: [],
-      };
-    },
-    methods: {
-      async search() {
-        if (this.query.gameid.length <= 0)
-        {
-          this.$message.error('请选择游戏')
-          return;
-        }
-        this.loading = true
-        const {code, msg, data} = await daily(this.query)
-        this.loading = false
-
-        if (!code) {
-          return this.$message.error(msg);
-        }
-        this.tableData = data.data
+export default {
+  components: {
+    LayoutFilter
+  },
+  computed: {
+    ...mapGetters([
+      'size'
+    ])
+  },
+  data() {
+    const days = -14
+    const d = new Date()
+    const end = new Date()
+    d.setTime(d.getTime() + 3600 * 1000 * 24 * days)
+    // const range = [d.format(1), end.format(1)]
+    const range = [d.getTime(), end.getTime()]
+    return {
+      loading: false,
+      query: {
+        gameid: [],
+        pkgbnd: [],
+        ProxyRegion: 'omz',
+        tzn: '8',
+        date: range
       },
+      tableData: []
     }
-  };
+  },
+  methods: {
+    async search() {
+      if (this.query.gameid.length <= 0) {
+        this.$message.error('请选择游戏')
+        return
+      }
+      this.loading = true
+      const { code, msg, data } = await daily(this.query)
+      this.loading = false
+
+      if (!code) {
+        return this.$message.error(msg)
+      }
+      this.tableData = data.data
+    }
+  }
+}
 </script>
 
 <style scoped>
