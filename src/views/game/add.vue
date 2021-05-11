@@ -42,27 +42,22 @@ export default {
   methods: {
     submit() {
       this.loading = true
-      gameAdd(this.form).then(resp => {
-        const { code } = resp
-
-        this.loading = false
-        if (code) {
-          this.$message({
-            type: 'success',
-            message: '操作成功',
-            duration: 1500,
-            onClose: () => {
-              this.$router.push({ path: '/game/index' })
-            }
-          })
-        } else {
-          this.$message.error('操作失败')
-        }
-      }).catch(error => {
-        console.log('error=>', error)
-        this.loading = false
-        this.$message.error(error)
-      })
+      gameAdd(this.form)
+        .then(resp => {
+          const { code } = resp
+          if (code) {
+            this.$message.success('操作成功')
+            this.$router.push({ path: '/game/index' })
+          } else {
+            this.$message.error('操作失败')
+          }
+        })
+        .catch(error => {
+          this.$message.error(error)
+        })
+        .finally(() => {
+          this.loading = false
+        })
     }
   }
 }

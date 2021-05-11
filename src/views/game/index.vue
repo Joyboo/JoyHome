@@ -32,7 +32,7 @@
       pathname="game"
       @search="getData"
     >
-      <el-table-column align="center" width="80" prop="id" label="ID" />
+      <el-table-column sortable align="center" width="80" prop="id" label="ID" />
 
       <el-table-column align="center" prop="name" label="名称" />
 
@@ -64,7 +64,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column width="80" align="center" prop="sort" label="排序" />
+      <el-table-column sortable width="80" align="center" prop="sort" label="排序" />
     </table-data>
 
     <pagination
@@ -130,11 +130,17 @@ export default {
     },
     getData() {
       this.loading = true
-      gameIndex(this.search).then(resp => {
-        this.loading = false
-        this.tableData = resp.data.data
-        this.total = resp.data.totals
-      })
+      gameIndex(this.search)
+        .then(resp => {
+          this.tableData = resp.data.data
+          this.total = resp.data.totals
+        })
+        .catch(error => {
+          this.$message.error(error)
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     openAlter(msg) {
       this.$alert(msg)

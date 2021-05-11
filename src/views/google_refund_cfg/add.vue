@@ -27,22 +27,17 @@
           .then(resp => {
             const {code, msg, data} = resp
             if (code) {
-              this.loading = false
-              this.$message({
-                type: 'success',
-                message: '操作成功',
-                duration: 1500,
-                onClose: () => {
-                  this.$router.push({ path: '/google_refund_cfg/index' })
-                }
-              })
+              this.$message.success('操作成功')
+              this.$router.push({ path: '/google_refund_cfg/index' })
             } else {
               this.$message.error(msg || '操作失败')
             }
           })
           .catch(error => {
-            this.loading = false
             this.$message.error(error)
+          })
+          .finally(() => {
+            this.loading = false
           })
       }
     }

@@ -17,19 +17,19 @@
       pathname="package"
       @search="getData"
     >
-      <el-table-column align="center" width="80" prop="id" label="ID" />
+      <el-table-column sortable align="center" width="80" prop="id" label="ID" />
 
-      <el-table-column align="center" prop="gameid" label="所属游戏">
+      <el-table-column sortable align="center" prop="gameid" label="所属游戏">
         <template slot-scope="scope">
           {{ gamelist[scope.row.gameid] || '' }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" prop="name" label="包名" />
+      <el-table-column sortable align="center" prop="name" label="包名" />
 
-      <el-table-column align="center" width="200" prop="pkgbnd" label="包id" />
+      <el-table-column sortable align="center" width="200" prop="pkgbnd" label="包id" />
 
-      <el-table-column align="center" width="100" prop="os" label="操作系统">
+      <el-table-column sortable align="center" width="100" prop="os" label="操作系统">
         <template slot-scope="scope">
           {{ packos[scope.row.os] || '' }}
         </template>

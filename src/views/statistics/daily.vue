@@ -197,8 +197,6 @@ export default {
       this.loading = true
       const { code, msg, data } = await daily(this.query)
 
-      console.log(this.$refs.multipleTable.$el)
-
       this.loading = false
 
       if (!code) {

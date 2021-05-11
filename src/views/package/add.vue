@@ -104,25 +104,22 @@
       submit() {
         this.loading = true
 
-        packageAdd(this.form).then(resp => {
-          this.loading = false
-          const {code, msg} = resp
-          if (code) {
-            this.$message({
-              type: 'success',
-              message: '操作成功',
-              duration: 1500,
-              onClose: () => {
-                this.$router.push({ path: '/package/index' })
-              }
-            })
-          } else {
-            this.$message.error(msg || '操作失败')
-          }
-        }).catch(error => {
-          this.loading = false
-          this.$message.error(error || '操作失败')
-        })
+        packageAdd(this.form)
+          .then(resp => {
+            const {code, msg} = resp
+            if (code) {
+              this.$message.success('操作成功')
+              this.$router.push({ path: '/package/index' })
+            } else {
+              this.$message.error(msg || '操作失败')
+            }
+          })
+          .catch(error => {
+            this.$message.error(error || '操作失败')
+          })
+          .finally(() => {
+            this.loading = false
+          })
       }
     }
   }

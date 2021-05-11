@@ -43,6 +43,7 @@ export default {
       // In order to make the cached page re-rendered
       this.$store.dispatch('tagsView/delAllCachedViews', this.$route)
 
+      console.log('this.$route', this.$route)
       const { fullPath } = this.$route
 
       this.$nextTick(() => {

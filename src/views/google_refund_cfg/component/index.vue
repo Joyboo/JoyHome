@@ -1,6 +1,6 @@
 <template>
   <div v-loading="loading" class="view-container">
-    <el-form v-model="form" :size="size" label-width="15rem">
+    <el-form :model="form" :size="size" label-width="15rem">
       <el-form-item label="所属游戏">
         <el-select v-model="form.gameid" filterable>
           <el-option

@@ -42,11 +42,19 @@
         <el-input v-model="form.redirect" clearable />
       </el-form-item>
 
-      <el-form-item label="图标">
-        <el-input v-model="form.icon" style="width: 80%" placeholder="el-icon-menu" clearable>
-          <router-link slot="prepend" target="_blank" to="/icon/index">
-            <i class="el-icon-view" />
+      <el-form-item>
+        <template slot="label">
+          <router-link slot="prepend" target="_blank" to="/icon/index" style="color: #409EFF;">
+            图标 <i class="el-icon-view el-icon--right" />
           </router-link>
+        </template>
+        <el-input v-model="form.icon" style="width: 80%" placeholder="el-icon-menu" clearable>
+          <el-select slot="prepend" v-model="form.icon">
+            <el-option label="列表" value="el-icon-c-scale-to-original" />
+            <el-option label="添加" value="el-icon-plus" />
+            <el-option label="编辑" value="el-icon-edit" />
+            <el-option label="删除" value="el-icon-delete" />
+          </el-select>
         </el-input>
       </el-form-item>
 
@@ -118,7 +126,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
   .el-input-group__prepend {
     background-color: #fff!important;
     width: 120px!important;

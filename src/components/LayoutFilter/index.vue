@@ -62,7 +62,7 @@
     <slot />
 
     <el-form-item>
-      <el-button type="primary" @click="search">搜索
+      <el-button type="primary" @click="search">查询
       </el-button>
     </el-form-item>
   </el-form>

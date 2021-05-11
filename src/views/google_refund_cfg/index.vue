@@ -73,14 +73,15 @@
         this.loading = true
         googlerefountIndex(this.query)
           .then(resp => {
-            this.loading = false
             const {code, msg, data} = resp
             this.tableData = data.data
             this.total = data.totals
           })
           .catch(error => {
-            this.loading = false
             this.$message.error(error)
+          })
+          .finally(() => {
+            this.loading = false
           })
       },
       pagination({page, limit}) {

@@ -69,11 +69,17 @@ export default {
   methods: {
     getData() {
       this.loading = true
-      menuIndex().then(resp => {
-        const { data } = resp
-        this.tableData = data
-        this.loading = false
-      })
+      menuIndex()
+        .then(resp => {
+          const { data } = resp
+          this.tableData = data
+        })
+        .catch(error => {
+          this.$message.error(error)
+        })
+        .finally(() => {
+          this.loading = false
+        })
     }
   }
 }
