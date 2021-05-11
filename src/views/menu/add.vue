@@ -21,6 +21,7 @@ export default {
       form: {
         pid: 0,
         title: '',
+        fulltitle: '',
         name: '',
         path: '',
         component: '',

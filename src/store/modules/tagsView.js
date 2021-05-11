@@ -8,7 +8,9 @@ const mutations = {
     if (state.visitedViews.some(v => v.path === view.path)) return
     state.visitedViews.push(
       Object.assign({}, view, {
-        title: view.meta.title || 'no-name'
+        title: view.meta.title || 'no-name',
+        // 增加完整名称字段, add by Joyboo 2021-05-11
+        fulltitle: view.meta.fulltitle || ''
       })
     )
   },

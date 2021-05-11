@@ -13,8 +13,12 @@
         </div>
       </el-form-item>
 
-      <el-form-item label="菜单名">
+      <el-form-item label="名称">
         <el-input v-model="form.title" placeholder="在侧边栏和面包屑中展示的名字" clearable />
+      </el-form-item>
+
+      <el-form-item label="完整名称">
+        <el-input v-model="form.fulltitle" placeholder="在tags-view中展示的名字" clearable />
       </el-form-item>
 
       <el-form-item label="name">

@@ -22,6 +22,7 @@ export default {
         id: 0,
         pid: 0,
         title: '',
+        fulltitle: '',
         name: '',
         path: '',
         component: '',
