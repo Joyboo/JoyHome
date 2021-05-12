@@ -8,149 +8,19 @@
       </el-breadcrumb>
     </div>
 
-    <layout-filter :query="query" @search="search" />
+    <layout-filter :query="query" @search="search" >
+      <template v-slot:after>
+        <el-button type="success" icon="el-icon-download" clearable @click="showExport = !showExport">导出</el-button>
+      </template>
 
-    <el-table
-      ref="multipleTable"
-      v-loading="loading"
-      :data="tableData"
-      border
-      class="table"
-      :size="size"
-      height="200"
-      header-row-class-name="list-table-header"
-      :show-summary="true"
-      :span-method="summary"
-      sum-text="这是合计行"
-    >
+      <!--导出页组件-->
+      <template v-slot:exports>
+        <export-table :showExport="showExport" :loading="loading" ></export-table>
+      </template>
+    </layout-filter>
 
-      <el-table-column sortable fixed align="center" prop="ymd" label="日期">
-        <template slot-scope="scope">
-          <div v-if="scope.row.h === '--'" class="danger">
-            页合计
-          </div>
-          <div v-else-if="scope.row.h === '-'" class="danger">
-            总合计
-          </div>
-          <div v-else>
-            {{ scope.row.ymd }}
-          </div>
-        </template>
-      </el-table-column>
+    <table-index :loading="loading" :data="tableData" :column="column" :heji="true"></table-index>
 
-      <el-table-column sortable align="center" prop="reg">
-        <template slot="header" slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="新增账号" placement="top">
-            <span>新增账号</span>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-
-      <el-table-column width="1000" sortable align="center" prop="atv">
-
-        <template slot="header" slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="激活设备" placement="top">
-            <span>激活设备</span>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-
-      <el-table-column sortable align="center" prop="login">
-        <template slot="header" slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="活跃账号" placement="top">
-            <span>活跃账号</span>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-
-      <el-table-column sortable align="center" prop="money">
-        <template slot="header" slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="美元" placement="top">
-            <span>付费总额</span>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-
-      <el-table-column sortable align="center" prop="nfs">
-        <template slot="header" slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="新用户的充值（美元）" placement="top">
-            <span>新增付费</span>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-
-      <el-table-column sortable align="center" prop="persons">
-        <template slot="header" slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="付费账号" placement="top">
-            <span>付费账号</span>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" prop="nps">
-        <template slot="header" slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="新增付费账号" placement="top">
-            <span>新增付费账号</span>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" prop="tas">
-        <template slot="header" slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="付费次数" placement="top">
-            <span>付费次数</span>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" prop="fftotal">
-        <template slot="header" slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="总付费人数/总登录人数" placement="top">
-            <span>付费率</span>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" prop="ffl">
-        <template slot="header" slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="新增付费人数/注册数" placement="top">
-            <span>新增付费率</span>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" prop="arpu">
-        <template slot="header" slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="总付费金额/总登录人数" placement="top">
-            <span>ARPU</span>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" prop="newArpu">
-        <template slot="header" slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="新付费金额/新付费人数" placement="top">
-            <span>新增ARPU</span>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" prop="arppu">
-        <template slot="header" slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="总付费金额/总付费人数" placement="top">
-            <span>ARPPU</span>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" prop="newArppu">
-        <template slot="header" slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="新付费金额/新付费人数" placement="top">
-            <span>新增ARPPU</span>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-    </el-table>
   </div>
 
 </template>
@@ -158,16 +28,18 @@
 <script>
 import { daily } from '@/api/statistics'
 import LayoutFilter from '@/components/LayoutFilter'
+import ExportTable from '@/components/ExportTable'
+import TableIndex from '@/components/TableData'
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
-    LayoutFilter
+    LayoutFilter,
+    ExportTable,
+    TableIndex
   },
   computed: {
-    ...mapGetters([
-      'size'
-    ])
+    ...mapGetters(['size'])
   },
   data() {
     const days = -14
@@ -178,6 +50,7 @@ export default {
     const range = [d.getTime(), end.getTime()]
     return {
       loading: false,
+      showExport: false,
       query: {
         gameid: [],
         pkgbnd: [],
@@ -185,6 +58,79 @@ export default {
         tzn: '8',
         date: range
       },
+      column: [
+        {
+          key: 'ymd',
+          text: '日期',
+          sort: true,
+          template(index, row) {
+            if (row.h === '--') {
+              // return '<div class="danger">页合计</div>'
+              return '页合计'
+            } else if (row.h === '-') {
+              return '总合计'
+            } else {
+              return index
+            }
+          }
+        }, {
+          key: 'reg',
+          sort: true,
+          text: '新增账号'
+        }, {
+          key: 'atv',
+          sort: true,
+          text: '激活设备'
+        }, {
+          key: 'login',
+          sort: true,
+          text: '活跃账号'
+        }, {
+          key: 'money',
+          sort: true,
+          text: '付费总额',
+          tip: '美元'
+        }, {
+          key: 'nfs',
+          text: '新增付费',
+          tip: '新用户的充值（美元）'
+        }, {
+          key: 'persons',
+          text: '付费账号'
+        }, {
+          key: 'nps',
+          text: '新增付费账号',
+          width: '150'
+        }, {
+          key: 'tas',
+          text: '付费次数'
+        }, {
+          key: 'fftotal',
+          text: '付费率',
+          tip: '总付费人数/总登录人数'
+        }, {
+          key: 'ffl',
+          text: '新增付费率',
+          tip: '新增付费人数/注册数'
+        }, {
+          key: 'arpu',
+          text: 'ARPU',
+          tip: '总付费金额/总登录人数'
+        }, {
+          key: 'newArpu',
+          text: '新增ARPU',
+          tip: '新付费金额/新付费人数'
+        }, {
+          key: 'arppu',
+          text: 'ARPPU',
+          tip: '总付费金额/总付费人数'
+        }, {
+          key: 'newArppu',
+          text: '新增ARPPU',
+          tip: '新付费金额/新付费人数',
+          width: '130'
+        }
+      ],
       tableData: []
     }
   },

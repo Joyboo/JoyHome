@@ -38,7 +38,7 @@
 
 <script>
   import LayoutFilter from '@/components/LayoutFilter'
-  import TableData from '@/components/TableData'
+  import TableData from '@/components/TableData/info'
   import Pagination from '@/components/Pagination'
   import {mapGetters} from "vuex";
   import {googlerefountIndex} from '@/api/googlerefundcfg'

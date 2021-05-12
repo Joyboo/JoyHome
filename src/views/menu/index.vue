@@ -46,7 +46,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import TableData from '@/components/TableData'
+import TableData from '@/components/TableData/info'
 import { menuIndex } from '@/api/menu'
 
 export default {

@@ -78,7 +78,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import TableData from '@/components/TableData'
+import TableData from '@/components/TableData/info'
 import pagination from '@/components/Pagination'
 import { gameIndex } from '@/api/game'
 

@@ -84,7 +84,7 @@
 </template>
 
 <script>
-  import TableData from '@/components/TableData'
+  import TableData from '@/components/TableData/info'
   import Pagination from '@/components/Pagination'
   import {rolelist} from '@/api/role'
   import {adminIndex} from '@/api/admin'

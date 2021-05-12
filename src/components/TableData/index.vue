@@ -1,110 +1,97 @@
 <template>
-    <el-table
-      v-loading="loading"
-      :data="data"
-      style="width: 100%"
-      row-key="id"
-      :size="size"
-      border
-      lazy
-      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
-    >
+  <el-table
+    ref="listTable"
+    v-loading="loading"
+    :data="data"
+    border
+    :size="size"
+    :height="height"
+    :summary-method="getSummaries"
+    :show-summary="heji"
+  >
 
-      <!--表格插槽-->
-      <slot></slot>
+    <el-table-column v-for="(item, key) in column" :width="item.width" :key="key" :sortable="item.sort" align="center" :prop="item.key">
 
-      <el-table-column align="center" label="操作">
-        <template slot-scope="scope">
+      <!--表格槽-->
+      <template slot-scope="scope">
+          <span v-if="typeof item.template == 'function'" >
+            {{item.template(scope.row[item.key], scope.row)}}
+          </span>
+        <span v-else>{{scope.row[item.key]}}</span>
 
-          <!--按钮插槽-->
-          <slot name="btn"></slot>
+      </template>
 
-          <el-button type="primary" :size="size" plain @click="edit(scope.$index, scope.row)">编辑</el-button>
-          <el-popconfirm
-            confirm-button-text="我意已决"
-            cancel-button-text="只是手抖"
-            confirm-button-type="danger"
-            icon="el-icon-info"
-            icon-color="red"
-            title="确定要删除吗？"
-            @onConfirm="confirmDelete(scope.$index, scope.row)"
-          >
-            <el-button slot="reference" type="danger" :size="size" plain>删除</el-button>
-          </el-popconfirm>
-        </template>
-      </el-table-column>
+      <!--表头槽-->
+      <template slot="header" slot-scope="scope">
+        <el-tooltip class="item" effect="dark" :content="item.tip || item.text" placement="top">
+          <span>{{item.text}}</span>
+        </el-tooltip>
+      </template>
 
-    </el-table>
+    </el-table-column>
 
-
+  </el-table>
 </template>
 
 <script>
   import {mapGetters} from "vuex";
-  // import Pagination from '@/components/Pagination'
-  import request from "@/utils/request";
 
   export default {
-    name: "TableData",
+    name: "TableIndex",
     computed: {
       ...mapGetters(['size'])
     },
-    components: {
-      // Pagination
-    },
     props: {
+      column: {
+        required: true,
+        type: Array
+      },
       loading: {
         type: Boolean,
         default: false
       },
       data: {
-        type: Array,
-        default: []
-      },
-      // 父组件名称
-      pathname: {
         required: true,
-        type: String
+        type: Array
+      },
+      // 是否需要合计行
+      heji: {
+        type: Boolean,
+        default: false
+      },
+      // 表格高度
+      height: {
+        type: Number,
+        default: 700
       }
     },
     methods: {
-      // 编辑
-      edit(index, row) {
-        const path = '/' + this.pathname + '/edit'
-        this.$router.push({ path: path, query: { id: row.id }})
-      },
-      // 确定删除
-      confirmDelete(index, rows) {
-        this.loading = true
-        const url = '/admin/' + this.pathname + '/del'
-        request({
-          url: url,
-          method: 'get',
-          params: { id: rows.id }
+      // todo  暂时只有一行能固定
+      getSummaries(param) {
+        const { columns, data } = param;
+        let sums = [], joy = []; // 合计行数据
+
+        data.forEach((column, index) => {
+          if (typeof column.h != 'undefined') {
+            joy = column;
+            return;
+          }
         })
-          .then(resp => {
-            this.loading = false
-            if (resp.code) {
-              this.$message.success('操作成功')
-              this.$emit('search')
-            }
-          })
-          .catch(error => {
-            this.loading = false
-            console.error(error)
-            this.$message.error('操作失败')
-          })
-      },
-      // 修改分页大小或当前页码改变, todo 参考分页组件的计算属性setter，优化分页参数传递，要做到不需要父级组件实现此方法 !!!
-      /*pagination(pages) {
-        this.$emit('pagination', pages)
-      }*/
+
+        columns.forEach((column, index) => {
+          if (index === 0) {
+            sums[index] = joy.h == '--' ? '页合计' : (joy.h == '-' ? '总合计' : '');
+          } else {
+            sums[index] = joy[column.property] || ''
+          }
+        })
+        // console.log(sums)
+        return sums
+      }
     }
   }
 </script>
 
-<style lang="scss" scoped>
-  .el-button {
-    margin: 0 2px;
-  }
+<style scoped>
+
 </style>

@@ -79,7 +79,7 @@
 import { mapGetters } from 'vuex'
 import { packageindex } from '@/api/package'
 import pagination from '@/components/Pagination'
-import TableData from '@/components/TableData'
+import TableData from '@/components/TableData/info'
 import LayoutFilter from '@/components/LayoutFilter'
 
 export default {

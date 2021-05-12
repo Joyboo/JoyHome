@@ -1,71 +1,81 @@
 <template>
-  <el-form :model="query" :size="size" :inline="true">
+  <div>
+    <el-form :model="query" :size="size" :inline="true">
 
-    <!--传递query.gameid表示需要该下拉框，传递类型为字符串时表示为单选，为数组时表示为多选-->
-    <el-form-item v-if="typeof query.gameid != 'undefined'">
-      <el-select v-model="query.gameid" filterable :multiple="gameMul" placeholder="游戏" @change="changeGame">
-        <el-option
-          v-for="item in filtergamelist"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
+      <!--传递query.gameid表示需要该下拉框，传递类型为字符串时表示为单选，为数组时表示为多选-->
+      <el-form-item v-if="typeof query.gameid != 'undefined'">
+        <el-select v-model="query.gameid" filterable :multiple="gameMul" placeholder="游戏" @change="changeGame">
+          <el-option
+            v-for="item in filtergamelist"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+            <span style="float: left">{{ item.label }}</span>
+            <span class="selectSlotRight">id:{{ item.value }}</span>
+          </el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item v-if="typeof query.pkgbnd != 'undefined'">
+        <el-select v-model="query.pkgbnd" filterable :multiple="packageMul" placeholder="包">
+          <el-option
+            v-for="item in packagelist"
+            :key="item.pkgbnd"
+            :label="item.name"
+            :value="item.pkgbnd"
+          >
+            <span style="float: left">{{ item.name }}</span>
+            <span class="selectSlotRight">id:{{ item.id }}</span>
+          </el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item v-if="typeof query.ProxyRegion != 'undefined'">
+        <el-select style="width: 100px;" v-model="query.ProxyRegion" placeholder="地区">
+          <el-option key="1" label="欧美洲" value="omz" />
+          <el-option key="2" label="新加坡" value="xjp" />
+        </el-select>
+      </el-form-item>
+
+      <el-form-item v-if="typeof query.tzn != 'undefined'">
+        <el-select style="width: 100px;" v-model="query.tzn" placeholder="地区">
+          <el-option key="1" label="-5区" value="-5" />
+          <el-option key="2" label="8区" value="8" />
+        </el-select>
+      </el-form-item>
+
+      <!--默认是天的格式，也可以传递query.format自定义, 具体格式见:https://element.eleme.cn/#/zh-CN/component/date-picker#ri-qi-ge-shi-->
+      <el-form-item v-if="isDate">
+        <el-date-picker
+          v-model="query.date"
+          :format="format"
+          type="daterange"
+          align="right"
+          unlink-panels
+          range-separator="至"
+          start-placeholder="开始"
+          end-placeholder="结束"
+          :default-value="query.date"
+          value-format="timestamp"
+          :picker-options="pickerOptions"
         />
-      </el-select>
-    </el-form-item>
+      </el-form-item>
 
-    <el-form-item v-if="typeof query.pkgbnd != 'undefined'">
-      <el-select v-model="query.pkgbnd" filterable :multiple="packageMul" placeholder="包">
-        <el-option
-          v-for="item in packagelist"
-          :key="item.pkgbnd"
-          :label="item.name"
-          :value="item.pkgbnd"
-        >
-          <span style="float: left">{{ item.name }}</span>
-          <span class="selectSlotRight">id:{{ item.id }}</span>
-        </el-option>
-      </el-select>
-    </el-form-item>
+      <!--插槽位-->
+      <slot />
 
-    <el-form-item v-if="typeof query.ProxyRegion != 'undefined'">
-      <el-select v-model="query.ProxyRegion" placeholder="地区">
-        <el-option key="1" label="欧美洲" value="omz" />
-        <el-option key="2" label="新加坡" value="xjp" />
-      </el-select>
-    </el-form-item>
+      <el-form-item>
+        <el-button type="primary" icon="el-icon-search" @click="search">查询
+        </el-button>
+      </el-form-item>
 
-    <el-form-item v-if="typeof query.tzn != 'undefined'">
-      <el-select v-model="query.tzn" placeholder="地区">
-        <el-option key="1" label="-5区" value="-5" />
-        <el-option key="2" label="8区" value="8" />
-      </el-select>
-    </el-form-item>
+      <slot name="after"></slot>
+    </el-form>
 
-    <!--默认是天的格式，也可以传递query.format自定义, 具体格式见:https://element.eleme.cn/#/zh-CN/component/date-picker#ri-qi-ge-shi-->
-    <el-form-item v-if="isDate">
-      <el-date-picker
-        v-model="query.date"
-        :format="format"
-        type="daterange"
-        align="right"
-        unlink-panels
-        range-separator="至"
-        start-placeholder="开始"
-        end-placeholder="结束"
-        :default-value="query.date"
-        value-format="timestamp"
-        :picker-options="pickerOptions"
-      />
-    </el-form-item>
-
-    <!--插槽位-->
-    <slot />
-
-    <el-form-item>
-      <el-button type="primary" @click="search">查询
-      </el-button>
-    </el-form-item>
-  </el-form>
+    <!--导出插槽-->
+    <slot name="exports"></slot>
+  </div>
 </template>
 
 <script>
