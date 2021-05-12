@@ -85,6 +85,12 @@
             sums[index] = joy[column.property] || ''
           }
         })
+        
+        // 重新布局，以修复偶尔合计行不显示的问题
+        this.$nextTick(() => {
+          this.$refs.listTable.doLayout();
+        });
+
         // console.log(sums)
         return sums
       }
@@ -93,5 +99,7 @@
 </script>
 
 <style scoped>
-
+  /*.el-table{
+    overflow:visible !important;
+  }*/
 </style>
