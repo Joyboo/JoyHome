@@ -8,16 +8,7 @@
       </el-breadcrumb>
     </div>
 
-    <layout-filter :query="query" @search="search" >
-      <template v-slot:after>
-        <el-button type="success" icon="el-icon-download" clearable @click="showExport = !showExport">导出</el-button>
-      </template>
-
-      <!--导出页组件-->
-      <template v-slot:exports>
-        <export-table :showExport="showExport" :loading="loading" ></export-table>
-      </template>
-    </layout-filter>
+    <layout-filter :query="query" :data="tableData" :column="column" @search="search" :showExport="true"></layout-filter>
 
     <table-index :loading="loading" :data="tableData" :column="column" :heji="true"></table-index>
 
@@ -28,14 +19,12 @@
 <script>
 import { daily } from '@/api/statistics'
 import LayoutFilter from '@/components/LayoutFilter'
-import ExportTable from '@/components/ExportTable'
 import TableIndex from '@/components/TableData'
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
     LayoutFilter,
-    ExportTable,
     TableIndex
   },
   computed: {
@@ -50,7 +39,6 @@ export default {
     const range = [d.getTime(), end.getTime()]
     return {
       loading: false,
-      showExport: false,
       query: {
         gameid: [],
         pkgbnd: [],

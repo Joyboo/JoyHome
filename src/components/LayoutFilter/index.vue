@@ -71,15 +71,46 @@
       </el-form-item>
 
       <slot name="after"></slot>
+
+      <el-form-item v-if="showExport" style="float: right;">
+        <el-button type="warning" icon="el-icon-download" clearable @click="exportcfg.show = !exportcfg.show">导出</el-button>
+      </el-form-item>
     </el-form>
 
-    <!--导出插槽-->
-    <slot name="exports"></slot>
+    <el-collapse-transition>
+      <el-form v-show="exportcfg.show" :size="size" :inline="true">
+
+        <el-form-item>
+          <el-input v-model="exportcfg.filename" placeholder="导出文件名" clearable></el-input>
+        </el-form-item>
+
+        <el-form-item>
+          <el-select v-model="exportcfg.bookType" style="width: 100px">
+            <el-option
+              v-for="item in exportcfg.elist"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
+        </el-form-item>
+
+        <el-form-item>
+          <el-button type="success" icon="el-icon-download" @click="exportCurrPage">导出当前页</el-button>
+        </el-form-item>
+
+        <el-form-item v-if="exportUrl">
+          <el-button type="warning" icon="el-icon-download" @click="exportAllPage">导出全部页</el-button>
+        </el-form-item>
+
+      </el-form>
+    </el-collapse-transition>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import { parseTime } from '@/utils'
 import { packageChildOption } from '@/api/package'
 
 export default {
@@ -120,11 +151,33 @@ export default {
       default () {
         return {}
       }
-    }
+    },
+
+    /********** 是否需要导出按钮,如果不需要，则下方参数都无需传递 ***********/
+    showExport: {
+      type: Boolean,
+      default: false
+    },
+    data: {
+      type: Array,
+      default: []
+    },
+    column: {
+      type: Array,
+      default: []
+    },
+    // 导出全部 url
+    exportUrl: {}
   },
   data() {
     return {
       packagelist: [],
+      exportcfg: {
+        show: false,
+        filename: '',
+        bookType: 'xlsx', // 导出类型
+        elist: ['xlsx', 'csv', 'txt']
+      },
       // modelTimeRange: [new Date(), new Date()],
       pickerOptions: {
         shortcuts: [
@@ -211,6 +264,71 @@ export default {
     },
     search() {
       this.$emit('search')
+    },
+    // 导出当前页
+    exportCurrPage() {
+      let tHeader = [], col = [], mydata = [];
+
+      this.column.forEach((item, index) => {
+        tHeader.push(item.text)
+        col.push(item.key)
+      })
+
+      // 有定义template，则执行，获取执行后接过
+      this.data.forEach((item, index) => {
+        this.column.forEach((v, i) => {
+          if (typeof v.template == 'function')
+          {
+            item[v.key] = v.template(item[v.key], item)
+          }
+        })
+        mydata.push(item)
+      })
+
+      import('@/vendor/Export2Excel')
+        .then(excel => {
+          const data = this.formatJson(col, mydata)
+          excel.export_json_to_excel({
+            header: tHeader,
+            data,
+            filename: this.exportcfg.filename,
+            autoWidth: true,
+            bookType: this.exportcfg.bookType
+          })
+        })
+        .catch(error => {
+          console.log('error=>', error)
+          this.$message.error('数据导出时发生错误!')
+        })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => {
+        if (j === 'timestamp') {
+          return parseTime(v[j])
+        } else {
+          return v[j]
+        }
+      }))
+    },
+    // 导出全部页
+    exportAllPage() {
+      let param = process.env.VUE_APP_BASE_API + '/admin' + this.exportUrl + '?'
+      for (let i in this.query)
+      {
+        param += '&' + i + '=' + this.query[i]
+      }
+      param += '&filename=' + this.exportcfg.filename + '&suff=' + this.exportcfg.bookType
+
+      let showth = [];
+      this.column.forEach((item, index) => {
+        showth.push(item.key + '=' + item.text)
+      })
+      if (showth.length <= 0)
+      {
+        return
+      }
+      param += '&showth=' + showth.join('|')
+      window.open(param)
     }
   }
 }
