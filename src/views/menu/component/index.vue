@@ -3,14 +3,7 @@
     <el-form ref="menu-info" :rules="rules" :model="form" :size="size" label-width="15rem">
 
       <el-form-item label="上级菜单">
-        <div class="block">
-          <el-cascader
-            v-model="form.pid"
-            :options="cascader.options"
-            :props="cascader.props"
-            filterable
-          />
-        </div>
+        <menu-cascader :pid="form.pid" @setpid="setpid"></menu-cascader>
       </el-form-item>
 
       <el-form-item label="名称">
@@ -84,18 +77,18 @@
 <script>
 import { mapGetters } from 'vuex'
 import ButtonTpl from '@/components/ButtonTpl'
+import MenuCascader from '@/components/MenuCascader'
 
 export default {
   // name: 'MenuInfo',
   computed: {
-    ...mapGetters([
-      'size'
-    ])
+    ...mapGetters(['size'])
   },
   components: {
-    ButtonTpl
+    ButtonTpl,
+    MenuCascader
   },
-  props: ['form', 'cascader', 'loading'],
+  props: ['form', 'loading'],
   data() {
     return {
       rules: {
@@ -107,6 +100,10 @@ export default {
   },
   methods: {
     onSubmit() {
+      if (typeof this.form.pid === 'object') {
+        // 级联选择器传递的是包含父节点的多级数组，取最后一个
+        this.form.pid = this.form.pid[this.form.pid.length - 1]
+      }
       this.$emit('onsubmit')
     },
     changeHidden() {
@@ -120,6 +117,9 @@ export default {
     },
     changeSwitch(key) {
       this.$emit('changeSwitch', key)
+    },
+    setpid(pid) {
+      this.form.pid = pid
     }
   }
 }

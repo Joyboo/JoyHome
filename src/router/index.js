@@ -92,6 +92,10 @@ export const constantRoutes = [
         meta: { title: 'icons', icon: 'icon', noCache: true }
       }
     ]
+  },
+  {
+    path: '*',
+    redirect: '/'
   }
 ]
 

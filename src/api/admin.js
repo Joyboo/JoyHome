@@ -7,3 +7,24 @@ export function adminIndex(params) {
     params
   })
 }
+
+export function adminEdit(method, data) {
+  const obj = {
+    url: '/admin/admin/edit',
+    method: method
+  }
+  const key = method.toLowerCase() == 'get' ? 'params' : 'data'
+  obj[key] = data
+
+  return request(obj)
+}
+
+export function adminAdd(data) {
+  const obj = {
+    url: '/admin/admin/add',
+    method: 'post',
+    data
+  }
+
+  return request(obj)
+}

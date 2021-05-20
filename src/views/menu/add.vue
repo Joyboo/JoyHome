@@ -1,7 +1,6 @@
 <template>
   <menu-info
     :form="form"
-    :cascader="cascader"
     :loading="loading"
     @onsubmit="onSubmit"
     @changeSwitch="changeSwitch"
@@ -10,7 +9,7 @@
 
 <script>
 import menuInfo from './component'
-import { cascaderTree, menuAdd } from '@/api/menu'
+import { menuAdd } from '@/api/menu'
 
 export default {
   components: {
@@ -33,34 +32,11 @@ export default {
         sort: 9
       },
 
-      // 级联选择器
-      cascader: {
-        options: [], // 数据
-        optioned: [], // 默认选中, value值
-        props: {
-          checkStrictly: true
-          /* lazy: true, // 懒加载
-            lazyLoad (node, resolve) {
-            }*/
-        }
-      },
       loading: false
     }
   },
-  mounted() {
-    /* 上级菜单 级联选择 */
-    var _this = this
-    cascaderTree().then(resp => {
-      const { data } = resp
-      _this.cascader.options = data
-    })
-  },
   methods: {
     onSubmit() {
-      if (typeof this.form.pid === 'object') {
-        // 级联选择器传递的是包含父节点的多级数组，取最后一个
-        this.form.pid = this.form.pid[this.form.pid.length - 1]
-      }
 
       this.loading = true
 
