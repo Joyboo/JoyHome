@@ -28,3 +28,17 @@ export function adminAdd(data) {
 
   return request(obj)
 }
+
+export function adminModify(method, data) {
+  const obj = {
+    url: '/admin/admin/modify',
+    method: method
+  }
+  // get不需要参数
+  if (method.toLowerCase() == 'post')
+  {
+    obj.data = data
+  }
+
+  return request(obj)
+}

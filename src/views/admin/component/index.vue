@@ -265,14 +265,16 @@
         }
       }
       const validatePassword = (rule, value, callback) => {
+        // console.log('check password', _this.form.password, _this.password)
         // 如果是修改，允许留空密码项，表示不修改密码
-        if (this.isupd && this.password.length == 0)
+        if (this.isupd && this.form.password.length == 0)
         {
           callback()
         }
         else if (value.length < 6) {
           callback(new Error('长度必须大于6位'))
-        } else if (_this.form.password != _this.password) {
+        }
+        else if (_this.form.password != _this.password) {
 
           callback(new Error('两次输入的密码不一致'))
         } else {
