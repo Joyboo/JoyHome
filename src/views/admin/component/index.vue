@@ -84,7 +84,7 @@
                 :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
               >
                 <!--复选框列-->
-                <el-table-column type="selection" :selectable='checkboxSelect' width="55"></el-table-column>
+                <el-table-column type="selection" align="center" :selectable='checkboxSelect' width="55"></el-table-column>
 
                 <el-table-column align="left" prop="title" label="菜单名" />
 
@@ -233,14 +233,15 @@
           // 获取该角色所有权限
           roleEdit('get', {id: newVal}).then(resp => {
             const {data} = resp
+            // tp5 role模型已增加nids字段获取器,返回的是数组
             const nids = data.data.nids
-            const narr = nids.split(',')
-
             const checked = (list) => {
               list.forEach(item => {
-                if (nids == '*' || narr.indexOf(item.id) >= 0)
+                if (nids.indexOf('*') >= 0 || nids.indexOf(item.id) >= 0)
                 {
-                  this.$refs.AdminMenuForm.toggleRowSelection(item, true)
+                  this.$nextTick(()=> {
+                    this.$refs.AdminMenuForm.toggleRowSelection(item, true)
+                  })
                 }
                 // 有子元素，递归遍历子元素
                 if (item.children)

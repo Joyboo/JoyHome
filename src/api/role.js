@@ -17,3 +17,21 @@ export function roleEdit(method, data) {
 
   return request(obj)
 }
+
+export function roleIndex(params) {
+  return request({
+    url: '/admin/role/index',
+    method: 'get',
+    params
+  })
+}
+
+export function roleAdd(data) {
+  const obj = {
+    url: '/admin/role/add',
+    method: 'post',
+    data
+  }
+
+  return request(obj)
+}
