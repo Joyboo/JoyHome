@@ -1,0 +1,166 @@
+<template>
+  <div class="view-container">
+
+    <el-form :model="query" :size="size" :inline="true">
+      <el-form-item>
+        <el-select style="width: 100px;" v-model="query.sys" placeholder="运行系统">
+          <el-option v-for="(s, k) in system" :key="k" :label="s" :value="k" />
+        </el-select>
+      </el-form-item>
+
+      <el-form-item>
+        <el-select style="width: 100px;" v-model="query.status" placeholder="状态">
+          <el-option label="启用" value="0" />
+          <el-option label="禁用" value="1" />
+          <el-option label="运行一次" value="2" />
+        </el-select>
+      </el-form-item>
+
+      <el-form-item>
+        <el-input type="text" v-model="query.name" placeholder="任务名 | 方法"></el-input>
+      </el-form-item>
+
+      <el-form-item>
+        <el-button type="primary" icon="el-icon-search" @click="getData">查询</el-button>
+      </el-form-item>
+    </el-form>
+
+    <table-info :loading="loading" :data="tableData" pathname="crontab">
+
+      <el-table-column width="80" align="center" prop="id" label="ID" sortable></el-table-column>
+      <el-table-column align="center" prop="name" label="任务名" ></el-table-column>
+      <el-table-column width="120" align="center" prop="rule" label="规则" ></el-table-column>
+
+      <el-table-column align="center" label="运行方法" >
+        <template slot-scope="scope">
+          <span>
+            {{scope.row.eclass}}
+            <i class="el-icon-right" />
+            {{scope.row.method}}
+          </span>
+        </template>
+      </el-table-column>
+
+      <el-table-column align="left" label="参数" >
+        <template slot-scope="scope">
+          <json-viewer
+            :value="scope.row.args || {}"
+            :expand-depth=0
+            copyable
+            :boxed="false"
+            sort></json-viewer>
+        </template>
+      </el-table-column>
+
+      <el-table-column width="100" align="center" prop="server" label="运行服务器" ></el-table-column>
+
+      <el-table-column align="center" prop="sys" label="运行系统" >
+        <template slot-scope="scope">
+          <span>
+            <el-tag style="margin: 0 5px;" v-for="sys in scope.row.sys.split(',')" :key="sys" :type="tag[sys]">{{system[sys]}}</el-tag>
+          </span>
+        </template>
+      </el-table-column>
+
+      <el-table-column width="80" align="center" label="状态">
+        <template slot-scope="scope">
+          <el-switch v-model="scope.row.status != '1'" />
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" prop="remark" label="备注" ></el-table-column>
+
+    </table-info>
+
+    <pagination :total="total" :page="query.cPage" :limit="query.pSize"></pagination>
+  </div>
+</template>
+
+<script>
+  import {mapGetters} from "vuex";
+  import TableInfo from '@/components/TableData/info'
+  import {crontabIndex} from "@/api/crontab";
+  import JsonViewer from 'vue-json-viewer'
+  import Pagination from '@/components/Pagination'
+
+  export default {
+    components: {
+      TableInfo,
+      Pagination,
+      JsonViewer
+    },
+    computed: {
+      ...mapGetters(['size'])
+    },
+    mounted() {
+      this.getData()
+    },
+    methods: {
+      getData() {
+        this.loading = true
+        crontabIndex(this.query)
+          .then(resp => {
+            const {code, msg, data} = resp
+            this.tableData = data.data
+            this.total = data.totals
+          })
+          .catch(error => {
+            this.$message.error(error)
+          })
+          .finally(() => {
+            this.loading = false
+          })
+      },
+      pagination({page, limit}) {
+        this.query.cPage = page
+        this.query.pSize = limit
+        this.getData()
+      }
+    },
+    data() {
+      return {
+        loading: false,
+        tag: {0: 'danger', 1: 'success', 2: 'info', 3: 'warning'},
+        system: {1: "report", 2: "pay", 3: "sdk"},
+        total: 0,
+        query: {
+          name: '',
+          sys: '',
+          status: '',
+          cPage: 1,
+          pSize: 20
+        },
+        tableData: [],
+        column: [
+          {
+            key: 'id',
+            sort: true,
+            text: 'ID',
+            width: '100'
+          }, {
+            key: 'name',
+            text: '任务名'
+          }, {
+            key: 'rule',
+            text: '规则',
+            width: '120'
+          }, {
+            key: '',
+            text: '运行方法',
+            template: (data, alldata) => {
+              return alldata.eclass + ' -> ' + alldata.method
+            }
+          }, {
+            key: 'args',
+            text: '参数',
+            align: 'left'
+          }
+        ]
+      }
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

@@ -1,6 +1,6 @@
 <template>
     <el-table
-      v-loading="loading"
+      v-loading="load"
       :data="data"
       row-key="id"
       :size="size"
@@ -46,7 +46,15 @@
   export default {
     name: "TableInfo",
     computed: {
-      ...mapGetters(['size'])
+      ...mapGetters(['size']),
+      load: {
+        get() {
+          return this.loading
+        },
+        set(val) {
+          this.$emit('setloading', val)
+        }
+      }
     },
     components: {
       // Pagination
@@ -74,7 +82,7 @@
       },
       // 确定删除
       confirmDelete(index, rows) {
-        this.loading = true
+        this.load = true
         const url = '/admin/' + this.pathname + '/del'
         request({
           url: url,
@@ -82,14 +90,14 @@
           params: { id: rows.id }
         })
           .then(resp => {
-            this.loading = false
+            this.load = false
             if (resp.code) {
               this.$message.success('操作成功')
               this.$emit('search')
             }
           })
           .catch(error => {
-            this.loading = false
+            this.load = false
             console.error(error)
             this.$message.error('操作失败')
           })

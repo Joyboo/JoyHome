@@ -10,34 +10,51 @@
     :show-summary="heji"
   >
 
-    <el-table-column v-for="(item, key) in column" :width="item.width" :key="key" :sortable="item.sort" align="center" :prop="item.key">
+    <el-table-column v-for="(item, key) in column" :width="item.width" :key="key" :sortable="item.sort"
+                     :align="item.align || 'center'" :prop="item.key">
 
       <!--表格槽-->
       <template slot-scope="scope">
-          <span v-if="typeof item.template == 'function'" >
-            {{item.template(scope.row[item.key], scope.row)}}
-          </span>
+        <span v-if="typeof item.template == 'function'" >
+          {{item.template(scope.row[item.key], scope.row)}}
+        </span>
+        <!--json数据显示,注意需要设置el-table-column的align=left,否则很难看-->
+        <span v-else-if="typeof scope.row[item.key] === 'object'">
+          <json-viewer
+            :value="scope.row[item.key]"
+            :expand-depth=0
+            copyable
+            :boxed="false"
+            sort></json-viewer>
+        </span>
         <span v-else>{{scope.row[item.key]}}</span>
 
       </template>
 
       <!--表头槽-->
       <template slot="header" slot-scope="scope">
-        <el-tooltip class="item" effect="dark" :content="item.tip || item.text" placement="top">
+        <el-tooltip v-if="typeof item.tip != 'undefined'" class="item" effect="dark" :content="item.tip" placement="top">
           <span>{{item.text}}</span>
         </el-tooltip>
+        <span v-else>{{item.text}}</span>
       </template>
 
     </el-table-column>
+
+    <slot></slot>
 
   </el-table>
 </template>
 
 <script>
   import {mapGetters} from "vuex";
+  import JsonViewer from 'vue-json-viewer'
 
   export default {
     name: "TableIndex",
+    components: {
+      JsonViewer
+    },
     computed: {
       ...mapGetters(['size'])
     },
