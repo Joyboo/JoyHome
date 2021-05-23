@@ -1,5 +1,6 @@
 <template>
   <div class="login-container">
+    <bubble-bg />
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
 
       <div class="title-container">
@@ -74,10 +75,11 @@
 import { validUsername } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
 import SocialSign from './components/SocialSignin'
+import BubbleBg from '@/components/BubbleBg'
 
 export default {
   name: 'Login',
-  components: { LangSelect, SocialSign },
+  components: { LangSelect, SocialSign, BubbleBg },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
