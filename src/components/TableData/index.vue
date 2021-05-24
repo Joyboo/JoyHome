@@ -1,7 +1,7 @@
 <template>
   <el-table
     ref="listTable"
-    v-loading="loading"
+    v-loading="load"
     :data="data"
     border
     :size="size"
@@ -59,7 +59,15 @@
       JsonViewer
     },
     computed: {
-      ...mapGetters(['size'])
+      ...mapGetters(['size']),
+      load: {
+        get() {
+          return this.loading
+        },
+        set(val) {
+          this.$emit('setLoading', val)
+        }
+      }
     },
     props: {
       column: {

@@ -65,7 +65,7 @@
       <!--插槽位-->
       <slot />
 
-      <el-form-item>
+      <el-form-item v-if="nsch">
         <el-button type="primary" icon="el-icon-search" @click="search">查询
         </el-button>
       </el-form-item>
@@ -119,6 +119,11 @@ export default {
       default () {
         return {}
       }
+    },
+    // need search
+    nsch: {
+      type: Boolean,
+      default: true
     }
   },
   data() {

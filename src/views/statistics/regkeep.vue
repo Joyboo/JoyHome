@@ -16,7 +16,7 @@
       </template>
     </layout-filter>
 
-    <ltv-component :ltvdata="tableData" :loading="loading"></ltv-component>
+    <regkeep-component :regkeepdata="tableData" :loading="loading"></regkeep-component>
 
   </div>
 </template>
@@ -26,13 +26,13 @@
   import LayoutFilter from '@/components/LayoutFilter'
   import {beforeDay} from '@/utils'
   import ExportData from '@/components/ExportExcel'
-  import LtvComponent from './component/ltv'
+  import RegkeepComponent from './component/regkeep'
 
   export default {
     components: {
       LayoutFilter,
       ExportData,
-      LtvComponent
+      RegkeepComponent
     },
     data() {
       const start = beforeDay()
@@ -59,7 +59,7 @@
           return
         }
         this.loading = true
-        statistics('ltv', this.query)
+        statistics('regkeep', this.query)
           .then(resp => {
             const {code, msg, data} = resp
             if (!code)

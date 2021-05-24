@@ -16,7 +16,7 @@
       </template>
     </layout-filter>
 
-    <ltv-component :ltvdata="tableData" :loading="loading"></ltv-component>
+    <paykeep-component :paykeepdata="tableData" :loading="loading"></paykeep-component>
 
   </div>
 </template>
@@ -26,13 +26,13 @@
   import LayoutFilter from '@/components/LayoutFilter'
   import {beforeDay} from '@/utils'
   import ExportData from '@/components/ExportExcel'
-  import LtvComponent from './component/ltv'
+  import PaykeepComponent from './component/paykeep'
 
   export default {
     components: {
       LayoutFilter,
       ExportData,
-      LtvComponent
+      PaykeepComponent
     },
     data() {
       const start = beforeDay()
@@ -43,7 +43,7 @@
       return {
         loading: false,
         query: {
-          gameid: [],
+          gameid: '',
           pkgbnd: [],
           ProxyRegion: 'omz',
           tzn: '8',
@@ -59,7 +59,7 @@
           return
         }
         this.loading = true
-        statistics('ltv', this.query)
+        statistics('paykeep', this.query)
           .then(resp => {
             const {code, msg, data} = resp
             if (!code)

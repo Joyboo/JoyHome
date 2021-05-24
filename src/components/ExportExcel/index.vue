@@ -13,6 +13,7 @@
   import XLSX from "xlsx";
 
   export default {
+    name: 'ExportExcel',
     props: {
       // table元素id
       tabid: {
@@ -36,8 +37,9 @@
     },
     methods: {
       exportExcel() {
+        var el = document.querySelector('#' + this.tabid)
         /* 从表生成工作簿对象 */
-        var wb = XLSX.utils.table_to_book(document.querySelector('#' + this.tabid), {raw:true});
+        var wb = XLSX.utils.table_to_book(el, {raw:true});
         /* 获取二进制字符串作为输出 */
         var wbout = XLSX.write(wb, {
           bookType: this.bookType,

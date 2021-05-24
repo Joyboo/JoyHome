@@ -393,3 +393,13 @@ export function beforeDay(day) {
   d.setTime(d.getTime() + 3600 * 1000 * 24 * day)
   return d.getTime()
 }
+
+export function ymd_to_date(ymd)
+{
+  if (isNaN(ymd)) {
+    return '<div style="color:red;" align="center">' + ymd + '</div>';
+  }
+
+  ymd = String(ymd);
+  return '20' + ymd.substr(0,2) + '-' + ymd.substr(2,2) + '-'  + ymd.substr(4,2);
+}
