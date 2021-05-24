@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="package-search" :model="form" :size="size" label-width="15rem">
+  <el-form :model="form" :size="size" label-width="15rem">
     <el-form-item label="所属组">
       <el-select v-model="form.grpid" placeholder="请选择所属组">
         <el-option v-for="(s, k) in grpid" :key="k" :label="s" :value="k" />
