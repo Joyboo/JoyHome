@@ -8,6 +8,7 @@
     :height="height"
     :summary-method="getSummaries"
     :show-summary="heji"
+    :id="tabid"
   >
 
     <el-table-column v-for="(item, key) in column"
@@ -82,6 +83,11 @@
       height: {
         type: Number,
         default: 700
+      },
+      //id
+      tabid: {
+        type: String,
+        default: 'listTable'
       }
     },
     methods: {

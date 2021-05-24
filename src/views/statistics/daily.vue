@@ -8,7 +8,13 @@
       </el-breadcrumb>
     </div>
 
-    <layout-filter :query="query" :data="tableData" :column="column" @search="search" :showExport="true"></layout-filter>
+    <layout-filter :query="query" @search="search">
+      <template v-slot:after>
+        <el-form-item style="float: right;">
+          <export-data></export-data>
+        </el-form-item>
+      </template>
+    </layout-filter>
 
     <table-index :loading="loading" :data="tableData" :column="column" :heji="true"></table-index>
 
@@ -22,11 +28,13 @@ import LayoutFilter from '@/components/LayoutFilter'
 import TableIndex from '@/components/TableData'
 import { mapGetters } from 'vuex'
 import {beforeDay} from '@/utils'
+import ExportData from '@/components/ExportExcel'
 
 export default {
   components: {
     LayoutFilter,
-    TableIndex
+    TableIndex,
+    ExportData
   },
   computed: {
     ...mapGetters(['size'])
