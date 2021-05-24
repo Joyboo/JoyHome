@@ -10,14 +10,16 @@
     :show-summary="heji"
   >
 
-    <el-table-column v-for="(item, key) in column" :width="item.width" :key="key" :sortable="item.sort"
+    <el-table-column v-for="(item, key) in column"
+                     :width="item.width"
+                     :key="key"
+                     :sortable="item.sort"
+                     :fixed="item.fixed"
                      :align="item.align || 'center'" :prop="item.key">
 
       <!--表格槽-->
       <template slot-scope="scope">
-        <span v-if="typeof item.template == 'function'" >
-          {{item.template(scope.row[item.key], scope.row)}}
-        </span>
+        <span v-if="typeof item.template == 'function'" v-html="item.template(scope.row[item.key], scope.row)"></span>
         <!--json数据显示,注意需要设置el-table-column的align=left,否则很难看-->
         <span v-else-if="typeof scope.row[item.key] === 'object'">
           <json-viewer

@@ -381,3 +381,15 @@ export function queryParams(data) {
 
   return _result.length ? _result.join('&') : ''
 }
+
+/**
+ * day天之前的时间戳
+ * @param day
+ * @returns {number}
+ */
+export function beforeDay(day) {
+  day = day || -14
+  const d = new Date()
+  d.setTime(d.getTime() + 3600 * 1000 * 24 * day)
+  return d.getTime()
+}

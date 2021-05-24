@@ -17,10 +17,11 @@
 </template>
 
 <script>
-import { daily } from '@/api/statistics'
+import { statistics } from '@/api/statistics'
 import LayoutFilter from '@/components/LayoutFilter'
 import TableIndex from '@/components/TableData'
 import { mapGetters } from 'vuex'
+import {beforeDay} from '@/utils'
 
 export default {
   components: {
@@ -31,12 +32,10 @@ export default {
     ...mapGetters(['size'])
   },
   data() {
-    const days = -14
-    const d = new Date()
+    const start = beforeDay()
     const end = new Date()
-    d.setTime(d.getTime() + 3600 * 1000 * 24 * days)
     // const range = [d.format(1), end.format(1)]
-    const range = [d.getTime(), end.getTime()]
+    const range = [start, end.getTime()]
     return {
       loading: false,
       query: {
@@ -53,10 +52,9 @@ export default {
           sort: true,
           template(index, row) {
             if (row.h === '--') {
-              // return '<div class="danger">页合计</div>'
-              return '页合计'
+              return '<div class="danger">页合计</div>'
             } else if (row.h === '-') {
-              return '总合计'
+              return '<div class="danger">总合计</div>'
             } else {
               return index
             }
@@ -129,7 +127,7 @@ export default {
         return
       }
       this.loading = true
-      const { code, msg, data } = await daily(this.query)
+      const { code, msg, data } = await statistics('daily', this.query)
 
       this.loading = false
 
@@ -137,25 +135,11 @@ export default {
         return this.$message.error(msg)
       }
       this.tableData = data.data
-    },
-    summary(/*{ row, column, rowIndex, columnIndex }*/row) {
-      console.log("summary=>", row)
-      /*return {
-        login: '10000',
-        money: '20000'
-      };*/
     }
   }
 }
 </script>
 
 <style scoped>
-  .danger {
-    color: #F56C6C;
-  }
 
-  .crumbs {
-    margin-bottom: 10px;
-
-  }
 </style>
