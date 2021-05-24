@@ -1,7 +1,7 @@
 <template>
   <div id="JoybooBubble" @click="onClick">
     <i id="bubbleradius" />
-    <span v-for="c in circles" :key="c.key" :style="style(c)" :class="{ popped: c.popped }">恒坤</span>
+    <span v-for="c in circles" :key="c.key" :style="style(c)" :class="{ popped: c.popped }">{{$t('login.hk')}}</span>
   </div>
 </template>
 
@@ -266,8 +266,8 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #1d1e22;
-    color: white;
+    /*background-color: #1d1e22;*/
+    color: #fff;
   }
 
   span {

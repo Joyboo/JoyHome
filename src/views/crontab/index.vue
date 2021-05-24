@@ -25,7 +25,7 @@
       </el-form-item>
     </el-form>
 
-    <table-info :loading="loading" :data="tableData" pathname="crontab">
+    <table-info :loading="loading" :data="tableData" @search="getData" pathname="crontab">
 
       <el-table-column width="80" align="center" prop="id" label="ID" sortable></el-table-column>
       <el-table-column align="center" prop="name" label="任务名" ></el-table-column>
