@@ -32,6 +32,14 @@
     <template v-else-if="menu == 'paykeep'">
       <paykeep-component :loading="loading" :paykeepdata="tableData"></paykeep-component>
     </template>
+
+    <template v-else-if="menu == 'roi'">
+      <roi-component :loading="loading" :roidata="tableData"></roi-component>
+    </template>
+
+    <template v-else-if="menu == 'droi'">
+      <roi-component :loading="loading" :roidata="tableData"></roi-component>
+    </template>
   </div>
 </template>
 
@@ -46,6 +54,7 @@
   import LtvComponent from './component/ltv'
   import RegkeepComponent from './component/regkeep'
   import PaykeepComponent from './component/paykeep'
+  import RoiComponent from './component/roi'
 
   export default {
     components: {
@@ -55,7 +64,8 @@
       DailyComponent,
       LtvComponent,
       RegkeepComponent,
-      PaykeepComponent
+      PaykeepComponent,
+      RoiComponent
     },
     computed: {
       ...mapGetters(['size', 'gamelist'])
@@ -78,9 +88,8 @@
         tableData: [],
         menu: 'daily',
         menulist: {
-          // todo
-          // roi: '流水ROI',
-          // droi: '分成后ROI',
+          roi: '流水ROI',
+          droi: '分成后ROI',
           regkeep: '注册留存',
           paykeep: '付费留存',
           ltv: 'LTV',
