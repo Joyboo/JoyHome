@@ -9,8 +9,9 @@
    *@Document xlsx https://github.com/SheetJS/sheetjs
    */
 
-  import FileSaver from "file-saver";
-  import XLSX from "xlsx";
+  // import FileSaver from "file-saver";
+  // import XLSX from "xlsx";
+  import {export_table_to_excel_joyboo} from '@/vendor/Export2Excel'
 
   export default {
     name: 'ExportExcel',
@@ -37,29 +38,19 @@
     },
     methods: {
       exportExcel() {
-        var el = document.querySelector('#' + this.tabid)
-        /* 从表生成工作簿对象 */
-        var wb = XLSX.utils.table_to_book(el, {raw:true});
-        /* 获取二进制字符串作为输出 */
-        var wbout = XLSX.write(wb, {
+        // todo 解决内存溢出的原因
+        /*export_table_to_excel({
+          id: this.tabid,
           bookType: this.bookType,
-          bookSST: true,
-          type: "array"
-        });
-        try {
-          FileSaver.saveAs(
-            //Blob 对象表示一个不可变、原始数据的类文件对象。
-            //Blob 表示的不一定是JavaScript原生格式的数据。
-            //File 接口基于Blob，继承了 blob 的功能并将其扩展使其支持用户系统上的文件。
-            //返回一个新创建的 Blob 对象，其内容由参数中给定的数组串联组成。
-            new Blob([wbout], { type: "application/octet-stream" }),
-            //设置导出文件名称
-            this.fname
-          );
-        } catch (e) {
-          console.log(e, wbout)
-        }
-        return wbout;
+          type: 'array',
+          filename: this.filename
+        })*/
+
+        export_table_to_excel_joyboo({
+          id: this.tabid,
+          bookType: this.bookType,
+          filename: this.filename
+        })
       }
     }
   }

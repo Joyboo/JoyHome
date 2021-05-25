@@ -2,14 +2,14 @@
 import axios from "axios";
 import {getToken} from "@/utils/auth";
 
-export async function uploadImage(uri, params) {
+export async function uploadJb(uri, params) {
   const file = params.file
     , action = process.env.VUE_APP_BASE_API + uri;
 
   const form = new FormData();
   form.append("file", file);
 
-  const imageUpload = params => {
+  const doSend = params => {
     return axios.post(action, params, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -18,6 +18,6 @@ export async function uploadImage(uri, params) {
     })
   }
 
-  return await imageUpload(form)
+  return await doSend(form)
 }
 

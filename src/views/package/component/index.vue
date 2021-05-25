@@ -443,7 +443,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { gkey } from '@/api/package'
-import { uploadImage } from '@/api/upload'
+import { uploadJb } from '@/api/upload'
 import ButtonTpl from '@/components/ButtonTpl'
 
 export default {
@@ -542,7 +542,7 @@ export default {
           return
         }
 
-        uploadImage('/admin/package/upload', params).then(resp => {
+        uploadJb('/admin/package/upload', params).then(resp => {
           const { status, data } = resp
           if (status == 200) {
             this.$message.success('上传成功')

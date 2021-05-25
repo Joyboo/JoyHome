@@ -17,6 +17,7 @@ function generateArray(table) {
       var cellValue = cell.innerText;
       if (cellValue !== "" && cellValue == +cellValue) cellValue = +cellValue;
 
+      // todo Joyboo 每次运行到这里总是内存溢出
       //Skip ranges
       ranges.forEach(function (range) {
         if (R >= range.s.r && R <= range.e.r && outRow.length >= range.s.c && outRow.length <= range.e.c) {
@@ -113,7 +114,8 @@ function s2ab(s) {
   return buf;
 }
 
-export function export_table_to_excel(id) {
+// edit by Joyboo 将可变参数修改为传参
+export function export_table_to_excel({id, bookType, type, filename}) {
   var theTable = document.getElementById(id);
   var oo = generateArray(theTable);
   var ranges = oo[1];
@@ -134,14 +136,33 @@ export function export_table_to_excel(id) {
   wb.Sheets[ws_name] = ws;
 
   var wbout = XLSX.write(wb, {
-    bookType: 'xlsx',
+    bookType: bookType || 'xlsx',
     bookSST: false,
-    type: 'binary'
+    type: type || 'binary'
   });
 
   saveAs(new Blob([s2ab(wbout)], {
     type: "application/octet-stream"
-  }), "test.xlsx")
+  }), filename + '.' + bookType)
+}
+
+export function export_table_to_excel_joyboo({id, bookType, filename}) {
+  var el = document.getElementById(id)
+  /* 从表生成工作簿对象 */
+  var wb = XLSX.utils.table_to_book(el, {raw:true});
+  /* 获取二进制字符串作为输出 */
+  var wbout = XLSX.write(wb, {
+    bookType: bookType,
+    bookSST: false,
+    type: "array"
+  });
+  try {
+    const fullname = filename + '.' + bookType
+    saveAs(new Blob([wbout], { type: "application/octet-stream" }), fullname);
+  } catch (e) {
+    console.log(e, wbout)
+  }
+  return wbout;
 }
 
 export function export_json_to_excel({
