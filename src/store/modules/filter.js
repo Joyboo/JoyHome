@@ -3,7 +3,17 @@ import {gamelist} from '@/api/game'
 const state = {
   gamelist: [],
   filtergamelist: [], // 给选择游戏下拉框使用的，有label和 vlaue属性
-  pack_os: ['安卓','苹果','微软']
+  pack_os: ['安卓','苹果','微软'],
+  pay: {
+    pf: { // 支付平台
+      3: 'IOS',
+      4: 'google',
+      5: 'huawei',
+      6: 'paypal',
+      7: 'payssion',
+      8: 'uwp'
+    }
+  }
 }
 
 const mutations = {

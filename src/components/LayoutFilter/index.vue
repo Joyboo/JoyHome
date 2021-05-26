@@ -80,6 +80,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { packageChildOption } from '@/api/package'
+import {beforeDay} from '@/utils'
 
 export default {
   computed: {
@@ -135,23 +136,21 @@ export default {
           {
             text: '今天',
             onClick(picker) {
-              const time = (new Date()).getTime()
+              const time = beforeDay(1)
               picker.$emit('pick', [time, time])
             }
           }, {
             text: '昨天',
             onClick(picker) {
-              const time = new Date()
-              time.setTime(time.getTime() - 1000 * 86400)
-              picker.$emit('pick', [time.getTime(), time.getTime()])
+              const time = beforeDay(-1)
+              picker.$emit('pick', [time, time])
             }
           }, {
             text: '一周',
             onClick(picker) {
               const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 1000 * 86400 * 7)
-              picker.$emit('pick', [start.getTime(), end.getTime()])
+              const start = beforeDay(-7)
+              picker.$emit('pick', [start, end.getTime()])
             }
           }, {
             text: '本月',
@@ -175,19 +174,25 @@ export default {
             text: '近一个月',
             onClick(picker) {
               const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 1000 * 86400 * 30)
-              picker.$emit('pick', [start.getTime(), end.getTime()])
+              const start = beforeDay(-30)
+              picker.$emit('pick', [start, end.getTime()])
             }
           }, {
             text: '近三个月',
             onClick(picker) {
               const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 1000 * 86400 * 90)
-              picker.$emit('pick', [start.getTime(), end.getTime()])
+              const start = beforeDay(-90)
+              picker.$emit('pick', [start, end.getTime()])
             }
-          }]
+          }, {
+            text: '近一年',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date(end.getFullYear() - 1, end.getMonth(), end.getDay(), end.getHours(), end.getMinutes(), end.getSeconds())
+              picker.$emit('pick', [start, end.getTime()])
+            }
+          }
+        ]
       }
     }
   },

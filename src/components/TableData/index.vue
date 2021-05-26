@@ -30,6 +30,7 @@
             :boxed="false"
             sort></json-viewer>
         </span>
+        <!--如需多级key，如extension.joyboo,请传递template实现-->
         <span v-else>{{scope.row[item.key]}}</span>
 
       </template>

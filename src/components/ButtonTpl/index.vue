@@ -38,12 +38,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .el-footer {
-    text-align: center;
-    margin: 30px 10px;
 
-    .joy-btn {
-      margin: 0 10px;
-    }
-  }
 </style>
