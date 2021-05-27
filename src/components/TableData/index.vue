@@ -20,7 +20,15 @@
 
       <!--表格槽-->
       <template slot-scope="scope">
-        <span v-if="typeof item.template == 'function'" v-html="item.template(scope.row[item.key], scope.row)"></span>
+        <!--如需路由跳转-->
+        <router-link v-if="typeof item.router != 'undefined'"
+                     :to="item.router(scope.row[item.key], scope.row)"
+                     :style="'color:' + theme">
+          <span v-if="typeof item.template == 'function'" v-html="item.template(scope.row[item.key], scope.row)"></span>
+          <span v-else>{{scope.row[item.key]}}</span>
+        </router-link>
+
+        <span v-else-if="typeof item.template == 'function'" v-html="item.template(scope.row[item.key], scope.row)"></span>
         <!--json数据显示,注意需要设置el-table-column的align=left,否则很难看-->
         <span v-else-if="typeof scope.row[item.key] === 'object'">
           <json-viewer
@@ -68,6 +76,9 @@
         set(val) {
           this.$emit('setLoading', val)
         }
+      },
+      theme() {
+        return this.$store.state.settings.theme
       }
     },
     props: {

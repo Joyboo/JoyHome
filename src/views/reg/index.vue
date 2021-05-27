@@ -33,6 +33,13 @@
 
     </table-index>
 
+    <pagination
+      :total="total"
+      :limit="query.pSize"
+      :page="query.cPage"
+      @pagination="pagination"
+    />
+
   </div>
 
 </template>
@@ -45,12 +52,14 @@
   import {beforeDay} from '@/utils'
   import ExportData from '@/components/ExportExcel'
   import TableIndex from '@/components/TableData'
+  import Pagination from '@/components/Pagination'
 
   export default {
     components: {
       LayoutFilter,
       ExportData,
-      TableIndex
+      TableIndex,
+      Pagination
     },
     computed: {
       ...mapGetters(['size'])
@@ -67,8 +76,11 @@
           pkgbnd: [],
           ProxyRegion: 'omz',
           date: range,
-          uid: ''
+          uid: '',
+          pSize: 20,
+          cPage: 1
         },
+        total: 0,
         tableData: [],
         column: [
           {
@@ -121,7 +133,8 @@
             {
               this.$message.error(msg)
             } else {
-              this.tableData = data.data
+              this.tableData = data.data || []
+              this.total = data.totals || 0
             }
           })
           .catch(error => {
@@ -136,6 +149,11 @@
       },
       detail(index, row) {
         this.$router.push({ path: '/reg/detail', query: { uid: row.uid, gameid: this.query.gameid, ProxyRegion: this.query.ProxyRegion }})
+      },
+      pagination({page, limit}) {
+        this.query.cPage = page
+        this.query.pSize = limit
+        this.search()
       }
     }
   }

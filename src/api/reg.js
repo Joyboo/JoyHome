@@ -33,6 +33,14 @@ export function payIndex(params) {
   })
 }
 
+export function payDetail(params) {
+  return request({
+    url: '/admin/pay/detail',
+    method: 'get',
+    params
+  })
+}
+
 export function loginIndex(params) {
   return request({
     url: '/admin/login/index',
