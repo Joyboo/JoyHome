@@ -28,8 +28,8 @@ module.exports = {
   outputDir: 'dist',
   assetsDir: 'static',
   // lintOnSave: process.env.NODE_ENV === 'development',
-  // edit by Joyboo 关闭MockData
-  lintOnSave: true,
+  // edit by Joyboo 关闭eslint语法检测
+  lintOnSave: false,
   productionSourceMap: false,
   devServer: {
     port: port,
