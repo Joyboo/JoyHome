@@ -32,14 +32,14 @@
       </el-form-item>
 
       <el-form-item v-if="typeof query.ProxyRegion != 'undefined'">
-        <el-select style="width: 100px;" v-model="query.ProxyRegion" placeholder="地区">
+        <el-select style="width: 100px;" v-model="query.ProxyRegion" placeholder="地区" class="mySelect">
           <el-option key="1" label="欧美洲" value="omz" />
           <el-option key="2" label="新加坡" value="xjp" />
         </el-select>
       </el-form-item>
 
       <el-form-item v-if="typeof query.tzn != 'undefined'">
-        <el-select style="width: 100px;" v-model="query.tzn" placeholder="地区">
+        <el-select style="width: 100px;" v-model="query.tzn" placeholder="地区" class="mySelect">
           <el-option key="1" label="-5区" value="-5" />
           <el-option key="2" label="8区" value="8" />
         </el-select>
@@ -232,5 +232,9 @@ export default {
     font-size: 13px;
     position: relative;
     right:15px;
+  }
+
+  .mySelect {
+    width: 120px;
   }
 </style>

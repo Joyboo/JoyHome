@@ -10,6 +10,13 @@
 
     <layout-filter :query="query" @search="search">
       <el-form-item>
+        <el-select v-model="query.status" placeholder="请选择订单状态" class="mySelect">
+          <el-option label="全部" value=""></el-option>
+          <el-option v-for="(sn, sk) in paystatus" :key="sk" :label="sn" :value="sk" />
+        </el-select>
+      </el-form-item>
+
+      <el-form-item>
         <el-select v-model="query.pf" placeholder="请选择充值平台">
           <el-option label="全部" value=""></el-option>
           <el-option v-for="(payn, payk) in paypf" :key="payk" :label="payn" :value="payk" />
@@ -17,7 +24,7 @@
       </el-form-item>
 
       <el-form-item>
-        <el-select v-model="query.kwtype">
+        <el-select v-model="query.kwtype" class="mySelect">
           <el-option v-for="(kwk, kwn) in kwtype" :key="kwn" :label="kwk" :value="kwn" />
         </el-select>
       </el-form-item>
@@ -35,10 +42,16 @@
 
     <table-index :column="column" :loading="loading" :data="tableData">
 
-      <el-table-column align="center" label="操作" width="120" >
+      <el-table-column align="center" label="操作" width="150" >
         <template slot-scope="scope">
-          <el-button v-if="scope.row.id != 'sum'" type="primary" :size="size" plain @click="detail(scope.$index, scope.row)">
-            <svg-icon icon-class="peoples" /> &nbsp;详情
+          <el-button v-if="scope.row.id != 'sum'" type="text" :size="size" @click="detail(scope.$index, scope.row)">
+            <svg-icon icon-class="peoples" /> 详情
+          </el-button>
+
+          <el-button v-if="scope.row.status != 2" type="text" :size="size"
+                     style="color: #67C23A;"
+                     @click="callBackOrder(scope.$index, scope.row)">
+            <svg-icon icon-class="education" /> 补单
           </el-button>
         </template>
       </el-table-column>
@@ -54,6 +67,9 @@
 
     <!--详情-->
     <detail :query="detailQuery" :dialog="dialog" @setdialog="setdialog"></detail>
+
+    <!--补单-->
+    <repair :query="repairQuery" :dialog="repairDialog" @setRepairDialog="setRepairDialog"></repair>
   </div>
 </template>
 
@@ -62,9 +78,10 @@
   import {beforeDay} from "@/utils";
   import TableIndex from '@/components/TableData'
   import {mapGetters} from "vuex";
-  import {payIndex} from '@/api/reg'
+  import {orderIndex} from '@/api/order'
   import Pagination from '@/components/Pagination'
   import Detail from './detail'
+  import Repair from './repair'
   import ExportData from '@/components/ExportExcel'
 
   export default {
@@ -73,12 +90,16 @@
       TableIndex,
       Pagination,
       Detail,
+      Repair,
       ExportData
     },
     computed: {
       ...mapGetters(['size']),
       paypf() {
         return this.$store.state.filter.pay.pf
+      },
+      paystatus() {
+        return this.$store.state.filter.pay.status
       }
     },
     data() {
@@ -88,18 +109,19 @@
 
       return {
         loading: false,
-        dialog: false,
         query: {
           gameid: '',
           pkgbnd: [],
-          ProxyRegion: '',
+          status: '',
+          ProxyRegion: 'omz',
           kwtype: 'paysn',
           kwvalue: '',
           date: range,
           pSize: 20,
           cPage: 1
         },
-        // 查询订单详情参数
+        // detail组件参数
+        dialog: false,
         detailQuery: {},
         kwtype: {
           uid: '玩家id',
@@ -108,6 +130,10 @@
           sid: '区服id',
           expression: '表达式'
         },
+        // repair组件参数
+        repairDialog: false,
+        repairQuery: {},
+
         total: 0,
         tableData: [],
         column: [
@@ -158,46 +184,32 @@
               return (index / 100).toFixed(2);
             }
           }
-          ,{
-            key: 'receipts',
-            text: '分成后',
-            width: '120',
-            tip: '美元',
+          , {
+            key: 'itime',
+            text: '下单时间'
+          }
+          , {
+            key: 'status',
+            text: '状态',
             template: (index, row) => {
-              return (index / 100).toFixed(2);
+              return this.paystatus[index] || ''
             }
           }
-          ,{
+          , {
             key: 'utime',
-            text: '支付时间'
+            text: '支付时间',
+            template: (index, row) => {
+              return row.status > 0 ? index : ''
+            }
           }
-          ,{
+          , {
             key: 'pf',
             text: '支付平台',
-            width: '100',
             template: (index, row) => {
-              return this.paypf[index] || index;
+              return this.paypf[index] || ''
             }
           }
-          ,{
-            key: 'gno',
-            text: '特征',
-            width: '50',
-            tip: '注册当天的充值为新充值',
-            template: (index, row) => {
-              if (row.id == 'sum')
-              {
-                return ''
-              }
-              if (index)
-              {
-                return '<span style="color: #67C23A">普通</span>'
-              } else {
-                return '<span style="color: #E6A23C">新充</span>'
-              }
-            }
-          }
-          ,{
+          , {
             key: 'exmodel',
             text: '设备型号'
           }
@@ -210,7 +222,7 @@
     methods: {
       search() {
         this.loading = true
-        payIndex(this.query)
+        orderIndex(this.query)
           .then(resp => {
             const {data} = resp
             this.tableData = data.data || []
@@ -228,7 +240,17 @@
         this.detailQuery = {
           id: row.id,
           gameid: this.query.gameid,
-          updtime: row.updtime
+          instime: row.instime
+        }
+      },
+      // 补单
+      callBackOrder(index, row) {
+        this.repairDialog = true
+        this.repairQuery = {
+          pf: row.pf,
+          ProxyRegion: this.query.ProxyRegion,
+          gameid: this.query.gameid,
+          ordersn: this.query.gameid + '-' + row.id + '-' + row.instime
         }
       },
       pagination({page, limit}) {
@@ -239,11 +261,17 @@
       // 详情页子组件设置dialog状态
       setdialog(val) {
         this.dialog = val
+      },
+      // 补单子组件设置dialog状态
+      setRepairDialog() {
+        this.repairDialog = false
       }
     }
   }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+  .mySelect {
+    width: 120px;
+  }
 </style>

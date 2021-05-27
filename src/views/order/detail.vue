@@ -20,10 +20,6 @@
             <el-col :span="6">金额: {{data.money}}美分</el-col>
           </el-row>
           <el-row>
-            <el-col :span="6">首充：{{data.gno == '1' ? '是':'否'}}</el-col>
-            <el-col :span="6">分成后：{{data.receipts}}美分</el-col>
-          </el-row>
-          <el-row>
             <el-col :span="6">下单时间：{{data.itime}}</el-col>
             <el-col :span="6">支付时间：{{data.utime > data.itime ? data.utime : ''}}</el-col>
           </el-row>
@@ -77,7 +73,7 @@
 
 <script>
   import {mapGetters} from "vuex";
-  import {payDetail} from "@/api/reg";
+  import {orderDetail} from "@/api/order";
 
   export default {
     props: {
@@ -114,8 +110,6 @@
           id: 0,
           instime: '',
           money: '',
-          gno: '',
-          receipts: '',
           itime: '',
           utime: '',
           status: '',
@@ -146,7 +140,7 @@
     methods: {
       search() {
         this.loading = true
-        payDetail(this.query)
+        orderDetail(this.query)
           .then(resp => {
             const {data} = resp
             this.data = data || {}
