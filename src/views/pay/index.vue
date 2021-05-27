@@ -26,6 +26,11 @@
         <el-input v-model="query.kwvalue" :placeholder="query.kwtype == 'expression' ? 'paysn=&uid=&sid=' : kwtype[query.kwtype]"></el-input>
       </el-form-item>
 
+      <template v-slot:after>
+        <el-form-item style="float: right;">
+          <export-data></export-data>
+        </el-form-item>
+      </template>
     </layout-filter>
 
     <table-index :column="column" :loading="loading" :data="tableData">
@@ -60,13 +65,15 @@
   import {payIndex} from '@/api/reg'
   import Pagination from '@/components/Pagination'
   import Detail from './detail'
+  import ExportData from '@/components/ExportExcel'
 
   export default {
     components: {
       LayoutFilter,
       TableIndex,
       Pagination,
-      Detail
+      Detail,
+      ExportData
     },
     computed: {
       ...mapGetters(['size']),
