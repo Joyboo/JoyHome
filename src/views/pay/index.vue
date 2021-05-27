@@ -152,7 +152,7 @@
               })
             },
             template: (index, row) => {
-              return '<span style="cursor:pointer;color: ' + this.theme + '">'+ index +'</span>'
+              return index ? ('<span style="cursor:pointer;color: ' + this.theme + '">'+ index +'</span>') : '';
             }
           }
           ,{

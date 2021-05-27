@@ -4,7 +4,7 @@
 
       <!--传递query.gameid表示需要该下拉框，传递类型为字符串时表示为单选，为数组时表示为多选-->
       <el-form-item v-if="typeof query.gameid != 'undefined'">
-        <el-select v-model="query.gameid" filterable :multiple="gameMul" placeholder="游戏" @change="changeGame">
+        <el-select v-model="query.gameid" filterable :multiple="gameMul" placeholder="游戏">
           <el-option
             v-for="item in filtergamelist"
             :key="item.value"
@@ -86,7 +86,8 @@ export default {
   computed: {
     ...mapGetters([
       'size',
-      'filtergamelist'
+      'filtergamelist',
+      'userinfo'
     ]),
     // 是否多选游戏
     gameMul() {
@@ -94,7 +95,7 @@ export default {
     },
     // 是否多选包
     packageMul() {
-      return typeof this.query.gameid === 'object'
+      return typeof this.query.pkgbnd === 'object'
     },
     // 是否需要时间选择器
     isDate() {
@@ -102,16 +103,40 @@ export default {
     },
     format() {
       typeof this.query.format === 'undefined' ? 'yyyy-MM-dd' : this.query.format
+    },
+    // 管理员编辑页设置的默认选中游戏
+    defaultGid() {
+      if (typeof this.userinfo.extension.gid == 'undefined')
+      {
+        return ''
+      }
+      const gid = this.userinfo.extension.gid
+      return gid == '' ? gid : parseInt(gid);
     }
   },
   mounted() {
-    if (typeof this.query.gameid !== 'undefined') {
-      this.$store.dispatch('filter/gameInfo')
-    }
-    /* if (typeof this.query.pkgbnd != 'undefined')
+    this.$store.dispatch('filter/gameInfo')
+
+    if (this.defaultGid != '')
+    {
+      if (typeof this.query.gameid == 'object' && this.query.gameid.indexOf(this.defaultGid) < 0)
       {
-        this.changeGame(this.query.gameid)
-      }*/
+        this.query.gameid.push(this.defaultGid)
+      }
+      else if (typeof this.query.gameid == 'string' && this.query.gameid == '')
+      {
+        this.query.gameid = this.defaultGid
+      }
+    }
+  },
+  watch: {
+    // 侦听器替代onchange
+    'query.gameid': {
+      immediate: true,
+      handler: function (newVal, oldVal) {
+        this.changeGame(newVal)
+      }
+    }
   },
   props: {
     query: {
