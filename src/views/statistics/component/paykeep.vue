@@ -35,6 +35,7 @@
           text: '日期',
           width: '100',
           sort: true,
+          fixed: 'left',
           template: (data, rowObject) => {
             if(!data){
               return '---';

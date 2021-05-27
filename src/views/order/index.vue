@@ -100,6 +100,9 @@
       },
       paystatus() {
         return this.$store.state.filter.pay.status
+      },
+      theme() {
+        return this.$store.state.settings.theme
       }
     },
     data() {
@@ -168,11 +171,14 @@
           ,{
             key: 'uid',
             text: 'UID',
-            router: (index, row) => {
-              return {
+            click: (index, row) => {
+              this.$router.push({
                 path: '/reg/detail',
                 query: { uid: index, gameid: this.query.gameid, ProxyRegion: this.query.ProxyRegion }
-              }
+              })
+            },
+            template: (index, row) => {
+              return '<span style="cursor:pointer;color: ' + this.theme + '">'+ index +'</span>'
             }
           }
           ,{

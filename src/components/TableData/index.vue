@@ -11,6 +11,21 @@
     :id="tabid"
   >
 
+    <!--
+        column字段说明：
+        {
+          key: '',
+          text: 表头文本
+          tip: 鼠标指到表头才出现的提示
+          width: 表格宽
+          fixed: 是否固定该列
+          align: 同时作用于表头和表格，center|left|right
+          template: function类型，作用于表格项，返回应该为一个字符串，支持html字符串
+          click: function类型，作用于表格项,点击后执行的函数
+
+        }
+        -->
+
     <el-table-column v-for="(item, key) in column"
                      :width="item.width"
                      :key="key"
@@ -20,15 +35,12 @@
 
       <!--表格槽-->
       <template slot-scope="scope">
-        <!--如需路由跳转-->
-        <router-link v-if="typeof item.router != 'undefined'"
-                     :to="item.router(scope.row[item.key], scope.row)"
-                     :style="'color:' + theme">
-          <span v-if="typeof item.template == 'function'" v-html="item.template(scope.row[item.key], scope.row)"></span>
-          <span v-else>{{scope.row[item.key]}}</span>
-        </router-link>
 
-        <span v-else-if="typeof item.template == 'function'" v-html="item.template(scope.row[item.key], scope.row)"></span>
+        <span v-if="typeof item.template == 'function'"
+              v-html="item.template(scope.row[item.key], scope.row)"
+              @click="typeof item.click == 'function' ? item.click(scope.row[item.key], scope.row) : ''"
+        ></span>
+
         <!--json数据显示,注意需要设置el-table-column的align=left,否则很难看-->
         <span v-else-if="typeof scope.row[item.key] === 'object'">
           <json-viewer
@@ -39,7 +51,7 @@
             sort></json-viewer>
         </span>
         <!--如需多级key，如extension.joyboo,请传递template实现-->
-        <span v-else>{{scope.row[item.key]}}</span>
+        <span v-else @click="typeof item.click == 'function' ? item.click(scope.row[item.key], scope.row) : ''">{{scope.row[item.key]}}</span>
 
       </template>
 
@@ -76,9 +88,6 @@
         set(val) {
           this.$emit('setLoading', val)
         }
-      },
-      theme() {
-        return this.$store.state.settings.theme
       }
     },
     props: {

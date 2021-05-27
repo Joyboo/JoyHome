@@ -34,6 +34,7 @@
           key: 'ymd',
           text: '日期',
           width: '100',
+          fixed: 'left',
           sort: true,
           template: (data, rowObject) => {
             return ymd_to_date(data);

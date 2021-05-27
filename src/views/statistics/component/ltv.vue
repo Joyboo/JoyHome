@@ -34,7 +34,7 @@
           key: 'ymd',
           text: '日期',
           sort: true,
-          fixed: true,
+          fixed: 'left',
           width: '100',
           template(index, row) {
             if (row.h === '--') {
