@@ -7,6 +7,7 @@
 <script>
   import Sysinfo from './component'
   import {sysinfoEdit} from '@/api/sysinfo'
+  import {copyTo} from "@/utils";
 
   export default {
     components: {
@@ -17,7 +18,7 @@
       this.form.id = this.$route.query.id
       sysinfoEdit('get', {id: this.form.id})
         .then(resp => {
-          this.form = resp.data.data
+          this.form = copyTo(this.form, resp.data.data)
         })
         .finally(() => {
           this.loading = false

@@ -28,6 +28,7 @@
 <script>
   import {gameEdit, gkey} from '@/api/game'
   import gameInfo from './component'
+  import {copyTo} from "@/utils";
 
   export default {
   components: {
@@ -67,7 +68,7 @@
     gameEdit('get', { id: this.form.id })
       .then(resp => {
         const { code, data } = resp
-        this.form = data.data
+        this.form = copyTo(this.form, data.data)
       }).catch(error => {
         this.$message.error(error)
       })

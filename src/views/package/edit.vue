@@ -5,6 +5,7 @@
 <script>
 import packageInfo from './component'
 import { packageEdit } from '@/api/package'
+import {copyTo} from "@/utils";
 
 export default {
   name: 'Edit',
@@ -108,7 +109,7 @@ export default {
     this.form.id = this.$route.query.id
     packageEdit('get', { id: this.form.id })
       .then(resp => {
-        this.form = resp.data.data
+        this.form = copyTo(this.form, resp.data.data)
       })
       .finally(() => {
         this.loading = false
