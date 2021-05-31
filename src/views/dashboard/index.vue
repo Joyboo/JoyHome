@@ -27,7 +27,7 @@ export default {
   },
   mounted() {
     // add by Joyboo 跳转到用户设置的默认打开页面
-    if (typeof this.userinfo.extension.nid != 'undefined')
+    /*if (typeof this.userinfo.extension.nid != 'undefined')
     {
       const defaultView = this.userinfo.extension.nid
 
@@ -38,13 +38,13 @@ export default {
       {
         setTimeout(() => this.$router.push(defaultView), 1000)
 
-        /*
+        /!*
         // 实测$nextTick不会跳转，原因未知
         this.$nextTick(() => {
           this.$router.push(defaultView)
-        })*/
+        })*!/
       }
-    }
+    }*/
   }
 }
 </script>

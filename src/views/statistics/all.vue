@@ -5,7 +5,7 @@
         <br>
         <el-form-item>
           <el-radio-group v-model="menu" style="margin-right: 100px;" @change="chgRadio">
-            <el-radio v-for="(name, key) in menulist" :label="key" border>{{name}}</el-radio>
+            <el-radio v-for="(name, key) in menulist" :label="key" border v-if="checkPermission(['admin', '/statistics/' + key])">{{name}}</el-radio>
           </el-radio-group>
         </el-form-item>
       </template>
@@ -55,6 +55,7 @@
   import RegkeepComponent from './component/regkeep'
   import PaykeepComponent from './component/paykeep'
   import RoiComponent from './component/roi'
+  import checkPermission from '@/utils/permission'
 
   export default {
     name: 'statisticsall',
@@ -102,6 +103,7 @@
       this.search()
     },
     methods: {
+      checkPermission,
       search() {
         this.loading = true
         statistics(this.menu, this.query)

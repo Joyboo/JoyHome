@@ -54,10 +54,10 @@
               </el-select>
             </el-form-item>
 
-            <!--todo 只能选择有权限的-->
-            <el-form-item label="默认打开菜单">
+            <!--todo 默认打开菜单需要依赖于注册过的路由，暂时注释掉-->
+            <!--<el-form-item label="默认打开菜单">
               <menu-cascader :pid.sync="form.extension.newnid" @setpid="setpid"></menu-cascader>
-            </el-form-item>
+            </el-form-item>-->
 
           </el-tab-pane>
 
@@ -75,40 +75,33 @@
             </el-form-item>
 
             <el-form-item class="myForm">
-              <el-table
-                ref="AdminMenuForm"
+              <template slot="label">
+                权限列表<i class="labeli cRed">权限列表仅作为展示数据</i>
+              </template>
+
+              <el-input
+                placeholder="输入关键字进行过滤,可选 id，name，path"
+                v-model="filterText">
+              </el-input>
+
+              <el-tree
+                class="filter-tree"
                 :data="menuTable"
-                row-key="id"
-                :size="size"
-                border
-                :default-expand-all="true"
-                :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
-              >
-                <!--复选框列-->
-                <el-table-column type="selection" align="center" :selectable='checkboxSelect' width="55"></el-table-column>
-
-                <el-table-column align="left" prop="title" label="菜单名" />
-
-                <el-table-column align="left" prop="name" label="name" />
-
-                <el-table-column prop="path" label="path" />
-
-                <el-table-column prop="component" label="组件" />
-
-                <el-table-column prop="icon" align="center" label="图标" width="80">
-                  <template slot-scope="scope">
-                    <i :class="scope.row.icon" />
-                  </template>
-                </el-table-column>
-
-                <el-table-column width="80" align="center" prop="hidden" label="是否隐藏">
-                  <template slot-scope="scope">
-                    <el-switch v-model="scope.row.hidden == '1'" />
-                  </template>
-                </el-table-column>
-
-                <el-table-column width="80" align="center" prop="sort" label="排序" />
-              </el-table>
+                highlight-current
+                show-checkbox
+                default-expand-all
+                node-key="id"
+                :props="propsObj"
+                :filter-node-method="filterNode"
+                ref="roletree">
+                <!--自定义节点内容-->
+                <span class="custom-tree-node" slot-scope="{ node, data }">
+            <span>{{data.id}} - {{ data.title }}</span>
+            <span class="myContet">
+              {{data.path}}
+            </span>
+          </span>
+              </el-tree>
             </el-form-item>
 
           </el-tab-pane>
@@ -202,6 +195,7 @@
 
         const resp = await menuIndex()
         this.menuTable = resp.data
+        this.setChecked(this.form.rid)
 
         // 游戏分配穿梭框
         this.gamelist.forEach((name, index) => {
@@ -230,31 +224,11 @@
           {
             return;
           }
-
-          // 获取该角色所有权限
-          roleEdit('get', {id: newVal}).then(resp => {
-            const {data} = resp
-            // tp5 role模型已增加nids字段获取器,返回的是数组
-            const nids = data.data.nids
-            const checked = (list) => {
-              list.forEach(item => {
-                if (nids.indexOf('*') >= 0 || nids.indexOf(item.id) >= 0)
-                {
-                  this.$nextTick(()=> {
-                    this.$refs.AdminMenuForm.toggleRowSelection(item, true)
-                  })
-                }
-                // 有子元素，递归遍历子元素
-                if (item.children)
-                {
-                  checked(item.children)
-                }
-              })
-            }
-            this.$refs.AdminMenuForm.clearSelection()
-            checked(this.menuTable)
-          })
+          this.setChecked(newVal)
         }
+      },
+      filterText(val) {
+        this.$refs.roletree.filter(val);
       }
     },
     data () {
@@ -296,9 +270,20 @@
         menuTable: [],
         multipleSelection: [], // 默认选中的菜单
         gametransfer: [], // 穿梭框的全部游戏
+        propsObj: {
+          disabled: function (data, node) {
+            return false
+          }
+        },
+        filterText: '',
       }
     },
     methods: {
+      // 允许按id,title和path匹配
+      filterNode(value, data) {
+        if (!value) return true;
+        return data.title.indexOf(value) !== -1 || data.path.indexOf(value) !== -1;
+      },
       submit() {
         this.$refs.AdminForm.validate((valid) => {
           if (!valid) {
@@ -311,26 +296,52 @@
           this.$emit('submit')
         });
       },
-      // 禁用选择列
-      checkboxSelect (row, rowIndex) {
-        return false
-      },
       setpid(pid) {
         this.form.extension.newnid = pid
+      },
+      setChecked(rid) {
+        // 获取该角色所有权限
+        roleEdit('get', {id: rid})
+          .then(resp => {
+            const {data} = resp
+            // tp5 role模型已增加nids字段获取器,返回的是数组
+            const nids = data.data.nids
+            this.$nextTick(() => {
+              if (nids.indexOf('*') >= 0)
+              {
+                this.menuTable.forEach(item => {
+                  this.$refs.roletree.setChecked(item.id, true, true)
+                })
+              } else {
+                nids.forEach(item => {
+                  // 使用setCheckedKeys会选中子全部子节点,这里使用setChecked遍历选中单个节点
+                  this.$refs.roletree.setChecked(item, true)
+                })
+              }
+            })
+          })
+          .catch(error => {})
       }
     }
   }
 </script>
 
-<style lang="scss">
-  /*
-  此页面为全局CSS，去掉了scoped
-  表格复选框，禁用列按钮背景色
-  todo 应该调整为使用Vuex全局setting.theme变量，与全局主题色号一致
-  */
-  .myForm .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner {
-    background-color: #1890ff!important;
-    border-color: #1890ff!important;
+<style lang="scss" scoped>
+  .custom-tree-node {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    padding-right: 8px;
+
+    .myContet {
+      width: 200px;
+      text-align: left;
+    }
   }
 
+  .myForm {
+    width: 80%;
+  }
 </style>
