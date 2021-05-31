@@ -20,6 +20,7 @@
   import {roleIndex} from '@/api/role'
 
   export default {
+    name: 'roleindex',
     components: {
       TableData
     },

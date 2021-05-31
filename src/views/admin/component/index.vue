@@ -54,8 +54,9 @@
               </el-select>
             </el-form-item>
 
+            <!--todo 只能选择有权限的-->
             <el-form-item label="默认打开菜单">
-              <menu-cascader :pid.sync="form.extension.nid" @setpid="setpid"></menu-cascader>
+              <menu-cascader :pid.sync="form.extension.newnid" @setpid="setpid"></menu-cascader>
             </el-form-item>
 
           </el-tab-pane>
@@ -303,9 +304,9 @@
           if (!valid) {
             return false
           }
-          if (typeof this.form.extension.nid === 'object') {
+          if (typeof this.form.extension.newnid === 'object') {
             // 级联选择器传递的是包含父节点的多级数组，取最后一个
-            this.form.extension.nid = this.form.extension.nid[this.form.extension.nid.length - 1]
+            this.form.extension.newnid = this.form.extension.newnid[this.form.extension.newnid.length - 1]
           }
           this.$emit('submit')
         });
@@ -315,7 +316,7 @@
         return false
       },
       setpid(pid) {
-        this.form.extension.nid = pid
+        this.form.extension.newnid = pid
       }
     }
   }

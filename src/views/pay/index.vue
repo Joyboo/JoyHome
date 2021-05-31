@@ -66,8 +66,10 @@
   import Pagination from '@/components/Pagination'
   import Detail from './detail'
   import ExportData from '@/components/ExportExcel'
+  import checkPermission from '@/utils/permission'
 
   export default {
+    name: 'payindex',
     components: {
       LayoutFilter,
       TableIndex,
@@ -146,10 +148,20 @@
             key: 'uid',
             text: 'UID',
             click: (index, row) => {
-              this.$router.push({
-                path: '/reg/detail',
-                query: { uid: index, gameid: this.query.gameid, ProxyRegion: this.query.ProxyRegion }
-              })
+              let router = '/reg/detail'
+              if (!checkPermission(['admin', router]))
+              {
+                  this.$confirm('对不起,没有权限: ' + router, {
+                    type: 'error',
+                    showClose: false,
+                    showCancelButton: false
+                  }).catch(error => {})
+              } else {
+                this.$router.push({
+                  path: router,
+                  query: { uid: index, gameid: this.query.gameid, ProxyRegion: this.query.ProxyRegion }
+                })
+              }
             },
             template: (index, row) => {
               return index ? ('<span style="cursor:pointer;color: ' + this.theme + '">'+ index +'</span>') : '';

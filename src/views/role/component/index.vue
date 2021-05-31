@@ -97,7 +97,7 @@
       const resp = await menuIndex()
       this.menuTable = resp.data
 
-      // 进入时需要默认选中
+      // 进入时需要默认选中， todo 这里很容易卡死
       if (this.form.nids.length > 0)
       {
         const choose = this.form.nids
@@ -116,7 +116,7 @@
             }
           })
         }
-        checked(this.menuTable)
+        setTimeout(() => checked(this.menuTable), 1000)
       }
       this.load = false
     },

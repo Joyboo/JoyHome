@@ -12,6 +12,7 @@ import menuInfo from './component'
 import { menuAdd } from '@/api/menu'
 
 export default {
+  name: 'menuadd',
   components: {
     menuInfo
   },
@@ -29,7 +30,8 @@ export default {
         hidden: '0',
         breadcrumb: '1',
         affix: '0',
-        sort: 9
+        sort: 9,
+        noCache: 0
       },
 
       loading: false

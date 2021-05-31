@@ -105,6 +105,7 @@
   import {export_table_to_excel_joyboo} from '@/vendor/Export2Excel'
 
   export default {
+    name: 'expenseadd',
     components: {
       ButtonTpl
     },

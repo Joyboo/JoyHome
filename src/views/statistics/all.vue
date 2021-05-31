@@ -57,6 +57,7 @@
   import RoiComponent from './component/roi'
 
   export default {
+    name: 'statisticsall',
     components: {
       LayoutFilter,
       TableIndex,

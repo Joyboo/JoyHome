@@ -29,6 +29,7 @@
   import PaykeepComponent from './component/paykeep'
 
   export default {
+    name: 'statisticspaykeep',
     components: {
       LayoutFilter,
       ExportData,

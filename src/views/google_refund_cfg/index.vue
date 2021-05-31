@@ -44,6 +44,7 @@
   import {googlerefountIndex} from '@/api/googlerefundcfg'
 
   export default {
+    name: 'google_refund_cfgindex',
     computed: {
       ...mapGetters(['size', 'gamelist'])
     },

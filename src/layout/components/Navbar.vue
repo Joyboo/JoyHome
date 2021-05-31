@@ -11,8 +11,9 @@
       active-text-color="#FFF"
       @select="handleSelect"
     >
-      <el-menu-item v-for="menu in topmenu" :index="menu.id">
-        <i :class="menu.icon" />{{ menu.title }}</el-menu-item>
+      <el-menu-item v-for="menu in topmenu" :key="menu.id" :index="menu.id">
+        <i :class="menu.icon" />{{ menu.title || menu.fulltitle }}
+      </el-menu-item>
     </el-menu>
 
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
@@ -50,6 +51,9 @@
                 <svg-icon icon-class="user" />
               </div>
               <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item @click.native="reloadCache">
+                  刷新缓存
+                </el-dropdown-item>
                 <router-link to="/profile/index">
                   <el-dropdown-item>
                     {{ $t('navbar.profile') }}
@@ -70,6 +74,14 @@
 
       </template>
     </div>
+
+    <!--刷新缓存的dialog-->
+    <el-dialog :visible.sync="recacheDialog" width="30%" :title="progress.title" :show-close="false" center>
+      <div style="text-align: center;width: 100%;">
+        <el-progress type="circle" :percentage="progress.num" :status="progress.success"></el-progress>
+      </div>
+
+    </el-dialog>
   </div>
 </template>
 
@@ -82,6 +94,7 @@ import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import LangSelect from '@/components/LangSelect'
 import Search from '@/components/HeaderSearch'
+import {recache} from '@/api/sysinfo'
 
 export default {
   components: {
@@ -94,7 +107,14 @@ export default {
     Search
   },
   data() {
-    return {}
+    return {
+      recacheDialog: false,
+      progress: {
+        title: '',
+        num: 0,
+        status: ''
+      }
+    }
   },
   computed: {
     ...mapGetters([
@@ -109,7 +129,10 @@ export default {
     // console.log("%c [Github] %c https://github.com/PanJiaChen/vue-element-admin/ ", "color:red","")
     // console.log("%c [Doc] %c https://panjiachen.github.io/vue-element-admin-site/#/ ", "color:red","")
     // 触发第一个菜单选中事件
-    this.$refs.refTopMenu.$children[0].$el.click()
+    if (this.$refs.refTopMenu.$children.length > 0)
+    {
+      this.$refs.refTopMenu.$children[0].$el.click()
+    }
   },
   methods: {
     toggleSideBar() {
@@ -126,6 +149,41 @@ export default {
     // add by Joyboo
     rightPanel() {
       this.$store.dispatch('settings/boolSetting', 'rightPanel')
+    },
+    // 刷新缓存
+    reloadCache() {
+      this.recacheDialog = true
+      const _this = this
+      const loop = setInterval(() => {
+        if (_this.progress.num < 95)
+        {
+          _this.progress.num++
+        }
+      }, 10)
+
+      recache()
+        .then(resp => {
+          const {code, msg} = resp
+          _this.progress.title = msg
+          if (code)
+          {
+            this.$message.success(msg)
+
+            _this.progress.status = 'success'
+            // 让进度条跑完
+            setTimeout(() => window.location.reload(), 500)
+          } else {
+            _this.progress.status = 'exception'
+            this.$message.error(msg)
+          }
+        })
+        .catch(error => {
+          this.$message.error(error)
+        })
+        .finally(() => {
+          clearInterval(loop)
+          _this.progress.num = 100
+        })
     }
   }
 }

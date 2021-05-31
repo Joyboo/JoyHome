@@ -48,6 +48,7 @@
   import {mapGetters} from "vuex";
 
   export default {
+    name: 'whitelistindex',
     components: {
       TableData,
       Pagination

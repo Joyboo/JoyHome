@@ -41,6 +41,7 @@
   import {beforeDay} from "@/utils";
 
   export default {
+    name: 'expenseindex',
     components: {
       TableInfo,
       Pagination,

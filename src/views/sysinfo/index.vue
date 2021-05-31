@@ -59,6 +59,7 @@
   import {sysinfoIndex, sysinfoDel} from '@/api/sysinfo'
 
   export default {
+    name: 'sysinfoindex',
     computed: {
       ...mapGetters(['size'])
     },

@@ -91,6 +91,7 @@
   import {mapGetters} from "vuex";
 
   export default {
+    name: 'adminindex',
     components: {
       TableData,
       Pagination

@@ -29,6 +29,7 @@
   import LtvComponent from './component/ltv'
 
   export default {
+    name: 'statisticsltv',
     components: {
       LayoutFilter,
       ExportData,

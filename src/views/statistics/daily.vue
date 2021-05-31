@@ -31,6 +31,7 @@ import ExportData from '@/components/ExportExcel'
 import DailyComponent from './component/daily'
 
 export default {
+  name: 'statisticsdaily',
   components: {
     LayoutFilter,
     ExportData,

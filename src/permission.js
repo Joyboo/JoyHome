@@ -1,6 +1,6 @@
 import router from './router'
 import store from './store'
-import { Message } from 'element-ui'
+import { Message, MessageBox } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
@@ -8,7 +8,7 @@ import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['/login', '/auth-redirect'] // no redirect whitelist
+const whiteList = ['/login', '/auth-redirect', '/redirect', '/404', '/401', 'dashboard', '/dashboard', '/icon'] // no redirect whitelist
 
 router.beforeEach(async(to, from, next) => {
   // start progress bar
@@ -17,7 +17,7 @@ router.beforeEach(async(to, from, next) => {
   // set page title
   document.title = getPageTitle(to.meta.title)
 
-  // determine whether the user has logged in
+  // 是否已登录
   const hasToken = getToken()
 
   if (hasToken) {
@@ -26,10 +26,31 @@ router.beforeEach(async(to, from, next) => {
       next({ path: '/' })
       NProgress.done() // hack: https://github.com/PanJiaChen/vue-element-admin/pull/2939
     } else {
-      // determine whether the user has obtained his permission roles through getInfo
+      // 是否已通过getInfo获得其权限角色
       const hasRoles = store.getters.roles && store.getters.roles.length > 0
       if (hasRoles) {
-        next()
+
+        const roles = store.getters.roles
+        // 超级管理员
+        const admin = roles.indexOf('admin') >= 0
+        // add by Joyboo 权限验证
+        if (admin || roles.indexOf(to.path) >= 0 || whiteList.indexOf(to.path) >= 0)
+        {
+          next()
+        }
+        else {
+          MessageBox.confirm('对不起，没有权限：' + to.path, {
+            type: 'error',
+            showClose: false,
+            showCancelButton: false
+          })
+            .then(() => {
+              next({ path: from.path })
+            })
+            .catch(() => {
+              next({ path: from.path })
+            })
+        }
       } else {
         try {
           // add by Joyboo 获取top菜单

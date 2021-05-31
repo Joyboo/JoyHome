@@ -23,9 +23,9 @@
 
     <table-index :column="column" :loading="loading" :data="tableData">
 
-      <el-table-column align="center" label="操作" width="120" >
+      <el-table-column align="center" label="操作" width="120">
         <template slot-scope="scope">
-          <el-button type="primary" :size="size" plain @click="detail(scope.$index, scope.row)">
+          <el-button type="primary" :size="size" plain @click="detail(scope.$index, scope.row)" v-permission="['admin', '/reg/detail']">
             <svg-icon icon-class="peoples" /> &nbsp;详情
           </el-button>
         </template>
@@ -53,14 +53,17 @@
   import ExportData from '@/components/ExportExcel'
   import TableIndex from '@/components/TableData'
   import Pagination from '@/components/Pagination'
+  import permission from '@/directive/permission'
 
   export default {
+    name: 'regindex',
     components: {
       LayoutFilter,
       ExportData,
       TableIndex,
       Pagination
     },
+    directives: { permission },
     computed: {
       ...mapGetters(['size'])
     },

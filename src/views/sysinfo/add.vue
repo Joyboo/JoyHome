@@ -9,6 +9,7 @@
   import {sysinfoAdd} from '@/api/sysinfo'
 
   export default {
+    name: 'sysinfoadd',
     components: {
       Sysinfo
     },

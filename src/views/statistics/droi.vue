@@ -29,6 +29,7 @@
   import RoiComponent from './component/roi'
 
   export default {
+    name: 'statisticsdroi',
     components: {
       LayoutFilter,
       ExportData,

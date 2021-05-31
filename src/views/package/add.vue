@@ -7,6 +7,7 @@
   import {packageAdd} from '@/api/package'
 
   export default {
+    name: 'packageadd',
     components: {
       packageInfo
     },

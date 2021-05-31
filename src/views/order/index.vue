@@ -83,8 +83,10 @@
   import Detail from './detail'
   import Repair from './repair'
   import ExportData from '@/components/ExportExcel'
+  import checkPermission from "@/utils/permission";
 
   export default {
+    name: 'orderindex',
     components: {
       LayoutFilter,
       TableIndex,
@@ -172,10 +174,20 @@
             key: 'uid',
             text: 'UID',
             click: (index, row) => {
-              this.$router.push({
-                path: '/reg/detail',
-                query: { uid: index, gameid: this.query.gameid, ProxyRegion: this.query.ProxyRegion }
-              })
+              let router = '/reg/detail'
+              if (!checkPermission(['admin', router]))
+              {
+                this.$confirm('对不起,没有权限: ' + router, {
+                  type: 'error',
+                  showClose: false,
+                  showCancelButton: false
+                }).catch(error => {})
+              } else {
+                this.$router.push({
+                  path: router,
+                  query: { uid: index, gameid: this.query.gameid, ProxyRegion: this.query.ProxyRegion }
+                })
+              }
             },
             template: (index, row) => {
               return index ? ('<span style="cursor:pointer;color: ' + this.theme + '">'+ index +'</span>') : ''
@@ -251,12 +263,21 @@
       },
       // 补单
       callBackOrder(index, row) {
-        this.repairDialog = true
-        this.repairQuery = {
-          pf: row.pf,
-          ProxyRegion: this.query.ProxyRegion,
-          gameid: this.query.gameid,
-          ordersn: this.query.gameid + '-' + row.id + '-' + row.instime
+        if (!checkPermission(['admin', '/order/callBackOrder']))
+        {
+          this.$confirm('对不起，没有权限', {
+            type: 'error',
+            showClose: false,
+            showCancelButton: false
+          }).catch(error => {})
+        } else {
+          this.repairDialog = true
+          this.repairQuery = {
+            pf: row.pf,
+            ProxyRegion: this.query.ProxyRegion,
+            gameid: this.query.gameid,
+            ordersn: this.query.gameid + '-' + row.id + '-' + row.instime
+          }
         }
       },
       pagination({page, limit}) {

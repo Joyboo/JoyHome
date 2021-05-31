@@ -38,3 +38,10 @@ export function sysinfoDel(params) {
 
   return request(obj)
 }
+
+export function recache() {
+  return request({
+    url: '/admin/sysinfo/recache',
+    method: 'get'
+  })
+}

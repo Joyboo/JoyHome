@@ -9,6 +9,7 @@
   import {whitelistAdd} from '@/api/whitelist'
 
   export default {
+    name: 'whitelistadd',
     components: {
       WhitelistInfo
     },

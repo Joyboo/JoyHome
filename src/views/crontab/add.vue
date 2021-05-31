@@ -9,6 +9,7 @@
   import {crontabAdd} from '@/api/crontab'
 
   export default {
+    name: 'crontabadd',
     components: {
       CrontabInfo
     },

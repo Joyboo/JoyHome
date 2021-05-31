@@ -84,6 +84,7 @@
   import Pagination from '@/components/Pagination'
 
   export default {
+    name: 'crontabindex',
     components: {
       TableInfo,
       Pagination,

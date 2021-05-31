@@ -48,6 +48,7 @@
   import {beforeDay} from "@/utils";
 
   export default {
+    name: 'google_refundindex',
     components: {
       TableIndex,
       Pagination,

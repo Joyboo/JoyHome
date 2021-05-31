@@ -7,6 +7,7 @@
   import {googlerefountAdd} from '@/api/googlerefundcfg'
 
   export default {
+    name: 'google_refund_cfgadd',
     components: {
       GoogleRefundCfgInfo
     },

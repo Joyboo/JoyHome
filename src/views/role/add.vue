@@ -7,6 +7,7 @@
   import {roleAdd} from '@/api/role'
 
   export default {
+    name: 'roleadd',
     components: {
       RoleInfo
     },

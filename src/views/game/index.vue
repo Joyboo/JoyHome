@@ -83,6 +83,7 @@ import pagination from '@/components/Pagination'
 import { gameIndex } from '@/api/game'
 
 export default {
+  name: 'gameindex',
   components: {
     pagination,
     TableData

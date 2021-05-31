@@ -29,6 +29,7 @@
   import RegkeepComponent from './component/regkeep'
 
   export default {
+    name: 'statisticsregkeep',
     components: {
       LayoutFilter,
       ExportData,

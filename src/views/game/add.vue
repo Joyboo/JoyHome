@@ -7,7 +7,7 @@ import gameInfo from './component/index'
 import { gameAdd } from '@/api/game'
 
 export default {
-  name: 'GameAdd',
+  name: 'gameadd',
   components: {
     gameInfo
   },
