@@ -90,7 +90,7 @@
       </el-tabs>
 
       <el-footer>
-        <el-button type="primary" icon="el-icon-edit-outline" @click="openDialog">操作</el-button>
+        <el-button type="primary" icon="el-icon-edit-outline" v-permission="['admin', '/user/edit']" @click="openDialog">操作</el-button>
         <router-link class="joy-btn" to="/reg/index">
           <el-button type="success" icon="el-icon-c-scale-to-original">列 表</el-button>
         </router-link>
@@ -136,13 +136,14 @@
   import {mapGetters} from "vuex";
   import TableData from '@/components/TableData'
   import LayoutFilter from '@/components/LayoutFilter'
-  import {beforeDay} from "@/utils";
+  import permission from '@/directive/permission'
 
   export default {
     components: {
       TableData,
       LayoutFilter
     },
+    directives: { permission },
     computed: {
       ...mapGetters(['size']),
       paypf() {
@@ -158,10 +159,6 @@
       this.getData(true)
     },
     data() {
-      const start = beforeDay()
-      const end = new Date()
-      const range = [start, end.getTime()]
-
       return {
         dialogFormVisible: false,
         loading: false,
@@ -179,8 +176,10 @@
           gameid: '',
           pf: '',
           pkgbnd: [],
-          date: range,
-          pSize: 10000  // 不分页，传个比较大的值
+          begintime: true,
+          endtime: true,
+          pSize: 10000,  // 不分页，传个比较大的值
+          cPage: 1
         },
 
         // 充值页
@@ -285,8 +284,13 @@
         this.payloading = true
         payIndex(this.query)
           .then(resp => {
-            const {data} = resp
-            this.payData = data.data;
+            const {code, msg, data} = resp
+            if (!code )
+            {
+              this.$message.error(msg)
+            } else {
+              this.payData = data.data || [];
+            }
           })
           .finally(() => {
             this.payloading = false
@@ -297,8 +301,13 @@
         this.loginloading = true
         loginIndex(this.query)
           .then(resp => {
-            const {data} = resp
-            this.loginData = data.data;
+            const {code, msg, data} = resp
+            if (!code)
+            {
+              this.$message.error(msg)
+            } else {
+              this.loginData = data.data || [];
+            }
           })
           .finally(() => {
             this.loginloading = false

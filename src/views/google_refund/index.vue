@@ -61,17 +61,14 @@
       }
     },
     data() {
-      const start = beforeDay()
-      const end = new Date()
-      // const range = [d.format(1), end.format(1)]
-      const range = [start, end.getTime()]
 
       return {
         loading: false,
         query: {
           gameid: '',
           pkgbnd: [],
-          date: range,
+          begintime: true,
+          endtime: true,
           voidedReason: '',
           whereKey: '',
           whereValue: '',

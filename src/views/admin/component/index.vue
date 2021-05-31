@@ -308,7 +308,7 @@
           .then(resp => {
             const {data} = resp
             // tp5 role模型已增加nids字段获取器,返回的是数组
-            const nids = data.data.nids
+            const nids = data.data.nids || []
             // console.log('nids ',rid, nids, data)
             this.$nextTick(() => {
 

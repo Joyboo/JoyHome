@@ -39,7 +39,7 @@
         roleIndex()
           .then(resp => {
             const {code, msg, data} = resp
-            this.tableData = data.data
+            this.tableData = data.data || []
           })
           .catch(error => {
             this.$message.error(error)

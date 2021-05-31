@@ -49,7 +49,6 @@
   import {regIndex} from '@/api/reg'
   import LayoutFilter from '@/components/LayoutFilter'
   import { mapGetters } from 'vuex'
-  import {beforeDay} from '@/utils'
   import ExportData from '@/components/ExportExcel'
   import TableIndex from '@/components/TableData'
   import Pagination from '@/components/Pagination'
@@ -68,17 +67,14 @@
       ...mapGetters(['size'])
     },
     data() {
-      const start = beforeDay()
-      const end = new Date()
-      // const range = [d.format(1), end.format(1)]
-      const range = [start, end.getTime()]
       return {
         loading: false,
         query: {
           gameid: '',
           pkgbnd: [],
           ProxyRegion: 'omz',
-          date: range,
+          begintime: true,
+          endtime: true,
           uid: '',
           pSize: 20,
           cPage: 1

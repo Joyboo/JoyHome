@@ -41,10 +41,6 @@ export default {
     ...mapGetters(['size'])
   },
   data() {
-    const start = beforeDay()
-    const end = new Date()
-    // const range = [d.format(1), end.format(1)]
-    const range = [start, end.getTime()]
     return {
       loading: false,
       query: {
@@ -52,7 +48,8 @@ export default {
         pkgbnd: [],
         ProxyRegion: 'omz',
         tzn: '8',
-        date: range
+        begintime: true,
+        endtime: true
       },
       tableData: []
     }
@@ -71,7 +68,7 @@ export default {
           {
             this.$message.error(msg)
           } else {
-            this.tableData = data.data
+            this.tableData = data.data || []
           }
         })
         .catch(error => {

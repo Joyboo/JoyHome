@@ -48,15 +48,15 @@
       <!--默认是天的格式，也可以传递query.format自定义, 具体格式见:https://element.eleme.cn/#/zh-CN/component/date-picker#ri-qi-ge-shi-->
       <el-form-item v-if="isDate">
         <el-date-picker
-          v-model="query.date"
+          v-model="date"
           :format="format"
-          type="daterange"
+          :type="query.datetype || 'daterange'"
           align="right"
           unlink-panels
           range-separator="至"
           start-placeholder="开始"
           end-placeholder="结束"
-          :default-value="query.date"
+          :default-value="date"
           value-format="timestamp"
           :picker-options="pickerOptions"
         />
@@ -80,7 +80,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { packageChildOption } from '@/api/package'
-import {beforeDay} from '@/utils'
+import {beforeDay,parseTime} from '@/utils'
 
 export default {
   computed: {
@@ -97,9 +97,8 @@ export default {
     packageMul() {
       return typeof this.query.pkgbnd === 'object'
     },
-    // 是否需要时间选择器
     isDate() {
-      return typeof this.query.date !== 'undefined'
+      return typeof this.query.begintime != 'undefined' || typeof this.query.endtime != 'undefined'
     },
     format() {
       typeof this.query.format === 'undefined' ? 'yyyy-MM-dd' : this.query.format
@@ -129,7 +128,17 @@ export default {
       }
     }
 
-    //  todo 处理时间
+    // 默认时间
+    if (this.isDate)
+    {
+      if (typeof this.query.begintime != 'undefined' && typeof this.query.endtime != 'undefined')
+      {
+        const end = this.query.endtime === true ? 0 : this.query.endtime
+        this.date = [beforeDay(this.query.begintime), beforeDay(end)]
+      } else {
+        this.date = beforeDay(this.query.begintime || this.query.endTime)
+      }
+    }
   },
   watch: {
     // 侦听器替代onchange
@@ -156,6 +165,7 @@ export default {
   },
   data() {
     return {
+      date: [],
       packagelist: [],
       // modelTimeRange: [new Date(), new Date()],
       pickerOptions: {
@@ -246,6 +256,20 @@ export default {
       })
     },
     search() {
+      if (this.isDate)
+      {
+        if (typeof this.date == 'object')
+        {
+          this.query.begintime = parseTime(this.date[0])
+          this.query.endtime = parseTime(this.date[1])
+        }
+        else if (typeof this.query.begintime != 'undefined') {
+          this.query.begintime = parseTime(this.date)
+        }
+        else if (typeof this.query.endtime != 'undefined') {
+          this.query.endtime = parseTime(this.date)
+        }
+      }
       this.$emit('search')
     }
   }

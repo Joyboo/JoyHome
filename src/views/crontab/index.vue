@@ -102,8 +102,8 @@
         crontabIndex(this.query)
           .then(resp => {
             const {code, msg, data} = resp
-            this.tableData = data.data
-            this.total = data.totals
+            this.tableData = data.data || []
+            this.total = data.totals || 0
           })
           .catch(error => {
             this.$message.error(error)

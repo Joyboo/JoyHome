@@ -59,8 +59,8 @@
         expenseIndex(this.query)
           .then(resp => {
             const {code, msg, data} = resp
-            this.tableData = data.data
-            this.total = data.totals
+            this.tableData = data.data || []
+            this.total = data.totals || 0
           })
           .catch(error => {
             this.$message.error(error)
@@ -76,9 +76,6 @@
       }
     },
     data() {
-      const start = beforeDay(-30)
-      const end = new Date()
-      const range = [start, end.getTime()]
       return {
         loading: false,
         total: 0,
@@ -87,7 +84,8 @@
           pkgbnd: [],
           cPage: 1,
           pSize: 20,
-          date: range
+          begintime: true,
+          endtime: true
         },
         tableData: []
       }

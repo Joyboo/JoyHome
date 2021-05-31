@@ -388,7 +388,7 @@ export function queryParams(data) {
  * @returns {number}
  */
 export function beforeDay(day) {
-  day = day || -14
+  day = day === true ? -14 : day
   const d = new Date()
   d.setTime(d.getTime() + 3600 * 1000 * 24 * day)
   return d.getTime()

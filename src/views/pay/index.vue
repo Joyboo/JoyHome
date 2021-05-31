@@ -87,9 +87,6 @@
       }
     },
     data() {
-      const start = beforeDay()
-      const end = new Date()
-      const range = [start, end.getTime()]
 
       return {
         loading: false,
@@ -100,7 +97,8 @@
           ProxyRegion: '',
           kwtype: 'paysn',
           kwvalue: '',
-          date: range,
+          begintime: true,
+          endtime: true,
           pSize: 20,
           cPage: 1
         },

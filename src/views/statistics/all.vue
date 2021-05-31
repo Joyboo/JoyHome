@@ -73,10 +73,6 @@
       ...mapGetters(['size', 'gamelist'])
     },
     data() {
-      const start = beforeDay()
-      const end = new Date()
-      // const range = [d.format(1), end.format(1)]
-      const range = [start, end.getTime()]
 
       return {
         loading: false,
@@ -85,7 +81,8 @@
           pkgbnd: [],
           ProxyRegion: 'omz',
           tzn: '8',
-          date: range
+          begintime: true,
+          endtime: true
         },
         tableData: [],
         menu: 'daily',
@@ -114,7 +111,7 @@
               this.$message.error(msg)
               return
             }
-            this.tableData = data.data
+            this.tableData = data.data || []
           })
           .catch(error => {
             this.$message.error(error)

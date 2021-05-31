@@ -24,7 +24,6 @@
 <script>
   import { statistics } from '@/api/statistics'
   import LayoutFilter from '@/components/LayoutFilter'
-  import {beforeDay} from '@/utils'
   import ExportData from '@/components/ExportExcel'
   import RegkeepComponent from './component/regkeep'
 
@@ -36,10 +35,6 @@
       RegkeepComponent
     },
     data() {
-      const start = beforeDay()
-      const end = new Date()
-      // const range = [d.format(1), end.format(1)]
-      const range = [start, end.getTime()]
 
       return {
         loading: false,
@@ -48,7 +43,8 @@
           pkgbnd: [],
           ProxyRegion: 'omz',
           tzn: '8',
-          date: range
+          begintime: true,
+          endtime: true
         },
         tableData: []
       }
@@ -67,7 +63,7 @@
             {
               this.$message.error(msg)
             } else {
-              this.tableData = data.data
+              this.tableData = data.data || []
             }
           })
           .catch(error => {
