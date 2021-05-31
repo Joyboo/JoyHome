@@ -300,19 +300,25 @@
         this.form.extension.newnid = pid
       },
       setChecked(rid) {
+        if (!rid) {
+          return
+        }
         // 获取该角色所有权限
         roleEdit('get', {id: rid})
           .then(resp => {
             const {data} = resp
             // tp5 role模型已增加nids字段获取器,返回的是数组
             const nids = data.data.nids
+            // console.log('nids ',rid, nids, data)
             this.$nextTick(() => {
-              if (nids.indexOf('*') >= 0)
+
+              const admin = nids.indexOf('*') >= 0
+              this.menuTable.forEach(item => {
+                this.$refs.roletree.setChecked(item.id, admin, true)
+              })
+
+              if (!admin)
               {
-                this.menuTable.forEach(item => {
-                  this.$refs.roletree.setChecked(item.id, true, true)
-                })
-              } else {
                 nids.forEach(item => {
                   // 使用setCheckedKeys会选中子全部子节点,这里使用setChecked遍历选中单个节点
                   this.$refs.roletree.setChecked(item, true)

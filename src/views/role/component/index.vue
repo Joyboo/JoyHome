@@ -135,12 +135,13 @@
       setCheckNodes() {
         this.$nextTick(() => {
           // console.log(this.$refs.tree, this.form.nids)
-          if (this.form.nids.indexOf('*') >= 0)
+          const admin = this.form.nids.indexOf('*') >= 0
+          this.menuTable.forEach(item => {
+            this.$refs.tree.setChecked(item.id, admin, true)
+          })
+
+          if (!admin)
           {
-            this.menuTable.forEach(item => {
-              this.$refs.tree.setChecked(item.id, true, true)
-            })
-          } else {
             this.form.nids.forEach(item => {
               // 使用setCheckedKeys会选中子全部子节点,这里使用setChecked遍历选中单个节点
               this.$refs.tree.setChecked(item, true)
