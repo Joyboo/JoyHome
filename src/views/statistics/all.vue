@@ -5,7 +5,7 @@
         <br>
         <el-form-item>
           <el-radio-group v-model="menu" style="margin-right: 100px;" @change="chgRadio">
-            <el-radio v-for="(name, key) in menulist" :label="key" border v-if="checkPermission(['admin', '/statistics/' + key])">{{name}}</el-radio>
+            <el-radio v-for="(name, key) in menulist" :key="key" :label="key" border v-if="checkPermission(['admin', '/statistics/' + key])">{{name}}</el-radio>
           </el-radio-group>
         </el-form-item>
       </template>

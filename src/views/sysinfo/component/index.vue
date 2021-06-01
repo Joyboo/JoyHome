@@ -18,7 +18,7 @@
     </el-form-item>
 
     <el-form-item label="变量类型">
-      <el-radio v-model="form.extension.type" v-for="(t, n) in valopn" :label="n" border>{{t}}</el-radio>
+      <el-radio v-model="form.extension.type" v-for="(t, n) in valopn" :key="n" :label="n" border>{{t}}</el-radio>
     </el-form-item>
 
     <el-form-item label="变量值">

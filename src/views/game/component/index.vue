@@ -33,20 +33,57 @@
 
         </el-tab-pane>
 
-        <el-tab-pane label="APP信息">
+        <el-tab-pane label="充值信息">
 
           <el-form-item>
             <template slot="label">
               充值产品ID<i class="labeli">逗号,或换行符隔开</i>
             </template>
 
-            <el-col>
-              <el-input v-model="form.extension.goodsids" type="textarea" :rows="3" clearable />
-            </el-col>
+            <el-input v-model="form.extension.goodsids" type="textarea" :rows="20" clearable />
+          </el-form-item>
+
+        </el-tab-pane>
+
+        <el-tab-pane label="APP信息">
+
+          <el-form-item>
+            <template slot="label">
+              维护开关<i class="labeli">维护期间时打开</i>
+            </template>
+
+            <el-radio-group v-model="form.extension.mtn.switch">
+              <el-radio label="0" border>关闭</el-radio>
+              <el-radio label="1" border>开启</el-radio>
+            </el-radio-group>
+          </el-form-item>
+
+          <el-form-item>
+            <template slot="label">
+              维护时间段<i class="labeli">开关打开时有效 <i class="cRed">北京时间</i></i>
+            </template>
+
+            <el-date-picker
+              v-model="date"
+              type="datetimerange"
+              format="yyyy-MM-dd HH:mm:ss"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              value-format="yyyy-MM-dd HH:mm:ss"
+            />
+          </el-form-item>
+
+          <el-form-item label="维护公告">
+            <el-input v-model="form.extension.mtn.notice" type="textarea" :rows="5" clearable />
           </el-form-item>
 
           <el-form-item label="FB粉丝页">
             <el-input v-model="form.extension.facebook.fansurl" clearable />
+          </el-form-item>
+
+          <el-form-item label="私隐政策页">
+            <el-input v-model="form.extension.google.privacy" clearable />
           </el-form-item>
 
         </el-tab-pane>
@@ -88,6 +125,7 @@
 
         </el-tab-pane>
 
+        <slot name="h5sdk"></slot>
       </el-tabs>
 
       <button-tpl index="/game/index" @submit="submit" />
@@ -97,7 +135,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { gkey } from '@/api/game'
 import ButtonTpl from '@/components/ButtonTpl'
 
 export default {
@@ -110,6 +147,33 @@ export default {
     ...mapGetters([
       'size'
     ])
+  },
+  data() {
+    return {
+      date: []
+    }
+  },
+  watch: {
+    date(val) {
+      if (typeof val != 'object')
+      {
+        return
+      }
+
+      this.form.extension.mtn.begintime = val[0]
+      this.form.extension.mtn.endtime = val[1]
+    },
+    'form.extension': {
+      immediate: true,
+      handler: function (newVal, oldVal) {
+        // 默认的开始和结束时间
+        if (typeof newVal.mtn.begintime != 'undefined' && typeof newVal.mtn.endtime != 'undefined'
+          && newVal.mtn.begintime != '' && newVal.mtn.endtime != '')
+        {
+          this.date = [new Date(newVal.mtn.begintime), new Date(newVal.mtn.endtime)]
+        }
+      }
+    }
   },
   methods: {
     submit() {

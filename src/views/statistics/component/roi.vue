@@ -1,6 +1,6 @@
 <template>
 
-  <table-index :size="size" :data="roidata" :column="column" :loading="loading"></table-index>
+  <table-index :size="size" :data="roidata" :column="column" :heji="true" :loading="loading"></table-index>
 
 </template>
 
@@ -36,8 +36,14 @@
           width: '100',
           fixed: 'left',
           sort: true,
-          template: (data, rowObject) => {
-            return ymd_to_date(data);
+          template(index, row) {
+            if (row.h === '--') {
+              return '<div class="danger">页合计</div>'
+            } else if (row.h === '-') {
+              return '<div class="danger">总合计</div>'
+            } else {
+              return ymd_to_date(index)
+            }
           }
         }
         , {
@@ -66,16 +72,37 @@
         ,{
           key: 'sum',
           text: '回本金额',
+          tip: '当天新玩家至今的总充值',
           width: '100'
+        }
+        ,{
+          key: 'm',
+          text: '新充值',
+          tip: '当天新玩家的总充值',
+          width: '100',
+          template: (index, row) => {
+            return index || 0;
+          }
         }
         ,{
           key: 'money',
           text: '充值总额',
+          tip: '当天的所有玩家总充值',
           width: '100',
+        }
+        ,{
+          key: 'tcb',
+          text: '投产比',
+          tip: '当天的所有玩家总充值/当天的成本',
+          width: '100',
+          template: (data, rowObject) => {
+            return rowObject.cost ? (rowObject.money * 100/rowObject.cost).toFixed(2).replace('.00', '') + '%' : '-';
+          }
         }
         ,{
           key: 'backrate',
           text: '回本率',
+          tip: '当天新玩家至今的总充值/当天的成本',
           template: (data, rowObject) => {
             return (data * 100).toFixed(2).replace('.00', '') + '%';
           }

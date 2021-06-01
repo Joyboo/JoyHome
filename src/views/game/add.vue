@@ -25,6 +25,9 @@ export default {
           facebook: {
             fansurl: ''
           },
+          google: {
+            privacy: ''
+          },
           divide: {
             cp: 20,
             ios: 30,
@@ -33,6 +36,12 @@ export default {
             'paypal-fix': 0.05,
             payssion: 30,
             huawei: 0
+          },
+          mtn: {
+            switch: '0',
+            begintime: '',
+            endtime: '',
+            notice: ''
           }
         }
       },

@@ -51,8 +51,6 @@
           v-model="date"
           :format="format"
           :type="query.datetype || 'daterange'"
-          align="right"
-          unlink-panels
           range-separator="至"
           start-placeholder="开始"
           end-placeholder="结束"
@@ -83,6 +81,7 @@ import { packageChildOption } from '@/api/package'
 import {beforeDay,parseTime} from '@/utils'
 
 export default {
+  name: "LayoutFilter",
   computed: {
     ...mapGetters([
       'size',
@@ -101,7 +100,7 @@ export default {
       return typeof this.query.begintime != 'undefined' || typeof this.query.endtime != 'undefined'
     },
     format() {
-      typeof this.query.format === 'undefined' ? 'yyyy-MM-dd' : this.query.format
+      return typeof this.query.format === 'undefined' ? 'yyyy-MM-dd' : this.query.format
     },
     // 管理员编辑页设置的默认选中游戏
     defaultGid() {
@@ -146,6 +145,19 @@ export default {
       immediate: true,
       handler: function (newVal, oldVal) {
         this.changeGame(newVal)
+      }
+    },
+    date: function(newVal, oldVal) {
+      if (typeof newVal == 'object')
+      {
+        if (!isNaN(newVal[0])) this.query.begintime = parseTime(newVal[0])
+        if (!isNaN(newVal[1])) this.query.endtime = parseTime(newVal[1])
+      }
+      else if (typeof this.query.begintime != 'undefined') {
+        this.query.begintime = parseTime(newVal)
+      }
+      else if (typeof this.query.endtime != 'undefined') {
+        this.query.endtime = parseTime(newVal)
       }
     }
   },
@@ -256,20 +268,6 @@ export default {
       })
     },
     search() {
-      if (this.isDate)
-      {
-        if (typeof this.date == 'object')
-        {
-          this.query.begintime = parseTime(this.date[0])
-          this.query.endtime = parseTime(this.date[1])
-        }
-        else if (typeof this.query.begintime != 'undefined') {
-          this.query.begintime = parseTime(this.date)
-        }
-        else if (typeof this.query.endtime != 'undefined') {
-          this.query.endtime = parseTime(this.date)
-        }
-      }
       this.$emit('search')
     }
   }

@@ -89,7 +89,9 @@
               bgurl: '',
               btnurl: '',
               titurl: '',
-              storeurl: ''
+              storeurl: '',
+              lefturl: '',
+              righturl: ''
             },
             share: {
               img: ''
