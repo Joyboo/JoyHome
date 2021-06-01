@@ -8,7 +8,7 @@ import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['/login', '/auth-redirect', '/redirect', '/404', '/401', 'dashboard', '/dashboard', '/icon'] // no redirect whitelist
+const whiteList = ['/login', '/auth-redirect', '/redirect', '/404', '/401', '/icon'] // no redirect whitelist
 
 router.beforeEach(async(to, from, next) => {
   // start progress bar
@@ -19,6 +19,7 @@ router.beforeEach(async(to, from, next) => {
 
   // 是否已登录
   const hasToken = getToken()
+  console.log('abd', hasToken)
 
   if (hasToken) {
     if (to.path === '/login') {
