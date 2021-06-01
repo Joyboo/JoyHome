@@ -510,22 +510,22 @@ export default {
       return typeof this.form.id !== 'undefined'
     },
     viewbgurl() {
-      return this.isupd ? [{ url: this.form.default_path + this.form.extension.rating.bgurl }] : []
+      return (this.isupd && this.form.extension.rating.bgurl) ? [{ url: this.form.default_path + this.form.extension.rating.bgurl }] : []
     },
     viewbtnurl() {
-      return this.isupd ? [{ url: this.form.default_path + this.form.extension.rating.btnurl }] : []
+      return (this.isupd && this.form.extension.rating.btnurl) ? [{ url: this.form.default_path + this.form.extension.rating.btnurl }] : []
     },
     viewtiturl() {
-      return this.isupd ? [{ url: this.form.default_path + this.form.extension.rating.titurl }] : []
+      return (this.isupd && this.form.extension.rating.titurl) ? [{ url: this.form.default_path + this.form.extension.rating.titurl }] : []
     },
     viewlefturl() {
-      return this.isupd ? [{ url: this.form.default_path + this.form.extension.rating.lefturl }] : []
+      return (this.isupd && this.form.extension.rating.lefturl) ? [{ url: this.form.default_path + this.form.extension.rating.lefturl }] : []
     },
     viewrighturl() {
-      return this.isupd ? [{ url: this.form.default_path + this.form.extension.rating.righturl }] : []
+      return (this.isupd && this.form.extension.rating.righturl) ? [{ url: this.form.default_path + this.form.extension.rating.righturl }] : []
     },
     viewshare() {
-      return this.isupd ? [{ url: this.form.default_path + this.form.extension.share.img }] : []
+      return (this.isupd && this.form.extension.share.img) ? [{ url: this.form.default_path + this.form.extension.share.img }] : []
     }
   },
   mounted() {

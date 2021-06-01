@@ -405,7 +405,7 @@ export function ymd_to_date(ymd)
 }
 
 /**
- * 将一个对象/数组的属性递归赋值给另一个对象
+ * 将一个对象的属性递归赋值给另一个对象
  * @author Joyboo
  * @param origin
  * @param data
@@ -416,9 +416,10 @@ export function copyTo(origin, data) {
   for(let i in data)
   {
     let item = data[i]
-    if (typeof item == 'object')
+    // 如果是数组，直接赋值，如package/edit页的adjust是一个 [{key: '', value: ''}]
+     if (typeof item == 'object' && data.constructor !== Array)
     {
-      origin[i] = copyTo(item)
+      origin[i] = copyTo(origin[i], item)
     } else {
       origin[i] = item
     }

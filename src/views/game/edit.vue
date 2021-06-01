@@ -137,10 +137,10 @@
     computed: {
       ...mapGetters(['size']),
       viewmnurl() {
-        return [{ url: this.form.default_path + this.form.extension.h5sdk.mnlogo }]
+        return this.form.extension.h5sdk.mnlogo ? [{ url: this.form.default_path + this.form.extension.h5sdk.mnlogo }] : []
       },
       viewgamelogo() {
-        return [{ url: this.form.default_path + this.form.extension.h5sdk.gamelogo }]
+        return this.form.extension.h5sdk.gamelogo ? [{ url: this.form.default_path + this.form.extension.h5sdk.gamelogo }] : []
       },
       viewcarousel() {
         let arr = []
@@ -214,7 +214,7 @@
         }
 
         this.form = copyTo(this.form, data.data)
-        this.form.extension.h5sdk.gameid = this.form.id
+        this.form.extension.h5sdk['gameid'] = this.form.id
 
         const pkg = await packageChildOption({ gameid: this.form.id })
         if (pkg.code)
