@@ -19,7 +19,6 @@ router.beforeEach(async(to, from, next) => {
 
   // 是否已登录
   const hasToken = getToken()
-  console.log('abd', hasToken)
 
   if (hasToken) {
     if (to.path === '/login') {

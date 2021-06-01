@@ -35,22 +35,18 @@ const mutations = {
 
 const actions = {
   gameInfo({commit, state}){
-    // 游戏列表一般不会变动，检测到有数据就不执行
-    if (state.gamelist.length > 0)
-    {
-      return;
-    }
     gamelist().then(resp => {
       const {data} = resp
 
       // 生成select 的label和value
       let list = []
-      data.forEach((name, id) => {
+      for(let i in data)
+      {
         list.push({
-          label: name,
-          value: id
+          label: data[i],
+          value: parseInt(i)
         })
-      })
+      }
 
       commit('SET_GAMELIST', data)
       commit('SET_SELECT_GAMELIST', list)
