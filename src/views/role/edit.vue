@@ -16,7 +16,7 @@
         form: {
           name: '',
           summary: '',
-          nids: [],
+          newnids: [],
         }
       }
     },

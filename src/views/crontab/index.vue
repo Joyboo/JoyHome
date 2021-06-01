@@ -25,7 +25,7 @@
       </el-form-item>
     </el-form>
 
-    <table-info :loading="loading" :data="tableData" pathname="crontab">
+    <table-info :loading="loading" :data="tableData" @search="getData" pathname="crontab">
 
       <el-table-column width="80" align="center" prop="id" label="ID" sortable></el-table-column>
       <el-table-column align="center" prop="name" label="任务名" ></el-table-column>
@@ -84,6 +84,7 @@
   import Pagination from '@/components/Pagination'
 
   export default {
+    name: 'crontabindex',
     components: {
       TableInfo,
       Pagination,
@@ -101,8 +102,8 @@
         crontabIndex(this.query)
           .then(resp => {
             const {code, msg, data} = resp
-            this.tableData = data.data
-            this.total = data.totals
+            this.tableData = data.data || []
+            this.total = data.totals || 0
           })
           .catch(error => {
             this.$message.error(error)

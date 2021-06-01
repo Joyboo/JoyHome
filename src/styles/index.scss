@@ -223,3 +223,22 @@ aside {
 .jv-container .jv-tooltip.right {
   top: -7px!important;
 }
+
+.danger {
+  color: #F56C6C;
+}
+
+.crumbs {
+  margin-bottom: 10px;
+}
+
+
+/* footer提交按钮居中 */
+.el-footer {
+  text-align: center;
+  margin: 30px 10px;
+
+  .joy-btn {
+    margin: 0 10px;
+  }
+}

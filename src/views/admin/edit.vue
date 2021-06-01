@@ -5,6 +5,7 @@
 <script>
   import AdminInfo from './component'
   import {adminEdit} from '@/api/admin'
+  import {copyTo} from '@/utils'
 
   export default {
     components: {
@@ -16,7 +17,7 @@
         this.form.id = this.$route.query.id
 
         const {data} = await adminEdit('get', {id: this.form.id})
-        this.form = data.data;
+        this.form = copyTo(this.form, data.data)
       } catch (e) {
         console.error(e)
       }
@@ -35,7 +36,8 @@
           extension: {
             status: '1',
             gid: '', // 默认打开游戏
-            nid: 0, // 默认打开菜单
+            newnid: 0, // 默认打开菜单
+            nid: '',
             gameids: [],
             ntcids: []
           }

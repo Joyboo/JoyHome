@@ -1,23 +1,46 @@
 <template>
   <el-table
     ref="listTable"
-    v-loading="loading"
+    v-loading="load"
     :data="data"
     border
     :size="size"
     :height="height"
     :summary-method="getSummaries"
     :show-summary="heji"
+    :id="tabid"
   >
 
-    <el-table-column v-for="(item, key) in column" :width="item.width" :key="key" :sortable="item.sort"
+    <!--
+        column字段说明：
+        {
+          key: '',
+          text: 表头文本
+          tip: 鼠标指到表头才出现的提示
+          width: 表格宽
+          fixed: 是否固定该列
+          align: 同时作用于表头和表格，center|left|right
+          template: function类型，作用于表格项，返回应该为一个字符串，支持html字符串
+          click: function类型，作用于表格项,点击后执行的函数
+
+        }
+        -->
+
+    <el-table-column v-for="(item, key) in column"
+                     :width="item.width"
+                     :key="key"
+                     :sortable="item.sort"
+                     :fixed="item.fixed"
                      :align="item.align || 'center'" :prop="item.key">
 
       <!--表格槽-->
       <template slot-scope="scope">
-        <span v-if="typeof item.template == 'function'" >
-          {{item.template(scope.row[item.key], scope.row)}}
-        </span>
+
+        <span v-if="typeof item.template == 'function'"
+              v-html="item.template(scope.row[item.key], scope.row)"
+              @click="typeof item.click == 'function' ? item.click(scope.row[item.key], scope.row) : ''"
+        ></span>
+
         <!--json数据显示,注意需要设置el-table-column的align=left,否则很难看-->
         <span v-else-if="typeof scope.row[item.key] === 'object'">
           <json-viewer
@@ -27,7 +50,8 @@
             :boxed="false"
             sort></json-viewer>
         </span>
-        <span v-else>{{scope.row[item.key]}}</span>
+        <!--如需多级key，如extension.joyboo,请传递template实现-->
+        <span v-else @click="typeof item.click == 'function' ? item.click(scope.row[item.key], scope.row) : ''">{{scope.row[item.key]}}</span>
 
       </template>
 
@@ -56,7 +80,15 @@
       JsonViewer
     },
     computed: {
-      ...mapGetters(['size'])
+      ...mapGetters(['size']),
+      load: {
+        get() {
+          return this.loading
+        },
+        set(val) {
+          this.$emit('setLoading', val)
+        }
+      }
     },
     props: {
       column: {
@@ -80,6 +112,11 @@
       height: {
         type: Number,
         default: 700
+      },
+      //id
+      tabid: {
+        type: String,
+        default: 'listTable'
       }
     },
     methods: {

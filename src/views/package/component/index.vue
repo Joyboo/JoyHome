@@ -15,7 +15,7 @@
           </el-form-item>
 
           <el-form-item label="包操作系统">
-            <el-radio v-for="(pack, key) in packos" v-model="form.os" :label="key" border>{{ pack }}</el-radio>
+            <el-radio v-for="(pack, key) in packos" v-model="form.os" :key="key" :label="key" border>{{ pack }}</el-radio>
           </el-form-item>
 
           <el-form-item label="包">
@@ -189,7 +189,7 @@
             </template>
 
             <el-checkbox-group v-model="form.extension.qzf.pf">
-              <el-checkbox v-for="pname in h5pf" :label="pname" />
+              <el-checkbox v-for="pname in h5pf" :key="pname" :label="pname" />
             </el-checkbox-group>
 
           </el-form-item>
@@ -388,7 +388,7 @@
 
           <div class="joyline" />
 
-          <el-form-item label="标题图">
+          <el-form-item label="标题图 rate now">
             <el-col :span="12">
               <el-upload
                 class="upload-demo"
@@ -405,6 +405,40 @@
           </el-form-item>
 
           <div class="joyline" />
+
+          <el-form-item label="左按钮图 its ok">
+            <el-col :span="12">
+              <el-upload
+                class="upload-demo"
+                action="joyboo"
+                :http-request="uploadLeftUrl"
+                :limit="1"
+                :file-list="viewlefturl"
+                list-type="picture"
+              >
+                <el-button :size="size" type="primary">点击上传左按钮图</el-button>
+                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2MB</div>
+              </el-upload>
+            </el-col>
+          </el-form-item>
+
+          <div class="joyline" />
+
+          <el-form-item label="右按钮图 love it">
+            <el-col :span="12">
+              <el-upload
+                class="upload-demo"
+                action="joyboo"
+                :http-request="uploadRightUrl"
+                :limit="1"
+                :file-list="viewrighturl"
+                list-type="picture"
+              >
+                <el-button :size="size" type="primary">点击上传右按钮图</el-button>
+                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2MB</div>
+              </el-upload>
+            </el-col>
+          </el-form-item>
 
           <el-form-item label="跳转地址">
             <el-input v-model="form.extension.rating.storeurl" clearable />
@@ -443,7 +477,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { gkey } from '@/api/package'
-import { uploadImage } from '@/api/upload'
+import { uploadJb } from '@/api/upload'
 import ButtonTpl from '@/components/ButtonTpl'
 
 export default {
@@ -484,6 +518,12 @@ export default {
     viewtiturl() {
       return this.isupd ? [{ url: this.form.default_path + this.form.extension.rating.titurl }] : []
     },
+    viewlefturl() {
+      return this.isupd ? [{ url: this.form.default_path + this.form.extension.rating.lefturl }] : []
+    },
+    viewrighturl() {
+      return this.isupd ? [{ url: this.form.default_path + this.form.extension.rating.righturl }] : []
+    },
     viewshare() {
       return this.isupd ? [{ url: this.form.default_path + this.form.extension.share.img }] : []
     }
@@ -521,6 +561,18 @@ export default {
         this.form.extension.rating.titurl = data
       })
     },
+    // 左按钮图
+    uploadLeftUrl(params) {
+      this.uploadHttpRequest(params).then(data => {
+        this.form.extension.rating.lefturl = data
+      })
+    },
+    // 右按钮图
+    uploadRightUrl(params) {
+      this.uploadHttpRequest(params).then(data => {
+        this.form.extension.rating.righturl = data
+      })
+    },
     // 上传分享图
     uploadShareImg(params) {
       this.uploadHttpRequest(params).then(data => {
@@ -542,7 +594,7 @@ export default {
           return
         }
 
-        uploadImage('/admin/package/upload', params).then(resp => {
+        uploadJb('/admin/package/upload', params).then(resp => {
           const { status, data } = resp
           if (status == 200) {
             this.$message.success('上传成功')

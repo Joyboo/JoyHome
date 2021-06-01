@@ -18,7 +18,12 @@
           <!--按钮插槽-->
           <slot name="btn"></slot>
 
-          <el-button type="primary" :size="size" plain @click="edit(scope.$index, scope.row)">编辑</el-button>
+          <el-button type="primary"
+                     v-if="checkPermission(['admin', '/' + pathname + '/edit'])"
+                     :size="size" plain @click="edit(scope.$index, scope.row)">
+            编辑
+          </el-button>
+
           <el-popconfirm
             confirm-button-text="我意已决"
             cancel-button-text="只是手抖"
@@ -26,6 +31,7 @@
             icon="el-icon-info"
             icon-color="red"
             title="确定要删除吗？"
+            v-if="checkPermission(['admin', '/' + pathname + '/del'])"
             @onConfirm="confirmDelete(scope.$index, scope.row)"
           >
             <el-button slot="reference" type="danger" :size="size" plain>删除</el-button>
@@ -40,8 +46,8 @@
 
 <script>
   import {mapGetters} from "vuex";
-  // import Pagination from '@/components/Pagination'
   import request from "@/utils/request";
+  import checkPermission from '@/utils/permission'
 
   export default {
     name: "TableInfo",
@@ -75,6 +81,7 @@
       }
     },
     methods: {
+      checkPermission,
       // 编辑
       edit(index, row) {
         const path = '/' + this.pathname + '/edit'

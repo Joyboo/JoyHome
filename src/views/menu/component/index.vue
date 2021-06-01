@@ -55,12 +55,16 @@
         <el-switch v-model="form.hidden == '1'" @change="changeHidden()" />
       </el-form-item>
 
-      <el-form-item label="是否显示在面包屑中">
-        <el-switch v-model="form.breadcrumb == '1'" @change="changeBreadcrumb()" />
+      <el-form-item label="是否需要Keep-alive缓存">
+        <el-switch v-model="form.noCache == '0'" @change="changeKeepAlive()" />
       </el-form-item>
 
       <el-form-item label="是否固定在tags-view中">
         <el-switch v-model="form.affix == '1'" @change="changeAffix()" />
+      </el-form-item>
+
+      <el-form-item label="是否显示在面包屑中">
+        <el-switch v-model="form.breadcrumb == '1'" @change="changeBreadcrumb()" />
       </el-form-item>
 
       <el-form-item label="排序号">
@@ -114,6 +118,9 @@ export default {
     },
     changeAffix() {
       this.changeSwitch('affix')
+    },
+    changeKeepAlive() {
+      this.changeSwitch('noCache')
     },
     changeSwitch(key) {
       this.$emit('changeSwitch', key)

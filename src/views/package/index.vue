@@ -83,6 +83,7 @@ import TableData from '@/components/TableData/info'
 import LayoutFilter from '@/components/LayoutFilter'
 
 export default {
+  name: 'packageindex',
   components: {
     pagination,
     TableData,

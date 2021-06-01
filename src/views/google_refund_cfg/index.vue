@@ -44,6 +44,7 @@
   import {googlerefountIndex} from '@/api/googlerefundcfg'
 
   export default {
+    name: 'google_refund_cfgindex',
     computed: {
       ...mapGetters(['size', 'gamelist'])
     },
@@ -74,8 +75,8 @@
         googlerefountIndex(this.query)
           .then(resp => {
             const {code, msg, data} = resp
-            this.tableData = data.data
-            this.total = data.totals
+            this.tableData = data.data || []
+            this.total = data.totals || 0
           })
           .catch(error => {
             this.$message.error(error)

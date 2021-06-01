@@ -1,8 +1,8 @@
 import request from '@/utils/request'
 
-export function daily(query) {
+export function statistics(method, query) {
   return request({
-    url: '/admin/statistics/daily',
+    url: '/admin/statistics/' + method,
     method: 'get',
     params: query
   })

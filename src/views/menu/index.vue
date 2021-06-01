@@ -8,7 +8,10 @@
         pathname="menu"
         @search="getData"
       >
+
         <el-table-column align="left" prop="title" label="菜单名" />
+
+        <el-table-column align="center" prop="id" width="80" label="ID" />
 
         <el-table-column align="left" prop="name" label="name" />
 
@@ -26,7 +29,13 @@
 
         <el-table-column width="80" align="center" prop="hidden" label="是否隐藏">
           <template slot-scope="scope">
-            <el-switch v-model="scope.row.hidden == '1'" />
+            <el-switch v-model="scope.row.hidden == '1'" @change="chgHidden(scope.row.id, scope.row.hidden)" />
+          </template>
+        </el-table-column>
+
+        <el-table-column width="80" align="center" prop="noCache" label="是否缓存">
+          <template slot-scope="scope">
+            <el-switch v-model="scope.row.noCache == '0'" @change="chgCache(scope.row.id, scope.row.noCache)" />
           </template>
         </el-table-column>
 
@@ -47,10 +56,11 @@
 <script>
 import { mapGetters } from 'vuex'
 import TableData from '@/components/TableData/info'
-import { menuIndex } from '@/api/menu'
+import { menuIndex,menuEdit } from '@/api/menu'
+import checkPermission from '@/utils/permission'
 
 export default {
-  name: 'Index',
+  name: 'menuindex',
   components: {
     TableData
   },
@@ -80,6 +90,40 @@ export default {
         .finally(() => {
           this.loading = false
         })
+    },
+    chgCache(id, val) {
+      this.sendChange({id: id, noCache: val == 1 ? 0 : 1})
+    },
+    chgHidden(id, val) {
+      this.sendChange({id: id, hidden: val == 1 ? 0 : 1})
+    },
+    sendChange(data) {
+      if (!checkPermission(['admin', '/menu/edit']))
+      {
+        this.$confirm('对不起，没有权限', {
+          type: 'error',
+          showClose: false,
+          showCancelButton: false
+        }).catch(error => {})
+      } else {
+        this.loading = true
+        menuEdit('post', data)
+        .then(resp => {
+          const {code, msg} = resp
+          if (code) {
+            this.$message.success('操作成功')
+            this.getData()
+          } else {
+            this.$message.error(msg)
+          }
+        })
+        .catch(error => {
+          console.log(error)
+        })
+        .finally(() => {
+          this.loading = false
+        })
+      }
     }
   }
 }

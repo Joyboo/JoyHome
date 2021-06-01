@@ -381,3 +381,47 @@ export function queryParams(data) {
 
   return _result.length ? _result.join('&') : ''
 }
+
+/**
+ * day天之前的时间戳
+ * @param day
+ * @returns {number}
+ */
+export function beforeDay(day) {
+  day = day === true ? -14 : day
+  const d = new Date()
+  d.setTime(d.getTime() + 3600 * 1000 * 24 * day)
+  return d.getTime()
+}
+
+export function ymd_to_date(ymd)
+{
+  if (isNaN(ymd)) {
+    return '<div style="color:red;" align="center">' + ymd + '</div>';
+  }
+
+  ymd = String(ymd);
+  return '20' + ymd.substr(0,2) + '-' + ymd.substr(2,2) + '-'  + ymd.substr(4,2);
+}
+
+/**
+ * 将一个对象/数组的属性递归赋值给另一个对象
+ * @author Joyboo
+ * @param origin
+ * @param data
+ * @returns {*}
+ */
+export function copyTo(origin, data) {
+  data = data || {}
+  for(let i in data)
+  {
+    let item = data[i]
+    if (typeof item == 'object')
+    {
+      origin[i] = copyTo(item)
+    } else {
+      origin[i] = item
+    }
+  }
+  return origin
+}

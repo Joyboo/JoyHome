@@ -30,7 +30,8 @@ export default {
         hidden: '0',
         breadcrumb: '1',
         affix: '0',
-        sort: 1
+        sort: 1,
+        noCache: 0
       },
 
       loading: false

@@ -7,6 +7,7 @@
   import {adminAdd} from '@/api/admin'
 
   export default {
+    name: 'adminadd',
     components: {
       AdminInfo
     },
@@ -22,7 +23,8 @@
           extension: {
             status: '1',
             gid: '', // 默认打开游戏
-            nid: 0, // 默认打开菜单
+            newnid: 0, // 默认打开菜单
+            nid: '',
             gameids: [],
             ntcids: []
           }

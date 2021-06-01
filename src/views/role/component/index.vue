@@ -16,44 +16,30 @@
         />
       </el-form-item>
 
-      <el-form-item>
-        <el-table
-          ref="AdminMenuForm"
+      <el-form-item label="权限列表">
+        <el-input
+          placeholder="输入关键字进行过滤,可选 id，name，path"
+          class="myCol"
+          v-model="filterText">
+        </el-input>
+
+        <el-tree
+          class="filter-tree myCol"
           :data="menuTable"
-          row-key="id"
-          :size="size"
-          border
-          :default-expand-all="true"
-          :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
-          @select="selectChange"
-          @select-all="selectAllChange"
-          @selection-change="selectionChangeHandler"
-        >
-          <!--复选框列-->
-          <el-table-column align="center" type="selection" width="55"></el-table-column>
-
-          <el-table-column align="left" prop="title" label="菜单名" />
-
-          <el-table-column align="left" prop="name" label="name" />
-
-          <el-table-column prop="path" label="path" />
-
-          <el-table-column prop="component" label="组件" />
-
-          <el-table-column prop="icon" align="center" label="图标" width="80">
-            <template slot-scope="scope">
-              <i :class="scope.row.icon" />
-            </template>
-          </el-table-column>
-
-          <el-table-column width="80" align="center" prop="hidden" label="是否隐藏">
-            <template slot-scope="scope">
-              <el-switch v-model="scope.row.hidden == '1'" />
-            </template>
-          </el-table-column>
-
-          <el-table-column width="80" align="center" prop="sort" label="排序" />
-        </el-table>
+          highlight-current
+          show-checkbox
+          default-expand-all
+          node-key="id"
+          :filter-node-method="filterNode"
+          ref="tree">
+          <!--自定义节点内容-->
+          <span class="custom-tree-node" slot-scope="{ node, data }">
+            <span>{{data.id}} - {{ data.title }}</span>
+            <span class="myContet">
+              {{data.path}}
+            </span>
+          </span>
+        </el-tree>
       </el-form-item>
 
       <button-tpl index="/role/index" @submit="submit" />
@@ -92,36 +78,34 @@
         default: {}
       }
     },
-    async mounted() {
+    mounted() {
       this.load = true
-      const resp = await menuIndex()
-      this.menuTable = resp.data
+      menuIndex()
+        .then(resp => {
+          const {data} = resp
+          this.menuTable = data
 
-      // 进入时需要默认选中
-      if (this.form.nids.length > 0)
-      {
-        const choose = this.form.nids
-        const checked = (list) => {
-          list.forEach(item => {
-            if (choose.indexOf('*') >= 0 || choose.indexOf(item.id) >= 0)
-            {
-              this.$nextTick(()=> {
-                this.$refs.AdminMenuForm.toggleRowSelection(item, true)
-              })
-            }
-            // 有子元素，递归遍历子元素
-            if (item.children)
-            {
-              checked(item.children)
-            }
-          })
+          this.setCheckNodes()
+        })
+        .catch(error => {})
+        .finally(() => {
+          this.load = false
+        })
+    },
+    watch: {
+      filterText(val) {
+        this.$refs.tree.filter(val);
+      },
+      'form.newnids': {
+        immediate: true,
+        handler: function (newVal, oldVal) {
+          this.setCheckNodes()
         }
-        checked(this.menuTable)
       }
-      this.load = false
     },
     data() {
       return {
+        filterText: '',
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入角色名称' }]
         },
@@ -129,74 +113,63 @@
       }
     },
     methods: {
+      // 允许按id,title和path匹配
+      filterNode(value, data) {
+        if (!value) return true;
+        return data.title.indexOf(value) !== -1 || data.path.indexOf(value) !== -1;
+      },
       submit() {
         this.$refs.RoleForm.validate((valid) => {
           if (!valid) {
             return false
           }
+          // 半选中状态为子节点有选中状态的节点，也需要授权
+          const halt = this.$refs.tree.getHalfCheckedKeys() || []
+          const checked = this.$refs.tree.getCheckedKeys() || []
+          let newnids = checked.concat(halt)
+          this.form.newnids = newnids
           this.$emit('submit')
         })
-
       },
-      /**
-       * 树形表格多选
-       * @param selection
-       * @param row
-       */
-      selectChange(selection, row) {
-        // 如果selection中存在row代表是选中，否则是取消选中
-        const findRow = val => {
-          return val.id === row.id
-        }
-        if (selection.find(findRow)) {
-          if (row.children) {
-            row.children.forEach(val => {
-              this.$refs.AdminMenuForm.toggleRowSelection(val, true)
-              selection.push(val)
-              if (val.children) {
-                this.selectChange(selection, val)
-              }
+      // 设置默认选中节点（需要menuTable数据获取完成且编辑时需要this.form.nids数据获取完成）
+      setCheckNodes() {
+        this.$nextTick(() => {
+          // console.log(this.$refs.tree, this.form.nids)
+          const admin = this.form.newnids.indexOf('*') >= 0
+          this.menuTable.forEach(item => {
+            this.$refs.tree.setChecked(item.id, admin, true)
+          })
+
+          if (!admin)
+          {
+            this.form.newnids.forEach(item => {
+              // 使用setCheckedKeys会选中子全部子节点,这里使用setChecked遍历选中单个节点
+              this.$refs.tree.setChecked(item, true)
             })
           }
-        } else {
-          let index = this.form.nids.indexOf(row.id)
-          if (index >= 0)
-          {
-            this.form.nids.splice(index, 1)
-          }
-          this.$refs.AdminMenuForm.toggleRowSelection(selection, row)
-        }
-      },
-      selectAllChange(selection) {
-        // 如果选中的数目与请求到的数目相同就选中子节点，否则就清空选中
-        if (selection && selection.length === this.menuTable.length) {
-          selection.forEach(val => {
-            this.selectChange(selection, val)
-          })
-        } else {
-          this.form.nids = [];
-          this.$refs.AdminMenuForm.clearSelection()
-        }
-      },
-      selectionChangeHandler(val) {
-        val.forEach(item => {
-          // 没有的就追加进去
-          if (typeof item.id != 'undefined'
-            && this.form.nids.indexOf(item.id) < 0
-            && this.form.nids.indexOf('*') < 0)
-          {
-            this.form.nids.push(item.id)
-          }
         })
-        // console.log('nids=>', this.form.nids)
       }
     }
   }
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .myCol {
     width: 50%;
+  }
+
+  .custom-tree-node {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    padding-right: 8px;
+
+    .myContet {
+      width: 200px;
+      text-align: left;
+    }
   }
 </style>

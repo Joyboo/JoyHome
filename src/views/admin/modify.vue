@@ -44,9 +44,9 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="默认打开菜单">
-        <menu-cascader :pid.sync="form.extension.nid" @setpid="setpid"></menu-cascader>
-      </el-form-item>
+      <!--<el-form-item label="默认打开菜单">
+        <menu-cascader :pid.sync="form.extension.newnid" @setpid="setpid"></menu-cascader>
+      </el-form-item>-->
 
       <el-footer>
         <el-button class="joy-btn" :size="size" type="primary" @click="submit">提 交</el-button>
@@ -128,19 +128,23 @@
           __password: '', // 旧密码
           realname: '',
           extension: {
-            nid: 0
+            newnid: 0,
+            nid: ''
           }
         }
       }
     },
     methods: {
       setpid(pid) {
-        this.form.extension.nid = pid
+        this.form.extension.newnid = pid
       },
       submit() {
         this.$refs.ModifyForm.validate((valid) => {
           if (!valid) {
             return false
+          }
+          if (typeof this.form.extension.newnid === 'object') {
+            this.form.extension.newnid = this.form.extension.newnid[this.form.extension.newnid.length - 1]
           }
           this.loading = true
           adminModify('post', this.form)

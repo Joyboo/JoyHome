@@ -7,6 +7,7 @@
   import {packageAdd} from '@/api/package'
 
   export default {
+    name: 'packageadd',
     components: {
       packageInfo
     },
@@ -88,7 +89,9 @@
               bgurl: '',
               btnurl: '',
               titurl: '',
-              storeurl: ''
+              storeurl: '',
+              lefturl: '',
+              righturl: ''
             },
             share: {
               img: ''

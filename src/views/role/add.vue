@@ -7,6 +7,7 @@
   import {roleAdd} from '@/api/role'
 
   export default {
+    name: 'roleadd',
     components: {
       RoleInfo
     },
@@ -16,7 +17,7 @@
         form: {
           name: '',
           summary: '',
-          nids: [],
+          newnids: [],
         }
       }
     },

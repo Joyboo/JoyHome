@@ -59,14 +59,16 @@ service.interceptors.response.use(
     const res = response.data
 
     // if the custom code is not 20000, it is judged as an error.
-    if (res.code !== 1) {
-      Message({
-        message: res.msg || 'Error',
-        type: 'error',
-        duration: 5 * 1000
+    if (res.code === 1000) {
+      MessageBox.confirm(res.data || 'ReLogin', 'Confirm logout', {
+        confirmButtonText: 'Re-Login',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
+        store.dispatch('user/resetToken').then(() => {
+          location.reload()
+        })
       })
-
-      return Promise.reject(new Error(res.msg || 'Error'))
     } else {
       return res
     }
