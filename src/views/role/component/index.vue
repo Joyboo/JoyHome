@@ -96,7 +96,7 @@
       filterText(val) {
         this.$refs.tree.filter(val);
       },
-      'form.nids': {
+      'form.newnids': {
         immediate: true,
         handler: function (newVal, oldVal) {
           this.setCheckNodes()
@@ -126,8 +126,8 @@
           // 半选中状态为子节点有选中状态的节点，也需要授权
           const halt = this.$refs.tree.getHalfCheckedKeys() || []
           const checked = this.$refs.tree.getCheckedKeys() || []
-          let nids = checked.concat(halt)
-          this.form.nids = nids
+          let newnids = checked.concat(halt)
+          this.form.newnids = newnids
           this.$emit('submit')
         })
       },
@@ -135,14 +135,14 @@
       setCheckNodes() {
         this.$nextTick(() => {
           // console.log(this.$refs.tree, this.form.nids)
-          const admin = this.form.nids.indexOf('*') >= 0
+          const admin = this.form.newnids.indexOf('*') >= 0
           this.menuTable.forEach(item => {
             this.$refs.tree.setChecked(item.id, admin, true)
           })
 
           if (!admin)
           {
-            this.form.nids.forEach(item => {
+            this.form.newnids.forEach(item => {
               // 使用setCheckedKeys会选中子全部子节点,这里使用setChecked遍历选中单个节点
               this.$refs.tree.setChecked(item, true)
             })

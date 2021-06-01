@@ -308,18 +308,18 @@
           .then(resp => {
             const {data} = resp
             // tp5 role模型已增加nids字段获取器,返回的是数组
-            const nids = data.data.nids || []
+            const newnids = data.data.newnids || []
             // console.log('nids ',rid, nids, data)
             this.$nextTick(() => {
 
-              const admin = nids.indexOf('*') >= 0
+              const admin = newnids.indexOf('*') >= 0
               this.menuTable.forEach(item => {
                 this.$refs.roletree.setChecked(item.id, admin, true)
               })
 
               if (!admin)
               {
-                nids.forEach(item => {
+                newnids.forEach(item => {
                   // 使用setCheckedKeys会选中子全部子节点,这里使用setChecked遍历选中单个节点
                   this.$refs.roletree.setChecked(item, true)
                 })

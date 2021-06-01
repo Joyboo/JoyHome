@@ -35,6 +35,7 @@
       @pagination="pagination"
     />
     <!-- todo 加饼状图-->
+<!--    <pie-chart></pie-chart>-->
   </div>
 </template>
 
@@ -45,14 +46,15 @@
   import {refundIndex} from "@/api/google_refund"
   import Pagination from '@/components/Pagination'
   import LayoutFilter from '@/components/LayoutFilter'
-  import {beforeDay} from "@/utils";
+  // import PieChart from '@/components/Charts/PieChart'
 
   export default {
     name: 'google_refundindex',
     components: {
       TableIndex,
       Pagination,
-      LayoutFilter
+      LayoutFilter,
+      // PieChart
     },
     computed: {
       ...mapGetters(['size']),
