@@ -130,9 +130,14 @@ const actions = {
   generateRoutes({ commit, state }, roles) {
     return new Promise((resolve, reject) => {
       leftmenu({ pid: state.topid }).then(response => {
-        const { data } = response
-        commit('SET_ROUTES', data)
-        resolve(data)
+        const { code, msg, data } = response
+        if (!code)
+        {
+          reject(msg)
+        } else {
+          commit('SET_ROUTES', data)
+          resolve(data)
+        }
       }).catch(error => {
         // console.log('getInfo catch', error)
         reject(error)
@@ -146,9 +151,14 @@ const actions = {
   getTopMenu({ commit }) {
     return new Promise((resolve, reject) => {
       topmenu().then(response => {
-        const { data } = response
-        commit('SET_TOPMENU', data)
-        resolve(data)
+        const { code, msg, data } = response
+        if (!code)
+        {
+          reject(msg)
+        } else {
+          commit('SET_TOPMENU', data)
+          resolve(data)
+        }
       }).catch(error => {
         // console.log('getInfo catch', error)
         reject(error)
