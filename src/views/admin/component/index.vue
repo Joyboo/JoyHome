@@ -199,13 +199,14 @@
         this.setChecked(this.form.rid)
 
         // 游戏分配穿梭框
-        this.gamelist.forEach((name, index) => {
+        for(let j in this.gamelist)
+        {
           this.gametransfer.push({
-            key: index,
-            label: name,
+            key: j,
+            label: this.gamelist[j],
             disabled: false
           })
-        })
+        }
 
       } catch (e) {
         console.error("mounted error=>", e)
