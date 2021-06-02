@@ -50,6 +50,7 @@
         <el-date-picker
           v-model="date"
           :format="format"
+          unlink-panels
           :type="query.datetype || 'daterange'"
           range-separator="至"
           start-placeholder="开始"
