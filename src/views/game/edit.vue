@@ -125,7 +125,7 @@
 <script>
   import {gameEdit, gkey} from '@/api/game'
   import gameInfo from './component'
-  import {copyTo} from "@/utils";
+  import {closeTab, copyTo} from "@/utils";
   import {packageChildOption} from "@/api/package";
   import {uploadHttpRequest} from "@/api/upload";
   import {mapGetters} from "vuex";
@@ -235,7 +235,7 @@
             const { code } = resp
             if (code) {
               this.$message.success('操作成功')
-              this.$router.push({ path: '/game/index' })
+              closeTab(this.$route.path, '/game/index')
             } else {
               this.$message.error('操作失败')
             }

@@ -5,6 +5,7 @@
 <script>
   import RoleInfo from './component'
   import {roleAdd} from '@/api/role'
+  import {closeTab} from "@/utils";
 
   export default {
     name: 'roleadd',
@@ -33,7 +34,7 @@
             if (code)
             {
               this.$message.success(msg || '操作成功')
-              this.$router.push({ path: '/role/index' })
+              closeTab(this.$route.path, '/role/index')
             } else {
               this.$message.error(msg || '操作失败')
             }

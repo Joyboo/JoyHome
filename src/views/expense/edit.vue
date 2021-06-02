@@ -50,6 +50,7 @@
   import {packageindex} from "@/api/package";
   import {mapGetters} from "vuex";
   import ButtonTpl from '@/components/ButtonTpl'
+  import {closeTab} from "@/utils";
 
   export default {
     components: {
@@ -93,7 +94,7 @@
             if (code)
             {
               this.$message.success(msg)
-              this.$router.push({ path: '/exponse/index' })
+              closeTab(this.$route.path, '/exponse/index')
             } else {
               this.$message.error(msg || 'add error')
             }

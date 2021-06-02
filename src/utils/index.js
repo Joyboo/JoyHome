@@ -1,6 +1,8 @@
 /**
  * Created by PanJiaChen on 16/11/18.
  */
+import router from '@/router'
+import store from '@/store'
 
 /**
  * Parse the time to string
@@ -425,4 +427,24 @@ export function copyTo(origin, data) {
     }
   }
   return origin
+}
+
+/**
+ * 关闭tab
+ * @author Joyboo
+ * @param path 关闭谁
+ * @param to 去哪里
+ */
+export function closeTab(path, to) {
+
+  const tab = store.getters.visitedViews
+  const view = tab.find(item => item.path == path)
+
+  store.dispatch('tagsView/delView', view)
+    .then(({ visitedViews }) => {
+      if (to) {
+        // 用replace，走了就不要回
+        router.replace({path: to})
+      }
+    })
 }

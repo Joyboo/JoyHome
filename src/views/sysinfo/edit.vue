@@ -7,7 +7,7 @@
 <script>
   import Sysinfo from './component'
   import {sysinfoEdit} from '@/api/sysinfo'
-  import {copyTo} from "@/utils";
+  import {closeTab, copyTo} from "@/utils";
 
   export default {
     components: {
@@ -48,7 +48,7 @@
             if (code)
             {
               this.$message.success(msg)
-              this.$router.push({ path: '/sysinfo/index' })
+              closeTab(this.$route.path, '/sysinfo/index')
             } else {
               this.$message.error(msg || 'add error')
             }

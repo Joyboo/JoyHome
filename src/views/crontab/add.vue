@@ -7,6 +7,7 @@
 <script>
   import CrontabInfo from './component'
   import {crontabAdd} from '@/api/crontab'
+  import {closeTab} from "@/utils";
 
   export default {
     name: 'crontabadd',
@@ -44,7 +45,7 @@
             if (code)
             {
               this.$message.success(msg)
-              this.$router.push({ path: '/crontab/index' })
+              closeTab(this.$route.path, '/crontab/index')
             } else {
               this.$message.error(msg || 'add error')
             }

@@ -5,6 +5,7 @@
 <script>
 import gameInfo from './component/index'
 import { gameAdd } from '@/api/game'
+import {closeTab} from "@/utils";
 
 export default {
   name: 'gameadd',
@@ -56,7 +57,7 @@ export default {
           const { code } = resp
           if (code) {
             this.$message.success('操作成功')
-            this.$router.push({ path: '/game/index' })
+            closeTab(this.$route.path, '/game/index')
           } else {
             this.$message.error('操作失败')
           }

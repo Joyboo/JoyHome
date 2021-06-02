@@ -7,6 +7,7 @@
 <script>
   import WhitelistInfo from './component'
   import {whitelistAdd} from '@/api/whitelist'
+  import {closeTab} from "@/utils";
 
   export default {
     name: 'whitelistadd',
@@ -32,7 +33,7 @@
             if (code)
             {
               this.$message.success(msg)
-              this.$router.push({ path: '/whitelist/index' })
+              closeTab(this.$route.path, '/whitelist/index')
             } else {
               this.$message.error(msg || 'add error')
             }

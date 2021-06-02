@@ -5,7 +5,7 @@
 <script>
   import AdminInfo from './component'
   import {adminEdit} from '@/api/admin'
-  import {copyTo} from '@/utils'
+  import {closeTab, copyTo} from '@/utils'
 
   export default {
     components: {
@@ -54,7 +54,7 @@
             if (code)
             {
               this.$message.success(msg)
-              this.$router.push({ path: '/admin/index' })
+              closeTab(this.$route.path, '/admin/index')
             } else {
               this.$message.error(msg || 'add error')
             }

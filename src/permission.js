@@ -8,7 +8,10 @@ import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['/login', '/auth-redirect', '/redirect', '/404', '/401', '/icon'] // no redirect whitelist
+// 未登录时的白名单路由
+const whiteList = ['/login', '/auth-redirect', '/redirect', '/404']
+// 已登录时的白名单路由
+const loginWhiteList = ['/404', '/401', '/icon', '/', '/dashboard', 'dashboard', '/auth-redirect', '/redirect']
 
 router.beforeEach(async(to, from, next) => {
   // start progress bar
@@ -34,7 +37,7 @@ router.beforeEach(async(to, from, next) => {
         // 超级管理员
         const admin = roles.indexOf('admin') >= 0
         // add by Joyboo 权限验证
-        if (admin || roles.indexOf(to.path) >= 0 || whiteList.indexOf(to.path) >= 0)
+        if (admin || roles.indexOf(to.path) >= 0 || loginWhiteList.indexOf(to.path) >= 0)
         {
           next()
         }

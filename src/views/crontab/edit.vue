@@ -7,6 +7,7 @@
 <script>
   import CrontabInfo from './component'
   import {crontabEdit} from '@/api/crontab'
+  import {closeTab} from "@/utils";
 
   export default {
     components: {
@@ -55,7 +56,7 @@
             const {code, msg} = resp
             if (code) {
               this.$message.success('操作成功')
-              this.$router.push({ path: '/crontab/index' })
+              closeTab(this.$route.path, '/crontab/index')
             } else {
               this.$message.error(msg || '操作失败')
             }

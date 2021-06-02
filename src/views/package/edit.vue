@@ -5,7 +5,7 @@
 <script>
 import packageInfo from './component'
 import { packageEdit } from '@/api/package'
-import {copyTo} from "@/utils";
+import {closeTab, copyTo} from "@/utils";
 
 export default {
   name: 'Edit',
@@ -126,7 +126,7 @@ export default {
           const { code, msg } = resp
           if (code) {
             this.$message.success('操作成功')
-            this.$router.push({ path: '/package/index' })
+            closeTab(this.$route.path, '/package/index')
           } else {
             this.$message.error(msg || '操作失败')
           }

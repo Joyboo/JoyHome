@@ -5,6 +5,7 @@
 <script>
   import AdminInfo from './component'
   import {adminAdd} from '@/api/admin'
+  import {closeTab} from "@/utils";
 
   export default {
     name: 'adminadd',
@@ -41,7 +42,7 @@
             if (code)
             {
               this.$message.success(msg)
-              this.$router.push({ path: '/admin/index' })
+              closeTab(this.$route.path, '/admin/index')
             } else {
               this.$message.error(msg || 'add error')
             }

@@ -10,6 +10,7 @@
 <script>
 import menuInfo from './component'
 import { menuAdd } from '@/api/menu'
+import {closeTab} from "@/utils";
 
 export default {
   name: 'menuadd',
@@ -47,7 +48,7 @@ export default {
           const { code } = resp
           if (code) {
             this.$message.success('操作成功')
-            this.$router.push({ path: '/menu/index' })
+            closeTab(this.$route.path, '/menu/index')
           } else {
             this.$message.error('操作失败')
           }

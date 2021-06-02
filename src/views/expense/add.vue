@@ -103,6 +103,7 @@
   import {expenseAdd} from '@/api/expense'
   import {uploadJb} from "@/api/upload";
   import {export_table_to_excel_joyboo} from '@/vendor/Export2Excel'
+  import {closeTab} from "@/utils";
 
   export default {
     name: 'expenseadd',
@@ -139,7 +140,7 @@
             if (code)
             {
               this.$message.success(msg)
-              this.$router.push({ path: '/expense/index' })
+              closeTab(this.$route.path, '/expense/index')
             } else {
               this.$message.error(msg || 'add error')
             }
