@@ -204,7 +204,7 @@
           ,{
             key: 'extension',
             text: '区服id',
-            width: '100',
+            width: '80',
             template: (index, row) => {
               if (!index) {
                 return '';
@@ -236,7 +236,7 @@
           ,{
             key: 'pf',
             text: '支付平台',
-            width: '130',
+            width: '100',
             template: (index, row) => {
               return this.paypf[index] || index;
             }
@@ -248,6 +248,38 @@
           ,{
             key: 'utime',
             text: '支付时间'
+          }
+          ,{
+            key: 'os',
+            text: '系统',
+            width: '100',
+            template: (index, row) => {
+              if (index == 0)
+              {
+                return '<span style="color: #00FF7F;">安卓</span>'
+              }
+              else if (index == 1)
+              {
+                return '<span style="color: #1E90FF;">苹果</span>'
+              }
+              else {
+                return index
+              }
+            }
+          }
+          ,{
+            key: 'osver',
+            width: '100',
+            text: '系统版本'
+          }
+          ,{
+            key: 'sdkver',
+            width: '100',
+            text: 'SDK版本'
+          }
+          ,{
+            key: 'exmodel',
+            text: '手机品牌及型号'
           }
         ],
 
@@ -270,6 +302,38 @@
           ,{
             key: 'exmodel',
             text: '设备型号'
+          }
+          ,{
+            key: 'os',
+            text: '系统',
+            width: '100',
+            template: (index, row) => {
+              if (index == 0)
+              {
+                return '<span style="color: #00FF7F;">安卓</span>'
+              }
+              else if (index == 1)
+              {
+                return '<span style="color: #1E90FF;">苹果</span>'
+              }
+              else {
+                return index
+              }
+            }
+          }
+          ,{
+            key: 'osver',
+            width: '100',
+            text: '系统版本'
+          }
+          ,{
+            key: 'sdkver',
+            width: '100',
+            text: 'SDK版本'
+          }
+          ,{
+            key: 'exmodel',
+            text: '手机品牌及型号'
           }
           ,{
             key: 'ip',
