@@ -147,7 +147,16 @@ export function export_table_to_excel({id, bookType, type, filename}) {
 }
 
 export function export_table_to_excel_joyboo({id, bookType, filename}) {
-  var el = document.getElementById(id)
+  var el = document.getElementById(id).cloneNode(true)
+  // table fixed原理是生成一个新的table，需要把该元素去除，否则导入会有两份数据
+  for(let i in el.childNodes)
+  {
+    if (typeof el.childNodes[i].className != 'undefined' && el.childNodes[i].className.indexOf('el-table__fixed') >= 0)
+    {
+      el.removeChild(el.childNodes[i])
+    }
+  }
+
   /* 从表生成工作簿对象 */
   var wb = XLSX.utils.table_to_book(el, {raw:true});
   /* 获取二进制字符串作为输出 */
