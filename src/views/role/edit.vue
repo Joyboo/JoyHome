@@ -26,6 +26,10 @@
       roleEdit('get', {id: this.form.id})
         .then(resp => {
           const {code, msg, data} = resp
+          if (!code)
+          {
+            return this.$message.error(msg)
+          }
           this.form = data.data
         })
         .catch(error => {

@@ -67,7 +67,8 @@ export default {
   computed: {
     ...mapGetters(['size'])
   },
-  mounted() {
+  // 菜单列表没有按钮主动搜索，每次切换回来就更新一次数据
+  activated() {
     this.getData()
   },
   data() {

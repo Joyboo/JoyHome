@@ -49,7 +49,7 @@
   // import PieChart from '@/components/Charts/PieChart'
 
   export default {
-    name: 'google_refundindex',
+    name: 'googlerefundindex',
     components: {
       TableIndex,
       Pagination,

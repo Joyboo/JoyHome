@@ -69,23 +69,24 @@
     computed: {
       ...mapGetters(['size', 'filtergamelist']),
     },
-    mounted() {
+    async mounted() {
       this.loading = true
-      adminModify('get')
-        .then(resp => {
-          const {code, msg, data} = resp
-          for (let i in data.data)
-          {
-            // 追加，不要覆盖
-            this.form[i] = data.data[i]
-          }
-        })
-        .catch(error => {
-          this.$message.error(error)
-        })
-        .finally(() => {
-          this.loading = false
-        })
+      try {
+        await this.$store.dispatch('filter/gameInfo')
+        const {code, msg, data} = await adminModify('get')
+        if (!code)
+        {
+          return this.$message.error(msg)
+        }
+        for (let i in data.data)
+        {
+          // 追加，不要覆盖
+          this.form[i] = data.data[i]
+        }
+      } catch (e) {
+        this.$message.error(e)
+      }
+      this.loading = false
     },
     data() {
       const _this = this

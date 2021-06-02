@@ -45,7 +45,11 @@ export default {
     this.form.id = this.$route.query.id
     menuEdit('get', { id: this.form.id })
       .then(resp => {
-        const { code, data } = resp
+        const { code, msg, data } = resp
+        if (!code)
+        {
+          return this.$message.error(msg)
+        }
         this.form = data.data
       }).catch(error => {
         this.$message.error(error)

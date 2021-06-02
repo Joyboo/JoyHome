@@ -111,7 +111,12 @@ export default {
     this.form.id = this.$route.query.id
     packageEdit('get', { id: this.form.id })
       .then(resp => {
-        this.form = copyTo(this.form, resp.data.data)
+        const {code, msg, data} = resp
+        if (!code)
+        {
+          return this.$message.error(msg)
+        }
+        this.form = copyTo(this.form, data.data)
       })
       .finally(() => {
         this.loading = false

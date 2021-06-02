@@ -119,8 +119,8 @@ export default {
       loading: false
     }
   },
-  mounted() {
-    this.$store.dispatch('filter/gameInfo')
+  async mounted() {
+    await this.$store.dispatch('filter/gameInfo')
     this.getData()
   },
   methods: {
@@ -133,8 +133,13 @@ export default {
       this.loading = true
       gameIndex(this.search)
         .then(resp => {
-          this.tableData = resp.data.data
-          this.total = resp.data.totals
+          const {code, msg, data} = resp
+          if (!code)
+          {
+            return this.$message.error(msg)
+          }
+          this.tableData = data.data
+          this.total = data.totals
         })
         .catch(error => {
           this.$message.error(error)

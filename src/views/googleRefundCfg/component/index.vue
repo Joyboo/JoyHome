@@ -20,7 +20,7 @@
         <el-input v-model="form.file" clearable />
       </el-form-item>
 
-      <button-tpl index="/google_refund_cfg/index" @submit="submit" ></button-tpl>
+      <button-tpl index="/googleRefundCfg/index" @submit="submit" ></button-tpl>
     </el-form>
   </div>
 </template>
@@ -64,11 +64,5 @@
 </script>
 
 <style scoped>
-  .selectSlotRight {
-    float: right;
-    color: #8492a6;
-    font-size: 13px;
-    position: relative;
-    right:15px;
-  }
+
 </style>

@@ -26,6 +26,7 @@
   import LayoutFilter from '@/components/LayoutFilter'
   import ExportData from '@/components/ExportExcel'
   import RoiComponent from './component/roi'
+  import {mapGetters} from "vuex";
 
   export default {
     name: 'statisticsroi',
@@ -33,6 +34,9 @@
       LayoutFilter,
       ExportData,
       RoiComponent
+    },
+    computed: {
+      ...mapGetters(['size', 'userinfo'])
     },
     data() {
 
@@ -47,6 +51,12 @@
           endtime: true
         },
         tableData: []
+      }
+    },
+    mounted() {
+      if (this.userinfo.extension.gid != '')
+      {
+        this.search()
       }
     },
     methods: {

@@ -5,7 +5,7 @@
     <table-data
       :loading="loading"
       :data="tableData"
-      pathname="google_refund_cfg"
+      pathname="googleRefundCfg"
       @search="search"
     >
       <el-table-column align="center" width="80" prop="id" label="ID" />
@@ -44,7 +44,7 @@
   import {googlerefountIndex} from '@/api/googlerefundcfg'
 
   export default {
-    name: 'google_refund_cfgindex',
+    name: 'googlerefundcfgindex',
     computed: {
       ...mapGetters(['size', 'gamelist'])
     },

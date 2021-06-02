@@ -16,7 +16,11 @@
       try {
         this.form.id = this.$route.query.id
 
-        const {data} = await adminEdit('get', {id: this.form.id})
+        const {code, msg, data} = await adminEdit('get', {id: this.form.id})
+        if (!code)
+        {
+          return this.$message.error(msg)
+        }
         this.form = copyTo(this.form, data.data)
       } catch (e) {
         console.error(e)

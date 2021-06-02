@@ -8,7 +8,7 @@
   import {closeTab} from "@/utils";
 
   export default {
-    name: 'google_refund_cfgadd',
+    name: 'googleRefundCfgadd',
     components: {
       GoogleRefundCfgInfo
     },
@@ -30,7 +30,7 @@
             const {code, msg, data} = resp
             if (code) {
               this.$message.success('操作成功')
-              closeTab(this.$route.path, '/google_refund_cfg/index')
+              closeTab(this.$route.path, '/googleRefundCfg/index')
             } else {
               this.$message.error(msg || '操作失败')
             }

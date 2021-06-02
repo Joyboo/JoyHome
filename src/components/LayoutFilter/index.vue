@@ -11,8 +11,7 @@
             :label="item.label"
             :value="item.value"
           >
-            <span style="float: left">{{ item.label }}</span>
-            <span class="selectSlotRight">id:{{ item.value }}</span>
+            {{ item.label }} (id:{{ item.value }})
           </el-option>
         </el-select>
       </el-form-item>
@@ -25,8 +24,7 @@
             :label="item.name"
             :value="item.pkgbnd"
           >
-            <span style="float: left">{{ item.name }}</span>
-            <span class="selectSlotRight">id:{{ item.id }}</span>
+            {{ item.name }} (id:{{ item.id }})
           </el-option>
         </el-select>
       </el-form-item>

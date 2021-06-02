@@ -181,8 +181,9 @@
       }
     },
     async mounted() {
+      this.load = true
       try {
-        this.load = true
+
         await this.$store.dispatch('filter/gameInfo')
 
         const {data} = await rolelist()
@@ -206,11 +207,10 @@
           })
         })
 
-        this.load = false
-
       } catch (e) {
         console.error("mounted error=>", e)
       }
+      this.load = false
     },
     /* 侦听器 */
     watch: {

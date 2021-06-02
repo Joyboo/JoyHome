@@ -28,6 +28,10 @@
       googlerefountEdit('get', {id: this.form.id})
         .then(resp => {
           const {code, msg, data} = resp
+          if (!code)
+          {
+            return this.$message.error(msg)
+          }
           this.form = data.data
           if (this.form.gameid != '')
           {
@@ -49,7 +53,7 @@
             const {code, msg, data} = resp
             if (code) {
               this.$message.success('操作成功')
-              closeTab(this.$route.path, '/google_refund_cfg/index')
+              closeTab(this.$route.path, '/googleRefundCfg/index')
             } else {
               this.$message.error(msg || '操作失败')
             }

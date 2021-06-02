@@ -111,8 +111,8 @@ export default {
       tableData: []
     }
   },
-  mounted() {
-    this.$store.dispatch('filter/gameInfo')
+  async mounted() {
+    await this.$store.dispatch('filter/gameInfo')
     this.getData()
   },
   methods: {

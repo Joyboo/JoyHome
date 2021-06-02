@@ -18,7 +18,12 @@
       this.form.id = this.$route.query.id
       whitelistEdit('get', {id: this.form.id})
         .then(resp => {
-          this.form = resp.data.data
+          const {code, msg, data} = resp
+          if (!code)
+          {
+            return this.$message.error(msg)
+          }
+          this.form = data.data
         })
         .finally(() => {
           this.loading = false

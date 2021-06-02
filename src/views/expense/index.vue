@@ -38,7 +38,6 @@
   import Pagination from '@/components/Pagination'
   import LayoutFilter from '@/components/LayoutFilter'
   import {expenseIndex} from "@/api/expense";
-  import {beforeDay} from "@/utils";
 
   export default {
     name: 'expenseindex',

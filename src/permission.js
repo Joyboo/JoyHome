@@ -13,6 +13,23 @@ const whiteList = ['/login', '/auth-redirect', '/redirect', '/404']
 // 已登录时的白名单路由
 const loginWhiteList = ['/404', '/401', '/icon', '/', '/dashboard', 'dashboard', '/auth-redirect', '/redirect']
 
+// add by Joyboo 嵌套2级以上菜单时，处理多个router-view容器keep-alive不生效的问题，参考：https://blog.csdn.net/qq_41912398/article/details/109576635
+const handleKeepAlive = (to) => {
+  if (to.matched && to.matched.length > 2)
+  {
+    for (let i = 0; i < to.matched.length; i++)
+    {
+      const element = to.matched[i]
+      // 注意keep-alive的include匹配的是组件的name值而非router的name
+      if (element.components.default.name === 'RouterView')
+      {
+        to.matched.splice(i, 1)
+        handleKeepAlive(to)
+      }
+    }
+  }
+}
+
 router.beforeEach(async(to, from, next) => {
   // start progress bar
   NProgress.start()
@@ -39,6 +56,9 @@ router.beforeEach(async(to, from, next) => {
         // add by Joyboo 权限验证
         if (admin || roles.indexOf(to.path) >= 0 || loginWhiteList.indexOf(to.path) >= 0)
         {
+
+          handleKeepAlive(to)
+
           next()
         }
         else {

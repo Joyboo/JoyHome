@@ -71,19 +71,25 @@
         }
       }
     },
-    mounted() {
+    async mounted() {
       this.loading = true
-      this.$store.dispatch('filter/gameInfo')
-      const id = this.$route.query.id
-      expenseEdit('get', {id: id})
-        .then(resp => {
-          const {data} = resp
-          this.form = data.data
-          this.chgGame(this.form.gameid)
-        })
-        .finally(() => {
-          this.loading = false
-        })
+
+      try{
+        await this.$store.dispatch('filter/gameInfo')
+        const id = this.$route.query.id
+        const {code, msg, data} = await expenseEdit('get', {id: id})
+
+        if (!code)
+        {
+          return this.$message.error(msg)
+        }
+        this.form = data.data
+        this.chgGame(this.form.gameid)
+
+      } catch (e) {
+        this.$message.error(e)
+      }
+      this.loading = false
     },
     methods: {
       submit() {

@@ -26,7 +26,6 @@
 import { statistics } from '@/api/statistics'
 import LayoutFilter from '@/components/LayoutFilter'
 import { mapGetters } from 'vuex'
-import {beforeDay} from '@/utils'
 import ExportData from '@/components/ExportExcel'
 import DailyComponent from './component/daily'
 
@@ -38,7 +37,7 @@ export default {
     DailyComponent
   },
   computed: {
-    ...mapGetters(['size'])
+    ...mapGetters(['size', 'userinfo'])
   },
   data() {
     return {
@@ -52,6 +51,12 @@ export default {
         endtime: true
       },
       tableData: []
+    }
+  },
+  mounted() {
+    if (this.userinfo.extension.gid != '')
+    {
+      this.search()
     }
   },
   methods: {
