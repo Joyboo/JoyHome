@@ -36,7 +36,7 @@
       PaykeepComponent
     },
     computed: {
-      ...mapGetters(['size', 'userinfo'])
+      ...mapGetters(['size'])
     },
     data() {
 
@@ -51,12 +51,6 @@
           endtime: true
         },
         tableData: []
-      }
-    },
-    mounted() {
-      if (this.userinfo.extension.gid != '')
-      {
-        this.search()
       }
     },
     methods: {

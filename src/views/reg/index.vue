@@ -64,7 +64,7 @@
     },
     directives: { permission },
     computed: {
-      ...mapGetters(['size', 'userinfo'])
+      ...mapGetters(['size'])
     },
     data() {
       return {
@@ -116,12 +116,6 @@
             width:'110'
           }
         ]
-      }
-    },
-    mounted() {
-      if (this.userinfo.extension.gid != '')
-      {
-        this.search()
       }
     },
     methods: {

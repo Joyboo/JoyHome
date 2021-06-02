@@ -49,15 +49,16 @@
     computed: {
       ...mapGetters(['size', 'gamelist'])
     },
-    mounted() {
-      this.search()
-    },
     methods: {
       search() {
         this.loading = true
         expenseIndex(this.query)
           .then(resp => {
             const {code, msg, data} = resp
+            if (!code)
+            {
+              return this.$message.error(msg)
+            }
             this.tableData = data.data || []
             this.total = data.totals || 0
           })

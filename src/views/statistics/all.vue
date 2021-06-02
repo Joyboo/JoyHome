@@ -49,7 +49,6 @@
   import TableIndex from '@/components/TableData'
   import ExportData from '@/components/ExportExcel'
   import { mapGetters } from 'vuex'
-  import {beforeDay} from '@/utils'
   import DailyComponent from './component/daily'
   import LtvComponent from './component/ltv'
   import RegkeepComponent from './component/regkeep'
@@ -95,9 +94,6 @@
           daily: '游戏日报'
         }
       }
-    },
-    mounted() {
-      this.search()
     },
     methods: {
       checkPermission,

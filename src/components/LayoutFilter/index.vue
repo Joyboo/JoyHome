@@ -114,18 +114,6 @@ export default {
   mounted() {
     this.$store.dispatch('filter/gameInfo')
 
-    if (this.defaultGid != '')
-    {
-      if (typeof this.query.gameid == 'object' && this.query.gameid.indexOf(this.defaultGid) < 0)
-      {
-        this.query.gameid.push(this.defaultGid)
-      }
-      else if (typeof this.query.gameid == 'string' && this.query.gameid == '')
-      {
-        this.query.gameid = this.defaultGid
-      }
-    }
-
     // 默认时间
     if (this.isDate)
     {
@@ -136,6 +124,21 @@ export default {
       } else {
         this.date = beforeDay(this.query.begintime || this.query.endTime)
       }
+    }
+
+    if (this.defaultGid != '')
+    {
+      if (typeof this.query.gameid == 'object' && this.query.gameid.indexOf(this.defaultGid) < 0)
+      {
+        this.query.gameid.push(this.defaultGid)
+      }
+      else if (typeof this.query.gameid == 'string' && this.query.gameid == '')
+      {
+        this.query.gameid = this.defaultGid
+      }
+
+      // 等待侦听器执行完成
+      setTimeout(() => this.search(), 500)
     }
   },
   watch: {

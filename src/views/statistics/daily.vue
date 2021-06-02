@@ -37,7 +37,7 @@ export default {
     DailyComponent
   },
   computed: {
-    ...mapGetters(['size', 'userinfo'])
+    ...mapGetters(['size'])
   },
   data() {
     return {
@@ -51,12 +51,6 @@ export default {
         endtime: true
       },
       tableData: []
-    }
-  },
-  mounted() {
-    if (this.userinfo.extension.gid != '')
-    {
-      this.search()
     }
   },
   methods: {

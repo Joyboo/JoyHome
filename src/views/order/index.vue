@@ -75,7 +75,6 @@
 
 <script>
   import LayoutFilter from '@/components/LayoutFilter'
-  import {beforeDay} from "@/utils";
   import TableIndex from '@/components/TableData'
   import {mapGetters} from "vuex";
   import {orderIndex} from '@/api/order'
@@ -232,15 +231,16 @@
         ]
       }
     },
-    mounted() {
-      this.search()
-    },
     methods: {
       search() {
         this.loading = true
         orderIndex(this.query)
           .then(resp => {
-            const {data} = resp
+            const {code, msg, data} = resp
+            if (!code)
+            {
+              return this.$message.error(msg)
+            }
             this.tableData = data.data || []
             this.total = data.totals || 0
           })

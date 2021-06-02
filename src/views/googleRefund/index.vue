@@ -172,9 +172,6 @@
         tableData: []
       }
     },
-    mounted() {
-      this.search()
-    },
     methods: {
       search() {
         this.loading = true

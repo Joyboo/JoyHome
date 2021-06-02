@@ -66,15 +66,16 @@
         total: 0
       }
     },
-    mounted() {
-      this.search()
-    },
     methods: {
       search() {
         this.loading = true
         googlerefountIndex(this.query)
           .then(resp => {
             const {code, msg, data} = resp
+            if (!code)
+            {
+              return this.$message.error(msg)
+            }
             this.tableData = data.data || []
             this.total = data.totals || 0
           })

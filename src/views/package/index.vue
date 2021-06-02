@@ -111,10 +111,6 @@ export default {
       tableData: []
     }
   },
-  async mounted() {
-    await this.$store.dispatch('filter/gameInfo')
-    this.getData()
-  },
   methods: {
     pagination({ page, limit }) {
       this.search.cPage = page
