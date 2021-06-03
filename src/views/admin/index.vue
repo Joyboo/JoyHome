@@ -72,6 +72,12 @@
         </template>
       </el-table-column>
 
+      <template #btn="btn">
+          <el-button :size="size" type="warning" style="margin: 0 2px;" plain
+                     v-permission="['admin', '/admin/gettoken']"
+                     @click="getAdminToken(btn.row)"
+          >token</el-button>
+        </template>
     </table-data>
 
     <pagination
@@ -87,11 +93,13 @@
   import TableData from '@/components/TableData/info'
   import Pagination from '@/components/Pagination'
   import {rolelist} from '@/api/role'
-  import {adminIndex} from '@/api/admin'
-  import {mapGetters} from "vuex";
+  import {adminIndex, adminToken} from '@/api/admin'
+  import {mapGetters} from "vuex"
+  import permission from '@/directive/permission'
 
   export default {
     name: 'adminindex',
+    directives: { permission },
     components: {
       TableData,
       Pagination
@@ -136,6 +144,10 @@
         adminIndex(this.query)
           .then(resp => {
             const {code, msg, data} = resp
+            if (!code)
+            {
+              return this.$message.error(msg)
+            }
             this.data = data.data || []
             this.total = data.totals || 0
           })
@@ -145,6 +157,24 @@
           .finally(() => {
             this.loading = false
           })
+      },
+      getAdminToken(row) {
+        this.loading = true
+        adminToken({id: row.id})
+        .then(resp => {
+          const {code, msg, data} = resp
+          if (!code)
+          {
+            return this.$message.error(msg)
+          }
+          this.$alert(data, row.realname + ' 的token为：', {showClose: false})
+        })
+        .catch(error => {
+          this.$message.error(error)
+        })
+        .finally(() => {
+          this.loading = false
+        })
       },
       pagination({ page, limit }) {
         this.query.cPage = page

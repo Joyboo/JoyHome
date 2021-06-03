@@ -16,7 +16,7 @@
         <template slot-scope="scope">
 
           <!--按钮插槽-->
-          <slot name="btn"></slot>
+          <slot name="btn" :index="scope.$index" :row="scope.row"></slot>
 
           <el-button type="primary"
                      v-if="checkPermission(['admin', '/' + pathname + '/edit'])"
