@@ -149,19 +149,20 @@ const actions = {
 
   getTopMenu({ commit }) {
     return new Promise((resolve, reject) => {
-      leftmenu({pid: 0}).then(response => {
-        const { code, msg, data } = response
-        if (!code)
-        {
-          reject(msg)
-        } else {
-          commit('SET_MENU', data)
-          resolve(data)
-        }
-      }).catch(error => {
-        // console.log('getInfo catch', error)
-        reject(error)
-      })
+      leftmenu({pid: 0})
+        .then(({ code, msg, data }) => {
+          if (!code)
+          {
+            reject(msg)
+          } else {
+            commit('SET_MENU', data)
+            resolve(data)
+          }
+        })
+        .catch(error => {
+          // console.log('getInfo catch', error)
+          reject(error)
+        })
     })
   }
 }

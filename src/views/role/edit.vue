@@ -24,8 +24,7 @@
     mounted() {
       this.form.id = this.$route.query.id
       roleEdit('get', {id: this.form.id})
-        .then(resp => {
-          const {code, msg, data} = resp
+        .then(({code, msg, data}) => {
           if (!code)
           {
             return this.$message.error(msg)
@@ -46,8 +45,7 @@
       submit() {
         this.loading = true
         roleEdit('post', this.form)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg}) => {
             if (code)
             {
               this.$message.success(msg || '操作成功')

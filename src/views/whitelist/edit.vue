@@ -17,8 +17,7 @@
       this.loading = true
       this.form.id = this.$route.query.id
       whitelistEdit('get', {id: this.form.id})
-        .then(resp => {
-          const {code, msg, data} = resp
+        .then(({code, msg, data}) => {
           if (!code)
           {
             return this.$message.error(msg)
@@ -44,8 +43,7 @@
       submit() {
         this.loading = true
         whitelistEdit('post', this.form)
-          .then(resp => {
-            const {code, msg} = resp
+          .then(({code, msg}) => {
             if (code)
             {
               this.$message.success(msg)

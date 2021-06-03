@@ -52,8 +52,7 @@
       submit() {
         this.loading = true
         adminEdit('post', this.form)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
 
             if (code)
             {

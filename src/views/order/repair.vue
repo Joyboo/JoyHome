@@ -73,8 +73,7 @@
       search() {
         this.loading = true
         callBackOrder(this.query)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
             if (!code)
             {
               this.$message.error(msg)
@@ -96,8 +95,7 @@
             data.ProxyRegion = this.query.ProxyRegion
 
             repairOrder(data)
-              .then(resp => {
-                const {code, msg, data} = resp
+              .then(({code, msg}) => {
                 if (!code)
                 {
                   this.$message.error('操作失败: ' + msg)

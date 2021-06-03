@@ -141,8 +141,11 @@
       search() {
         this.loading = true
         orderDetail(this.query)
-          .then(resp => {
-            const {data} = resp
+          .then(({code, msg, data}) => {
+            if (!code)
+            {
+              return this.$message.error(msg)
+            }
             this.data = data || {}
           })
           .finally(() => {

@@ -70,8 +70,7 @@
       search() {
         this.loading = true
         googlerefountIndex(this.query)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
             if (!code)
             {
               return this.$message.error(msg)

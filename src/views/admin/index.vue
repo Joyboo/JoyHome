@@ -108,8 +108,7 @@
       ...mapGetters(['size'])
     },
     mounted() {
-      rolelist().then(resp => {
-        const {data} = resp
+      rolelist().then(({data}) => {
         this.rlist = data
 
         for(let i in data)
@@ -142,8 +141,7 @@
       search() {
         this.loading = true
         adminIndex(this.query)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
             if (!code)
             {
               return this.$message.error(msg)
@@ -161,8 +159,7 @@
       getAdminToken(row) {
         this.loading = true
         adminToken({id: row.id})
-        .then(resp => {
-          const {code, msg, data} = resp
+        .then(({code, msg, data}) => {
           if (!code)
           {
             return this.$message.error(msg)

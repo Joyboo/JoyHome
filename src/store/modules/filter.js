@@ -35,8 +35,7 @@ const mutations = {
 
 const actions = {
   gameInfo({commit, state}){
-    gamelist().then(resp => {
-      const {data} = resp
+    gamelist().then(({data}) => {
 
       // 生成select 的label和value
       let list = []

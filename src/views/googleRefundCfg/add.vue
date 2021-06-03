@@ -26,8 +26,7 @@
       submit(){
         this.loading = true
         googlerefountAdd(this.form)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg}) => {
             if (code) {
               this.$message.success('操作成功')
               closeTab(this.$route.path, '/googleRefundCfg/index')

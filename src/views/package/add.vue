@@ -109,8 +109,7 @@
         this.loading = true
 
         packageAdd(this.form)
-          .then(resp => {
-            const {code, msg} = resp
+          .then(({code, msg}) => {
             if (code) {
               this.$message.success('操作成功')
               closeTab(this.$route.path, '/package/index')

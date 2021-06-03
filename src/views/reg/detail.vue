@@ -347,8 +347,7 @@
       searchPayment() {
         this.payloading = true
         payIndex(this.query)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
             if (!code )
             {
               this.$message.error(msg)
@@ -364,8 +363,7 @@
       searchLogin() {
         this.loginloading = true
         loginIndex(this.query)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
             if (!code)
             {
               this.$message.error(msg)
@@ -382,8 +380,7 @@
           this.loading = true
         }
         regDetail(this.$route.query)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
             if (!code) {
               this.$message.error(msg)
               return;
@@ -403,8 +400,7 @@
         let data = this.form
         data.id = this.view.uid
         unbindBack(data)
-          .then(resp => {
-            const {code, msg} = resp
+          .then(({code, msg}) => {
             this.$message({
               type: code ? 'success' : 'error',
               message: msg

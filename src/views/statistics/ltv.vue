@@ -61,8 +61,7 @@
         }
         this.loading = true
         statistics('ltv', this.query)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
             if (!code)
             {
               this.$message.error(msg)

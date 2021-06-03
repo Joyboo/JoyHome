@@ -132,8 +132,7 @@ export default {
     getData() {
       this.loading = true
       gameIndex(this.search)
-        .then(resp => {
-          const {code, msg, data} = resp
+        .then(({code, msg, data}) => {
           if (!code)
           {
             return this.$message.error(msg)

@@ -53,8 +53,7 @@
       search() {
         this.loading = true
         expenseIndex(this.query)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
             if (!code)
             {
               return this.$message.error(msg)

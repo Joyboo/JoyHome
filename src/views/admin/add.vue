@@ -36,8 +36,7 @@
       submit() {
         this.loading = true
         adminAdd(this.form)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
 
             if (code)
             {

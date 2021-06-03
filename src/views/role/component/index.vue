@@ -81,8 +81,11 @@
     mounted() {
       this.load = true
       menuIndex()
-        .then(resp => {
-          const {data} = resp
+        .then(({code, msg, data}) => {
+          if (!code)
+          {
+            return this.$message.error(msg)
+          }
           this.menuTable = data
 
           this.setCheckNodes()

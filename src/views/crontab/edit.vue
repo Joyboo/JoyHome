@@ -17,8 +17,7 @@
       this.loading = true
       const id = this.$route.query.id
       crontabEdit('get', {id: id})
-        .then(resp => {
-          const { code, msg, data } = resp
+        .then(({code, msg, data}) => {
           if (!code)
           {
             return this.$message.error(msg)
@@ -56,8 +55,7 @@
       submit() {
         this.loading = true
         crontabEdit('post', this.form)
-          .then(resp => {
-            const {code, msg} = resp
+          .then(({code, msg, data}) => {
             if (code) {
               this.$message.success('操作成功')
               closeTab(this.$route.path, '/crontab/index')

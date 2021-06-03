@@ -40,8 +40,7 @@
       submit() {
         this.loading = true
         crontabAdd(this.form)
-          .then(resp => {
-            const {code, msg, result} = resp
+          .then(({code, msg, data}) => {
             if (code)
             {
               this.$message.success(msg)

@@ -110,8 +110,7 @@ export default {
     this.loading = true
     this.form.id = this.$route.query.id
     packageEdit('get', { id: this.form.id })
-      .then(resp => {
-        const {code, msg, data} = resp
+      .then(({code, msg, data}) => {
         if (!code)
         {
           return this.$message.error(msg)
@@ -127,8 +126,7 @@ export default {
       this.loading = true
 
       packageEdit('post', this.form)
-        .then(resp => {
-          const { code, msg } = resp
+        .then(({code, msg}) => {
           if (code) {
             this.$message.success('操作成功')
             closeTab(this.$route.path, '/package/index')

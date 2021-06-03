@@ -28,8 +28,7 @@
       submit() {
         this.loading = true
         whitelistAdd(this.form)
-          .then(resp =>  {
-            const {code, msg} = resp
+          .then(({code, msg}) => {
             if (code)
             {
               this.$message.success(msg)

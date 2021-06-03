@@ -26,8 +26,7 @@
       this.form.id = this.$route.query.id
       this.loading = true
       googlerefountEdit('get', {id: this.form.id})
-        .then(resp => {
-          const {code, msg, data} = resp
+        .then(({code, msg, data}) => {
           if (!code)
           {
             return this.$message.error(msg)
@@ -49,8 +48,7 @@
       submit(){
         this.loading = true
         googlerefountEdit('post', this.form)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg}) => {
             if (code) {
               this.$message.success('操作成功')
               closeTab(this.$route.path, '/googleRefundCfg/index')

@@ -32,8 +32,7 @@
       submit() {
         this.loading = true
         sysinfoAdd(this.form)
-          .then(resp => {
-            const {code, msg} = resp
+          .then(({code, msg}) => {
             if (code)
             {
               this.$message.success(msg)

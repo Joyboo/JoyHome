@@ -176,8 +176,11 @@
       search() {
         this.loading = true
         refundIndex(this.query)
-          .then(resp => {
-            const {data} = resp
+          .then(({code, msg, data}) => {
+            if (!code)
+            {
+              return this.$message.error(msg)
+            }
             this.tableData = data.data || []
             this.total = data.totals || 0
           })

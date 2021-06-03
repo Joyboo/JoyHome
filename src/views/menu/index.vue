@@ -81,8 +81,11 @@ export default {
     getData() {
       this.loading = true
       menuIndex()
-        .then(resp => {
-          const { data } = resp
+        .then(({code, msg, data}) => {
+          if (!code)
+          {
+            return this.$message.error(msg)
+          }
           this.tableData = data
         })
         .catch(error => {
@@ -109,8 +112,7 @@ export default {
       } else {
         this.loading = true
         menuEdit('post', data)
-        .then(resp => {
-          const {code, msg} = resp
+        .then(({code, msg}) => {
           if (code) {
             this.$message.success('操作成功')
             this.getData()

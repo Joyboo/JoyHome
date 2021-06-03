@@ -53,8 +53,7 @@ export default {
     submit() {
       this.loading = true
       gameAdd(this.form)
-        .then(resp => {
-          const { code } = resp
+        .then(({code}) => {
           if (code) {
             this.$message.success('操作成功')
             closeTab(this.$route.path, '/game/index')

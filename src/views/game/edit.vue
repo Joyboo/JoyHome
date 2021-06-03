@@ -231,8 +231,7 @@
         this.loading = true
 
         gameEdit('post', this.form)
-          .then(resp => {
-            const { code } = resp
+          .then(({code}) => {
             if (code) {
               this.$message.success('操作成功')
               closeTab(this.$route.path, '/game/index')
@@ -250,8 +249,8 @@
 
       // 随机生成key
       get_gkey(column) {
-        gkey(column).then(resp => {
-          this.form.extension[column] = resp.data
+        gkey(column).then(({data}) => {
+          this.form.extension[column] = data
         }).catch(error => {
           this.$message.error(error)
         })

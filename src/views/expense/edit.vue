@@ -95,8 +95,7 @@
       submit() {
         this.loading = true
         expenseEdit('post', this.form)
-          .then(resp => {
-            const {code, msg, result} = resp
+          .then(({code, msg}) => {
             if (code)
             {
               this.$message.success(msg)
@@ -116,8 +115,11 @@
         this.pkglist = []
         this.loading = true
         packageindex({gameid: value})
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
+            if (!code)
+            {
+              return this.$message.error(msg)
+            }
             for(let i in data.data)
             {
               let item = data.data[i]

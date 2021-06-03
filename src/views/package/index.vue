@@ -119,11 +119,19 @@ export default {
     },
     getData() {
       this.loading = true
-      packageindex(this.search).then(resp => {
-        this.loading = false
-        this.tableData = resp.data.data
-        this.total = resp.data.totals
-      })
+      packageindex(this.search)
+        .then(({code, msg, data}) => {
+          if (!code)
+          {
+            return this.$message.error(msg)
+          }
+          this.loading = false
+          this.tableData = data.data
+          this.total = data.totals
+        })
+        .catch(error => {
+          this.$message.error(error)
+        })
     },
     openAlter(msg) {
       this.$alert(msg)

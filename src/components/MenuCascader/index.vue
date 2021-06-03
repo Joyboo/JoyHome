@@ -26,8 +26,7 @@
       }
     },
     mounted() {
-      cascaderTree().then(resp => {
-        const { data } = resp
+      cascaderTree().then(({data}) => {
         this.cascader.options = data
       })
     },

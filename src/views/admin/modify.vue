@@ -44,9 +44,9 @@
         </el-select>
       </el-form-item>
 
-      <!--<el-form-item label="默认打开菜单">
+      <el-form-item label="默认打开菜单">
         <menu-cascader :pid.sync="form.extension.newnid" @setpid="setpid"></menu-cascader>
-      </el-form-item>-->
+      </el-form-item>
 
       <el-footer>
         <el-button class="joy-btn" :size="size" type="primary" @click="submit">提 交</el-button>
@@ -149,8 +149,7 @@
           }
           this.loading = true
           adminModify('post', this.form)
-            .then(resp => {
-              const {code, msg, data} = resp
+            .then(({code, msg, data}) => {
               if (!code)
               {
                 this.$message.error(msg || 'Modify Error')

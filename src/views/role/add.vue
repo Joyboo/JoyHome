@@ -29,8 +29,7 @@
       submit() {
         this.loading = true
         roleAdd(this.form)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg}) => {
             if (code)
             {
               this.$message.success(msg || '操作成功')

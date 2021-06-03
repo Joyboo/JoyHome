@@ -61,8 +61,7 @@ export default {
       }
       this.loading = true
       statistics('daily', this.query)
-        .then(resp => {
-          const {code, msg, data} = resp
+        .then(({code, msg, data}) => {
           if (!code)
           {
             this.$message.error(msg)

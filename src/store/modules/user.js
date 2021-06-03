@@ -32,8 +32,7 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { code, msg, data } = response
+      login({ username: username.trim(), password: password }).then(({ code, msg, data }) => {
         if (!code)
         {
           reject(msg)
@@ -51,8 +50,7 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(/* state.token*/).then(response => {
-        const { code, msg, data } = response
+      getInfo().then(({ code, msg, data }) => {
 
         if (!code) {
           reject(msg)

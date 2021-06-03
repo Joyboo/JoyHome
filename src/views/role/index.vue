@@ -37,8 +37,7 @@
       getData() {
         this.loading = true
         roleIndex()
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
             if (!code)
             {
               return this.$message.error(msg)

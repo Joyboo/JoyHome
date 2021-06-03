@@ -594,15 +594,18 @@ export default {
           return
         }
 
-        uploadJb('/admin/package/upload', params).then(resp => {
-          const { status, data } = resp
-          if (status == 200) {
-            this.$message.success('上传成功')
-            resolve(data)
-          } else {
-            this.$message.error('上传失败了')
-          }
-        })
+        uploadJb('/admin/package/upload', params)
+          .then(({status, data}) => {
+            if (status == 200) {
+              this.$message.success('上传成功')
+              resolve(data)
+            } else {
+              this.$message.error('上传失败了')
+            }
+          })
+          .catch(error => {
+            this.$message.error(error)
+          })
       })
     },
     // 复制adjust事件框

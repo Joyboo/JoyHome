@@ -135,8 +135,7 @@
       submit() {
         this.loading = true
         expenseAdd(this.form)
-          .then(resp => {
-            const {code, msg, result} = resp
+          .then(({code, msg}) => {
             if (code)
             {
               this.$message.success(msg)
@@ -162,8 +161,11 @@
         this.form.pkgbnd = ''
         this.loading = true
         packageindex({gameid: value})
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
+            if (!code)
+            {
+              return this.$message.error(msg)
+            }
             for(let i in data.data)
             {
               let item = data.data[i]
@@ -185,14 +187,15 @@
         })
       },
       uploadExcel(params) {
-        uploadJb('/admin/expense/upload', params).then(resp => {
-          const { status, data } = resp
+        uploadJb('/admin/expense/upload', params).then(({ status, data }) => {
           if (status == 200) {
             this.form.file = data
             this.$message.success('上传成功')
           } else {
             this.$message.error('上传失败了')
           }
+        }).catch(error => {
+          this.$message.error(error)
         })
       }
     }

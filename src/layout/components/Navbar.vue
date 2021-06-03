@@ -75,13 +75,6 @@
       </template>
     </div>
 
-    <!--刷新缓存的dialog-->
-    <el-dialog :visible.sync="recacheDialog" width="30%" :title="progress.title" :show-close="false" center>
-      <div style="text-align: center;width: 100%;">
-        <el-progress type="circle" :percentage="progress.num" :status="progress.success"></el-progress>
-      </div>
-
-    </el-dialog>
   </div>
 </template>
 
@@ -105,16 +98,6 @@ export default {
     SizeSelect,
     LangSelect,
     Search
-  },
-  data() {
-    return {
-      recacheDialog: false,
-      progress: {
-        title: '',
-        num: 0,
-        status: ''
-      }
-    }
   },
   computed: {
     ...mapGetters([
@@ -151,37 +134,26 @@ export default {
     },
     // 刷新缓存
     reloadCache() {
-      this.recacheDialog = true
-      const _this = this
-      const loop = setInterval(() => {
-        if (_this.progress.num < 95)
-        {
-          _this.progress.num++
-        }
-      }, 10)
+
+      let loadingInstance = this.$loading({
+        text: '缓存刷新中，请稍后。。。'
+      });
 
       recache()
-        .then(resp => {
-          const {code, msg} = resp
-          _this.progress.title = msg
-          if (code)
-          {
-            this.$message.success(msg)
-
-            _this.progress.status = 'success'
-            // 让进度条跑完
-            setTimeout(() => window.location.reload(), 500)
-          } else {
-            _this.progress.status = 'exception'
+        .then(({code, msg}) => {
+          if (!code) {
             this.$message.error(msg)
+          } else {
+            window.location.reload()
           }
         })
         .catch(error => {
           this.$message.error(error)
         })
         .finally(() => {
-          clearInterval(loop)
-          _this.progress.num = 100
+          this.$nextTick(() => {
+            loadingInstance.close();
+          });
         })
     }
   }

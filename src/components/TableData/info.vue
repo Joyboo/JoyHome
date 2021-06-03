@@ -96,9 +96,9 @@
           method: 'get',
           params: { id: rows.id }
         })
-          .then(resp => {
+          .then(({code, msg}) => {
             this.load = false
-            if (resp.code) {
+            if (code) {
               this.$message.success('操作成功')
               this.$emit('search')
             }

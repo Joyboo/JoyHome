@@ -54,10 +54,9 @@
               </el-select>
             </el-form-item>
 
-            <!--todo 默认打开菜单需要依赖于注册过的路由，暂时注释掉-->
-            <!--<el-form-item label="默认打开菜单">
+            <el-form-item label="默认打开菜单">
               <menu-cascader :pid.sync="form.extension.newnid" @setpid="setpid"></menu-cascader>
-            </el-form-item>-->
+            </el-form-item>
 
           </el-tab-pane>
 

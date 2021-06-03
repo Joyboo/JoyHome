@@ -44,8 +44,7 @@ export default {
     /* 编辑页参数 */
     this.form.id = this.$route.query.id
     menuEdit('get', { id: this.form.id })
-      .then(resp => {
-        const { code, msg, data } = resp
+      .then(({code, msg, data}) => {
         if (!code)
         {
           return this.$message.error(msg)
@@ -68,8 +67,7 @@ export default {
       this.loading = true
 
       menuEdit('post', this.form)
-        .then(resp => {
-          const { code } = resp
+        .then(({code}) => {
           if (code) {
             this.$message.success('操作成功')
             closeTab(this.$route.path, '/menu/index')
