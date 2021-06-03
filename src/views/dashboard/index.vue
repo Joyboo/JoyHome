@@ -21,9 +21,10 @@ export default {
     ...mapGetters(['roles', 'userinfo'])
   },
   created() {
-    if (!this.roles.includes('admin')) {
+    // 统一使用相同首页
+    /*if (!this.roles.includes('admin')) {
       this.currentRole = 'editorDashboard'
-    }
+    }*/
   },
   mounted() {
     // add by Joyboo 跳转到用户设置的默认打开页面

@@ -12,7 +12,7 @@
       @select="handleSelect"
     >
       <el-menu-item v-for="menu in topmenu" :key="menu.id" :index="menu.id">
-        <i :class="menu.icon" />{{ menu.title || menu.fulltitle }}
+        <i :class="menu.icon" />{{ menu.title }}
       </el-menu-item>
     </el-menu>
 
@@ -142,9 +142,8 @@ export default {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     },
-    async handleSelect(key, keyPath) {
-      await this.$store.dispatch('permission/setPid', key)
-      await this.$store.dispatch('permission/generateRoutes')
+    handleSelect(key, keyPath) {
+      this.$store.dispatch('permission/generateRoutes', key)
     },
     // add by Joyboo
     rightPanel() {

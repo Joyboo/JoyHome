@@ -38,7 +38,7 @@ export function filterAsyncRoutes(routes, roles) {
   return res
 }
 
-export function adminRouter(asyncRouterMap) {
+export function adminRouter(routerMap) {
   const arr = []
   /*
   // 多级菜单的动态路有示例
@@ -76,9 +76,13 @@ export function adminRouter(asyncRouterMap) {
     ]
   };*/
 
-  asyncRouterMap.forEach(item => {
-    const obj = { path: item.path }
+  let keys = ['name', 'redirect', 'always', 'meta', 'hidden', 'affix']
 
+  for(let i in routerMap)
+  {
+    let item = routerMap[i]
+
+    let obj = { path: item.path }
     if (item.component == 'Layout') {
       obj.component = Layout
     } else if (item.component == 'RouterView') {
@@ -87,8 +91,7 @@ export function adminRouter(asyncRouterMap) {
       obj.component = resolve => require([`@/views/${item.component}.vue`], resolve)
     }
 
-    const keys = ['name', 'redirect', 'always', 'meta', 'hidden', 'affix']
-    for (const i in keys) {
+    for (let i in keys) {
       if (typeof item[keys[i]] !== 'undefined') {
         obj[keys[i]] = item[keys[i]]
       }
@@ -98,65 +101,61 @@ export function adminRouter(asyncRouterMap) {
       obj.children = adminRouter(item.children)
     }
     arr.push(obj)
-  })
+  }
 
   return arr
 }
 
 const state = {
   routes: [],
-  addRoutes: [],
-  topmenu: {},
-  // leftmenu: {},
-  topid: 0
+  topmenu: [],
+  leftmenu: {}
 }
 
 const mutations = {
-  SET_ROUTES: (state, routes) => {
-    routes = adminRouter(routes)
-    state.addRoutes = routes
-    state.routes = constantRoutes.concat(routes)
-    router.addRoutes(state.routes)
+
+  SET_MENU(state, data) {
+    // 将第一级设置为topmenu
+    for(let i in data)
+    {
+      let one = data[i]
+
+      state.topmenu.push({
+        id: one.id,
+        icon: one.meta.icon,
+        title: one.meta.title
+      })
+
+      // 第二级为leftmenu
+      if (typeof one.children == 'object')
+      {
+        // 从第二级开始加入路由
+        const routes = adminRouter(one.children)
+        router.addRoutes(routes)
+
+        state.leftmenu[one.id] = routes
+      }
+    }
   },
-  SET_TOPMENU: (state, node) => {
-    state.topmenu = node
-  },
-  SET_PID: (state, pid) => {
-    state.topid = pid
+  SET_ROUTES(state, pid) {
+    state.routes = state.leftmenu[pid]
   }
 }
 
 const actions = {
-  generateRoutes({ commit, state }, roles) {
-    return new Promise((resolve, reject) => {
-      leftmenu({ pid: state.topid }).then(response => {
-        const { code, msg, data } = response
-        if (!code)
-        {
-          reject(msg)
-        } else {
-          commit('SET_ROUTES', data)
-          resolve(data)
-        }
-      }).catch(error => {
-        // console.log('getInfo catch', error)
-        reject(error)
-      })
-    })
+  generateRoutes({ commit, state }, pid) {
+    commit('SET_ROUTES', pid)
   },
 
-  setPid({ commit }, pid) {
-    commit('SET_PID', pid)
-  },
   getTopMenu({ commit }) {
     return new Promise((resolve, reject) => {
-      topmenu().then(response => {
+      leftmenu({pid: 0}).then(response => {
         const { code, msg, data } = response
         if (!code)
         {
           reject(msg)
         } else {
-          commit('SET_TOPMENU', data)
+          commit('SET_MENU', data)
           resolve(data)
         }
       }).catch(error => {
