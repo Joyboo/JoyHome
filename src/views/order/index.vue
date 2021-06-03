@@ -35,7 +35,7 @@
 
       <template v-slot:after>
         <el-form-item style="float: right;">
-          <export-data></export-data>
+          <export-data :query="query" export-url="/order/export"></export-data>
         </el-form-item>
       </template>
     </layout-filter>
@@ -81,7 +81,7 @@
   import Pagination from '@/components/Pagination'
   import Detail from './detail'
   import Repair from './repair'
-  import ExportData from '@/components/ExportExcel'
+  import ExportData from '@/components/ExportExcel/all'
   import checkPermission from "@/utils/permission";
 
   export default {

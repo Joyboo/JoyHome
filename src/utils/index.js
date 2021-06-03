@@ -3,6 +3,7 @@
  */
 import router from '@/router'
 import store from '@/store'
+import {localStorageKey} from '@/settings'
 
 /**
  * Parse the time to string
@@ -447,4 +448,31 @@ export function closeTab(path, to) {
         router.replace({path: to})
       }
     })
+}
+
+// add by Joyboo 将用户设置存储到localstorage
+export function setSettingsLocalStorage(key, val) {
+  // 设置保存为一个json内 {settings: {theme: '#abc', tagsView: []}}
+  let settings = window.localStorage.getItem(localStorageKey)
+  let json = typeof settings == 'string' ? JSON.parse(settings) : {}
+  json[key] = val
+  window.localStorage.setItem(localStorageKey, JSON.stringify(json))
+}
+
+export function getSettingsLocalStorage(key, _default) {
+  let settings = window.localStorage.getItem(localStorageKey)
+  let json = typeof settings == 'string' ? JSON.parse(settings) : {}
+
+  // 如果有值，将vuex值更新
+  if (typeof json[key] != 'undefined')
+  {
+    if (store) {
+      store.dispatch('settings/changeSetting', {
+        key: key,
+        value: json[key]
+      })
+    }
+    return json[key]
+  }
+  return _default
 }

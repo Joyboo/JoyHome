@@ -41,6 +41,7 @@
 
 <script>
 import ThemePicker from '@/components/ThemePicker'
+import {getSettingsLocalStorage} from '@/utils'
 
 export default {
   components: { ThemePicker },
@@ -53,7 +54,7 @@ export default {
     },
     fixedHeader: {
       get() {
-        return this.$store.state.settings.fixedHeader
+        return getSettingsLocalStorage('fixedHeader', this.$store.state.settings.fixedHeader)
       },
       set(val) {
         this.$store.dispatch('settings/changeSetting', {
@@ -64,7 +65,7 @@ export default {
     },
     tagsView: {
       get() {
-        return this.$store.state.settings.tagsView
+        return getSettingsLocalStorage('tagsView', this.$store.state.settings.tagsView)
       },
       set(val) {
         this.$store.dispatch('settings/changeSetting', {
@@ -75,7 +76,7 @@ export default {
     },
     sidebarLogo: {
       get() {
-        return this.$store.state.settings.sidebarLogo
+        return getSettingsLocalStorage('sidebarLogo', this.$store.state.settings.sidebarLogo)
       },
       set(val) {
         this.$store.dispatch('settings/changeSetting', {
@@ -86,7 +87,7 @@ export default {
     },
     supportPinyinSearch: {
       get() {
-        return this.$store.state.settings.supportPinyinSearch
+        return getSettingsLocalStorage('supportPinyinSearch', this.$store.state.settings.supportPinyinSearch)
       },
       set(val) {
         this.$store.dispatch('settings/changeSetting', {

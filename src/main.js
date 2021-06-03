@@ -19,6 +19,8 @@ import './permission' // permission control
 import './utils/error-log' // error log
 
 import * as filters from './filters' // global filters
+import setTheme from '@/utils/settings'
+import {getSettingsLocalStorage} from "@/utils";
 
 /**
  * If you don't want to use mock-server
@@ -44,6 +46,9 @@ Object.keys(filters).forEach(key => {
 })
 
 Vue.config.productionTip = false
+
+// add by Joyboo 进入时触发主题设置
+setTheme.set(getSettingsLocalStorage('theme')).catch(error => {})
 
 new Vue({
   el: '#app',

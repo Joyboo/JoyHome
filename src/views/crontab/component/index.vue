@@ -28,7 +28,7 @@
 
     <el-form-item label="参数">
       <el-row>
-        <el-button icon="el-icon-plus" type="success" plain @click="cp_param" />
+        <el-button icon="el-icon-plus" type="primary" plain @click="cp_param" />
       </el-row>
       <el-row v-for="(ipt, key) in form.args" :key="key">
         <el-col :span="8">

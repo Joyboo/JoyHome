@@ -16,7 +16,7 @@
 
       <template v-slot:after>
         <el-form-item style="float: right;">
-          <export-data></export-data>
+          <export-data :query="query" export-url="/reg/export"></export-data>
         </el-form-item>
       </template>
     </layout-filter>
@@ -49,7 +49,7 @@
   import {regIndex} from '@/api/reg'
   import LayoutFilter from '@/components/LayoutFilter'
   import { mapGetters } from 'vuex'
-  import ExportData from '@/components/ExportExcel'
+  import ExportData from '@/components/ExportExcel/all'
   import TableIndex from '@/components/TableData'
   import Pagination from '@/components/Pagination'
   import permission from '@/directive/permission'

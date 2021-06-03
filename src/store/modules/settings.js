@@ -1,5 +1,6 @@
 import variables from '@/styles/element-variables.scss'
 import defaultSettings from '@/settings'
+import {setSettingsLocalStorage} from '@/utils'
 
 const { showSettings, tagsView, fixedHeader, sidebarLogo, supportPinyinSearch } = defaultSettings
 
@@ -18,6 +19,7 @@ const mutations = {
     // eslint-disable-next-line no-prototype-builtins
     if (state.hasOwnProperty(key)) {
       state[key] = value
+      setSettingsLocalStorage(key, value)
     }
   },
   BOOL_SETTING: (state, key) => {

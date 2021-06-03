@@ -28,7 +28,7 @@
 
       <template v-slot:after>
         <el-form-item style="float: right;">
-          <export-data></export-data>
+          <export-data :query="query" export-url="/pay/export"></export-data>
         </el-form-item>
       </template>
     </layout-filter>
@@ -59,13 +59,12 @@
 
 <script>
   import LayoutFilter from '@/components/LayoutFilter'
-  import {beforeDay} from "@/utils";
   import TableIndex from '@/components/TableData'
   import {mapGetters} from "vuex";
   import {payIndex} from '@/api/reg'
   import Pagination from '@/components/Pagination'
   import Detail from './detail'
-  import ExportData from '@/components/ExportExcel'
+  import ExportData from '@/components/ExportExcel/all'
   import checkPermission from '@/utils/permission'
 
   export default {

@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'HKGAME',
+  title: '恒坤游戏管理后台',
 
   /**
    * @type {boolean} true | false
@@ -38,5 +38,10 @@ module.exports = {
    * The default is only used in the production env
    * If you want to also use it in dev, you can pass ['production', 'development']
    */
-  errorLog: 'production'
+  errorLog: 'production',
+
+  /**
+   * add by Joybo 持久化保存到localStorage中的一个key
+   */
+  localStorageKey: 'settings'
 }
