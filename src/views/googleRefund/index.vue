@@ -19,7 +19,7 @@
         <el-input v-model="query.whereValue" clearable :placeholder="query.whereKey ? whereKey[query.whereKey] : ''" />
       </el-form-item>
 
-      <template v-slot:after>
+      <template #after>
         <el-form-item style="float: right;">
           <el-button type="warning" icon="el-icon-upload2">导入</el-button>
         </el-form-item>

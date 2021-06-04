@@ -25,7 +25,7 @@
 
 
     <!--h5sdk插槽-->
-    <template v-slot:h5sdk>
+    <template #h5sdk>
       <el-tab-pane label="H5SDK">
 
         <el-form-item label="本游戏是否显示">

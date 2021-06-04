@@ -1,16 +1,16 @@
 <template>
   <div class="view-container">
-    <layout-filter :query="query" @search="search">
+    <layout-filter :query="query" :nsch="false" @search="search">
       <template>
-        <br>
         <el-form-item>
-          <el-radio-group v-model="menu" style="margin-right: 100px;" @change="chgRadio">
-            <el-radio v-for="(name, key) in menulist" :key="key" :label="key" border v-if="checkPermission(['admin', '/statistics/' + key])">{{name}}</el-radio>
-          </el-radio-group>
+          <el-button v-for="(name, key) in menulist" :key="key"
+                     v-if="checkPermission(['admin', '/statistics/' + key])"
+                     :type="menu == key ? 'primary' : 'default'"
+                     @click="chgRadio(key)" round>{{name.name}}</el-button>
         </el-form-item>
       </template>
 
-      <template v-slot:after>
+      <template #after>
         <el-form-item style="float: right;">
           <export-data></export-data>
         </el-form-item>
@@ -86,12 +86,24 @@
         tableData: [],
         menu: 'daily',
         menulist: {
-          roi: '流水ROI',
-          droi: '分成后ROI',
-          regkeep: '注册留存',
-          paykeep: '付费留存',
-          ltv: 'LTV',
-          daily: '游戏日报'
+          roi: {
+            name: '流水ROI'
+          },
+          droi: {
+            name: '分成后ROI'
+          },
+          regkeep: {
+            name: '注册留存'
+          },
+          paykeep: {
+            name: '付费留存'
+          },
+          ltv: {
+            name: 'LTV'
+          },
+          daily: {
+            name: '游戏日报'
+          }
         }
       }
     },
@@ -115,9 +127,10 @@
             this.loading = false
           })
       },
-      // 单选框变更时清空数据，因为旧数据和字段是对不上的
-      chgRadio(label) {
+      chgRadio(val) {
         this.tableData = [];
+        this.menu = val
+        this.search()
       }
     }
   }

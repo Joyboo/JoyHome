@@ -37,7 +37,7 @@
 
       <el-form-item>
         <template slot="label">
-          <router-link slot="prepend" target="_blank" to="/icon/index" style="color: #409EFF;">
+          <router-link slot="prepend" target="_blank" to="/icon/index" :style="'color:' + theme + ';'">
             图标 <i class="el-icon-view el-icon--right" />
           </router-link>
         </template>
@@ -86,7 +86,10 @@ import MenuCascader from '@/components/MenuCascader'
 export default {
   // name: 'MenuInfo',
   computed: {
-    ...mapGetters(['size'])
+    ...mapGetters(['size']),
+    theme() {
+      return this.$store.state.settings.theme
+    }
   },
   components: {
     ButtonTpl,

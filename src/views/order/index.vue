@@ -1,12 +1,5 @@
 <template>
   <div class="view-container">
-    <div class="crumbs">
-      <el-breadcrumb separator="/">
-        <el-breadcrumb-item>
-          <span class="danger">提醒：请先选择所属游戏再点搜索才能查看数据</span>
-        </el-breadcrumb-item>
-      </el-breadcrumb>
-    </div>
 
     <layout-filter :query="query" @search="search">
       <el-form-item>
@@ -33,7 +26,7 @@
         <el-input v-model="query.kwvalue" :placeholder="query.kwtype == 'expression' ? 'paysn=&uid=&sid=' : kwtype[query.kwtype]"></el-input>
       </el-form-item>
 
-      <template v-slot:after>
+      <template #after>
         <el-form-item style="float: right;">
           <export-data :query="query" export-url="/order/export"></export-data>
         </el-form-item>

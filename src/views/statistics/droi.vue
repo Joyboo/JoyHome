@@ -1,15 +1,8 @@
 <template>
   <div class="view-container">
-    <div class="crumbs">
-      <el-breadcrumb separator="/">
-        <el-breadcrumb-item>
-          <span class="danger">提醒：请先选择所属游戏再点搜索才能查看数据</span>
-        </el-breadcrumb-item>
-      </el-breadcrumb>
-    </div>
 
     <layout-filter :query="query" @search="search">
-      <template v-slot:after>
+      <template #after>
         <el-form-item style="float: right;">
           <export-data></export-data>
         </el-form-item>
