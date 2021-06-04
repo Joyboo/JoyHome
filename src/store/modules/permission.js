@@ -136,6 +136,13 @@ const mutations = {
         state.leftmenu[one.id] = routes
       }
     }
+
+    // 设置左菜单
+    if (state.topmenu.length > 0)
+    {
+      const defaultTopid = state.topmenu[0].id
+      state.routes = state.leftmenu[defaultTopid]
+    }
   },
   SET_ROUTES(state, pid) {
     state.routes = state.leftmenu[pid]

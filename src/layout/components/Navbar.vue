@@ -111,11 +111,6 @@ export default {
     // add by Joyboo
     // console.log("%c [Github] %c https://github.com/PanJiaChen/vue-element-admin/ ", "color:red","")
     // console.log("%c [Doc] %c https://panjiachen.github.io/vue-element-admin-site/#/ ", "color:red","")
-    // 触发第一个菜单选中事件
-    if (this.$refs.refTopMenu.$children.length > 0)
-    {
-      this.$refs.refTopMenu.$children[0].$el.click()
-    }
   },
   methods: {
     toggleSideBar() {
