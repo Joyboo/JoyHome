@@ -22,6 +22,7 @@ export default {
   },
   created() {
     // 统一使用相同首页
+    this.currentRole = 'editorDashboard'
     /*if (!this.roles.includes('admin')) {
       this.currentRole = 'editorDashboard'
     }*/
@@ -37,13 +38,10 @@ export default {
 
       if (redirect)
       {
-        setTimeout(() => this.$router.push(defaultView), 1000)
-
-        /*
         // 实测$nextTick不会跳转，原因未知
         this.$nextTick(() => {
           this.$router.push(defaultView)
-        })*/
+        })
       }
     }
   }

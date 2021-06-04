@@ -54,11 +54,11 @@
                 <el-dropdown-item @click.native="reloadCache">
                   刷新缓存
                 </el-dropdown-item>
-                <router-link to="/profile/index">
+                <!--<router-link to="/profile/index">
                   <el-dropdown-item>
                     {{ $t('navbar.profile') }}
                   </el-dropdown-item>
-                </router-link>
+                </router-link>-->
                 <router-link to="/">
                   <el-dropdown-item>
                     {{ $t('navbar.dashboard') }}
