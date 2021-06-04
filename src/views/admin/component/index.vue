@@ -121,13 +121,13 @@
 
             <el-form-item>
               <el-checkbox-group v-model="form.extension.ntcids">
-                <el-checkbox :label="1">支付错误警报</el-checkbox>
+                <el-checkbox label="1">支付错误警报</el-checkbox>
                 <br>
-                <el-checkbox :label="2">创角、登录、支付异常预警</el-checkbox>
+                <el-checkbox label="2">创角、登录、支付异常预警</el-checkbox>
                 <br>
-                <el-checkbox :label="3">短信发送失败</el-checkbox>
+                <el-checkbox label="3">短信发送失败</el-checkbox>
                 <br>
-                <el-checkbox :label="4">cron程序出错</el-checkbox>
+                <el-checkbox label="4">cron程序出错</el-checkbox>
               </el-checkbox-group>
             </el-form-item>
 
@@ -198,10 +198,9 @@
         this.setChecked(this.form.rid)
 
         // 游戏分配穿梭框
-        for(let j in this.gamelist)
-        {
+        for(let j in this.gamelist) {
           this.gametransfer.push({
-            key: j,
+            key: parseInt(j),
             label: this.gamelist[j],
             disabled: false
           })
@@ -287,6 +286,7 @@
       submit() {
         this.$refs.AdminForm.validate((valid) => {
           if (!valid) {
+            this.$message.error('表单校验失败，请检查填写的信息')
             return false
           }
           if (typeof this.form.extension.newnid === 'object') {

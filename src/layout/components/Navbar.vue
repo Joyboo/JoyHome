@@ -183,14 +183,14 @@ export default {
   }
 
   .hamburger-container {
-    line-height: 49px;
+    line-height: 50px;
     height: 100%;
     float: left;
     cursor: pointer;
     transition: background .3s;
     -webkit-tap-highlight-color:transparent;
     /*background-color: #2b2f3a;*/
-    border-bottom: 1px solid #ccc;
+    /*border-bottom: 1px solid #ccc;*/
 
     &:hover {
       background: rgba(34, 38, 46, .8)

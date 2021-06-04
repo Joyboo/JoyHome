@@ -1,15 +1,9 @@
 <template>
-  <div style="padding: 0 15px;" @click="toggleClick">
-    <svg
-      :class="{'is-active':isActive}"
-      class="hamburger"
-      viewBox="0 0 1024 1024"
-      xmlns="http://www.w3.org/2000/svg"
-      width="64"
-      height="64"
-    >
-      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM142.4 642.1L298.7 519a8.84 8.84 0 0 0 0-13.9L142.4 381.9c-5.8-4.6-14.4-.5-14.4 6.9v246.3a8.9 8.9 0 0 0 14.4 7z" />
-    </svg>
+  <div class="box" @click="toggleClick">
+<!--    <svg-icon icon-class="jbhamburger" :class="{'is-active':isActive}" class="hamburger" />-->
+    <!--<svg :class="{'is-active':isActive}" class="hamburger" t="1622778296189" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1876" width="200" height="200"><path d="M469.333333 725.333333h426.666667v-85.333333H469.333333v85.333333zM128 512l170.666667 170.666667V341.333333l-170.666667 170.666667z m0 384h768v-85.333333H128v85.333333zM128 128v85.333333h768V128H128z m341.333333 256h426.666667v-85.333333H469.333333v85.333333z m0 170.666667h426.666667v-85.333334H469.333333v85.333334z" p-id="1877" data-spm-anchor-id="a313x.7781069.0.i0" class="selected" fill="#ffffff"></path></svg>-->
+    <!--一个左一个右-->
+    <svg t="1622778553845" :class="{'is-active':isActive}" class="hamburger" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2044" width="200" height="200"><path d="M128 896h768v-85.333333H128v85.333333z m0-554.666667v341.333334l170.666667-170.666667-170.666667-170.666667z m341.333333 384h426.666667v-85.333333H469.333333v85.333333zM128 128v85.333333h768V128H128z m341.333333 256h426.666667v-85.333333H469.333333v85.333333z m0 170.666667h426.666667v-85.333334H469.333333v85.333334z" p-id="2045" data-spm-anchor-id="a313x.7781069.0.i5" class="selected" fill="#ffffff"></path></svg>
   </div>
 </template>
 
@@ -30,15 +24,23 @@ export default {
 }
 </script>
 
-<style scoped>
-.hamburger {
-  display: inline-block;
-  vertical-align: middle;
-  width: 20px;
-  height: 20px;
-}
+<style lang="scss" scoped>
 
-.hamburger.is-active {
-  transform: rotate(180deg);
-}
+  .box {
+    padding: 0 15px;
+    background-color: rgb(48, 65, 86);
+
+    .hamburger {
+      display: inline-block;
+      vertical-align: middle;
+      /*font-size: 2rem!important;*/
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .is-active {
+      transform: rotate(180deg);
+    }
+  }
+
 </style>
