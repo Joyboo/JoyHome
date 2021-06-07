@@ -5,6 +5,7 @@
       :options="cascader.options"
       :props="cascader.props"
       filterable
+      clearable
     />
   </div>
 </template>
@@ -14,7 +15,7 @@
 
   export default {
     name: "MenuCascader",
-    props: ['pid'],
+    props: ['pid', 'uid'],
     computed: {
       joyPid: {
         get() {
@@ -26,9 +27,13 @@
       }
     },
     mounted() {
-      cascaderTree().then(({data}) => {
-        this.cascader.options = data
-      })
+      cascaderTree({uid: this.uid ? this.uid : 0})
+        .then(({data}) => {
+          this.cascader.options = data
+        })
+        .catch(error => {
+          console.log(error)
+        })
     },
     data() {
       return {

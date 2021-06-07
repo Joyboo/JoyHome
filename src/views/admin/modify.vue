@@ -45,7 +45,7 @@
       </el-form-item>
 
       <el-form-item label="默认打开菜单">
-        <menu-cascader :pid.sync="form.extension.newnid" @setpid="setpid"></menu-cascader>
+        <menu-cascader :pid.sync="form.extension.newnid" @setpid="setpid" :uid="userinfo.id"></menu-cascader>
       </el-form-item>
 
       <el-footer>
@@ -67,7 +67,7 @@
       MenuCascader
     },
     computed: {
-      ...mapGetters(['size', 'filtergamelist']),
+      ...mapGetters(['size', 'filtergamelist', 'userinfo']),
     },
     async mounted() {
       this.loading = true
