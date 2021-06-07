@@ -31,7 +31,7 @@
 
       <el-form-item v-if="typeof query.ProxyRegion != 'undefined'">
         <el-select style="width: 100px;" v-model="query.ProxyRegion" placeholder="地区" class="mySelect">
-          <el-option key="1" label="欧美洲" value="omz" />
+          <el-option key="1" label="欧美区" value="omz" />
           <el-option key="2" label="新加坡" value="xjp" />
         </el-select>
       </el-form-item>
