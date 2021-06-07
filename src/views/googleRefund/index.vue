@@ -21,6 +21,10 @@
 
       <template #after>
         <el-form-item style="float: right;">
+          <export-data :query="query" export-url="/google_refund/export"></export-data>
+        </el-form-item>
+
+        <el-form-item style="float: right;">
           <el-button type="warning" icon="el-icon-upload2">导入</el-button>
         </el-form-item>
       </template>
@@ -46,6 +50,7 @@
   import {refundIndex} from "@/api/google_refund"
   import Pagination from '@/components/Pagination'
   import LayoutFilter from '@/components/LayoutFilter'
+  import ExportData from '@/components/ExportExcel/all'
   // import PieChart from '@/components/Charts/PieChart'
 
   export default {
@@ -54,6 +59,7 @@
       TableIndex,
       Pagination,
       LayoutFilter,
+      ExportData
       // PieChart
     },
     computed: {

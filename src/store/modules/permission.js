@@ -154,14 +154,12 @@ const mutations = {
         icon: 'el-icon-eleme',
         title: '开发环境'
       })
-      console.log(DevelopRoutes)
       router.addRoutes(DevelopRoutes)
 
       const dev = []
       DevelopRoutes.forEach(item => {
         dev.push(...item.children)
       })
-      console.log('dev ',dev )
       state.leftmenu[devid] = dev
     }
   },
