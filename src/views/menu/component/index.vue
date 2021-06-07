@@ -59,11 +59,11 @@
         <el-switch v-model="form.noCache == '0'" @change="changeKeepAlive()" />
       </el-form-item>
 
-      <el-form-item label="是否固定在tags-view中">
+      <el-form-item label="是否固定在标签页">
         <el-switch v-model="form.affix == '1'" @change="changeAffix()" />
       </el-form-item>
 
-      <el-form-item label="是否显示在面包屑中">
+      <el-form-item label="是否显示在面包屑">
         <el-switch v-model="form.breadcrumb == '1'" @change="changeBreadcrumb()" />
       </el-form-item>
 

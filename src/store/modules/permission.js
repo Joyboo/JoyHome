@@ -77,7 +77,7 @@ export function adminRouter(routerMap) {
     ]
   };*/
 
-  let keys = ['name', 'redirect', 'always', 'meta', 'hidden', 'affix']
+  let keys = ['name', 'redirect', 'always', 'meta', 'hidden']
 
   for(let i in routerMap)
   {
