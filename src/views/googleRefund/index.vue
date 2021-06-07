@@ -38,8 +38,11 @@
       :page="query.cPage"
       @pagination="pagination"
     />
-    <!-- todo 加饼状图-->
-<!--    <pie-chart></pie-chart>-->
+
+    <div style="clear: both;"></div>
+
+    <pie-chart title="退款金额top 10 UID" :data="pietoall" style="float: left" width="50%" height="600px"></pie-chart>
+    <pie-chart title="退款次数top 10 原因" :data="piereason" style="float: left" width="50%" height="600px"></pie-chart>
   </div>
 </template>
 
@@ -51,7 +54,7 @@
   import Pagination from '@/components/Pagination'
   import LayoutFilter from '@/components/LayoutFilter'
   import ExportData from '@/components/ExportExcel/all'
-  // import PieChart from '@/components/Charts/PieChart'
+  import PieChart from './component/PieChart'
 
   export default {
     name: 'googlerefundindex',
@@ -59,8 +62,8 @@
       TableIndex,
       Pagination,
       LayoutFilter,
-      ExportData
-      // PieChart
+      ExportData,
+      PieChart
     },
     computed: {
       ...mapGetters(['size']),
@@ -84,6 +87,8 @@
           cPage: 1
         },
         total: 0,
+        piereason: [],
+        pietoall: [],
         // 退款原因
         reasonType: ['Other', 'Remorse', 'NotReceived', 'Defective', 'Accidental_purchase', 'Fraud', 'FriendlyFraud', 'Chargeback'],
         whereKey: {
@@ -189,6 +194,8 @@
             }
             this.tableData = data.data || []
             this.total = data.totals || 0
+            this.piereason = data.reason || []
+            this.pietoall = data.toall || []
           })
           .catch(error => {
             this.$message.error(error)
