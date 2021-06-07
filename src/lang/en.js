@@ -83,6 +83,7 @@ export default {
   login: {
     title: 'Login Form',
     logIn: 'Login',
+    toold: 'Change Version',
     username: 'Username',
     password: 'Password',
     any: 'any',
