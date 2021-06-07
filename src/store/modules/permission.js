@@ -3,6 +3,7 @@ import router from '@/router'
 import { leftmenu, topmenu } from '@/api/menu'
 import Layout from '@/layout'
 import RouterView from '@/layout/components/RouterView'
+import DevelopRoutes from '@/router/modules/develop'
 
 /**
  * Use meta.role to determine if the current user has permission
@@ -142,6 +143,26 @@ const mutations = {
     {
       const defaultTopid = state.topmenu[0].id
       state.routes = state.leftmenu[defaultTopid]
+    }
+
+    // 如果是开发环境
+    if (process.env.NODE_ENV === 'development')
+    {
+      const devid = "-1"
+      state.topmenu.push({
+        id: devid,
+        icon: 'el-icon-eleme',
+        title: '开发环境'
+      })
+      console.log(DevelopRoutes)
+      router.addRoutes(DevelopRoutes)
+
+      const dev = []
+      DevelopRoutes.forEach(item => {
+        dev.push(...item.children)
+      })
+      console.log('dev ',dev )
+      state.leftmenu[devid] = dev
     }
   },
   SET_ROUTES(state, pid) {
