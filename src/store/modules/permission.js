@@ -146,7 +146,7 @@ const mutations = {
     }
 
     // 如果是开发环境
-    if (process.env.NODE_ENV === 'development')
+    /*if (process.env.NODE_ENV === 'development')
     {
       const devid = "-1"
       state.topmenu.push({
@@ -161,7 +161,7 @@ const mutations = {
         dev.push(...item.children)
       })
       state.leftmenu[devid] = dev
-    }
+    }*/
   },
   SET_ROUTES(state, pid) {
     state.routes = state.leftmenu[pid]
