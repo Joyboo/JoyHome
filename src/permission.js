@@ -1,6 +1,6 @@
 import router from './router'
 import store from './store'
-import { Message, MessageBox } from 'element-ui'
+import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
@@ -11,7 +11,7 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 // 未登录时的白名单路由
 const whiteList = ['/login', '/auth-redirect', '/redirect', '/404']
 // 已登录时的白名单路由
-const loginWhiteList = ['/404', '/401', '/icon', '/', '/dashboard', 'dashboard', '/auth-redirect', '/redirect']
+// const loginWhiteList = ['/404', '/401', '/icon', '/', '/dashboard', 'dashboard', '/auth-redirect', '/redirect']
 
 // add by Joyboo 嵌套2级以上菜单时，处理多个router-view容器keep-alive不生效的问题，参考：https://blog.csdn.net/qq_41912398/article/details/109576635
 const handleKeepAlive = (to) => {
@@ -50,30 +50,9 @@ router.beforeEach(async(to, from, next) => {
       const hasRoles = store.getters.roles && store.getters.roles.length > 0
       if (hasRoles) {
 
-        const roles = store.getters.roles
-        // 超级管理员
-        const admin = roles.indexOf('admin') >= 0
-        // add by Joyboo 权限验证
-        if (admin || roles.indexOf(to.path) >= 0 || loginWhiteList.indexOf(to.path) >= 0)
-        {
+        handleKeepAlive(to)
+        next()
 
-          handleKeepAlive(to)
-
-          next()
-        }
-        else {
-          MessageBox.confirm('对不起，没有权限：' + to.path, {
-            type: 'error',
-            showClose: false,
-            showCancelButton: false
-          })
-            .then(() => {
-              next({ path: from.path })
-            })
-            .catch(() => {
-              next({ path: from.path })
-            })
-        }
       } else {
         try {
           // add by Joyboo 获取top菜单
