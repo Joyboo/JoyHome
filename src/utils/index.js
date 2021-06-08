@@ -476,3 +476,9 @@ export function getSettingsLocalStorage(key, _default) {
   }
   return _default
 }
+
+export function caclHeight(offset, _default) {
+  _default = _default || 900
+  const h = window.document.documentElement.clientHeight || _default
+  return h - offset
+}

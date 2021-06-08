@@ -1,6 +1,6 @@
 <template>
 
-    <table-index :size="size" :data="dailydata" :column="column" :loading="loading" :heji="true"></table-index>
+    <table-index :size="size" :data="dailydata" :column="column" :loading="loading" :height="height" :heji="true"></table-index>
 
 </template>
 
@@ -8,7 +8,7 @@
 
   import TableIndex from '@/components/TableData'
   import { mapGetters } from 'vuex'
-  import {ymd_to_date} from '@/utils'
+  import {ymd_to_date, caclHeight} from '@/utils'
 
   export default {
     components: {
@@ -30,6 +30,7 @@
     },
     data() {
       return {
+        height: caclHeight(170),
         column: [
           {
             key: 'ymd',

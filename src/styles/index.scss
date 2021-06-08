@@ -242,3 +242,20 @@ aside {
     margin: 0 10px;
   }
 }
+
+/* 自定义table padding */
+.el-table--mini {
+  .cell,td {
+    padding: 1px!important;
+  }
+}
+.el-table--small {
+  .cell,td {
+    padding: 3px!important;
+  }
+}
+.el-table--medium {
+  .cell,td {
+    padding: 6px!important;
+  }
+}

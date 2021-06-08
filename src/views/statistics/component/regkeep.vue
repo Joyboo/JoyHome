@@ -1,6 +1,6 @@
 <template>
 
-  <table-index :size="size" :data="regkeepdata" :column="column" :loading="loading"></table-index>
+  <table-index :size="size" :data="regkeepdata" :column="column" :height="height" :loading="loading"></table-index>
 
 </template>
 
@@ -8,7 +8,7 @@
 
   import TableIndex from '@/components/TableData'
   import { mapGetters } from 'vuex'
-  import {ymd_to_date} from '@/utils'
+  import {ymd_to_date, caclHeight} from '@/utils'
 
   export default {
     components: {
@@ -58,12 +58,14 @@
         columnData.push({
           key: 'd' + ds[k],
           text: k == 0 ? '次留' : (ds[k] + '日'),
+          width: '70',
           template: (data, rowObject) => {
             return data && rowObject.reg && typeof(data)!='undefined' ? (data.a * 100/rowObject.reg).toFixed(2) + '%': '';
           }
         });
       }
       return {
+        height: caclHeight(170),
         column: columnData
       }
     },

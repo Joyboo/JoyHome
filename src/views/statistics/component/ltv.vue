@@ -1,13 +1,13 @@
 <template>
 
-    <table-index :loading="loading" :data="ltvdata" :column="column"></table-index>
+    <table-index :loading="loading" :data="ltvdata" :height="height" :column="column"></table-index>
 
 </template>
 
 <script>
   import TableIndex from '@/components/TableData'
   import { mapGetters } from 'vuex'
-  import {ymd_to_date} from '@/utils'
+  import {caclHeight, ymd_to_date} from '@/utils'
 
   export default {
     components: {
@@ -65,6 +65,7 @@
       {
         columnData.push({
           key: 'd' + ds[k],
+          width: '70',
           text: ds[k] + '日',
           template: (data, rowObject) => {
             return data && rowObject.reg ? (data.sum/rowObject.reg).toFixed(2) : '';
@@ -73,6 +74,7 @@
       }
 
       return {
+        height: caclHeight(170),
         column: columnData,
       }
     },

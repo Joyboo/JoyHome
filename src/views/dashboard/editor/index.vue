@@ -13,7 +13,7 @@
       </div>
     </div>
     <div>
-      <img :src="emptyGif" class="emptyGif">
+      <img src="@/assets/image/dashboard.gif" class="emptyGif">
     </div>
   </div>
 </template>
@@ -28,7 +28,7 @@ export default {
   components: { PanThumb },
   data() {
     return {
-      emptyGif: 'https://wpimg.wallstcn.com/0e03b7da-db9e-4819-ba10-9016ddfdaed3'
+      // emptyGif: 'https://wpimg.wallstcn.com/0e03b7da-db9e-4819-ba10-9016ddfdaed3'
     }
   },
   computed: {
