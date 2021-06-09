@@ -8,6 +8,7 @@
   import TableIndex from '@/components/TableData'
   import { mapGetters } from 'vuex'
   import {caclHeight, ymd_to_date} from '@/utils'
+  import screenfull from "screenfull";
 
   export default {
     components: {
@@ -77,6 +78,9 @@
         height: caclHeight(170),
         column: columnData,
       }
+    },
+    mounted() {
+      screenfull.on('change', () => this.height = caclHeight(170));
     },
     methods: {
       setLoading(val) {

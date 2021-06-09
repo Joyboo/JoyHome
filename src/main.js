@@ -47,8 +47,12 @@ Object.keys(filters).forEach(key => {
 
 Vue.config.productionTip = false
 
-// add by Joyboo 进入时触发主题设置
-setTheme.set(getSettingsLocalStorage('theme')).catch(error => {})
+try {
+  // add by Joyboo 进入时触发主题设置
+  setTheme.set(getSettingsLocalStorage('theme')).catch(error => {})
+} catch (e) {
+  console.error('main.js setTheme error', e)
+}
 
 new Vue({
   el: '#app',
