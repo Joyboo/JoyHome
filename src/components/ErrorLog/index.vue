@@ -8,8 +8,8 @@
 
     <el-dialog :visible.sync="dialogTableVisible" width="80%" append-to-body>
       <div slot="title">
-        <span style="padding-right: 10px;">Error Log</span>
-        <el-button size="mini" type="primary" icon="el-icon-delete" @click="clearAll">Clear All</el-button>
+        <span class="danger">有错误产生哦，请联系开发大大</span>
+        <el-button size="mini" style="float: right;margin-right: 100px;" type="primary" icon="el-icon-delete" @click="clearAll">清除</el-button>
       </div>
       <el-table :data="errorLogs" border>
         <el-table-column label="Message">
@@ -22,9 +22,16 @@
             </div>
             <br>
             <div>
+              <span class="message-title" style="padding-right: 10px;">Tag: </span>
+              <el-tag type="warning">
+                {{ row.vm.$vnode.tag }}
+              </el-tag>
+            </div>
+            <br>
+            <div>
               <span class="message-title" style="padding-right: 10px;">Info: </span>
               <el-tag type="warning">
-                {{ row.vm.$vnode.tag }} error in {{ row.info }}
+                {{ row.info }}
               </el-tag>
             </div>
             <br>
@@ -38,7 +45,7 @@
         </el-table-column>
         <el-table-column label="Stack">
           <template slot-scope="scope">
-            {{ scope.row.err.stack }}
+            <span class="danger">{{ scope.row.err.stack }}</span>
           </template>
         </el-table-column>
       </el-table>
