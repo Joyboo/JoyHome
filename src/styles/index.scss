@@ -245,17 +245,17 @@ aside {
 
 /* 自定义table padding */
 .el-table--mini {
-  .cell,td {
+  .cell,td,th {
     padding: 1px!important;
   }
 }
 .el-table--small {
-  .cell,td {
+  .cell,td,th {
     padding: 3px!important;
   }
 }
 .el-table--medium {
-  .cell,td {
+  .cell,td,th {
     padding: 6px!important;
   }
 }

@@ -35,6 +35,11 @@
         <el-switch v-model="supportPinyinSearch" class="drawer-switch" />
       </div>
 
+      <div class="drawer-item">
+        <span>左侧菜单风琴条模式</span>
+        <el-switch v-model="sidebarMode" class="drawer-switch" />
+      </div>
+
     </div>
   </div>
 </template>
@@ -98,6 +103,17 @@ export default {
     },
     lang() {
       return this.$store.getters.language
+    },
+    sidebarMode: {
+      get() {
+        return getSettingsLocalStorage('sidebarMode', this.$store.state.settings.sidebarMode)
+      },
+      set(val) {
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'sidebarMode',
+          value: val
+        })
+      }
     }
   },
   methods: {

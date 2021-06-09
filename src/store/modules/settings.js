@@ -11,7 +11,8 @@ const state = {
   fixedHeader,
   sidebarLogo,
   supportPinyinSearch,
-  rightPanel: false // 右侧设置面板开关
+  rightPanel: false, // 右侧设置面板开关
+  sidebarMode: true // 菜单是否风琴条模式
 }
 
 const mutations = {

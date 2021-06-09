@@ -7,7 +7,7 @@
         :collapse="isCollapse"
         :background-color="variables.menuBg"
         :text-color="variables.menuText"
-        :unique-opened="false"
+        :unique-opened="sidebarMode"
         :active-text-color="theme"
         :collapse-transition="false"
         mode="vertical"
@@ -51,6 +51,9 @@ export default {
     },
     theme() {
       return this.$store.state.settings.theme
+    },
+    sidebarMode() {
+      return this.$store.state.settings.sidebarMode
     }
   }
 }
