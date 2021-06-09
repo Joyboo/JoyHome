@@ -12,7 +12,7 @@
       @select="handleSelect"
     >
       <el-menu-item v-for="menu in topmenu" :key="menu.id" :index="menu.id">
-        <i :class="menu.icon" />{{ menu.title }}
+        <item :icon="menu.icon" :title="menu.fulltitle || menu.title"></item>
       </el-menu-item>
     </el-menu>
 
@@ -87,6 +87,7 @@ import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import LangSelect from '@/components/LangSelect'
 import Search from '@/components/HeaderSearch'
+import Item from '@/layout/components/Sidebar/Item'
 import {recache} from '@/api/sysinfo'
 
 export default {
@@ -97,7 +98,8 @@ export default {
     Screenfull,
     SizeSelect,
     LangSelect,
-    Search
+    Search,
+    Item
   },
   computed: {
     ...mapGetters([

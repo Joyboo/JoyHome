@@ -41,7 +41,7 @@
 
         <el-form-item>
           <template slot="label">
-            包<i class="labeli">登录appid用哪个包的{{form.extension.h5sdk.pkgbnd}}</i>
+            包<i class="labeli">登录appid用哪个包的</i>
           </template>
 
           <el-select v-model="form.extension.h5sdk.pkgbnd" filterable>

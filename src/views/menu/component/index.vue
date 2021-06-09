@@ -64,7 +64,7 @@
       </el-form-item>
 
       <el-form-item label="是否显示在面包屑">
-        <el-switch v-model="form.breadcrumb == '1'" @change="changeBreadcrumb()" />
+        <el-switch v-model="form.pid != 0 && form.breadcrumb == '1'" @change="changeBreadcrumb()" />
       </el-form-item>
 
       <el-form-item label="排序号">
