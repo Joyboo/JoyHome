@@ -187,7 +187,7 @@ export default {
           {
             text: '今天',
             onClick(picker) {
-              const time = beforeDay(1)
+              const time = beforeDay(0)
               picker.$emit('pick', [time, time])
             }
           }, {

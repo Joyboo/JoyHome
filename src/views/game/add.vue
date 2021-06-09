@@ -22,6 +22,7 @@ export default {
           paykey: '',
           logurl: '',
           payurl: '',
+          h5entry: '',
           goodsids: '',
           facebook: {
             fansurl: ''

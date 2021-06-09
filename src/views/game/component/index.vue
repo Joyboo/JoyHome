@@ -31,6 +31,13 @@
             <el-input v-model="form.extension.payurl" clearable />
           </el-form-item>
 
+          <el-form-item>
+            <template slot="label">
+              平台入口网址 <i class="labeli">只针对H5游戏</i>
+            </template>
+            <el-input v-model="form.extension.h5entry" clearable />
+          </el-form-item>
+
         </el-tab-pane>
 
         <el-tab-pane label="充值信息">
