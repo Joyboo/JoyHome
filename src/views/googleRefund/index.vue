@@ -24,9 +24,9 @@
           <export-data :query="query" export-url="/google_refund/export"></export-data>
         </el-form-item>
 
-        <el-form-item style="float: right;">
+        <!--<el-form-item style="float: right;">
           <el-button type="warning" icon="el-icon-upload2">导入</el-button>
-        </el-form-item>
+        </el-form-item>-->
       </template>
     </layout-filter>
 
@@ -34,9 +34,8 @@
 
     <pagination
       :total="total"
-      :limit="query.pSize"
-      :page="query.cPage"
-      @pagination="pagination"
+      :query="query"
+      @search="search"
     />
 
     <div style="clear: both;"></div>
@@ -203,12 +202,7 @@
           .finally(() => {
             this.loading = false
           })
-      },
-      pagination({ page, limit }) {
-        this.query.cPage = page
-        this.query.pSize = limit
-        this.search()
-      },
+      }
     }
   }
 </script>

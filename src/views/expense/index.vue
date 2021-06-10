@@ -28,7 +28,7 @@
 
     </table-info>
 
-    <pagination :total="total" :page="query.cPage" :limit="query.pSize"></pagination>
+    <pagination :total="total" :query="query" @search="search"></pagination>
   </div>
 </template>
 
@@ -67,11 +67,6 @@
           .finally(() => {
             this.loading = false
           })
-      },
-      pagination({page, limit}) {
-        this.query.cPage = page
-        this.query.pSize = limit
-        this.search()
       }
     },
     data() {

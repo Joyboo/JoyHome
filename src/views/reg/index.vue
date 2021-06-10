@@ -28,9 +28,8 @@
 
     <pagination
       :total="total"
-      :limit="query.pSize"
-      :page="query.cPage"
-      @pagination="pagination"
+      :query="query"
+      @search="search"
     />
 
   </div>
@@ -140,11 +139,6 @@
       },
       detail(index, row) {
         this.$router.push({ path: '/reg/detail', query: { uid: row.uid, gameid: this.query.gameid, ProxyRegion: this.query.ProxyRegion }})
-      },
-      pagination({page, limit}) {
-        this.query.cPage = page
-        this.query.pSize = limit
-        this.search()
       }
     }
   }

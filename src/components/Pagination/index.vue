@@ -24,14 +24,15 @@ export default {
       required: true,
       type: Number
     },
-    page: {
-      type: Number,
-      default: 1
+
+    // 查询参数
+    query: {
+      type: Object,
+      default() {
+        return {}
+      }
     },
-    limit: {
-      type: Number,
-      default: 20
-    },
+
     pageSizes: {
       type: Array,
       default() {
@@ -58,7 +59,7 @@ export default {
   computed: {
     currentPage: {
       get() {
-        return this.page
+        return this.query.cPage
       },
       set(val) {
         this.$emit('update:page', val)
@@ -66,7 +67,7 @@ export default {
     },
     pageSize: {
       get() {
-        return this.limit
+        return this.query.pSize
       },
       set(val) {
         this.$emit('update:limit', val)
@@ -75,16 +76,24 @@ export default {
   },
   methods: {
     handleSizeChange(val) {
-      this.$emit('pagination', { page: this.currentPage, limit: val })
+      // this.$emit('pagination', { page: this.currentPage, limit: val })
       if (this.autoScroll) {
         scrollTo(0, 800)
       }
+
+      this.query.cPage = this.currentPage
+      this.query.pSize = val
+      this.$emit('search')
     },
     handleCurrentChange(val) {
-      this.$emit('pagination', { page: val, limit: this.pageSize })
+      // this.$emit('pagination', { page: val, limit: this.pageSize })
       if (this.autoScroll) {
         scrollTo(0, 800)
       }
+
+      this.query.cPage = val
+      this.query.pSize = this.pageSize
+      this.$emit('search')
     }
   }
 }

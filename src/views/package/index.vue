@@ -1,13 +1,13 @@
 <template>
   <div class="view-container">
 
-    <layout-filter :query="search" @search="getData">
+    <layout-filter :query="query" @search="search">
       <el-form-item>
-        <el-input v-model="search.keyword" placeholder="包名或包id" clearable />
+        <el-input v-model="query.keyword" placeholder="包名或包id" clearable />
       </el-form-item>
 
       <el-form-item>
-        <el-input v-model="search.id" placeholder="id" clearable />
+        <el-input v-model="query.id" placeholder="id" clearable />
       </el-form-item>
     </layout-filter>
 
@@ -15,7 +15,7 @@
       :loading="loading"
       :data="tableData"
       pathname="package"
-      @search="getData"
+      @search="search"
     >
       <el-table-column sortable align="center" width="80" prop="id" label="ID" />
 
@@ -68,9 +68,8 @@
 
     <pagination
       :total="total"
-      :limit="search.pSize"
-      :page="search.cPage"
-      @pagination="pagination"
+      :query="query"
+      @search="search"
     />
   </div>
 </template>
@@ -100,7 +99,7 @@ export default {
   data() {
     return {
       loading: false,
-      search: {
+      query: {
         id: '',
         gameid: '',
         keyword: '',
@@ -112,14 +111,9 @@ export default {
     }
   },
   methods: {
-    pagination({ page, limit }) {
-      this.search.cPage = page
-      this.search.pSize = limit
-      this.getData()
-    },
-    getData() {
+    search() {
       this.loading = true
-      packageindex(this.search)
+      packageindex(this.query)
         .then(({code, msg, data}) => {
           if (!code)
           {

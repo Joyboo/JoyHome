@@ -71,10 +71,10 @@
       }
     },
     mounted() {
-      this.getData()
+      this.search()
     },
     methods: {
-      getData() {
+      search() {
         this.loading = true
         sysinfoIndex()
           .then(resp => {

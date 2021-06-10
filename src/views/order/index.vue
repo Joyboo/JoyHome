@@ -53,9 +53,8 @@
 
     <pagination
       :total="total"
-      :limit="query.pSize"
-      :page="query.cPage"
-      @pagination="pagination"
+      :query="query"
+      @search="search"
     />
 
     <!--详情-->
@@ -269,11 +268,6 @@
             ordersn: this.query.gameid + '-' + row.id + '-' + row.instime
           }
         }
-      },
-      pagination({page, limit}) {
-        this.query.cPage = page
-        this.query.pSize = limit
-        this.search()
       },
       // 详情页子组件设置dialog状态
       setdialog(val) {

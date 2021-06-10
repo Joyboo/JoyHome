@@ -156,7 +156,7 @@
     mounted() {
       this.query.gameid = this.gameid
       this.query.uid = this.$route.query.uid
-      this.getData(true)
+      this.search(true)
     },
     data() {
       return {
@@ -375,7 +375,7 @@
             this.loginloading = false
           })
       },
-      getData(load) {
+      search(load) {
         if (load) {
           this.loading = true
         }
@@ -407,7 +407,7 @@
             })
             if (code) {
               this.dialogFormVisible = false
-              this.getData(false)
+              this.search(false)
             }
           })
           .catch(error => {

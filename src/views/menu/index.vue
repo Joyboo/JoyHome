@@ -6,7 +6,7 @@
         :loading="loading"
         :data="tableData"
         pathname="menu"
-        @search="getData"
+        @search="search"
       >
 
         <el-table-column align="left" prop="title" label="菜单名" />
@@ -76,7 +76,7 @@ export default {
   },
   // 菜单列表没有按钮主动搜索，每次切换回来就更新一次数据
   activated() {
-    this.getData()
+    this.search()
   },
   data() {
     return {
@@ -85,7 +85,7 @@ export default {
     }
   },
   methods: {
-    getData() {
+    search() {
       this.loading = true
       menuIndex()
         .then(({code, msg, data}) => {
@@ -128,7 +128,7 @@ export default {
         .then(({code, msg}) => {
           if (code) {
             this.$message.success('操作成功')
-            this.getData()
+            this.search()
           } else {
             this.$message.error(msg)
           }

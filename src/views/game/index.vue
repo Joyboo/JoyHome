@@ -2,10 +2,10 @@
   <div class="view-container">
 
     <div class="searchBox">
-      <el-form ref="package-search" :model="search" :size="size" :inline="true" height="150">
+      <el-form ref="package-search" :model="query" :size="size" :inline="true" height="150">
 
         <el-form-item>
-          <el-select v-model="search.type" filterable clearable placeholder="有效性">
+          <el-select v-model="query.type" filterable clearable placeholder="有效性">
             <el-option
               v-for="item in typelist"
               :key="item.value"
@@ -16,11 +16,11 @@
         </el-form-item>
 
         <el-form-item>
-          <el-input v-model="search.keyword" placeholder="游戏名" clearable />
+          <el-input v-model="query.keyword" placeholder="游戏名" clearable />
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="getData">查询</el-button>
+          <el-button type="primary" @click="search">查询</el-button>
         </el-form-item>
 
       </el-form>
@@ -30,7 +30,7 @@
       :loading="loading"
       :data="tableData"
       pathname="game"
-      @search="getData"
+      @search="search"
     >
       <el-table-column sortable align="center" width="80" prop="id" label="ID" />
 
@@ -69,9 +69,8 @@
 
     <pagination
       :total="total"
-      :limit="search.pSize"
-      :page="search.cPage"
-      @pagination="pagination"
+      :query="query"
+      @search="search"
     />
   </div>
 </template>
@@ -93,7 +92,7 @@ export default {
   },
   data() {
     return {
-      search: {
+      query: {
         type: '',
         keyword: '',
         pSize: 20,
@@ -121,17 +120,12 @@ export default {
   },
   async mounted() {
     await this.$store.dispatch('filter/gameInfo')
-    this.getData()
+    this.search()
   },
   methods: {
-    pagination({ page, limit }) {
-      this.search.cPage = page
-      this.search.pSize = limit
-      this.getData()
-    },
-    getData() {
+    search() {
       this.loading = true
-      gameIndex(this.search)
+      gameIndex(this.query)
         .then(({code, msg, data}) => {
           if (!code)
           {

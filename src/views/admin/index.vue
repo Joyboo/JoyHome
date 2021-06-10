@@ -80,12 +80,7 @@
         </template>
     </table-data>
 
-    <pagination
-      :total="total"
-      :limit="query.pSize"
-      :page="query.cPage"
-      @pagination="pagination"
-    />
+    <pagination :total="total" :query="query" @search="search" />
   </div>
 </template>
 
@@ -172,12 +167,7 @@
         .finally(() => {
           this.loading = false
         })
-      },
-      pagination({ page, limit }) {
-        this.query.cPage = page
-        this.query.pSize = limit
-        this.search()
-      },
+      }
     }
   }
 </script>
