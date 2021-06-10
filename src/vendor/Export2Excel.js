@@ -158,7 +158,7 @@ export function export_table_to_excel_joyboo({id, bookType, filename}) {
   }
 
   /* 从表生成工作簿对象 */
-  var wb = XLSX.utils.table_to_book(el, {raw:true});
+  var wb = XLSX.utils.table_to_book(el);
   /* 获取二进制字符串作为输出 */
   var wbout = XLSX.write(wb, {
     bookType: bookType,
