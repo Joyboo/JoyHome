@@ -116,9 +116,24 @@ export default {
       return this.$store.state.config.pSizeKey
     },
   },
-  mounted() {
-    this.query[this.cPageKey] = this.currentPage
-    this.query[this.pSizeKey] = this.pageSize
+  // 全局config为异步获取，需要侦听器
+  watch: {
+    cPageKey: {
+      immediate: true,
+      handler: function (newVal, oldVal) {
+        if (newVal) {
+          this.query[newVal] = this.currentPage
+        }
+      }
+    },
+    pSizeKey: {
+      immediate: true,
+      handler: function (newVal, oldVal) {
+        if (newVal) {
+          this.query[newVal] = this.pageSize
+        }
+      }
+    }
   },
   methods: {
     handleSizeChange(val) {

@@ -60,7 +60,6 @@
             <el-input v-model="form.extension.payurl" clearable />
           </el-form-item>
 
-          <!-- todo 自动填充域名（直接后端处理？？）-->
           <el-form-item label="report域名">
             <el-input v-model="form.extension.domain.report" clearable />
           </el-form-item>
