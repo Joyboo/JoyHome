@@ -11,7 +11,7 @@
       active-text-color="#FFF"
       @select="handleSelect"
     >
-      <el-menu-item v-for="menu in topmenu" :key="menu.id" :index="menu.id">
+      <el-menu-item v-for="(menu, mk) in topmenu" :key="mk" :index="menu.id">
         <item :icon="menu.icon" :title="menu.fulltitle || menu.title"></item>
       </el-menu-item>
     </el-menu>

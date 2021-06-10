@@ -116,6 +116,7 @@ const state = {
 const mutations = {
 
   SET_MENU(state, data) {
+    state.topmenu = []
     // 将第一级设置为topmenu
     for(let i in data)
     {
