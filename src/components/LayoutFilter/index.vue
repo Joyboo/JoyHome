@@ -31,15 +31,13 @@
 
       <el-form-item v-if="typeof query.ProxyRegion != 'undefined'">
         <el-select style="width: 100px;" v-model="query.ProxyRegion" placeholder="地区" class="mySelect">
-          <el-option key="1" label="欧美区" value="omz" />
-          <el-option key="2" label="新加坡" value="xjp" />
+          <el-option v-for="(rn, rk) in region" :key="rk" :label="rn.name" :value="rk" />
         </el-select>
       </el-form-item>
 
       <el-form-item v-if="typeof query.tzn != 'undefined'">
-        <el-select style="width: 100px;" v-model="query.tzn" placeholder="地区" class="mySelect">
-          <el-option key="1" label="-5区" value="-5" />
-          <el-option key="2" label="8区" value="8" />
+        <el-select style="width: 100px;" v-model="query.tzn" placeholder="时区" class="mySelect">
+          <el-option v-for="(rn, rk) in region" :key="rk" :label="rn.tzn + '区'" :value="rn.tzn" />
         </el-select>
       </el-form-item>
 
@@ -85,8 +83,12 @@ export default {
     ...mapGetters([
       'size',
       'filtergamelist',
-      'userinfo'
+      'userinfo',
+      'config'
     ]),
+    region() {
+      return this.config.region_domain.region;
+    },
     // 是否多选游戏
     gameMul() {
       return typeof this.query.gameid === 'object'

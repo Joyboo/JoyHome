@@ -94,9 +94,7 @@ export default {
     return {
       query: {
         type: '',
-        keyword: '',
-        pSize: 20,
-        cPage: 1
+        keyword: ''
       },
       total: 0,
       tableData: [],

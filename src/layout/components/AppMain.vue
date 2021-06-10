@@ -14,6 +14,7 @@
 
 <script>
   import BackToTop from '@/components/BackToTop'
+  import {glbcfg} from "@/api/sysinfo";
 
   export default {
     name: 'AppMain',
@@ -25,6 +26,19 @@
       key() {
         return this.$route.path
       }
+    },
+    created() {
+      glbcfg()
+        .then(({code, msg, data}) => {
+          if (!code)
+          {
+            return this.$message.error(msg)
+          }
+          this.$store.dispatch('config/setConfig', data)
+        })
+        .catch(error => {
+          console.log("config/setConfig error ", error);
+        })
     }
   }
 </script>

@@ -76,8 +76,6 @@
         query: {
           gameid: '',
           pkgbnd: [],
-          cPage: 1,
-          pSize: 20,
           begintime: true,
           endtime: true
         },

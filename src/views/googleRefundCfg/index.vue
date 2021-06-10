@@ -56,9 +56,7 @@
       return {
         query: {
           gameid: '',
-          pkgbnd: [],
-          cPage: 1,
-          pSize: 20
+          pkgbnd: []
         },
         loading: false,
         tableData: [],

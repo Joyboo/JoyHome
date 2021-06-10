@@ -16,6 +16,7 @@ const getters = {
   topmenu: state => state.permission.topmenu,
   gamelist: state => state.filter.gamelist,
   filtergamelist: state => state.filter.filtergamelist,
-  packos: state => state.filter.pack_os
+  packos: state => state.filter.pack_os,
+  config: state => state.config.config
 }
 export default getters

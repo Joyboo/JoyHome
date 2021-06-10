@@ -124,9 +124,7 @@
         query: {
           rid: '',
           keyword: '',
-          deltime: '1',
-          cPage: 1,
-          pSize: 20,
+          deltime: '1'
         },
         data: [],
         total: 0

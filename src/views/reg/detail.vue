@@ -159,6 +159,18 @@
       this.search(true)
     },
     data() {
+
+      let query = {
+        uid: '',
+        gameid: '',
+        pf: '',
+        pkgbnd: [],
+        begintime: true,
+        endtime: true
+      }
+      query[this.$store.state.config.cPageKey] = 1
+      query[this.$store.state.config.pSizeKey] = 100000  // 不分页，传个比较大的值
+
       return {
         dialogFormVisible: false,
         loading: false,
@@ -171,16 +183,7 @@
           opt: '',
           ...this.$route.query
         },
-        query: {
-          uid: '',
-          gameid: '',
-          pf: '',
-          pkgbnd: [],
-          begintime: true,
-          endtime: true,
-          pSize: 10000,  // 不分页，传个比较大的值
-          cPage: 1
-        },
+        query: query,
 
         // 充值页
         payloading: false,

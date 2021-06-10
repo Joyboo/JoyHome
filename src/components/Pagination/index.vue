@@ -5,7 +5,7 @@
       :current-page.sync="currentPage"
       :page-size.sync="pageSize"
       :layout="layout"
-      :page-sizes="pageSizes"
+      :page-sizes="sizelist"
       :total="total"
       v-bind="$attrs"
       @size-change="handleSizeChange"
@@ -16,6 +16,8 @@
 
 <script>
 import { scrollTo } from '@/utils/scroll-to'
+import {isArray} from "@/utils/validate";
+import {mapGetters} from "vuex";
 
 export default {
   name: 'Pagination',
@@ -24,19 +26,16 @@ export default {
       required: true,
       type: Number
     },
-
-    // 查询参数
+    // 查询参数,必传
     query: {
-      type: Object,
-      default() {
-        return {}
-      }
+      required: true,
+      type: Object
     },
 
     pageSizes: {
       type: Array,
       default() {
-        return [20, 100, 200, 300, 500, 1000]
+        return []
       }
     },
     layout: {
@@ -57,22 +56,64 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['config']),
+    sizelist() {
+      if (this.pageSizes.length > 0)
+      {
+        return this.pageSizes;
+      }
+      return this.config.paginate.sizelist || []
+    },
     currentPage: {
       get() {
-        return this.query.cPage
+        if (typeof this.query[this.cPageKey] != 'undefined')
+        {
+          return this.query[this.cPageKey]
+        }
+        return 1
       },
       set(val) {
-        this.$emit('update:page', val)
+        // this.$emit('update:page', val)
+        this.query[this.cPageKey] = val
       }
     },
     pageSize: {
       get() {
-        return this.query.pSize
+        // Props传值
+        if (typeof this.query[this.pSizeKey] != 'undefined')
+        {
+          return this.query[this.pSizeKey]
+        }
+        // 后台配置,列表页
+        else if (typeof this.config.paginate.list_rows != 'undefined')
+        {
+          return this.config.paginate.list_rows
+        }
+        // 第一个值
+        else if (isArray(this.sizelist) && this.sizelist.length > 0)
+        {
+          return this.sizelist[0]
+        }
+        else {
+          return 20
+        }
       },
       set(val) {
-        this.$emit('update:limit', val)
+        // this.$emit('update:limit', val)
+        this.query[this.pSizeKey] = val
       }
-    }
+    },
+    // 分页key
+    cPageKey() {
+      return this.$store.state.config.cPageKey
+    },
+    pSizeKey() {
+      return this.$store.state.config.pSizeKey
+    },
+  },
+  mounted() {
+    this.query[this.cPageKey] = this.currentPage
+    this.query[this.pSizeKey] = this.pageSize
   },
   methods: {
     handleSizeChange(val) {
@@ -81,8 +122,7 @@ export default {
         scrollTo(0, 800)
       }
 
-      this.query.cPage = this.currentPage
-      this.query.pSize = val
+      this.pageSize = val
       this.$emit('search')
     },
     handleCurrentChange(val) {
@@ -91,8 +131,7 @@ export default {
         scrollTo(0, 800)
       }
 
-      this.query.cPage = val
-      this.query.pSize = this.pageSize
+      this.currentPage = val
       this.$emit('search')
     }
   }

@@ -110,9 +110,7 @@
           kwtype: 'paysn',
           kwvalue: '',
           begintime: true,
-          endtime: true,
-          pSize: 20,
-          cPage: 1
+          endtime: true
         },
         // detail组件参数
         dialog: false,

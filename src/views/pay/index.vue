@@ -89,9 +89,7 @@
           kwtype: 'paysn',
           kwvalue: '',
           begintime: true,
-          endtime: true,
-          pSize: 20,
-          cPage: 1
+          endtime: true
         },
         // 查询订单详情参数
         detailQuery: {},

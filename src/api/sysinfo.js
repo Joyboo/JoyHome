@@ -45,3 +45,10 @@ export function recache() {
     method: 'get'
   })
 }
+
+export function glbcfg() {
+  return request({
+    url: '/admin/sysinfo/glbcfg',
+    method: 'get'
+  })
+}

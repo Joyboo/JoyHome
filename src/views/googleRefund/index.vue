@@ -81,9 +81,7 @@
           endtime: true,
           voidedReason: '',
           whereKey: '',
-          whereValue: '',
-          pSize: 20,
-          cPage: 1
+          whereValue: ''
         },
         total: 0,
         piereason: [],

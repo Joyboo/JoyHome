@@ -67,9 +67,7 @@
           ProxyRegion: 'omz',
           begintime: true,
           endtime: true,
-          uid: '',
-          pSize: 20,
-          cPage: 1
+          uid: ''
         },
         total: 0,
         tableData: [],

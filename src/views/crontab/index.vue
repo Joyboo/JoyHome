@@ -125,9 +125,7 @@
         query: {
           name: '',
           sys: '',
-          status: '',
-          cPage: 1,
-          pSize: 20
+          status: ''
         },
         tableData: [],
         column: [

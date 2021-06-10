@@ -62,9 +62,7 @@
       return {
         loading: false,
         query: {
-          devid: '',
-          cPage: 1,
-          pSize: 20,
+          devid: ''
         },
         data: [],
         total: 0
