@@ -31,6 +31,11 @@ export default {
       required: true,
       type: Object
     },
+    // list_rows列表页， cnt_rows统计页
+    row: {
+      type: String,
+      default: 'list_rows'
+    },
 
     pageSizes: {
       type: Array,
@@ -85,9 +90,9 @@ export default {
           return this.query[this.pSizeKey]
         }
         // 后台配置,列表页
-        else if (typeof this.config.paginate.list_rows != 'undefined')
+        else if (typeof this.config.paginate[this.row] != 'undefined')
         {
-          return this.config.paginate.list_rows
+          return this.config.paginate[this.row]
         }
         // 第一个值
         else if (isArray(this.sizelist) && this.sizelist.length > 0)
