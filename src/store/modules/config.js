@@ -1,7 +1,21 @@
 
 const state = {
-  config: {}, // 应用全局配置
-  cPageKey: 'cPage', // 当前页
+  // 应用全局配置
+  config: {
+    region_domain: {
+      domain: '',
+      region: {}
+    },
+    paginate: {
+      cnt_rows: 500,
+      list_rows: 20,
+      sizelist: [20, 100, 200, 300, 500],
+      type: "bootstrap",
+      var_page: "cPage",
+      var_pagesize: "pSiz"
+    }
+  },
+  cPageKey: 'cPage',
   pSizeKey: 'pSize'
 }
 
