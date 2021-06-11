@@ -67,6 +67,36 @@
           let url = process.env.VUE_APP_BASE_API + '/admin' + this.exportUrl + '?_token=' + token + '&'
           url += queryParams(this.query)
           window.open(url)
+
+          /*
+          // 这是一个msgbox传入Vue组件的例子
+          const h = this.$createElement;
+          // add a unique for VNode
+          this.$msgbox({
+            title: '导出中 .. ',
+            showClose: false,  // MessageBox 是否显示右上角关闭按钮
+            closeOnPressEscape: false, // 是否可通过按下 ESC 键关闭 MessageBox
+            closeOnClickModal: false, // 是否可通过点击遮罩关闭 MessageBox
+            showConfirmButton: false,
+            showCancelButton: true,
+            cancelButtonText: '取消导出',
+            message: h('el-progress', {
+              key: this.key,
+              props: {
+                "stroke-width": 15,
+                percentage: this.progress.num
+              }
+            })
+          })
+          .then(resp => {
+            console.log(resp)
+          })
+          .catch(() => {
+            // 取消导出
+            console.log('取消')
+          })
+
+          * */
         }
       }
     }

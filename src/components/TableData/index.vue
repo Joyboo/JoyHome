@@ -11,6 +11,8 @@
     :id="tabid"
   >
 
+    <slot name="header"></slot>
+
     <!--
         column字段说明：
         {
@@ -73,6 +75,7 @@
 <script>
   import {mapGetters} from "vuex";
   import JsonViewer from 'vue-json-viewer'
+  import {caclHeight} from "@/utils";
 
   export default {
     name: "TableIndex",
@@ -113,8 +116,7 @@
         type: Number,
         default() {
           // 默认是算上了分页组件高度的，如果该页不需要分页，实际应该 -170左右
-          const h = window.document.documentElement.clientHeight || 900
-          return h - 220
+          return caclHeight(220)
         }
       },
       //id
