@@ -110,7 +110,7 @@
     },
     methods: {
       search() {
-        if (this.query.gameid == '') {
+        if (this.query.gameid === '') {
           this.$message.error('请选择游戏')
           return
         }
