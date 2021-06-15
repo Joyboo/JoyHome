@@ -76,99 +76,107 @@
         <el-tab-pane label="第三方配置">
 
           <el-form-item label="google参数">
-            <el-col :span="10">
-              <el-input
-                v-model="form.extension.google_paykey"
-                class="colInput"
-                type="textarea"
-                :rows="3"
-                clearable
-                placeholder="paykey公钥"
-              />
-            </el-col>
+            <el-row :gutter="20">
+              <el-col :span="10">
+                <el-input
+                  v-model="form.extension.google_paykey"
+                  class="colInput"
+                  type="textarea"
+                  :rows="3"
+                  clearable
+                  placeholder="paykey公钥"
+                />
+              </el-col>
 
-            <el-col :span="10">
-              <el-input
-                v-model="form.extension.google.web_clientid"
-                class="colInput"
-                type="textarea"
-                :rows="3"
-                clearable
-                placeholder="web_client客户端id"
-              />
-            </el-col>
+              <el-col :span="10">
+                <el-input
+                  v-model="form.extension.google.web_clientid"
+                  class="colInput"
+                  type="textarea"
+                  :rows="3"
+                  clearable
+                  placeholder="web_client客户端id"
+                />
+              </el-col>
+            </el-row>
           </el-form-item>
 
           <el-form-item label="华为参数">
-            <el-col :span="10">
-              <el-input
-                v-model="form.extension.huawei.production.clientid"
-                class="colInput"
-                type="textarea"
-                :rows="3"
-                clearable
-                placeholder="正式client_id"
-              />
-            </el-col>
+            <el-row :gutter="20">
+              <el-col :span="10">
+                <el-input
+                  v-model="form.extension.huawei.production.clientid"
+                  class="colInput"
+                  type="textarea"
+                  :rows="3"
+                  clearable
+                  placeholder="正式client_id"
+                />
+              </el-col>
 
-            <el-col :span="10">
-              <el-input
-                v-model="form.extension.huawei.production.clientsecret"
-                class="colInput"
-                type="textarea"
-                :rows="3"
-                clearable
-                placeholder="正式client_secret"
-              />
-            </el-col>
+              <el-col :span="10">
+                <el-input
+                  v-model="form.extension.huawei.production.clientsecret"
+                  class="colInput"
+                  type="textarea"
+                  :rows="3"
+                  clearable
+                  placeholder="正式client_secret"
+                />
+              </el-col>
+            </el-row>
           </el-form-item>
 
           <el-form-item label="facebook参数">
-            <el-col :span="10">
-              <el-input
-                v-model="form.extension.facebook.bindnotice"
-                class="colInput"
-                type="textarea"
-                :rows="3"
-                clearable
-                placeholder="绑定通知"
-              />
-            </el-col>
+            <el-row :gutter="20">
+              <el-col :span="10">
+                <el-input
+                  v-model="form.extension.facebook.bindnotice"
+                  class="colInput"
+                  type="textarea"
+                  :rows="3"
+                  clearable
+                  placeholder="绑定通知"
+                />
+              </el-col>
 
-            <el-col :span="10">
-              <el-input
-                v-model="form.extension.facebook.appid"
-                class="colInput"
-                type="textarea"
-                :rows="3"
-                clearable
-                placeholder="appid"
-              />
-            </el-col>
+              <el-col :span="10">
+                <el-input
+                  v-model="form.extension.facebook.appid"
+                  class="colInput"
+                  type="textarea"
+                  :rows="3"
+                  clearable
+                  placeholder="appid"
+                />
+              </el-col>
+            </el-row>
           </el-form-item>
 
           <el-form-item label="MG参数">
-            <el-col :span="10">
-              <el-input
-                v-model="form.extension.mg.appkey"
-                class="colInput"
-                type="textarea"
-                :rows="3"
-                clearable
-                placeholder="appkey"
-              />
-            </el-col>
+            <el-row :gutter="20">
+              <el-col :span="10">
+                <el-input
+                  v-model="form.extension.mg.appkey"
+                  class="colInput"
+                  type="textarea"
+                  :rows="3"
+                  clearable
+                  placeholder="appkey"
+                />
+              </el-col>
 
-            <el-col :span="10">
-              <el-input
-                v-model="form.extension.mg.publickey"
-                class="colInput"
-                type="textarea"
-                :rows="3"
-                clearable
-                placeholder="publickey"
-              />
-            </el-col>
+              <el-col :span="10">
+                <el-input
+                  v-model="form.extension.mg.publickey"
+                  class="colInput"
+                  type="textarea"
+                  :rows="3"
+                  clearable
+                  placeholder="publickey"
+                />
+              </el-col>
+            </el-row>
           </el-form-item>
 
         </el-tab-pane>
@@ -205,7 +213,7 @@
                 </el-col>
               </el-row>
 
-              <el-row style="margin: 20px;">
+              <el-row :gutter="20">
                 <el-col :span="10">
                   <el-input
                     v-model="form.extension.paypal.production.clientid"
@@ -227,7 +235,7 @@
                   />
                 </el-col>
               </el-row>
-              <el-row style="margin: 20px;">
+              <el-row :gutter="20">
                 <el-col :span="10">
                   <el-input
                     v-model="form.extension.paypal.sandbox.clientid"
@@ -264,7 +272,7 @@
                 </el-col>
               </el-row>
 
-              <el-row style="margin: 20px;">
+              <el-row :gutter="20">
                 <el-col :span="10">
                   <el-input
                     v-model="form.extension.payssion.production.clientid"
@@ -286,7 +294,7 @@
                   />
                 </el-col>
               </el-row>
-              <el-row style="margin: 20px;">
+              <el-row :gutter="20">
                 <el-col :span="10">
                   <el-input
                     v-model="form.extension.payssion.sandbox.clientid"
@@ -322,7 +330,7 @@
             <el-row>
               <el-button icon="el-icon-plus" :size="size" type="primary" plain @click="cp_param" />
             </el-row>
-            <el-row v-for="(ipt, key) in form.extension.adjust.event" :key="key">
+            <el-row v-for="(ipt, key) in form.extension.adjust.event" :key="key" :gutter="10">
               <el-col :span="8">
                 <el-input v-model="ipt.Key" class="colInput" clearable placeholder="Key" />
               </el-col>
