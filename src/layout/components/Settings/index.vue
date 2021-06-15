@@ -36,7 +36,7 @@
       </div>
 
       <div class="drawer-item">
-        <span>左侧菜单风琴条模式</span>
+        <span>左侧菜单手风琴模式</span>
         <el-switch v-model="sidebarMode" class="drawer-switch" />
       </div>
 

@@ -1,3 +1,4 @@
+import {glbcfg} from "@/api/sysinfo";
 
 const state = {
   // 应用全局配置
@@ -34,8 +35,21 @@ const mutations = {
 }
 
 const actions = {
-  setConfig({commit}, config) {
-    commit('SET_CONFIG', config)
+  setConfig({commit}) {
+    return new Promise(((resolve, reject) => {
+      glbcfg()
+        .then(({code, msg, data}) => {
+          if (!code)
+          {
+            reject(msg)
+          }
+          commit('SET_CONFIG', data)
+          resolve(data)
+        })
+        .catch(error => {
+          reject(error);
+        })
+    }))
   }
 }
 

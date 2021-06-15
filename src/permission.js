@@ -1,6 +1,6 @@
 import router from './router'
 import store from './store'
-import { Message } from 'element-ui'
+import { Message, Loading } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
@@ -55,18 +55,18 @@ router.beforeEach(async(to, from, next) => {
 
       } else {
         try {
+          let myLoading = Loading.service();
+
           // add by Joyboo 获取top菜单
           await store.dispatch('permission/getTopMenu')
           // get user info
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
-          const { roles } = await store.dispatch('user/getInfo')
+          await store.dispatch('user/getInfo')
 
-          // edit by Joyboo 注释了43和46行，动态追加路由之前需要指定最顶级的top菜单id
-          // generate accessible routes map based on roles
-          // const accessRoutes = await store.dispatch('permission/generateRoutes')
+          // 获取全局配置
+          await store.dispatch('config/setConfig')
 
-          // dynamically add accessible routes
-          // router.addRoutes(accessRoutes)
+          myLoading.close();
 
           // hack method to ensure that addRoutes is complete
           // set the replace: true, so the navigation will not leave a history record
@@ -74,6 +74,7 @@ router.beforeEach(async(to, from, next) => {
         } catch (error) {
           // remove token and go to login page to re-login
           await store.dispatch('user/resetToken')
+          console.error('primission error ', error)
           Message.error(error || 'Has Error')
           next(`/login?redirect=${to.path}`)
           NProgress.done()
