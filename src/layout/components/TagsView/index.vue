@@ -16,6 +16,10 @@
         {{ generateTitle(tag.fulltitle || tag.title) }}
         <span v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
       </router-link>
+
+      <span class="tags-view-item" style="cursor: pointer;position: fixed;right:0;" @click="doRefresh">
+        <i class="el-icon-refresh" /> &nbsp;{{$t('tagsView.refresh')}}
+      </span>
     </scroll-pane>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
       <li @click="refreshSelectedTag(selectedTag)">{{ $t('tagsView.refresh') }}</li>
@@ -195,6 +199,9 @@ export default {
     },
     handleScroll() {
       this.closeMenu()
+    },
+    doRefresh() {
+      this.refreshSelectedTag(this.$route)
     }
   }
 }
