@@ -15,7 +15,7 @@
 
         <el-table-column prop="icon" align="center" label="图标" width="80">
           <template slot-scope="scope">
-            <i :class="scope.row.icon" />
+            <item :icon="scope.row.icon"></item>
           </template>
         </el-table-column>
 
@@ -65,11 +65,13 @@ import { mapGetters } from 'vuex'
 import TableData from '@/components/TableData/info'
 import { menuIndex,menuEdit } from '@/api/menu'
 import checkPermission from '@/utils/permission'
+import Item from '@/layout/components/Sidebar/Item'
 
 export default {
   name: 'menuindex',
   components: {
-    TableData
+    TableData,
+    Item
   },
   computed: {
     ...mapGetters(['size'])

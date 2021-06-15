@@ -36,7 +36,7 @@ const mutations = {
 
 const actions = {
   setConfig({commit}) {
-    return new Promise(((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       glbcfg()
         .then(({code, msg, data}) => {
           if (!code)
@@ -49,7 +49,7 @@ const actions = {
         .catch(error => {
           reject(error);
         })
-    }))
+    })
   }
 }
 
