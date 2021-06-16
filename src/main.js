@@ -19,8 +19,6 @@ import './permission' // permission control
 import './utils/error-log' // error log
 
 import * as filters from './filters' // global filters
-import setTheme from '@/utils/settings'
-import {getSettingsLocalStorage} from "@/utils";
 
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size
@@ -33,13 +31,6 @@ Object.keys(filters).forEach(key => {
 })
 
 Vue.config.productionTip = false
-
-try {
-  // add by Joyboo 进入时触发主题设置
-  setTheme.set(getSettingsLocalStorage('theme')).catch(error => {})
-} catch (e) {
-  console.error('main.js setTheme error', e)
-}
 
 new Vue({
   el: '#app',

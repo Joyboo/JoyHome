@@ -1,6 +1,6 @@
 <template>
   <div class="view-container">
-    <layout-filter :query="query" :nsch="false" @search="search">
+    <layout-filter :query="query" :nsch="false" @search="search" @chgTzn="chgTzn">
       <template>
         <el-form-item>
           <el-button v-for="(name, key) in menulist" :key="key"
@@ -79,7 +79,7 @@
           gameid: [],
           pkgbnd: [],
           ProxyRegion: 'omz',
-          tzn: '8',
+          tzn: '-5',
           begintime: true,
           endtime: true
         },
@@ -87,25 +87,34 @@
         menu: 'daily',
         menulist: {
           roi: {
-            name: '流水ROI'
+            name: '流水ROI',
+            tzn: '8',
           },
           droi: {
-            name: '分成后ROI'
+            name: '分成后ROI',
+            tzn: '8',
           },
           regkeep: {
-            name: '注册留存'
+            name: '注册留存',
+            tzn: '-5',
           },
           paykeep: {
-            name: '付费留存'
+            name: '付费留存',
+            tzn: '-5',
           },
           ltv: {
-            name: 'LTV'
+            name: 'LTV',
+            tzn: '-5',
           },
           daily: {
-            name: '游戏日报'
+            name: '游戏日报',
+            tzn: '-5',
           }
         }
       }
+    },
+    mounted() {
+      this.query.tzn = this.menulist[this.menu].tzn
     },
     methods: {
       checkPermission,
@@ -130,6 +139,11 @@
       chgRadio(val) {
         this.tableData = [];
         this.menu = val
+        this.query.tzn = this.menulist[this.menu].tzn
+        this.search()
+      },
+      chgTzn(val) {
+        this.query.tzn = val
         this.search()
       }
     }

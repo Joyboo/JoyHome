@@ -36,7 +36,7 @@
       </el-form-item>
 
       <el-form-item v-if="typeof query.tzn != 'undefined'">
-        <el-select style="width: 100px;" v-model="query.tzn" placeholder="时区" class="mySelect">
+        <el-select style="width: 100px;" v-model="query.tzn" placeholder="时区" class="mySelect" @change="chgTzn">
           <el-option v-for="(rn, rk) in region" :key="rk" :label="rn.tzn + '区'" :value="rn.tzn" />
         </el-select>
       </el-form-item>
@@ -273,6 +273,10 @@ export default {
     },
     search() {
       this.$emit('search')
+    },
+    // 改变时区
+    chgTzn(val) {
+      this.$emit('chgTzn', val)
     }
   }
 }

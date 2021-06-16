@@ -1,63 +1,54 @@
 import store from '@/store'
 const version = require('element-ui/package.json').version
 import {Message} from "element-ui";
+import i18n from '@/lang'
+import variables from '@/styles/element-variables.scss'
 
 const ORIGINAL_THEME = '#409EFF' // default color
 
 export default {
-  chalk: '',
+  first: true,
   async set (val) {
 
-    const oldVal = this.chalk ? store.state.settings.theme : ORIGINAL_THEME
-    if (typeof val !== 'string') return
-    const themeCluster = this.getThemeCluster(val.replace('#', ''))
-    const originalCluster = this.getThemeCluster(oldVal.replace('#', ''))
-    // console.log(themeCluster, originalCluster)
+    try{
+      // 首次加载时CSS为elementui默认值，需替换为settings.theme,之后需要替换的便是原theme值了
+      // edit by Joyboo 2021-06-16将.css文件本地化，import位置移动到 App.vue
+      const oldVal = this.first ? ORIGINAL_THEME : store.state.settings.theme
+      // const oldVal = this.first ? variables.theme : store.state.settings.theme
+      // console.log('Okd', oldVal, variables.theme, val)
 
-    const $message = Message({
-      message: '  Compiling the theme',
-      customClass: 'theme-message',
-      type: 'success',
-      duration: 0,
-      iconClass: 'el-icon-loading'
-    })
+      if (typeof val !== 'string') return
+      const themeCluster = this.getThemeCluster(val.replace('#', ''))
+      const originalCluster = this.getThemeCluster(oldVal.replace('#', ''))
+      // console.log(themeCluster, originalCluster)
 
-    const getHandler = (variable, id) => {
-      return () => {
-        const originalCluster = this.getThemeCluster(ORIGINAL_THEME.replace('#', ''))
-        const newStyle = this.updateStyle(this[variable], originalCluster, themeCluster)
-
-        let styleTag = document.getElementById(id)
-        if (!styleTag) {
-          styleTag = document.createElement('style')
-          styleTag.setAttribute('id', id)
-          document.head.appendChild(styleTag)
-        }
-        styleTag.innerText = newStyle
-      }
-    }
-
-    if (!this.chalk) {
-      const url = `https://unpkg.com/element-ui@${version}/lib/theme-chalk/index.css`
-      await this.getCSSString(url, 'chalk')
-    }
-
-    const chalkHandler = getHandler('chalk', 'chalk-style')
-
-    chalkHandler()
-
-    const styles = [].slice.call(document.querySelectorAll('style'))
-      .filter(style => {
-        const text = style.innerText
-        return new RegExp(oldVal, 'i').test(text) && !/Chalk Variables/.test(text)
+      var $message = Message({
+        message: '  ' + i18n.t('settings.setThemeIng'),
+        customClass: 'theme-message',
+        type: 'success',
+        duration: 0,
+        iconClass: 'el-icon-loading'
       })
-    styles.forEach(style => {
-      const {innerText} = style
-      if (typeof innerText !== 'string') return
-      style.innerText = this.updateStyle(innerText, originalCluster, themeCluster)
-    })
 
-    $message.close()
+      const styles = [].slice.call(document.querySelectorAll('style'))
+        .filter(style => {
+          const text = style.innerText
+          return new RegExp(oldVal, 'i').test(text) && !/Chalk Variables/.test(text)
+        })
+
+
+      styles.forEach(style => {
+        const {innerText} = style
+        if (typeof innerText !== 'string') return
+        style.innerText = this.updateStyle(innerText, originalCluster, themeCluster)
+      })
+
+      this.first = false
+    } catch (e) {
+      console.log('utils settheme error ', e)
+    }
+
+    $message && $message.close()
   },
   updateStyle(style, oldCluster, newCluster) {
     let newStyle = style
@@ -65,20 +56,6 @@ export default {
       newStyle = newStyle.replace(new RegExp(color, 'ig'), newCluster[index])
     })
     return newStyle
-  },
-
-  getCSSString(url, variable) {
-    return new Promise(resolve => {
-      const xhr = new XMLHttpRequest()
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          this[variable] = xhr.responseText.replace(/@font-face{[^}]+}/, '')
-          resolve()
-        }
-      }
-      xhr.open('GET', url)
-      xhr.send()
-    })
   },
 
   getThemeCluster(theme) {

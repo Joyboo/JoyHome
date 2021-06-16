@@ -39,7 +39,7 @@ export default {
         gameid: [],
         pkgbnd: [],
         ProxyRegion: 'omz',
-        tzn: '8',
+        tzn: '-5',
         begintime: true,
         endtime: true
       },
