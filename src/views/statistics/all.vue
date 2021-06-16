@@ -1,6 +1,6 @@
 <template>
   <div class="view-container">
-    <layout-filter :query="query" :nsch="false" @search="search" @chgTzn="chgTzn">
+    <layout-filter :query="query" :nsch="false" @search="search" @chgTzn="chgTzn" :loading="loading">
       <template>
         <el-form-item>
           <el-button v-for="(name, key) in menulist" :key="key"

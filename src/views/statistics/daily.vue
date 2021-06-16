@@ -1,7 +1,7 @@
 <template>
   <div class="view-container">
 
-    <layout-filter :query="query" @search="search">
+    <layout-filter :query="query" @search="search" :loading="loading">
       <template #after>
         <el-form-item style="float: right;">
           <export-data></export-data>

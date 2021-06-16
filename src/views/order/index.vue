@@ -1,7 +1,7 @@
 <template>
   <div class="view-container">
 
-    <layout-filter :query="query" @search="search">
+    <layout-filter :query="query" @search="search" :loading="loading">
       <el-form-item>
         <el-select v-model="query.status" placeholder="请选择订单状态" class="mySelect">
           <el-option label="全部" value=""></el-option>

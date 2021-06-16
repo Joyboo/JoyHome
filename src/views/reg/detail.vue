@@ -69,7 +69,7 @@
 
         <el-tab-pane label="充值信息">
 
-          <layout-filter :query="query" @search="searchPayment">
+          <layout-filter :query="query" @search="searchPayment"  :loading="payloading">
             <el-form-item>
               <el-select v-model="query.pf" placeholder="请选择充值平台">
                 <el-option label="全部" value=""></el-option>
@@ -83,7 +83,7 @@
 
         <el-tab-pane label="登录信息">
 
-          <layout-filter :query="query" @search="searchLogin"></layout-filter>
+          <layout-filter :query="query" @search="searchLogin" :loading="loginloading"></layout-filter>
           <table-data :height="500" :loading="loginloading" :column="loginColumn" :data="loginData"></table-data>
 
         </el-tab-pane>

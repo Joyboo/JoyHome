@@ -1,6 +1,6 @@
 <template>
   <div class="view-container">
-    <layout-filter :query="query" @search="search">
+    <layout-filter :query="query" @search="search" :loading="loading">
 
       <el-form-item>
         <el-select v-model="query.voidedReason" placeholder="退款原因">

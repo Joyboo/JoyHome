@@ -11,11 +11,11 @@
       </el-form-item>
 
       <el-form-item label="完整名称">
-        <el-input v-model="form.fulltitle" placeholder="在tags-view中展示的名字" clearable />
+        <el-input v-model="form.fulltitle" placeholder="在tags-view标签页中展示的名字" clearable />
       </el-form-item>
 
       <el-form-item label="name">
-        <el-input v-model="form.name" placeholder="keep-alive使用的名称" clearable />
+        <el-input v-model="form.name" placeholder="如需keep-alive缓存，请保持与组件name相同" clearable />
       </el-form-item>
 
       <el-form-item label="path">

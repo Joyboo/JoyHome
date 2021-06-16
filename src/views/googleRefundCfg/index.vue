@@ -1,6 +1,6 @@
 <template>
   <div class="view-container">
-    <layout-filter :query="query" @search="search"></layout-filter>
+    <layout-filter :query="query" @search="search" :loading="loading"></layout-filter>
 
     <table-data
       :loading="loading"

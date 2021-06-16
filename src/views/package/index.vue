@@ -1,7 +1,7 @@
 <template>
   <div class="view-container">
 
-    <layout-filter :query="query" @search="search">
+    <layout-filter :query="query" @search="search" :loading="loading">
       <el-form-item>
         <el-input v-model="query.keyword" placeholder="包名或包id" clearable />
       </el-form-item>

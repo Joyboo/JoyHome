@@ -89,7 +89,9 @@ export default {
     any: '随便填',
     thirdparty: '第三方登录',
     thirdpartyTips: '本地不能模拟，请结合自己业务进行模拟！！！',
-    hk: '恒坤'
+    hk: '恒坤',
+    inputUsername: '请输入用户名',
+    inputPassword: '请输入正确的密码'
   },
   documentation: {
     documentation: '文档',

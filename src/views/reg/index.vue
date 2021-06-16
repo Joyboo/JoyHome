@@ -1,7 +1,7 @@
 <template>
   <div class="view-container">
 
-    <layout-filter :query="query" @search="search">
+    <layout-filter :query="query" @search="search" :loading="loading">
 
       <el-form-item>
         <el-input v-model="query.uid" placeholder="账号或玩家id" clearable />
