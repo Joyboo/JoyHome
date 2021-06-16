@@ -235,7 +235,7 @@
           .then(({code}) => {
             if (code) {
               this.$message.success('操作成功')
-              closeTab(this.$route.path, '/game/index')
+              closeTab()
             } else {
               this.$message.error('操作失败')
             }

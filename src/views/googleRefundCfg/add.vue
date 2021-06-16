@@ -29,7 +29,7 @@
           .then(({code, msg}) => {
             if (code) {
               this.$message.success('操作成功')
-              closeTab(this.$route.path, '/googleRefundCfg/index')
+              closeTab()
             } else {
               this.$message.error(msg || '操作失败')
             }

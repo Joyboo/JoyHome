@@ -49,7 +49,7 @@
             if (code)
             {
               this.$message.success(msg || '操作成功')
-              closeTab(this.$route.path, '/role/index')
+              closeTab()
             } else {
               this.$message.error(msg || '操作失败')
             }

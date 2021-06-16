@@ -47,7 +47,7 @@
             if (code)
             {
               this.$message.success(msg)
-              closeTab(this.$route.path, '/whitelist/index')
+              closeTab()
             } else {
               this.$message.error(msg || 'add error')
             }

@@ -133,7 +133,7 @@
           .then(({code, msg}) => {
             if (code) {
               this.$message.success('操作成功')
-              closeTab(this.$route.path, '/package/index')
+              closeTab()
             } else {
               this.$message.error(msg || '操作失败')
             }

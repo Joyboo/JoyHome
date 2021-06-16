@@ -27,7 +27,7 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="search">查询
+        <el-button :loading="loading" type="primary" icon="el-icon-search" @click="search">查询
         </el-button>
       </el-form-item>
 

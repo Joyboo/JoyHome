@@ -58,7 +58,7 @@
           .then(({code, msg, data}) => {
             if (code) {
               this.$message.success('操作成功')
-              closeTab(this.$route.path, '/crontab/index')
+              closeTab()
             } else {
               this.$message.error(msg || '操作失败')
             }

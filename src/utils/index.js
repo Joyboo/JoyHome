@@ -431,23 +431,32 @@ export function copyTo(origin, data) {
 }
 
 /**
- * 关闭tab
+ * 关闭当前tab
  * @author Joyboo
- * @param path 关闭谁
- * @param to 去哪里
  */
-export function closeTab(path, to) {
+export function closeTab() {
 
-  const tab = store.getters.visitedViews
-  const view = tab.find(item => item.path == path)
+  // const tab = store.getters.visitedViews
+  // const view = tab.find(item => item.path == path)
 
-  store.dispatch('tagsView/delView', view)
-    .then(({ visitedViews }) => {
-      if (to) {
-        // 用replace，走了就不要回
-        router.replace({path: to})
+  const route = router.app.$route
+
+  // console.log(route)
+  if (route) {
+    store.dispatch('tagsView/delView', route).then(({ visitedViews }) => {
+      // 返回到最后一个tagsView
+      const latestView = visitedViews.slice(-1)[0]
+      if (latestView) {
+        router.replace(latestView.fullPath)
+      } else {
+        if (view.name === 'Dashboard') {
+          router.replace({ path: '/redirect' + view.fullPath })
+        } else {
+          router.push('/')
+        }
       }
     })
+  }
 }
 
 // add by Joyboo 将用户设置存储到localstorage
