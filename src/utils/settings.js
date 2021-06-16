@@ -7,48 +7,59 @@ import variables from '@/styles/element-variables.scss'
 const ORIGINAL_THEME = '#409EFF' // default color
 
 export default {
-  first: true,
+  chalk: '',
   async set (val) {
 
-    try{
-      // 首次加载时CSS为elementui默认值，需替换为settings.theme,之后需要替换的便是原theme值了
-      // edit by Joyboo 2021-06-16将.css文件本地化，import位置移动到 App.vue
-      const oldVal = this.first ? ORIGINAL_THEME : store.state.settings.theme
-      // const oldVal = this.first ? variables.theme : store.state.settings.theme
-      // console.log('Okd', oldVal, variables.theme, val)
+    const oldVal = this.chalk ? store.state.settings.theme : ORIGINAL_THEME
+    if (typeof val !== 'string') return
+    const themeCluster = this.getThemeCluster(val.replace('#', ''))
+    const originalCluster = this.getThemeCluster(oldVal.replace('#', ''))
+    // console.log(themeCluster, originalCluster)
 
-      if (typeof val !== 'string') return
-      const themeCluster = this.getThemeCluster(val.replace('#', ''))
-      const originalCluster = this.getThemeCluster(oldVal.replace('#', ''))
-      // console.log(themeCluster, originalCluster)
+    const $message = Message({
+      message: '  ' + i18n.t('settings.setThemeIng'),
+      customClass: 'theme-message',
+      type: 'success',
+      duration: 0,
+      iconClass: 'el-icon-loading'
+    })
 
-      var $message = Message({
-        message: '  ' + i18n.t('settings.setThemeIng'),
-        customClass: 'theme-message',
-        type: 'success',
-        duration: 0,
-        iconClass: 'el-icon-loading'
-      })
+    const getHandler = (variable, id) => {
+      return () => {
+        const originalCluster = this.getThemeCluster(ORIGINAL_THEME.replace('#', ''))
+        const newStyle = this.updateStyle(this[variable], originalCluster, themeCluster)
 
-      const styles = [].slice.call(document.querySelectorAll('style'))
-        .filter(style => {
-          const text = style.innerText
-          return new RegExp(oldVal, 'i').test(text) && !/Chalk Variables/.test(text)
-        })
-
-
-      styles.forEach(style => {
-        const {innerText} = style
-        if (typeof innerText !== 'string') return
-        style.innerText = this.updateStyle(innerText, originalCluster, themeCluster)
-      })
-
-      this.first = false
-    } catch (e) {
-      console.log('utils settheme error ', e)
+        let styleTag = document.getElementById(id)
+        if (!styleTag) {
+          styleTag = document.createElement('style')
+          styleTag.setAttribute('id', id)
+          document.head.appendChild(styleTag)
+        }
+        styleTag.innerText = newStyle
+      }
     }
 
-    $message && $message.close()
+    if (!this.chalk) {
+      const url = `https://unpkg.com/element-ui@${version}/lib/theme-chalk/index.css`
+      await this.getCSSString(url, 'chalk')
+    }
+
+    const chalkHandler = getHandler('chalk', 'chalk-style')
+
+    chalkHandler()
+
+    const styles = [].slice.call(document.querySelectorAll('style'))
+      .filter(style => {
+        const text = style.innerText
+        return new RegExp(oldVal, 'i').test(text) && !/Chalk Variables/.test(text)
+      })
+    styles.forEach(style => {
+      const {innerText} = style
+      if (typeof innerText !== 'string') return
+      style.innerText = this.updateStyle(innerText, originalCluster, themeCluster)
+    })
+
+    $message.close()
   },
   updateStyle(style, oldCluster, newCluster) {
     let newStyle = style
@@ -56,6 +67,20 @@ export default {
       newStyle = newStyle.replace(new RegExp(color, 'ig'), newCluster[index])
     })
     return newStyle
+  },
+
+  getCSSString(url, variable) {
+    return new Promise(resolve => {
+      const xhr = new XMLHttpRequest()
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          this[variable] = xhr.responseText.replace(/@font-face{[^}]+}/, '')
+          resolve()
+        }
+      }
+      xhr.open('GET', url)
+      xhr.send()
+    })
   },
 
   getThemeCluster(theme) {
