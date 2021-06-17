@@ -79,7 +79,7 @@ export default {
       },
       set(val) {
         // this.$emit('update:page', val)
-        this.query[this.cPageKey] = val
+        this.$set(this.query, this.cPageKey, val)
       }
     },
     pageSize: {
@@ -105,7 +105,7 @@ export default {
       },
       set(val) {
         // this.$emit('update:limit', val)
-        this.query[this.pSizeKey] = val
+        this.$set(this.query, this.pSizeKey, val)
       }
     },
     // 分页key
@@ -122,7 +122,7 @@ export default {
       immediate: true,
       handler: function (newVal, oldVal) {
         if (newVal) {
-          this.query[newVal] = this.currentPage
+          this.$set(this.query, newVal, this.currentPage)
         }
       }
     },
@@ -130,7 +130,7 @@ export default {
       immediate: true,
       handler: function (newVal, oldVal) {
         if (newVal) {
-          this.query[newVal] = this.pageSize
+          this.$set(this.query, newVal, this.pageSize)
         }
       }
     }

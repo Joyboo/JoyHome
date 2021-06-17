@@ -73,217 +73,222 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { packageChildOption } from '@/api/package'
-import {beforeDay,parseTime} from '@/utils'
 
-export default {
-  name: "LayoutFilter",
-  computed: {
-    ...mapGetters([
-      'size',
-      'filtergamelist',
-      'userinfo',
-      'config'
-    ]),
-    region() {
-      return this.config.region_domain.region;
-    },
-    // 是否多选游戏
-    gameMul() {
-      return typeof this.query.gameid === 'object'
-    },
-    // 是否多选包
-    packageMul() {
-      return typeof this.query.pkgbnd === 'object'
-    },
-    isDate() {
-      return typeof this.query.begintime != 'undefined' || typeof this.query.endtime != 'undefined'
-    },
-    format() {
-      return typeof this.query.format === 'undefined' ? 'yyyy-MM-dd' : this.query.format
-    },
-    // 管理员编辑页设置的默认选中游戏
-    defaultGid() {
-      if (typeof this.userinfo.extension.gid == 'undefined')
-      {
-        return ''
-      }
-      const gid = this.userinfo.extension.gid
-      return gid == '' ? gid : parseInt(gid);
-    }
-  },
-  mounted() {
-    this.$store.dispatch('filter/gameInfo')
+  import { mapGetters } from 'vuex'
+  import { packageChildOption } from '@/api/package'
+  import {beforeDay,parseTime} from '@/utils'
 
-    // 默认时间
-    if (this.isDate)
-    {
-      if (typeof this.query.begintime != 'undefined' && typeof this.query.endtime != 'undefined')
-      {
-        const end = this.query.endtime === true ? 0 : this.query.endtime
-        this.date = [beforeDay(this.query.begintime), beforeDay(end)]
-      } else {
-        this.date = beforeDay(this.query.begintime || this.query.endTime)
+  export default {
+    name: "LayoutFilter",
+    computed: {
+      ...mapGetters([
+        'size',
+        'filtergamelist',
+        'userinfo',
+        'config'
+      ]),
+      region() {
+        return this.config.region_domain.region;
+      },
+      // 是否多选游戏
+      gameMul() {
+        return typeof this.query.gameid === 'object'
+      },
+      // 是否多选包
+      packageMul() {
+        return typeof this.query.pkgbnd === 'object'
+      },
+      isDate() {
+        return typeof this.query.begintime != 'undefined' || typeof this.query.endtime != 'undefined'
+      },
+      format() {
+        return typeof this.query.format === 'undefined' ? 'yyyy-MM-dd' : this.query.format
+      },
+      // 管理员编辑页设置的默认选中游戏
+      defaultGid() {
+        if (typeof this.userinfo.extension.gid == 'undefined')
+        {
+          return ''
+        }
+        const gid = this.userinfo.extension.gid
+        return gid == '' ? gid : parseInt(gid);
       }
-    }
+    },
+    mounted() {
+      this.$store.dispatch('filter/gameInfo')
 
-    if (this.defaultGid != '')
-    {
-      if (typeof this.query.gameid == 'object' && this.query.gameid.indexOf(this.defaultGid) < 0)
+      // 默认时间
+      if (this.isDate)
       {
-        this.query.gameid.push(this.defaultGid)
-      }
-      else if (typeof this.query.gameid == 'string' && this.query.gameid == '')
-      {
-        this.query.gameid = this.defaultGid
+        if (typeof this.query.begintime != 'undefined' && typeof this.query.endtime != 'undefined')
+        {
+          const end = this.query.endtime === true ? 0 : this.query.endtime
+          this.date = [beforeDay(this.query.begintime), beforeDay(end)]
+        } else {
+          this.date = beforeDay(this.query.begintime || this.query.endTime)
+        }
       }
 
-      // 等待侦听器执行完成
-      setTimeout(() => this.search(), 500)
-    }
-  },
-  watch: {
-    // 侦听器替代onchange
-    'query.gameid': {
-      immediate: true,
-      handler: function (newVal, oldVal) {
-        this.changeGame(newVal)
-      }
-    },
-    date: function(newVal, oldVal) {
-      if (typeof newVal == 'object')
+      if (this.defaultGid != '')
       {
-        if (!isNaN(newVal[0])) this.query.begintime = parseTime(newVal[0])
-        if (!isNaN(newVal[1])) this.query.endtime = parseTime(newVal[1])
-      }
-      else if (typeof this.query.begintime != 'undefined') {
-        this.query.begintime = parseTime(newVal)
-      }
-      else if (typeof this.query.endtime != 'undefined') {
-        this.query.endtime = parseTime(newVal)
-      }
-    }
-  },
-  props: {
-    query: {
-      // required: true,
-      type: Object,
-      default () {
-        return {}
+        if (typeof this.query.gameid == 'object' && this.query.gameid.indexOf(this.defaultGid) < 0)
+        {
+          this.query.gameid.push(this.defaultGid)
+        }
+        else if (typeof this.query.gameid == 'string' && this.query.gameid == '')
+        {
+          this.query.gameid = this.defaultGid
+        }
+
+        // 等待侦听器执行完成
+        setTimeout(() => this.search(), 500)
       }
     },
-    loading: {
-      type: Boolean,
-      default: false
-    },
-    // need search
-    nsch: {
-      type: Boolean,
-      default: true
-    }
-  },
-  data() {
-    return {
-      date: [],
-      packagelist: [],
-      // modelTimeRange: [new Date(), new Date()],
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: '今天',
-            onClick(picker) {
-              const time = beforeDay(0)
-              picker.$emit('pick', [time, time])
-            }
-          }, {
-            text: '昨天',
-            onClick(picker) {
-              const time = beforeDay(-1)
-              picker.$emit('pick', [time, time])
-            }
-          }, {
-            text: '一周',
-            onClick(picker) {
-              const end = new Date()
-              const start = beforeDay(-7)
-              picker.$emit('pick', [start, end.getTime()])
-            }
-          }, {
-            text: '本月',
-            onClick(picker) {
-              const time = new Date()
-              const end = new Date()
-              const start = new Date(time.getFullYear(), time.getMonth(), 1)
-              picker.$emit('pick', [start.getTime(), end.getTime()])
-            }
-          }, {
-            text: '上月',
-            onClick(picker) {
-              const time = new Date()
-              // 这个月第一天减一天
-              const end = new Date(time.getFullYear(), time.getMonth(), 1, 0, 0, 0).getTime() - 86400 * 1000
-              const lastDate = new Date(end)
-              const start = new Date(lastDate.getFullYear(), lastDate.getMonth(), 1, 0, 0, 0)
-              picker.$emit('pick', [start.getTime(), end])
-            }
-          }, {
-            text: '近一个月',
-            onClick(picker) {
-              const end = new Date()
-              const start = beforeDay(-30)
-              picker.$emit('pick', [start, end.getTime()])
-            }
-          }, {
-            text: '近三个月',
-            onClick(picker) {
-              const end = new Date()
-              const start = beforeDay(-90)
-              picker.$emit('pick', [start, end.getTime()])
-            }
-          }, {
-            text: '近一年',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date(end.getFullYear() - 1, end.getMonth(), end.getDay(), end.getHours(), end.getMinutes(), end.getSeconds())
-              picker.$emit('pick', [start, end.getTime()])
-            }
+    watch: {
+      // 侦听器替代onchange
+      'query.gameid': {
+        immediate: true,
+        handler: function (newVal, oldVal) {
+          this.changeGame(newVal)
+        }
+      },
+      date: function(newVal, oldVal) {
+        if (typeof newVal == 'object')
+        {
+          if (!isNaN(newVal[0])) {
+            this.$set(this.query, 'begintime', parseTime(newVal[0]))
           }
-        ]
+          if (!isNaN(newVal[1])) {
+            this.$set(this.query, 'endtime', parseTime(newVal[1]))
+          }
+        }
+        else if (typeof this.query.begintime != 'undefined') {
+          this.$set(this.query, 'begintime', parseTime(newVal))
+        }
+        else if (typeof this.query.endtime != 'undefined') {
+          this.$set(this.query, 'endtime', parseTime(newVal))
+        }
       }
-    }
-  },
-  methods: {
-    changeGame(gameid) {
-      // 不需要包信息
-      if (typeof this.query.pkgbnd == 'undefined')
-      {
-        return;
-      }
-
-      if (gameid.length == 0) {
-        // 清空
-        this.packagelist = []
-        this.query.pkgbnd = this.packageMul ? [] : ''
-        return
-      }
-
-      if (this.gameMul) {
-        gameid = gameid.join(',')
-      }
-      packageChildOption({ gameid: gameid }).then(resp => {
-        this.packagelist = resp.data
-      })
     },
-    search() {
-      this.$emit('search')
+    props: {
+      query: {
+        // required: true,
+        type: Object,
+        default () {
+          return {}
+        }
+      },
+      loading: {
+        type: Boolean,
+        default: false
+      },
+      // need search
+      nsch: {
+        type: Boolean,
+        default: true
+      }
     },
-    // 改变时区
-    chgTzn(val) {
-      this.$emit('chgTzn', val)
+    data() {
+      return {
+        date: [],
+        packagelist: [],
+        // modelTimeRange: [new Date(), new Date()],
+        pickerOptions: {
+          shortcuts: [
+            {
+              text: '今天',
+              onClick(picker) {
+                const time = beforeDay(0)
+                picker.$emit('pick', [time, time])
+              }
+            }, {
+              text: '昨天',
+              onClick(picker) {
+                const time = beforeDay(-1)
+                picker.$emit('pick', [time, time])
+              }
+            }, {
+              text: '一周',
+              onClick(picker) {
+                const end = new Date()
+                const start = beforeDay(-7)
+                picker.$emit('pick', [start, end.getTime()])
+              }
+            }, {
+              text: '本月',
+              onClick(picker) {
+                const time = new Date()
+                const end = new Date()
+                const start = new Date(time.getFullYear(), time.getMonth(), 1)
+                picker.$emit('pick', [start.getTime(), end.getTime()])
+              }
+            }, {
+              text: '上月',
+              onClick(picker) {
+                const time = new Date()
+                // 这个月第一天减一天
+                const end = new Date(time.getFullYear(), time.getMonth(), 1, 0, 0, 0).getTime() - 86400 * 1000
+                const lastDate = new Date(end)
+                const start = new Date(lastDate.getFullYear(), lastDate.getMonth(), 1, 0, 0, 0)
+                picker.$emit('pick', [start.getTime(), end])
+              }
+            }, {
+              text: '近一个月',
+              onClick(picker) {
+                const end = new Date()
+                const start = beforeDay(-30)
+                picker.$emit('pick', [start, end.getTime()])
+              }
+            }, {
+              text: '近三个月',
+              onClick(picker) {
+                const end = new Date()
+                const start = beforeDay(-90)
+                picker.$emit('pick', [start, end.getTime()])
+              }
+            }, {
+              text: '近一年',
+              onClick(picker) {
+                const end = new Date()
+                const start = new Date(end.getFullYear() - 1, end.getMonth(), end.getDay(), end.getHours(), end.getMinutes(), end.getSeconds())
+                picker.$emit('pick', [start, end.getTime()])
+              }
+            }
+          ]
+        }
+      }
+    },
+    methods: {
+      changeGame(gameid) {
+        // 不需要包信息
+        if (typeof this.query.pkgbnd == 'undefined')
+        {
+          return;
+        }
+
+        if (gameid.length == 0) {
+          // 清空
+          this.packagelist = []
+          this.query.pkgbnd = this.packageMul ? [] : ''
+          return
+        }
+
+        if (this.gameMul) {
+          gameid = gameid.join(',')
+        }
+        packageChildOption({ gameid: gameid }).then(resp => {
+          this.packagelist = resp.data
+        })
+      },
+      search() {
+        this.$emit('search')
+      },
+      // 改变时区
+      chgTzn(val) {
+        this.$emit('chgTzn', val)
+      }
     }
   }
-}
 </script>
 
 <style scoped>
