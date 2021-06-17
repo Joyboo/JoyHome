@@ -1,14 +1,18 @@
 <template>
-  <div v-if="errorLogs.length>0">
-    <el-badge :is-dot="true" style="line-height: 25px;margin-top: -5px;" @click.native="dialogTableVisible=true">
+  <div v-if="errorLogs.length > 0">
+    <el-badge :is-dot="true" style="line-height: 25px;margin-top: -5px;" @click.native="dialogTableVisible = true">
       <el-button style="padding: 8px 10px;" size="small" type="danger">
-        <svg-icon icon-class="bug" />
+        <!-- 上报中，转圈圈 -->
+        <i v-if="reporting" class="el-icon-loading"></i>
+        <svg-icon v-else icon-class="bug" />
       </el-button>
     </el-badge>
 
     <el-dialog :visible.sync="dialogTableVisible" width="80%" append-to-body>
       <div slot="title">
-        <span class="danger">有错误产生哦，请联系开发大大</span>
+        <span class="danger">有错误产生哦，已自动上报服务器
+        </span>
+
         <el-button size="mini" style="float: right;margin-right: 100px;" type="primary" icon="el-icon-delete" @click="clearAll">清除</el-button>
       </div>
       <el-table :data="errorLogs" border>
@@ -64,6 +68,16 @@ export default {
   computed: {
     errorLogs() {
       return this.$store.getters.errorLogs
+    },
+    reporting() {
+      return this.$store.state.errorLog.reporting
+    }
+  },
+  watch: {
+    dialogTableVisible: function (newVal) {
+      if (newVal) {
+        this.$store.dispatch('errorLog/doreport')
+      }
     }
   },
   methods: {

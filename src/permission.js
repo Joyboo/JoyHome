@@ -57,14 +57,17 @@ router.beforeEach(async(to, from, next) => {
         try {
           let myLoading = Loading.service();
 
-          // add by Joyboo 获取top菜单
+          // 获取菜单，动态路由
           await store.dispatch('permission/getTopMenu')
-          // get user info
-          // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
+
+          // 获取用户详情
           await store.dispatch('user/getInfo')
 
           // 获取全局配置
           await store.dispatch('config/setConfig')
+
+          // 监听错误日志上报
+          store.dispatch('errorLog/listen')
 
           myLoading.close();
 

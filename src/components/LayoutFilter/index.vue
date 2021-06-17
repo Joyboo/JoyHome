@@ -104,6 +104,10 @@
       format() {
         return typeof this.query.format === 'undefined' ? 'yyyy-MM-dd' : this.query.format
       },
+      // 最终赋值给begintime或endtime的格式,值参考 parseTime format参数
+      outFmt() {
+        return typeof this.query.outfmt === 'undefined' ? '{y}-{m}-{d}' : this.query.outfmt
+      },
       // 管理员编辑页设置的默认选中游戏
       defaultGid() {
         if (typeof this.userinfo.extension.gid == 'undefined')
@@ -156,17 +160,17 @@
         if (typeof newVal == 'object')
         {
           if (!isNaN(newVal[0])) {
-            this.$set(this.query, 'begintime', parseTime(newVal[0]))
+            this.$set(this.query, 'begintime', parseTime(newVal[0], this.outFmt))
           }
           if (!isNaN(newVal[1])) {
-            this.$set(this.query, 'endtime', parseTime(newVal[1]))
+            this.$set(this.query, 'endtime', parseTime(newVal[1], this.outFmt))
           }
         }
         else if (typeof this.query.begintime != 'undefined') {
-          this.$set(this.query, 'begintime', parseTime(newVal))
+          this.$set(this.query, 'begintime', parseTime(newVal, this.outFmt))
         }
         else if (typeof this.query.endtime != 'undefined') {
-          this.$set(this.query, 'endtime', parseTime(newVal))
+          this.$set(this.query, 'endtime', parseTime(newVal, this.outFmt))
         }
       }
     },
