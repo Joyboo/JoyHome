@@ -19,27 +19,31 @@
           </el-form-item>
 
           <el-form-item label="包">
-            <el-col :span="10">
-              <el-input v-model="form.name" class="colInput" clearable placeholder="包名" />
-            </el-col>
+            <el-row :gutter="20">
+              <el-col :span="10">
+                <el-input v-model="form.name" class="colInput" clearable placeholder="包名" />
+              </el-col>
 
-            <el-col :span="10">
-              <el-input v-model="form.pkgbnd" class="colInput" clearable placeholder="包id(bundle_id或pkg_id)" />
-            </el-col>
+              <el-col :span="10">
+                <el-input v-model="form.pkgbnd" class="colInput" clearable placeholder="包id(bundle_id或pkg_id)" />
+              </el-col>
+            </el-row>
           </el-form-item>
 
           <el-form-item label="密钥">
-            <el-col :span="10">
-              <el-input v-model="form.extension.logkey" class="colInput" clearable placeholder="登录密钥">
-                <el-button slot="prepend" @click="get_gkey('logkey')">随机</el-button>
-              </el-input>
-            </el-col>
+            <el-row :gutter="20">
+              <el-col :span="10">
+                <el-input v-model="form.extension.logkey" class="colInput" clearable placeholder="登录密钥">
+                  <el-button slot="prepend" @click="get_gkey('logkey')">随机</el-button>
+                </el-input>
+              </el-col>
 
-            <el-col :span="10">
-              <el-input v-model="form.extension.paykey" class="colInput" clearable placeholder="支付密钥">
-                <el-button slot="prepend" @click="get_gkey('paykey')">随机</el-button>
-              </el-input>
-            </el-col>
+              <el-col :span="10">
+                <el-input v-model="form.extension.paykey" class="colInput" clearable placeholder="支付密钥">
+                  <el-button slot="prepend" @click="get_gkey('paykey')">随机</el-button>
+                </el-input>
+              </el-col>
+            </el-row>
           </el-form-item>
 
           <el-form-item label="下载地址">

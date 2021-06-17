@@ -3,6 +3,7 @@
  */
 import router from '@/router'
 import store from '@/store'
+import Vue from 'vue'
 import {localStorageKey} from '@/settings'
 
 /**
@@ -424,7 +425,8 @@ export function copyTo(origin, data) {
     {
       origin[i] = copyTo(origin[i], item)
     } else {
-      origin[i] = item
+      // origin[i] = item
+      Vue.set(origin, i, item)
     }
   }
   return origin
