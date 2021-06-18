@@ -7,7 +7,7 @@
           <span :class="o.class">{{o.name}}</span>
           <div class="bottom clearfix">
             <span class="time">{{ o.url }}</span>
-            <el-link :href="o.url + '?token=' + token" :underline="false" target="_blank" class="tolink">
+            <el-link :href="o.url + '?mytoken=' + token" :underline="false" target="_blank" class="tolink">
               <el-button type="text" class="button">打开</el-button>
             </el-link>
           </div>
