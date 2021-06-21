@@ -14,7 +14,8 @@ const state = {
       type: "bootstrap",
       var_page: "cPage",
       var_pagesize: "pSiz"
-    }
+    },
+    pma: []
   },
   cPageKey: 'cPage',
   pSizeKey: 'pSize'

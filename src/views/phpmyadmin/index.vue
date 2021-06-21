@@ -8,7 +8,7 @@
           <div class="bottom clearfix">
             <span class="time">{{ o.url }}</span>
             <el-link :href="o.url + '?mytoken=' + token" :underline="false" target="_blank" class="tolink">
-              <el-button type="text" class="button">打开</el-button>
+              <el-button type="text" class="button">{{$t('open')}}</el-button>
             </el-link>
           </div>
         </div>
@@ -19,24 +19,19 @@
 
 <script>
   import {getToken} from "@/utils/auth";
+  import {mapGetters} from "vuex";
 
   export default {
     name: "phpmyadminindex",
+    computed: {
+      ...mapGetters(['config']),
+      pma() {
+        return this.config.pma
+      }
+    },
     data() {
       return {
-        token: getToken(),
-        pma: [
-          {
-            name: '正式版',
-            class: 'danger',
-            url: 'http://omz-pma.wonderlandgame.com:81'
-          },
-          {
-            name: '测试版',
-            class: '',
-            url: 'http://testpma.ihengkun.com:81'
-          }
-        ]
+        token: getToken()
       };
     }
   }

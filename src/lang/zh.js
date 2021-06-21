@@ -184,5 +184,6 @@ export default {
     fixedHeader: '固定 Header',
     sidebarLogo: '侧边栏 Logo',
     setThemeIng: '编译主题'
-  }
+  },
+  open: '打开'
 }

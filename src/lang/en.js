@@ -184,5 +184,6 @@ export default {
     fixedHeader: 'Fixed Header',
     sidebarLogo: 'Sidebar Logo',
     setThemeIng: 'Compiling the theme'
-  }
+  },
+  open: 'Open'
 }
