@@ -13,7 +13,7 @@
       <!--表格插槽-->
       <slot></slot>
 
-      <el-table-column align="center" label="操作">
+      <el-table-column align="center" label="操作" :width="btnWidth">
         <template slot-scope="scope">
 
           <!--按钮插槽-->
@@ -87,6 +87,11 @@
           const h = window.document.documentElement.clientHeight || 900
           return h - 220
         }
+      },
+      // 操作栏宽度
+      btnWidth: {
+        type: Number,
+        default: 180
       }
     },
     methods: {

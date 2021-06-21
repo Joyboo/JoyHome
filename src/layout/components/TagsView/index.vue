@@ -18,7 +18,7 @@
         <span v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
       </router-link>
 
-      <span class="tags-view-item" style="position: absolute;right:0;" @click="doRefresh">
+      <span class="tags-view-item" v-if="device !== 'mobile'" style="position: absolute;right:0;" @click="doRefresh">
         <i class="el-icon-refresh" /> &nbsp;{{$t('tagsView.refresh')}}
       </span>
     </scroll-pane>
@@ -36,6 +36,7 @@
 import ScrollPane from './ScrollPane'
 import { generateTitle } from '@/utils/i18n'
 import path from 'path'
+import {mapGetters} from "vuex";
 
 export default {
   components: { ScrollPane },
@@ -49,6 +50,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['device']),
     visitedViews() {
       return this.$store.state.tagsView.visitedViews
     },

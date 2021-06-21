@@ -477,15 +477,12 @@ export function getSettingsLocalStorage(key, _default) {
   // 如果有值，将vuex值更新
   if (typeof json[key] != 'undefined')
   {
-    if (store) {
-      store.dispatch('settings/changeSetting', {
-        key: key,
-        value: json[key]
-      })
+    if (store && json[key] != store.state.settings[key]) {
+      store.dispatch('settings/changeSetting', {key: key, value: json[key]})
     }
     return json[key]
   }
-  return _default
+  return _default ? _default : ((store && store.state.settings[key]) ? store.state.settings[key] : false)
 }
 
 export function caclHeight(offset, _default) {

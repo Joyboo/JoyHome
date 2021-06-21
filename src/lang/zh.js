@@ -183,7 +183,9 @@ export default {
     tagsView: '开启菜单标签页',
     fixedHeader: '固定 Header',
     sidebarLogo: '侧边栏 Logo',
-    setThemeIng: '编译主题'
+    setThemeIng: '编译主题',
+    accordion: '菜单手风琴模式',
+    topMenu: 'TOP菜单模式'
   },
   open: '打开'
 }

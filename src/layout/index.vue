@@ -49,6 +49,12 @@ export default {
       }
     }
   },
+  watch: {
+    // 如果拖动窗口大小导致device改变，需要重新加载
+    device(newVal, oldVal) {
+      window.location.reload()
+    }
+  },
   methods: {
     handleClickOutside() {
       this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })

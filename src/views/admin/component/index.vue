@@ -1,5 +1,5 @@
 <template>
-    <div v-loading="load" class="view-container">
+    <div v-loading="load" class="info-container">
       <el-form ref="AdminForm" :rules="rules" :model="form" :size="size" label-width="15rem">
         <el-tabs type="border-card">
           <el-tab-pane label="管理员信息">

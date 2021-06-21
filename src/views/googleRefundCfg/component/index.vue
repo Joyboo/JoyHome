@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading" class="view-container">
+  <div v-loading="loading" class="info-container">
     <el-form :model="form" :size="size" label-width="15rem">
       <el-form-item label="所属游戏">
         <el-select v-model="form.gameid" filterable>

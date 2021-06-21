@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading" class="view-container">
+  <div v-loading="loading" class="info-container">
     <el-form ref="menu-info" :rules="rules" :model="form" :size="size" label-width="15rem">
 
       <el-form-item label="上级菜单">

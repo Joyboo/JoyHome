@@ -9,6 +9,7 @@
       background-color="#304156"
       text-color="#FFF"
       active-text-color="#FFF"
+      v-if="topMenuMode"
       @select="handleSelect"
     >
       <el-menu-item v-for="(menu, mk) in topmenu" :key="mk" :index="menu.id">
@@ -16,21 +17,21 @@
       </el-menu-item>
     </el-menu>
 
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
+    <breadcrumb id="breadcrumb-container" class="breadcrumb-container"/>
 
     <div class="right-menu">
-      <template v-if="device!=='mobile'">
-        <el-tooltip :content="$t('navbar.search')" placement="bottom">
+      <template>
+        <el-tooltip v-if="!isMobile" :content="$t('navbar.search')" placement="bottom">
           <search id="header-search" class="right-menu-item" />
         </el-tooltip>
 
         <error-log class="errLog-container right-menu-item hover-effect" />
 
-        <el-tooltip :content="$t('navbar.screenfull')" placement="bottom">
+        <el-tooltip v-if="!isMobile" :content="$t('navbar.screenfull')" placement="bottom">
           <screenfull id="screenfull" class="right-menu-item hover-effect" />
         </el-tooltip>
 
-        <el-tooltip :content="$t('navbar.size')" effect="dark" placement="bottom">
+        <el-tooltip  v-if="!isMobile" :content="$t('navbar.size')" effect="dark" placement="bottom">
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
 
@@ -46,24 +47,24 @@
 
         <el-tooltip :content="$t('navbar.user')" placement="bottom">
           <template>
-            <el-dropdown class="avatar-container right-menu-item hover-effect" size="medium" trigger="click">
+            <el-dropdown class="avatar-container right-menu-item hover-effect" :class="{'mb-right-container': isMobile}" size="medium" trigger="click">
               <div>
                 <svg-icon icon-class="user" />
               </div>
               <el-dropdown-menu slot="dropdown">
-                <!--<el-dropdown-item @click.native="reloadCache">
-                  刷新缓存
-                </el-dropdown-item>-->
-                <!--<router-link to="/profile/index">
-                  <el-dropdown-item>
-                    {{ $t('navbar.profile') }}
-                  </el-dropdown-item>
-                </router-link>-->
+
                 <router-link to="/">
                   <el-dropdown-item>
                     {{ $t('navbar.dashboard') }}
                   </el-dropdown-item>
                 </router-link>
+
+                  <el-dropdown-item :disabled="isdev" >
+                    <a href="http://hkgame.ihengkun.com/admin/pub/login?version=0" target="_blank">
+                      {{ $t('login.toold') }}
+                    </a>
+                  </el-dropdown-item>
+
                 <el-dropdown-item divided @click.native="logout">
                   <span style="display:block;">{{ $t('navbar.logOut') }}</span>
                 </el-dropdown-item>
@@ -88,7 +89,7 @@ import SizeSelect from '@/components/SizeSelect'
 import LangSelect from '@/components/LangSelect'
 import Search from '@/components/HeaderSearch'
 import Item from '@/layout/components/Sidebar/Item'
-import {recache} from '@/api/sysinfo'
+import {getSettingsLocalStorage} from "@/utils";
 
 export default {
   components: {
@@ -107,7 +108,16 @@ export default {
       'avatar',
       'device',
       'topmenu'
-    ])
+    ]),
+    isdev() {
+      return process.env.NODE_ENV === 'development'
+    },
+    isMobile() {
+      return  this.device === 'mobile'
+    },
+    topMenuMode() {
+      return !this.isMobile && getSettingsLocalStorage('topMenuMode')
+    }
   },
   mounted() {
     // add by Joyboo
@@ -128,30 +138,6 @@ export default {
     // add by Joyboo
     rightPanel() {
       this.$store.dispatch('settings/boolSetting', 'rightPanel')
-    },
-    // 刷新缓存
-    reloadCache() {
-
-      let loadingInstance = this.$loading({
-        text: '缓存刷新中，请稍后。。。'
-      });
-
-      recache()
-        .then(({code, msg}) => {
-          if (!code) {
-            this.$message.error(msg)
-          } else {
-            window.location.reload()
-          }
-        })
-        .catch(error => {
-          this.$message.error(error)
-        })
-        .finally(() => {
-          this.$nextTick(() => {
-            loadingInstance.close();
-          });
-        })
     }
   }
 }
@@ -237,26 +223,10 @@ export default {
 
     .avatar-container {
       margin-right: 30px;
+    }
 
-      .avatar-wrapper {
-        margin-top: 5px;
-        position: relative;
-
-        .user-avatar {
-          cursor: pointer;
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
-        }
-
-        .el-icon-caret-bottom {
-          cursor: pointer;
-          position: absolute;
-          right: -20px;
-          top: 25px;
-          font-size: 12px;
-        }
-      }
+    .mb-right-container {
+      margin-right: 0;
     }
   }
 }

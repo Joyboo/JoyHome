@@ -30,7 +30,7 @@
         tableData: []
       }
     },
-    mounted() {
+    activated() {
       this.search()
     },
     methods: {

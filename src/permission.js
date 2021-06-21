@@ -5,6 +5,14 @@ import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
+import {getSettingsLocalStorage} from "@/utils";
+import ResizeMixin from '@/layout/mixin/ResizeHandler'
+
+/**
+ * 这是违反Vue风格的调用，但此处暂时没有找到更优的替代方案。 原因是如果用户已登录，那么加载菜单事件会在App.vue渲染DOM之前运行，但是加载菜单又必须知道当前是否是手机端，以此来判断是否TOP菜单模式。
+ * 参考：https://vuejs.org/v2/style-guide/index.html#Private-property-names-essential
+ */
+ResizeMixin.methods.$_resizeHandler()
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
@@ -15,16 +23,22 @@ const whiteList = ['/login', '/auth-redirect', '/redirect', '/404']
 
 // add by Joyboo 嵌套2级以上菜单时，处理多个router-view容器keep-alive不生效的问题，参考：https://blog.csdn.net/qq_41912398/article/details/109576635
 const handleKeepAlive = (to) => {
-  if (to.matched && to.matched.length > 2)
+
+  if (to.matched)
   {
+    const topMenuMode = store.getters.device != 'mobile' && getSettingsLocalStorage('topMenuMode')
+
     for (let i = 0; i < to.matched.length; i++)
     {
       const element = to.matched[i]
-      // 注意keep-alive的include匹配的是组件的name值而非router的name
-      if (element.components.default.name === 'RouterView')
+      /**
+       * 1. 注意keep-alive的include匹配的是组件的name值而非router的name
+       * 2. 因为同一套动态路由版本需要支持两种模式的菜单，故而需要动态处理一下Layout和RouterView
+       */
+      if (element.components.default.name === 'RouterView'
+      || (to.matched.length > 2 && !topMenuMode && element.components.default.name === 'Layout'))
       {
         to.matched.splice(i, 1)
-        handleKeepAlive(to)
       }
     }
   }
@@ -58,7 +72,7 @@ router.beforeEach(async(to, from, next) => {
           let myLoading = Loading.service();
 
           // 获取菜单，动态路由
-          await store.dispatch('permission/getTopMenu')
+          await store.dispatch('permission/getRouter')
 
           // 获取用户详情
           await store.dispatch('user/getInfo')

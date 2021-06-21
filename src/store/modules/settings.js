@@ -12,7 +12,8 @@ const state = {
   sidebarLogo,
   supportPinyinSearch,
   rightPanel: false, // 右侧设置面板开关
-  sidebarMode: true // 菜单是否风琴条模式
+  sidebarMode: true, // 菜单是否风琴条模式
+  topMenuMode: true // top菜单模式
 }
 
 const mutations = {

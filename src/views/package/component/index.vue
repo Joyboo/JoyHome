@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading" class="view-container">
+  <div v-loading="loading" class="info-container">
     <el-form ref="package-search" :model="form" :size="size" :rules="rules" label-width="15rem">
       <el-tabs type="border-card">
         <el-tab-pane label="基本信息">

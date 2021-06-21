@@ -1,9 +1,8 @@
-import { asyncRoutes, constantRoutes } from '@/router'
 import router from '@/router'
-import { leftmenu, topmenu } from '@/api/menu'
+import { leftmenu } from '@/api/menu'
 import Layout from '@/layout'
 import RouterView from '@/layout/components/RouterView'
-import DevelopRoutes from '@/router/modules/develop'
+import {getSettingsLocalStorage} from "@/utils";
 
 /**
  * Use meta.role to determine if the current user has permission
@@ -41,41 +40,6 @@ export function filterAsyncRoutes(routes, roles) {
 
 export function adminRouter(routerMap) {
   const arr = []
-  /*
-  // 多级菜单的动态路有示例
-  return {
-    path: '/nested',
-    component: Layout,
-    redirect: '/nested/menu1/menu1-1',
-    name: 'Nested',
-    meta: {
-      title: 'nested',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: '/menu',
-        component: () => import('@/layout/routerView'),
-        name: 'Menu1',
-        meta: { title: 'menu1' },
-        // redirect: '/nested/menu1/menu1-1',
-        children: [
-          {
-            path: '/menu/index',
-            component: () => import('@/views/menu/index/index'),
-            name: 'Menu1-1',
-            meta: { title: 'menu1-1ggggg' }
-          },
-          {
-            path: '/menu/info',
-            component: () => import('@/views/menu/info/index'),
-            name: 'Menu1-1',
-            meta: { title: 'info' }
-          }
-        ]
-      }
-    ]
-  };*/
 
   let keys = ['name', 'redirect', 'always', 'meta', 'hidden']
 
@@ -115,29 +79,35 @@ const state = {
 
 const mutations = {
 
+  // 无TOP菜单模式
   SET_MENU(state, data) {
-    state.topmenu = []
-    // 将第一级设置为topmenu
-    for(let i in data)
-    {
-      let one = data[i]
+    state.topmenu = state.routes = state.leftmenu = []
+    const routes = adminRouter(data)
+    router.addRoutes(routes)
+    state.routes = routes
+  },
 
-      state.topmenu.push({
-        id: one.id,
-        icon: one.meta.icon,
-        title: one.meta.title
-      })
+  // 有TOP一级菜单模式
+  SET_MENU_TOP(state, data) {
+    state.routes = state.leftmenu = []
+    const top = []
+    // 将第一级设置为topmenu
+    for(const item of data)
+    {
+      top.push({id: item.id, icon: item.meta.icon, title: item.meta.title})
 
       // 第二级为leftmenu
-      if (typeof one.children == 'object')
+      if (typeof item.children == 'object')
       {
         // 从第二级开始加入路由
-        const routes = adminRouter(one.children)
+        const routes = adminRouter(item.children)
         router.addRoutes(routes)
 
-        state.leftmenu[one.id] = routes
+        state.leftmenu[item.id] = routes
       }
     }
+
+    state.topmenu = top
 
     // 设置左菜单
     if (state.topmenu.length > 0)
@@ -145,24 +115,6 @@ const mutations = {
       const defaultTopid = state.topmenu[0].id
       state.routes = state.leftmenu[defaultTopid]
     }
-
-    // 如果是开发环境
-    /*if (process.env.NODE_ENV === 'development')
-    {
-      const devid = "-1"
-      state.topmenu.push({
-        id: devid,
-        icon: 'el-icon-eleme',
-        title: '开发环境'
-      })
-      router.addRoutes(DevelopRoutes)
-
-      const dev = []
-      DevelopRoutes.forEach(item => {
-        dev.push(...item.children)
-      })
-      state.leftmenu[devid] = dev
-    }*/
   },
   SET_ROUTES(state, pid) {
     state.routes = state.leftmenu[pid]
@@ -174,7 +126,12 @@ const actions = {
     commit('SET_ROUTES', pid)
   },
 
-  getTopMenu({ commit }) {
+  getRouter({ commit, rootState }) {
+    // mobile or desktop
+    const isMobile = rootState.app.device === 'mobile'
+
+    const topMenuMode = getSettingsLocalStorage('topMenuMode', rootState.settings.topMenuMode)
+
     return new Promise((resolve, reject) => {
       leftmenu({pid: 0})
         .then(({ code, msg, data }) => {
@@ -182,7 +139,14 @@ const actions = {
           {
             reject(msg)
           } else {
-            commit('SET_MENU', data)
+            if (!isMobile && topMenuMode)
+            {
+              commit('SET_MENU_TOP', data)
+            }
+            else {
+              commit('SET_MENU', data)
+            }
+
             resolve(data)
           }
         })

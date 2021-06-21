@@ -9,7 +9,7 @@
         @search="search"
       >
 
-        <el-table-column align="left" prop="title" label="菜单名" />
+        <el-table-column align="left" prop="title" width="180" label="菜单名" />
 
         <el-table-column align="center" prop="id" width="80" label="ID" />
 

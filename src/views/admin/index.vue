@@ -36,6 +36,7 @@
     <table-data
       :loading="loading"
       :data="data"
+      :btn-width="300"
       pathname="admin"
       @search="search"
     >

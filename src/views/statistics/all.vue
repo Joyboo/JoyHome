@@ -2,9 +2,8 @@
   <div class="view-container">
     <layout-filter :query="query" :nsch="false" @search="search" @chgTzn="chgTzn" :loading="loading">
       <template>
-        <el-form-item>
-          <el-button v-for="(name, key) in menulist" :key="key"
-                     v-if="checkPermission(['admin', '/statistics/' + key])"
+        <el-form-item v-for="(name, key) in menulist" :key="key">
+          <el-button v-if="checkPermission(['admin', '/statistics/' + key])"
                      :type="menu == key ? 'primary' : 'default'"
                      @click="chgRadio(key)" round>{{name.name}}</el-button>
         </el-form-item>

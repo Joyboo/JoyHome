@@ -1,5 +1,5 @@
 <template>
-  <div class="view-container" v-loading="loading">
+  <div class="info-container" v-loading="loading">
 
     <el-form :model="form" :size="size" label-width="15rem">
       <el-form-item label="所属日期">

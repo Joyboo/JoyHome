@@ -183,7 +183,9 @@ export default {
     tagsView: 'Open Tags-View',
     fixedHeader: 'Fixed Header',
     sidebarLogo: 'Sidebar Logo',
-    setThemeIng: 'Compiling the theme'
+    setThemeIng: 'Compiling the theme',
+    accordion: 'Menu Accordion Mode',
+    topMenu: 'Top Menu Mode'
   },
   open: 'Open'
 }

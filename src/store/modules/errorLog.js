@@ -3,7 +3,7 @@ import {errorLogAdd} from "@/api/cerror";
 const state = {
   logs: [],           // 所有日志，客户端展示用
   report: [],         // 需上报的日志
-  limit: 5000,
+  limit: 30000,
   reporting: false,   // 正在上报中,用于右上角icon转圈圈
   len: 50            // report长度超过此值立即触发上报
 }
@@ -49,7 +49,7 @@ const actions = {
           username: userinfo.username || '',
           realname: userinfo.realname || '',
           msg: item.err.message || '',
-          tag: item.vm.$vnode.tag || '',
+          tag: (item.vm && item.vm.$vnode && item.vm.$vnode.tag) ? item.vm.$vnode.tag :  '',
           info: item.info || '',
           url: item.url,
           content: item.err.stack || '',

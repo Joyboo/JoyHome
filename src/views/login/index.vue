@@ -50,14 +50,14 @@
       </el-tooltip>
 
       <el-row>
-        <el-col :span="15">
+        <el-col :xs="{span: 12}" :sm="{span: 12}" :md="{span: 15}" :lg="{span: 15}" :xl="{span: 15}">
           <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">
             {{ $t('login.logIn') }}
           </el-button>
         </el-col>
 
-        <el-col :span="9">
-          <el-button type="warning" style="width:80%;margin-bottom:30px;float: right;" @click="changeVersion">
+        <el-col :xs="{span: 12}" :sm="{span: 12}" :md="{span: 9}" :lg="{span: 9}" :xl="{span: 9}">
+          <el-button type="warning" style="width:80%;margin-bottom:30px;float: right;" @click="changeVersion" :disabled="local">
             {{ $t('login.toold') }}
           </el-button>
         </el-col>

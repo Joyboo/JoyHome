@@ -36,8 +36,13 @@
       </div>
 
       <div class="drawer-item">
-        <span>左侧菜单手风琴模式</span>
+        <span>{{$t('settings.accordion')}}</span>
         <el-switch v-model="sidebarMode" class="drawer-switch" />
+      </div>
+
+      <div class="drawer-item" v-if="device !== 'mobile'">
+        <span>{{$t('settings.topMenu')}}</span>
+        <el-switch v-model="topMenuMode" class="drawer-switch" />
       </div>
 
     </div>
@@ -47,6 +52,7 @@
 <script>
 import ThemePicker from '@/components/ThemePicker'
 import {getSettingsLocalStorage} from '@/utils'
+import {mapGetters} from "vuex";
 
 export default {
   components: { ThemePicker },
@@ -54,51 +60,37 @@ export default {
     return {}
   },
   computed: {
-    isShowJob() {
-      return this.$store.getters.language === 'zh'
-    },
+    ...mapGetters(['device']),
     fixedHeader: {
       get() {
-        return getSettingsLocalStorage('fixedHeader', this.$store.state.settings.fixedHeader)
+        return this.getMode('fixedHeader')
       },
       set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'fixedHeader',
-          value: val
-        })
+        this.setMode('fixedHeader', val)
       }
     },
     tagsView: {
       get() {
-        return getSettingsLocalStorage('tagsView', this.$store.state.settings.tagsView)
+        return this.getMode('tagsView')
       },
       set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'tagsView',
-          value: val
-        })
+        this.setMode('tagsView', val)
       }
     },
     sidebarLogo: {
       get() {
-        return getSettingsLocalStorage('sidebarLogo', this.$store.state.settings.sidebarLogo)
+        return this.getMode('sidebarLogo')
       },
       set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'sidebarLogo',
-          value: val
-        })
+        this.setMode('sidebarLogo', val)
       }
     },
     supportPinyinSearch: {
       get() {
-        return getSettingsLocalStorage('supportPinyinSearch', this.$store.state.settings.supportPinyinSearch)
+        return this.getMode('supportPinyinSearch')
       },
       set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'supportPinyinSearch',
-          value: val
-        })
+        this.setMode('supportPinyinSearch', val)
       }
     },
     lang() {
@@ -106,20 +98,33 @@ export default {
     },
     sidebarMode: {
       get() {
-        return getSettingsLocalStorage('sidebarMode', this.$store.state.settings.sidebarMode)
+        return this.getMode('sidebarMode')
       },
       set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'sidebarMode',
-          value: val
-        })
+        this.setMode('sidebarMode', val)
+      }
+    },
+    topMenuMode: {
+      get() {
+        return this.getMode('topMenuMode')
+      },
+      set(val) {
+        this.setMode('topMenuMode', val)
+        // 目前Vue Router没有提供和addRouter对应的删除路由方法，所以如果中途此模式有改变，则必须reload
+        this.$nextTick(() => window.location.reload())
       }
     }
   },
   methods: {
     themeChange(val) {
+      this.setMode('theme', val)
+    },
+    getMode(key) {
+      return getSettingsLocalStorage(key)
+    },
+    setMode(key, val) {
       this.$store.dispatch('settings/changeSetting', {
-        key: 'theme',
+        key: key,
         value: val
       })
     }
