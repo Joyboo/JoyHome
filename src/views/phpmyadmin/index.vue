@@ -1,6 +1,8 @@
 <template>
   <el-row class="pma">
-    <el-col :span="8" v-for="(o, index) in pma" :key="index" :offset="1">
+    <el-col :xs="{span: 15}" :sm="{span: 15}" :md="{span: 15}" :lg="{span: 8}" :xl="{span: 8}"
+            style="margin-top: 3rem;"
+            v-for="(o, index) in pma" :key="index" :offset="1">
       <el-card :body-style="{ padding: '0px' }">
         <svg-icon style="width: 100%;height: 100%;" icon-class="phpmyadmin" />
         <div style="padding: 14px;">
