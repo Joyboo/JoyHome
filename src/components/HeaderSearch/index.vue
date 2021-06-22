@@ -44,14 +44,14 @@ export default {
     },
     supportPinyinSearch() {
       return this.$store.state.settings.supportPinyinSearch
+    },
+    allRouter() {
+      return this.$store.state.permission.allmenu
     }
   },
   watch: {
     lang() {
-      this.searchPool = this.generateRoutes(this.routes)
-    },
-    routes() {
-      this.searchPool = this.generateRoutes(this.routes)
+      this.searchPool = this.generateRoutes(this.allRouter)
     },
     searchPool(list) {
       // Support pinyin search
@@ -69,7 +69,7 @@ export default {
     }
   },
   mounted() {
-    this.searchPool = this.generateRoutes(this.routes)
+    this.searchPool = this.generateRoutes(this.allRouter)
   },
   methods: {
     async addPinyinField(list) {
