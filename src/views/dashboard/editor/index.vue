@@ -7,13 +7,6 @@
         <span class="pan-info-roles">{{userinfo.realname}}</span>
         <span class="pan-info-roles">{{userinfo.username}}</span>
       </pan-thumb>
-<!--      <github-corner style="position: absolute; top: 0px; border: 0; right: 0;" />-->
-      <div class="info-container">
-        <span class="display_name">{{ name }}</span>
-      </div>
-    </div>
-    <div>
-      <img src="@/assets/image/dashboard.gif" class="emptyGif">
     </div>
   </div>
 </template>
@@ -26,11 +19,6 @@ import PanThumb from '@/components/PanThumb'
 export default {
   name: 'DashboardEditor',
   components: { PanThumb },
-  data() {
-    return {
-      // emptyGif: 'https://wpimg.wallstcn.com/0e03b7da-db9e-4819-ba10-9016ddfdaed3'
-    }
-  },
   computed: {
     ...mapGetters([
       'name',
@@ -43,11 +31,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .emptyGif {
-    display: block;
-    width: 45%;
-    margin: 0 auto;
-  }
 
   .dashboard-editor-container {
     background-color: #e3e3e3;
