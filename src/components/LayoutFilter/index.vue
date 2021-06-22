@@ -4,7 +4,7 @@
 
       <!--传递query.gameid表示需要该下拉框，传递类型为字符串时表示为单选，为数组时表示为多选-->
       <el-form-item v-if="typeof query.gameid != 'undefined'">
-        <el-select v-model="query.gameid" filterable :multiple="gameMul" placeholder="游戏">
+        <el-select v-model="query.gameid" filterable :multiple="gameMul" placeholder="游戏" clearable>
           <el-option
             v-for="item in filtergamelist"
             :key="item.value"
@@ -17,7 +17,7 @@
       </el-form-item>
 
       <el-form-item v-if="typeof query.pkgbnd != 'undefined'">
-        <el-select v-model="query.pkgbnd" filterable :multiple="packageMul" placeholder="包">
+        <el-select v-model="query.pkgbnd" filterable :multiple="packageMul" placeholder="包" clearable>
           <el-option
             v-for="item in packagelist"
             :key="item.pkgbnd"
@@ -36,25 +36,54 @@
       </el-form-item>
 
       <el-form-item v-if="typeof query.tzn != 'undefined'">
-        <el-select style="width: 100px;" v-model="query.tzn" placeholder="时区" class="mySelect" @change="chgTzn">
+        <el-select style="width: 80px;" v-model="query.tzn" placeholder="时区" class="mySelect" @change="chgTzn">
           <el-option v-for="(rn, rk) in region" :key="rk" :label="rn.tzn + '区'" :value="rn.tzn" />
         </el-select>
       </el-form-item>
 
-      <!--默认是天的格式，也可以传递query.format自定义, 具体格式见:https://element.eleme.cn/#/zh-CN/component/date-picker#ri-qi-ge-shi-->
-      <el-form-item v-if="isDate">
+      <el-form-item v-if="isBegin">
         <el-date-picker
-          v-model="date"
+          v-model="begin"
           :format="format"
-          unlink-panels
-          :type="query.datetype || 'daterange'"
-          range-separator="至"
-          start-placeholder="开始"
-          end-placeholder="结束"
-          :default-value="date"
+          :type="query.datetype || 'date'"
+          placeholder="开始时间"
           value-format="timestamp"
-          :picker-options="pickerOptions"
+          :style="{width: (format.length -2) + 'rem'}"
+          :clearable="false"
         />
+      </el-form-item>
+
+      <el-form-item v-if="isEnd">
+        <el-date-picker
+          v-model="end"
+          :format="format"
+          :type="query.datetype || 'date'"
+          placeholder="结束时间"
+          value-format="timestamp"
+          :style="{width: (format.length -2) + 'rem'}"
+          :clearable="false"
+        />
+      </el-form-item>
+
+      <!--快捷操作-->
+      <el-form-item v-if="isBegin && isEnd">
+        <el-dropdown trigger="click">
+          <div>
+            <el-button icon="el-icon-date"></el-button>
+          </div>
+          <el-dropdown-menu slot="dropdown" :style="{padding: '0'}">
+            <el-dropdown-item :style="{padding: '10px'}">
+              <el-button class="dateBtn" type="primary" @click="fastdate(1)">今天</el-button>
+              <el-button class="dateBtn" type="primary" @click="fastdate(2)">昨天</el-button>
+              <el-button class="dateBtn" type="primary" @click="fastdate(3)">本月</el-button>
+              <el-button class="dateBtn" type="primary" @click="fastdate(4)">上月</el-button>
+              <el-button class="dateBtn" type="primary" @click="fastdate(5)">近7天</el-button>
+              <el-button class="dateBtn" type="primary" @click="fastdate(6)">近30天</el-button>
+              <el-button class="dateBtn" type="primary" @click="fastdate(7)">近90天</el-button>
+              <el-button class="dateBtn" type="primary" @click="fastdate(8)">近一年</el-button>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </el-form-item>
 
       <!--插槽位-->
@@ -87,6 +116,9 @@
         'userinfo',
         'config'
       ]),
+      theme() {
+        return this.$store.state.settings.theme
+      },
       region() {
         return this.config.region_domain.region;
       },
@@ -98,8 +130,11 @@
       packageMul() {
         return typeof this.query.pkgbnd === 'object'
       },
-      isDate() {
-        return typeof this.query.begintime != 'undefined' || typeof this.query.endtime != 'undefined'
+      isBegin() {
+        return typeof this.query.begintime != 'undefined'
+      },
+      isEnd() {
+        return typeof this.query.endtime != 'undefined'
       },
       format() {
         return typeof this.query.format === 'undefined' ? 'yyyy-MM-dd' : this.query.format
@@ -121,18 +156,19 @@
     mounted() {
       this.$store.dispatch('filter/gameInfo')
 
-      // 默认时间
-      if (this.isDate)
+      // 时间
+      if (this.isBegin)
       {
-        if (typeof this.query.begintime != 'undefined' && typeof this.query.endtime != 'undefined')
-        {
-          const end = this.query.endtime === true ? 0 : this.query.endtime
-          this.date = [beforeDay(this.query.begintime), beforeDay(end)]
-        } else {
-          this.date = beforeDay(this.query.begintime || this.query.endTime)
-        }
+        this.begin = beforeDay(this.query.begintime)
+      }
+      if (this.isEnd)
+      {
+        // 可传true或者-N的天数
+        const day = this.query.endtime === true ? 0 : this.query.endtime
+        this.end = beforeDay(day)
       }
 
+      // 默认选中的游戏
       if (this.defaultGid != '')
       {
         if (typeof this.query.gameid == 'object' && this.query.gameid.indexOf(this.defaultGid) < 0)
@@ -156,20 +192,13 @@
           this.changeGame(newVal)
         }
       },
-      date: function(newVal, oldVal) {
-        if (typeof newVal == 'object')
-        {
-          if (!isNaN(newVal[0])) {
-            this.$set(this.query, 'begintime', parseTime(newVal[0], this.outFmt))
-          }
-          if (!isNaN(newVal[1])) {
-            this.$set(this.query, 'endtime', parseTime(newVal[1], this.outFmt))
-          }
-        }
-        else if (typeof this.query.begintime != 'undefined') {
+      begin: function(newVal, oldVal) {
+        if (!isNaN(newVal)) {
           this.$set(this.query, 'begintime', parseTime(newVal, this.outFmt))
         }
-        else if (typeof this.query.endtime != 'undefined') {
+      },
+      end: function(newVal, oldVal) {
+        if (!isNaN(newVal)) {
           this.$set(this.query, 'endtime', parseTime(newVal, this.outFmt))
         }
       }
@@ -194,72 +223,9 @@
     },
     data() {
       return {
-        date: [],
-        packagelist: [],
-        // modelTimeRange: [new Date(), new Date()],
-        pickerOptions: {
-          shortcuts: [
-            {
-              text: '今天',
-              onClick(picker) {
-                const time = beforeDay(0)
-                picker.$emit('pick', [time, time])
-              }
-            }, {
-              text: '昨天',
-              onClick(picker) {
-                const time = beforeDay(-1)
-                picker.$emit('pick', [time, time])
-              }
-            }, {
-              text: '一周',
-              onClick(picker) {
-                const end = new Date()
-                const start = beforeDay(-7)
-                picker.$emit('pick', [start, end.getTime()])
-              }
-            }, {
-              text: '本月',
-              onClick(picker) {
-                const time = new Date()
-                const end = new Date()
-                const start = new Date(time.getFullYear(), time.getMonth(), 1)
-                picker.$emit('pick', [start.getTime(), end.getTime()])
-              }
-            }, {
-              text: '上月',
-              onClick(picker) {
-                const time = new Date()
-                // 这个月第一天减一天
-                const end = new Date(time.getFullYear(), time.getMonth(), 1, 0, 0, 0).getTime() - 86400 * 1000
-                const lastDate = new Date(end)
-                const start = new Date(lastDate.getFullYear(), lastDate.getMonth(), 1, 0, 0, 0)
-                picker.$emit('pick', [start.getTime(), end])
-              }
-            }, {
-              text: '近一个月',
-              onClick(picker) {
-                const end = new Date()
-                const start = beforeDay(-30)
-                picker.$emit('pick', [start, end.getTime()])
-              }
-            }, {
-              text: '近三个月',
-              onClick(picker) {
-                const end = new Date()
-                const start = beforeDay(-90)
-                picker.$emit('pick', [start, end.getTime()])
-              }
-            }, {
-              text: '近一年',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date(end.getFullYear() - 1, end.getMonth(), end.getDay(), end.getHours(), end.getMinutes(), end.getSeconds())
-                picker.$emit('pick', [start, end.getTime()])
-              }
-            }
-          ]
-        }
+        begin: '',
+        end: '',
+        packagelist: []
       }
     },
     methods: {
@@ -284,6 +250,45 @@
           this.packagelist = resp.data
         })
       },
+      fastdate(val) {
+        const time = new Date()
+        switch (val) {
+          case 1: // 今天
+            this.begin = this.end = beforeDay(0)
+            break
+          case 2: // 昨天
+            this.begin = this.end = beforeDay(-1)
+                break
+          case 3: // 本月
+            this.begin = (new Date(time.getFullYear(), time.getMonth(), 1)).getTime()
+            this.end = beforeDay(0)
+            break
+          case 4: // 上月
+            // 这个月第一天减一天
+            this.end = new Date(time.getFullYear(), time.getMonth(), 1, 0, 0, 0).getTime() - 86400 * 1000
+            const lastDate = new Date(this.end)
+            const start4 = new Date(lastDate.getFullYear(), lastDate.getMonth(), 1, 0, 0, 0)
+            this.begin = start4.getTime()
+            break
+          case 5: // 近7天
+            this.begin = beforeDay(-7)
+            this.end = beforeDay(0)
+            break
+          case 6: // 近30天
+            this.begin = beforeDay(-30)
+            this.end = beforeDay(0)
+            break
+          case 7: // 近90天
+            this.begin = beforeDay(-90)
+            this.end = beforeDay(0)
+            break
+          case 8: // 近一年
+            const start8 = new Date(time.getFullYear() - 1, time.getMonth(), time.getDate(), time.getHours(), time.getMinutes(), time.getSeconds())
+            this.begin = start8.getTime()
+            this.end = beforeDay(0)
+            break
+        }
+      },
       search() {
         this.$emit('search')
       },
@@ -295,7 +300,7 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .selectSlotRight {
     float: right;
     color: #8492a6;
@@ -306,5 +311,9 @@
 
   .mySelect {
     width: 120px;
+  }
+
+  .dateBtn {
+    margin: 5px;
   }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <el-dropdown trigger="click" @command="selectExport" :size="size">
     <div>
-      <el-button icon="el-icon-download" type="primary">导出</el-button>
+      <el-button icon="el-icon-download" type="primary"></el-button>
     </div>
     <el-dropdown-menu slot="dropdown">
       <el-dropdown-item command="1">

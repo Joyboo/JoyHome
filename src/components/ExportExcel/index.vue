@@ -1,5 +1,5 @@
 <template>
-    <el-button type="primary" icon="el-icon-download" clearable @click="exportExcel">导出</el-button>
+    <el-button type="primary" icon="el-icon-download" clearable @click="exportExcel"></el-button>
 </template>
 
 <script>
