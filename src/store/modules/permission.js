@@ -74,50 +74,46 @@ export function adminRouter(routerMap) {
 const state = {
   routes: [],
   topmenu: [],
-  leftmenu: {}
+  allmenu: [],
+  mode: true // true-PC端的top菜单模式,false-手机端或非top菜单模式
 }
 
 const mutations = {
 
-  // 无TOP菜单模式
+  // 路由注册
   SET_MENU(state, data) {
-    state.topmenu = state.routes = state.leftmenu = []
+    state.allmenu = data
     const routes = adminRouter(data)
     router.addRoutes(routes)
-    state.routes = routes
   },
 
-  // 有TOP一级菜单模式
-  SET_MENU_TOP(state, data) {
-    state.routes = state.leftmenu = []
-    const top = []
-    // 将第一级设置为topmenu
-    for(const item of data)
-    {
-      top.push({id: item.id, icon: item.meta.icon, title: item.meta.title})
-
-      // 第二级为leftmenu
-      if (typeof item.children == 'object')
-      {
-        // 从第二级开始加入路由
-        const routes = adminRouter(item.children)
-        router.addRoutes(routes)
-
-        state.leftmenu[item.id] = routes
+  SET_ROUTES(state, pid) {
+    for (const item of state.allmenu) {
+      if (item.id == pid) {
+        state.routes = item.children
+        break
       }
     }
-
-    state.topmenu = top
-
-    // 设置左菜单
-    if (state.topmenu.length > 0)
-    {
-      const defaultTopid = state.topmenu[0].id
-      state.routes = state.leftmenu[defaultTopid]
-    }
   },
-  SET_ROUTES(state, pid) {
-    state.routes = state.leftmenu[pid]
+  // 设置sidebar
+  SET_SIDEBAR(state, {mode, device}) {
+    state.mode = device !== 'mobile' && mode
+    if (state.mode)
+    {
+      state.topmenu = state.allmenu
+
+      if (state.topmenu.length > 0) {
+        const pid = state.topmenu[0].id
+        for (const item of state.allmenu) {
+          if (item.id == pid) {
+            state.routes = item.children
+            break
+          }
+        }
+      }
+    } else {
+      state.routes = state.allmenu
+    }
   }
 }
 
@@ -125,12 +121,18 @@ const actions = {
   generateRoutes({ commit, state }, pid) {
     commit('SET_ROUTES', pid)
   },
+  // 设备类型改变
+  setSidebarByDevice({commit}, device) {
+    const mode = getSettingsLocalStorage('topMenuMode')
+    commit('SET_SIDEBAR', {mode: mode, device: device})
+  },
+  // 菜单模式改变
+  setSidebarByMode({commit, rootState}, mode) {
+    const device = rootState.app.device
+    commit('SET_SIDEBAR', {mode: mode, device: device})
+  },
 
   getRouter({ commit, rootState }) {
-    // mobile or desktop
-    const isMobile = rootState.app.device === 'mobile'
-
-    const topMenuMode = getSettingsLocalStorage('topMenuMode', rootState.settings.topMenuMode)
 
     return new Promise((resolve, reject) => {
       leftmenu({pid: 0})
@@ -139,14 +141,7 @@ const actions = {
           {
             reject(msg)
           } else {
-            if (!isMobile && topMenuMode)
-            {
-              commit('SET_MENU_TOP', data)
-            }
-            else {
-              commit('SET_MENU', data)
-            }
-
+            commit('SET_MENU', data)
             resolve(data)
           }
         })

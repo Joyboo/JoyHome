@@ -13,7 +13,7 @@
       @select="handleSelect"
     >
       <el-menu-item v-for="(menu, mk) in topmenu" :key="mk" :index="menu.id">
-        <item :icon="menu.icon" :title="menu.fulltitle || menu.title"></item>
+        <item :icon="menu.meta.icon" :title="menu.meta.fulltitle || menu.meta.title"></item>
       </el-menu-item>
     </el-menu>
 
@@ -89,7 +89,6 @@ import SizeSelect from '@/components/SizeSelect'
 import LangSelect from '@/components/LangSelect'
 import Search from '@/components/HeaderSearch'
 import Item from '@/layout/components/Sidebar/Item'
-import {getSettingsLocalStorage} from "@/utils";
 
 export default {
   components: {
@@ -116,7 +115,7 @@ export default {
       return  this.device === 'mobile'
     },
     topMenuMode() {
-      return !this.isMobile && getSettingsLocalStorage('topMenuMode')
+      return this.$store.state.permission.mode
     }
   },
   mounted() {

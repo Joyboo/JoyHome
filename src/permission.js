@@ -5,14 +5,6 @@ import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
-import {getSettingsLocalStorage} from "@/utils";
-import ResizeMixin from '@/layout/mixin/ResizeHandler'
-
-/**
- * 这是违反Vue风格的调用，但此处暂时没有找到更优的替代方案。 原因是如果用户已登录，那么加载菜单事件会在App.vue渲染DOM之前运行，但是加载菜单又必须知道当前是否是手机端，以此来判断是否TOP菜单模式。
- * 参考：https://vuejs.org/v2/style-guide/index.html#Private-property-names-essential
- */
-ResizeMixin.methods.$_resizeHandler()
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
@@ -26,7 +18,7 @@ const handleKeepAlive = (to) => {
 
   if (to.matched)
   {
-    const topMenuMode = store.getters.device != 'mobile' && getSettingsLocalStorage('topMenuMode')
+    // const topMenuMode = store.state.permission.mode
 
     for (let i = 0; i < to.matched.length; i++)
     {
@@ -36,7 +28,7 @@ const handleKeepAlive = (to) => {
        * 2. 因为同一套动态路由版本需要支持两种模式的菜单，故而需要动态处理一下Layout和RouterView
        */
       if (element.components.default.name === 'RouterView'
-      || (to.matched.length > 2 && !topMenuMode && element.components.default.name === 'Layout'))
+      || (to.matched.length > 2 && element.components.default.name === 'Layout'))
       {
         to.matched.splice(i, 1)
       }

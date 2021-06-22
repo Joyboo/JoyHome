@@ -5,29 +5,26 @@
 </template>
 
 <script>
-import {getSettingsLocalStorage} from "@/utils";
-import {mapGetters} from "vuex";
 
-export default {
-  name: 'Hamburger',
-  computed: {
-    ...mapGetters(['device']),
-    topMenuMode() {
-      return this.device !== 'mobile' && getSettingsLocalStorage('topMenuMode')
-    }
-  },
-  props: {
-    isActive: {
-      type: Boolean,
-      default: false
-    }
-  },
-  methods: {
-    toggleClick() {
-      this.$emit('toggleClick')
+  export default {
+    name: 'Hamburger',
+    computed: {
+      topMenuMode() {
+        return this.$store.state.permission.mode
+      }
+    },
+    props: {
+      isActive: {
+        type: Boolean,
+        default: false
+      }
+    },
+    methods: {
+      toggleClick() {
+        this.$emit('toggleClick')
+      }
     }
   }
-}
 </script>
 
 <style lang="scss" scoped>

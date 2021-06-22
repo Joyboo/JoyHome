@@ -49,10 +49,13 @@ export default {
       }
     }
   },
+  // add by Joyboo
   watch: {
-    // 如果拖动窗口大小导致device改变，需要重新加载
-    device(newVal, oldVal) {
-      window.location.reload()
+    device: {
+      immediate: true,
+      handler: function (newVal, oldVal) {
+        this.$store.dispatch('permission/setSidebarByDevice', newVal)
+      }
     }
   },
   methods: {

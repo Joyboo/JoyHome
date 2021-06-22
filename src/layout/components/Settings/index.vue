@@ -110,8 +110,7 @@ export default {
       },
       set(val) {
         this.setMode('topMenuMode', val)
-        // 目前Vue Router没有提供和addRouter对应的删除路由方法，所以如果中途此模式有改变，则必须reload
-        this.$nextTick(() => window.location.reload())
+        this.$store.dispatch('permission/setSidebarByMode', val)
       }
     }
   },
