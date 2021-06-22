@@ -3,7 +3,7 @@
     ref="listTable"
     v-loading="load"
     :data="data"
-    border
+    :border="border"
     :size="size"
     :height="height"
     :summary-method="getSummaries"
@@ -123,6 +123,11 @@
       tabid: {
         type: String,
         default: 'listTable'
+      },
+      // 纵向边框
+      border: {
+        type: Boolean,
+        default: true
       }
     },
     methods: {

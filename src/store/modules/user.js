@@ -6,7 +6,7 @@ const state = {
   token: getToken(),
   name: '',
   info: {},
-  avatar: '',
+  avatar: require('@/assets/image/defualt.jpg'),
   introduction: '',
   roles: []
 }

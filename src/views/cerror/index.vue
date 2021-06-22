@@ -17,7 +17,7 @@
       </template>
     </layout-filter>
 
-    <table-index :data="tableData" :loading="loading" :column="column"></table-index>
+    <table-index :data="tableData" :loading="loading" :column="column" :border="false"></table-index>
 
     <pagination :total="total" :query="query" @search="search" />
   </div>
