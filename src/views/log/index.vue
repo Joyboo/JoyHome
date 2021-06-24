@@ -35,7 +35,7 @@
   import {logIndex} from "@/api/log";
 
   export default {
-    name: "adminlogindex",
+    name: "logindex",
     components: {
       Pagination,
       LayoutFilter,
