@@ -17,7 +17,7 @@
       </el-form-item>
 
       <el-form-item>
-        <el-input type="text" v-model="query.name" placeholder="任务名 | 方法"></el-input>
+        <el-input type="text" v-model="query.name" @change="search" placeholder="任务名 | 方法"></el-input>
       </el-form-item>
 
       <el-form-item>

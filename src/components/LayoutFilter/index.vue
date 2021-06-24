@@ -73,14 +73,14 @@
           </div>
           <el-dropdown-menu slot="dropdown" :style="{padding: '0'}">
             <el-dropdown-item :style="{padding: '10px'}">
-              <el-button class="dateBtn" type="primary" @click="fastdate(1)">今天</el-button>
-              <el-button class="dateBtn" type="primary" @click="fastdate(2)">昨天</el-button>
-              <el-button class="dateBtn" type="primary" @click="fastdate(3)">本月</el-button>
-              <el-button class="dateBtn" type="primary" @click="fastdate(4)">上月</el-button>
-              <el-button class="dateBtn" type="primary" @click="fastdate(5)">近7天</el-button>
-              <el-button class="dateBtn" type="primary" @click="fastdate(6)">近30天</el-button>
-              <el-button class="dateBtn" type="primary" @click="fastdate(7)">近90天</el-button>
               <el-button class="dateBtn" type="primary" @click="fastdate(8)">近一年</el-button>
+              <el-button class="dateBtn" type="primary" @click="fastdate(7)">近90天</el-button>
+              <el-button class="dateBtn" type="primary" @click="fastdate(6)">近30天</el-button>
+              <el-button class="dateBtn" type="primary" @click="fastdate(5)">近7天</el-button>
+              <el-button class="dateBtn" type="primary" @click="fastdate(4)">上月</el-button>
+              <el-button class="dateBtn" type="primary" @click="fastdate(3)">本月</el-button>
+              <el-button class="dateBtn" type="primary" @click="fastdate(2)">昨天</el-button>
+              <el-button class="dateBtn" type="primary" @click="fastdate(1)">今天</el-button>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>

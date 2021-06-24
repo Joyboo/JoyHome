@@ -4,7 +4,18 @@
     <layout-filter :query="query" @search="search" :loading="loading">
       <template>
         <el-form-item>
-          <el-input type="text" v-model="query.uid" @change="search" placeholder="用户id | 用户名" clearable />
+          <el-select v-model="query.type" clearable placeholder="操作类型">
+            <el-option
+              v-for="item in typelist"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+
+        <el-form-item>
+          <el-input type="text" v-model="query.content" placeholder="SQL关键字" clearable @change="search" />
         </el-form-item>
       </template>
     </layout-filter>
@@ -21,7 +32,7 @@
   import Pagination from '@/components/Pagination'
   import LayoutFilter from '@/components/LayoutFilter'
   import TableIndex from '@/components/TableData'
-  import {adminLogIndex} from "@/api/admin_log";
+  import {logIndex} from "@/api/log";
 
   export default {
     name: "adminlogindex",
@@ -38,8 +49,23 @@
         loading: false,
         query: {
           begintime: true,
-          endtime: true
+          endtime: true,
+          type: '',
+          content: ''
         },
+
+        typelist: [
+          {
+            label: '新增',
+            value: 'insert'
+          }, {
+            label: '更新',
+            value: 'update'
+          }, {
+            label: '删除',
+            value: 'delete'
+          }
+        ],
         total: 0,
         tableData: [],
         column: [
@@ -50,27 +76,29 @@
             sort: true
           },
           {
-            key: 'name',
-            text: '管理员'
-          },
-          {
-            key: 'uid',
-            text: '管理员ID',
+            key: 'admname',
+            text: '管理员',
             width: 100
           },
           {
-            key: 'itime',
-            text: '登录时间',
-            sort: true
+            key: 'admid',
+            text: '管理员ID',
+            width: 80
           },
           {
-            key: 'utime',
-            text: '更新时间',
-            sort: true
+            key: 'itime',
+            text: '操作时间',
+            sort: true,
+            width: 120
           },
           {
             key: 'ip',
-            text: '登录ip'
+            text: 'ip',
+            width: 120
+          },
+          {
+            key: 'content',
+            text: 'SQL',
           }
         ]
       }
@@ -78,7 +106,7 @@
     methods: {
       search() {
         this.loading = true
-        adminLogIndex(this.query)
+        logIndex(this.query)
           .then(({code, msg, data}) => {
             if (!code)
             {

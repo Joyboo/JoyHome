@@ -23,7 +23,8 @@
       </el-form-item>
 
       <el-form-item>
-        <el-input v-model="query.kwvalue" :placeholder="query.kwtype == 'expression' ? 'paysn=&uid=&sid=' : kwtype[query.kwtype]"></el-input>
+        <el-input v-model="query.kwvalue" @change="search" clearable
+                  :placeholder="query.kwtype == 'expression' ? 'paysn=&uid=&sid=' : kwtype[query.kwtype]"></el-input>
       </el-form-item>
 
       <template #after>

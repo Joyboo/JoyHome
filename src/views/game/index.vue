@@ -16,7 +16,7 @@
         </el-form-item>
 
         <el-form-item>
-          <el-input v-model="query.keyword" placeholder="游戏名" clearable />
+          <el-input v-model="query.keyword" @change="search" placeholder="游戏名" clearable />
         </el-form-item>
 
         <el-form-item>

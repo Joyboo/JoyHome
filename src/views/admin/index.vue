@@ -14,7 +14,7 @@
       </el-form-item>
 
       <el-form-item>
-        <el-input v-model="query.keyword" clearable placeholder="姓名或手机号"></el-input>
+        <el-input v-model="query.keyword" @change="search" clearable placeholder="姓名或手机号"></el-input>
       </el-form-item>
 
       <el-form-item>
