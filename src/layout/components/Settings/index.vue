@@ -35,12 +35,24 @@
         <el-switch v-model="supportPinyinSearch" class="drawer-switch" />
       </div>
 
+      <div class="drawer-item">
+        <span>{{$t('settings.accordion')}}</span>
+        <el-switch v-model="sidebarMode" class="drawer-switch" />
+      </div>
+
+      <div class="drawer-item" v-if="device !== 'mobile'">
+        <span>{{$t('settings.topMenu')}}</span>
+        <el-switch v-model="topMenuMode" class="drawer-switch" />
+      </div>
+
     </div>
   </div>
 </template>
 
 <script>
 import ThemePicker from '@/components/ThemePicker'
+import {getSettingsLocalStorage} from '@/utils'
+import {mapGetters} from "vuex";
 
 export default {
   components: { ThemePicker },
@@ -48,61 +60,70 @@ export default {
     return {}
   },
   computed: {
-    isShowJob() {
-      return this.$store.getters.language === 'zh'
-    },
+    ...mapGetters(['device']),
     fixedHeader: {
       get() {
-        return this.$store.state.settings.fixedHeader
+        return this.getMode('fixedHeader')
       },
       set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'fixedHeader',
-          value: val
-        })
+        this.setMode('fixedHeader', val)
       }
     },
     tagsView: {
       get() {
-        return this.$store.state.settings.tagsView
+        return this.getMode('tagsView')
       },
       set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'tagsView',
-          value: val
-        })
+        this.setMode('tagsView', val)
       }
     },
     sidebarLogo: {
       get() {
-        return this.$store.state.settings.sidebarLogo
+        return this.getMode('sidebarLogo')
       },
       set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'sidebarLogo',
-          value: val
-        })
+        this.setMode('sidebarLogo', val)
       }
     },
     supportPinyinSearch: {
       get() {
-        return this.$store.state.settings.supportPinyinSearch
+        return this.getMode('supportPinyinSearch')
       },
       set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'supportPinyinSearch',
-          value: val
-        })
+        this.setMode('supportPinyinSearch', val)
       }
     },
     lang() {
       return this.$store.getters.language
+    },
+    sidebarMode: {
+      get() {
+        return this.getMode('sidebarMode')
+      },
+      set(val) {
+        this.setMode('sidebarMode', val)
+      }
+    },
+    topMenuMode: {
+      get() {
+        return this.getMode('topMenuMode')
+      },
+      set(val) {
+        this.setMode('topMenuMode', val)
+        this.$store.dispatch('permission/setSidebarByMode', val)
+      }
     }
   },
   methods: {
     themeChange(val) {
+      this.setMode('theme', val)
+    },
+    getMode(key) {
+      return getSettingsLocalStorage(key)
+    },
+    setMode(key, val) {
       this.$store.dispatch('settings/changeSetting', {
-        key: 'theme',
+        key: key,
         value: val
       })
     }

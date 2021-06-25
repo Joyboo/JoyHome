@@ -5,7 +5,7 @@
 <script>
 import packageInfo from './component'
 import { packageEdit } from '@/api/package'
-import {copyTo} from "@/utils";
+import {closeTab, copyTo} from "@/utils";
 
 export default {
   name: 'Edit',
@@ -110,8 +110,12 @@ export default {
     this.loading = true
     this.form.id = this.$route.query.id
     packageEdit('get', { id: this.form.id })
-      .then(resp => {
-        this.form = copyTo(this.form, resp.data.data)
+      .then(({code, msg, data}) => {
+        if (!code)
+        {
+          return this.$message.error(msg)
+        }
+        this.form = copyTo(this.form, data.data)
       })
       .finally(() => {
         this.loading = false
@@ -122,11 +126,10 @@ export default {
       this.loading = true
 
       packageEdit('post', this.form)
-        .then(resp => {
-          const { code, msg } = resp
+        .then(({code, msg}) => {
           if (code) {
             this.$message.success('操作成功')
-            this.$router.push({ path: '/package/index' })
+            closeTab()
           } else {
             this.$message.error(msg || '操作失败')
           }

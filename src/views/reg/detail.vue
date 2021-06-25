@@ -69,7 +69,7 @@
 
         <el-tab-pane label="充值信息">
 
-          <layout-filter :query="query" @search="searchPayment">
+          <layout-filter :query="query" @search="searchPayment"  :loading="payloading">
             <el-form-item>
               <el-select v-model="query.pf" placeholder="请选择充值平台">
                 <el-option label="全部" value=""></el-option>
@@ -83,7 +83,7 @@
 
         <el-tab-pane label="登录信息">
 
-          <layout-filter :query="query" @search="searchLogin"></layout-filter>
+          <layout-filter :query="query" @search="searchLogin" :loading="loginloading"></layout-filter>
           <table-data :height="500" :loading="loginloading" :column="loginColumn" :data="loginData"></table-data>
 
         </el-tab-pane>
@@ -156,9 +156,21 @@
     mounted() {
       this.query.gameid = this.gameid
       this.query.uid = this.$route.query.uid
-      this.getData(true)
+      this.search(true)
     },
     data() {
+
+      let query = {
+        uid: '',
+        gameid: '',
+        pf: '',
+        pkgbnd: [],
+        begintime: true,
+        endtime: true
+      }
+      query[this.$store.state.config.cPageKey] = 1
+      query[this.$store.state.config.pSizeKey] = 100000  // 不分页，传个比较大的值
+
       return {
         dialogFormVisible: false,
         loading: false,
@@ -171,16 +183,7 @@
           opt: '',
           ...this.$route.query
         },
-        query: {
-          uid: '',
-          gameid: '',
-          pf: '',
-          pkgbnd: [],
-          begintime: true,
-          endtime: true,
-          pSize: 10000,  // 不分页，传个比较大的值
-          cPage: 1
-        },
+        query: query,
 
         // 充值页
         payloading: false,
@@ -204,7 +207,7 @@
           ,{
             key: 'extension',
             text: '区服id',
-            width: '100',
+            width: '80',
             template: (index, row) => {
               if (!index) {
                 return '';
@@ -236,7 +239,7 @@
           ,{
             key: 'pf',
             text: '支付平台',
-            width: '130',
+            width: '100',
             template: (index, row) => {
               return this.paypf[index] || index;
             }
@@ -248,6 +251,38 @@
           ,{
             key: 'utime',
             text: '支付时间'
+          }
+          ,{
+            key: 'os',
+            text: '系统',
+            width: '100',
+            template: (index, row) => {
+              if (index == 0)
+              {
+                return '<span style="color: #00FF7F;">安卓</span>'
+              }
+              else if (index == 1)
+              {
+                return '<span style="color: #1E90FF;">苹果</span>'
+              }
+              else {
+                return index
+              }
+            }
+          }
+          ,{
+            key: 'osver',
+            width: '100',
+            text: '系统版本'
+          }
+          ,{
+            key: 'sdkver',
+            width: '100',
+            text: 'SDK版本'
+          }
+          ,{
+            key: 'exmodel',
+            text: '手机品牌及型号'
           }
         ],
 
@@ -272,6 +307,38 @@
             text: '设备型号'
           }
           ,{
+            key: 'os',
+            text: '系统',
+            width: '100',
+            template: (index, row) => {
+              if (index == 0)
+              {
+                return '<span style="color: #00FF7F;">安卓</span>'
+              }
+              else if (index == 1)
+              {
+                return '<span style="color: #1E90FF;">苹果</span>'
+              }
+              else {
+                return index
+              }
+            }
+          }
+          ,{
+            key: 'osver',
+            width: '100',
+            text: '系统版本'
+          }
+          ,{
+            key: 'sdkver',
+            width: '100',
+            text: 'SDK版本'
+          }
+          ,{
+            key: 'exmodel',
+            text: '手机品牌及型号'
+          }
+          ,{
             key: 'ip',
             text: 'ip'
           }
@@ -283,8 +350,7 @@
       searchPayment() {
         this.payloading = true
         payIndex(this.query)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
             if (!code )
             {
               this.$message.error(msg)
@@ -300,8 +366,7 @@
       searchLogin() {
         this.loginloading = true
         loginIndex(this.query)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
             if (!code)
             {
               this.$message.error(msg)
@@ -313,13 +378,12 @@
             this.loginloading = false
           })
       },
-      getData(load) {
+      search(load) {
         if (load) {
           this.loading = true
         }
         regDetail(this.$route.query)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
             if (!code) {
               this.$message.error(msg)
               return;
@@ -339,15 +403,14 @@
         let data = this.form
         data.id = this.view.uid
         unbindBack(data)
-          .then(resp => {
-            const {code, msg} = resp
+          .then(({code, msg}) => {
             this.$message({
               type: code ? 'success' : 'error',
               message: msg
             })
             if (code) {
               this.dialogFormVisible = false
-              this.getData(false)
+              this.search(false)
             }
           })
           .catch(error => {

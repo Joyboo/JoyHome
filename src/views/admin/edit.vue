@@ -5,7 +5,7 @@
 <script>
   import AdminInfo from './component'
   import {adminEdit} from '@/api/admin'
-  import {copyTo} from '@/utils'
+  import {closeTab, copyTo} from '@/utils'
 
   export default {
     components: {
@@ -16,7 +16,11 @@
       try {
         this.form.id = this.$route.query.id
 
-        const {data} = await adminEdit('get', {id: this.form.id})
+        const {code, msg, data} = await adminEdit('get', {id: this.form.id})
+        if (!code)
+        {
+          return this.$message.error(msg)
+        }
         this.form = copyTo(this.form, data.data)
       } catch (e) {
         console.error(e)
@@ -48,13 +52,12 @@
       submit() {
         this.loading = true
         adminEdit('post', this.form)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
 
             if (code)
             {
               this.$message.success(msg)
-              this.$router.push({ path: '/admin/index' })
+              closeTab()
             } else {
               this.$message.error(msg || 'add error')
             }

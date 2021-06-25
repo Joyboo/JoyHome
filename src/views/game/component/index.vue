@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading" class="view-container">
+  <div v-loading="loading" class="info-container">
     <el-form ref="game-search" :model="form" :size="size" label-width="15rem">
       <el-tabs type="border-card">
         <el-tab-pane label="对接信息">
@@ -29,6 +29,13 @@
               支付api网址 <i class="labeli">平台会将支付信息传到此网址</i>
             </template>
             <el-input v-model="form.extension.payurl" clearable />
+          </el-form-item>
+
+          <el-form-item>
+            <template slot="label">
+              平台入口网址 <i class="labeli">只针对H5游戏</i>
+            </template>
+            <el-input v-model="form.extension.h5entry" clearable />
           </el-form-item>
 
         </el-tab-pane>

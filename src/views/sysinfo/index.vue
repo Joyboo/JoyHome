@@ -70,11 +70,11 @@
         tableData: []
       }
     },
-    mounted() {
-      this.getData()
+    activated() {
+      this.search()
     },
     methods: {
-      getData() {
+      search() {
         this.loading = true
         sysinfoIndex()
           .then(resp => {

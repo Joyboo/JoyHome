@@ -83,12 +83,15 @@ export default {
   login: {
     title: 'Login Form',
     logIn: 'Login',
+    toold: 'Change Version',
     username: 'Username',
     password: 'Password',
     any: 'any',
     thirdparty: 'Or connect with',
     thirdpartyTips: 'Can not be simulated on local, so please combine you own business simulation! ! !',
-    hk: 'HKGAME'
+    hk: 'HKGAME',
+    inputUsername: 'Please enter the correct user name',
+    inputPassword: 'The password can not be less than 6 digits'
   },
   documentation: {
     documentation: 'Documentation',
@@ -179,6 +182,10 @@ export default {
     theme: 'Theme Color',
     tagsView: 'Open Tags-View',
     fixedHeader: 'Fixed Header',
-    sidebarLogo: 'Sidebar Logo'
-  }
+    sidebarLogo: 'Sidebar Logo',
+    setThemeIng: 'Compiling the theme',
+    accordion: 'Menu Accordion Mode',
+    topMenu: 'Top Menu Mode'
+  },
+  open: 'Open'
 }

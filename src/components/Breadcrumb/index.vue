@@ -2,10 +2,11 @@
   <el-breadcrumb class="app-breadcrumb" separator="/">
     <transition-group name="breadcrumb">
       <el-breadcrumb-item v-for="(item,index) in levelList" :key="item.path">
+        <!--add by Joyboo 面包屑中优先显示完整名-->
         <span v-if="item.redirect==='noRedirect'||index==levelList.length-1" class="no-redirect">
-          {{ generateTitle(item.meta.title) }}
+          {{ generateTitle(item.meta.fulltitle || item.meta.title) }}
         </span>
-        <a v-else @click.prevent="handleLink(item)">{{ generateTitle(item.meta.title) }}</a>
+        <a v-else @click.prevent="handleLink(item)">{{ generateTitle(item.meta.fulltitle || item.meta.title) }}</a>
       </el-breadcrumb-item>
     </transition-group>
   </el-breadcrumb>

@@ -7,7 +7,7 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="search" icon="el-icon-search">查询
+        <el-button :loading="loading" type="primary" @click="search" icon="el-icon-search">查询
         </el-button>
       </el-form-item>
 
@@ -34,9 +34,8 @@
 
     <pagination
       :total="total"
-      :limit="query.pSize"
-      :page="query.cPage"
-      @pagination="pagination"
+      :query="query"
+      @search="search"
     />
   </div>
 </template>
@@ -63,9 +62,7 @@
       return {
         loading: false,
         query: {
-          devid: '',
-          cPage: 1,
-          pSize: 20,
+          devid: ''
         },
         data: [],
         total: 0
@@ -75,8 +72,11 @@
       search() {
         this.loading = true
         whitelistIndex(this.query)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
+            if (!code)
+            {
+              return this.$message.error(msg)
+            }
             this.data = data.data || []
             this.total = data.totals || 0
           })
@@ -86,12 +86,7 @@
           .finally(() => {
             this.loading = false
           })
-      },
-      pagination({ page, limit }) {
-        this.query.cPage = page
-        this.query.pSize = limit
-        this.search()
-      },
+      }
     }
   }
 </script>

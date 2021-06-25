@@ -194,6 +194,10 @@ aside {
 .view-container {
   padding: 15px;
 }
+.info-container {
+  padding: 15px;
+  min-width: 50rem;
+}
 
 .labeli {
   font-size: .6rem;
@@ -240,5 +244,22 @@ aside {
 
   .joy-btn {
     margin: 0 10px;
+  }
+}
+
+/* 自定义table padding */
+.el-table--mini {
+  .cell,td,th {
+    padding: 1px!important;
+  }
+}
+.el-table--small {
+  .cell,td,th {
+    padding: 3px!important;
+  }
+}
+.el-table--medium {
+  .cell,td,th {
+    padding: 6px!important;
   }
 }

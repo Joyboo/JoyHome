@@ -17,15 +17,15 @@
       </el-form-item>
 
       <el-form-item>
-        <el-input type="text" v-model="query.name" placeholder="任务名 | 方法"></el-input>
+        <el-input type="text" v-model="query.name" @change="search" placeholder="任务名 | 方法"></el-input>
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" @click="getData">查询</el-button>
+        <el-button :loading="loading" type="primary" icon="el-icon-search" @click="search">查询</el-button>
       </el-form-item>
     </el-form>
 
-    <table-info :loading="loading" :data="tableData" @search="getData" pathname="crontab">
+    <table-info :loading="loading" :data="tableData" @search="search" pathname="crontab">
 
       <el-table-column width="80" align="center" prop="id" label="ID" sortable></el-table-column>
       <el-table-column align="center" prop="name" label="任务名" ></el-table-column>
@@ -72,7 +72,7 @@
 
     </table-info>
 
-    <pagination :total="total" :page="query.cPage" :limit="query.pSize"></pagination>
+    <pagination :total="total" :query="query" @search="search"></pagination>
   </div>
 </template>
 
@@ -94,14 +94,17 @@
       ...mapGetters(['size'])
     },
     mounted() {
-      this.getData()
+      this.search()
     },
     methods: {
-      getData() {
+      search() {
         this.loading = true
         crontabIndex(this.query)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
+            if (!code)
+            {
+              return this.$message.error(msg)
+            }
             this.tableData = data.data || []
             this.total = data.totals || 0
           })
@@ -111,11 +114,6 @@
           .finally(() => {
             this.loading = false
           })
-      },
-      pagination({page, limit}) {
-        this.query.cPage = page
-        this.query.pSize = limit
-        this.getData()
       }
     },
     data() {
@@ -127,9 +125,7 @@
         query: {
           name: '',
           sys: '',
-          status: '',
-          cPage: 1,
-          pSize: 20
+          status: ''
         },
         tableData: [],
         column: [

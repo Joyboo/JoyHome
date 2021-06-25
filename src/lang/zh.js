@@ -83,12 +83,15 @@ export default {
   login: {
     title: '系统登录',
     logIn: '登录',
+    toold: '去旧版后台',
     username: '账号',
     password: '密码',
     any: '随便填',
     thirdparty: '第三方登录',
     thirdpartyTips: '本地不能模拟，请结合自己业务进行模拟！！！',
-    hk: '恒坤'
+    hk: '恒坤',
+    inputUsername: '请输入用户名',
+    inputPassword: '请输入正确的密码'
   },
   documentation: {
     documentation: '文档',
@@ -177,8 +180,12 @@ export default {
   settings: {
     title: '系统布局配置',
     theme: '主题色',
-    tagsView: '开启 Tags-View',
+    tagsView: '开启菜单标签页',
     fixedHeader: '固定 Header',
-    sidebarLogo: '侧边栏 Logo'
-  }
+    sidebarLogo: '侧边栏 Logo',
+    setThemeIng: '编译主题',
+    accordion: '菜单手风琴模式',
+    topMenu: 'TOP菜单模式'
+  },
+  open: '打开'
 }

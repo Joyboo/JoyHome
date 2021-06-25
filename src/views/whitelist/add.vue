@@ -1,5 +1,5 @@
 <template>
-  <div class="view-container" v-loading="loading">
+  <div class="info-container" v-loading="loading">
     <whitelist-info :form="form" @submit="submit"></whitelist-info>
   </div>
 </template>
@@ -7,6 +7,7 @@
 <script>
   import WhitelistInfo from './component'
   import {whitelistAdd} from '@/api/whitelist'
+  import {closeTab} from "@/utils";
 
   export default {
     name: 'whitelistadd',
@@ -27,12 +28,11 @@
       submit() {
         this.loading = true
         whitelistAdd(this.form)
-          .then(resp =>  {
-            const {code, msg} = resp
+          .then(({code, msg}) => {
             if (code)
             {
               this.$message.success(msg)
-              this.$router.push({ path: '/whitelist/index' })
+              closeTab()
             } else {
               this.$message.error(msg || 'add error')
             }

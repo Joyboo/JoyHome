@@ -5,6 +5,7 @@
 <script>
   import AdminInfo from './component'
   import {adminAdd} from '@/api/admin'
+  import {closeTab} from "@/utils";
 
   export default {
     name: 'adminadd',
@@ -35,13 +36,12 @@
       submit() {
         this.loading = true
         adminAdd(this.form)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
 
             if (code)
             {
               this.$message.success(msg)
-              this.$router.push({ path: '/admin/index' })
+              closeTab()
             } else {
               this.$message.error(msg || 'add error')
             }

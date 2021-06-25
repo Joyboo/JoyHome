@@ -1,5 +1,6 @@
 import variables from '@/styles/element-variables.scss'
 import defaultSettings from '@/settings'
+import {setSettingsLocalStorage} from '@/utils'
 
 const { showSettings, tagsView, fixedHeader, sidebarLogo, supportPinyinSearch } = defaultSettings
 
@@ -10,7 +11,9 @@ const state = {
   fixedHeader,
   sidebarLogo,
   supportPinyinSearch,
-  rightPanel: false // 右侧设置面板开关
+  rightPanel: false, // 右侧设置面板开关
+  sidebarMode: true, // 菜单是否风琴条模式
+  topMenuMode: true // top菜单模式
 }
 
 const mutations = {
@@ -18,6 +21,7 @@ const mutations = {
     // eslint-disable-next-line no-prototype-builtins
     if (state.hasOwnProperty(key)) {
       state[key] = value
+      setSettingsLocalStorage(key, value)
     }
   },
   BOOL_SETTING: (state, key) => {

@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading" class="view-container">
+  <div v-loading="loading" class="info-container">
     <el-form ref="package-search" :model="form" :size="size" :rules="rules" label-width="15rem">
       <el-tabs type="border-card">
         <el-tab-pane label="基本信息">
@@ -19,27 +19,31 @@
           </el-form-item>
 
           <el-form-item label="包">
-            <el-col :span="10">
-              <el-input v-model="form.name" class="colInput" clearable placeholder="包名" />
-            </el-col>
+            <el-row :gutter="20">
+              <el-col :span="10">
+                <el-input v-model="form.name" class="colInput" clearable placeholder="包名" />
+              </el-col>
 
-            <el-col :span="10">
-              <el-input v-model="form.pkgbnd" class="colInput" clearable placeholder="包id(bundle_id或pkg_id)" />
-            </el-col>
+              <el-col :span="10">
+                <el-input v-model="form.pkgbnd" class="colInput" clearable placeholder="包id(bundle_id或pkg_id)" />
+              </el-col>
+            </el-row>
           </el-form-item>
 
           <el-form-item label="密钥">
-            <el-col :span="10">
-              <el-input v-model="form.extension.logkey" class="colInput" clearable placeholder="登录密钥">
-                <el-button slot="prepend" @click="get_gkey('logkey')">随机</el-button>
-              </el-input>
-            </el-col>
+            <el-row :gutter="20">
+              <el-col :span="10">
+                <el-input v-model="form.extension.logkey" class="colInput" clearable placeholder="登录密钥">
+                  <el-button slot="prepend" @click="get_gkey('logkey')">随机</el-button>
+                </el-input>
+              </el-col>
 
-            <el-col :span="10">
-              <el-input v-model="form.extension.paykey" class="colInput" clearable placeholder="支付密钥">
-                <el-button slot="prepend" @click="get_gkey('paykey')">随机</el-button>
-              </el-input>
-            </el-col>
+              <el-col :span="10">
+                <el-input v-model="form.extension.paykey" class="colInput" clearable placeholder="支付密钥">
+                  <el-button slot="prepend" @click="get_gkey('paykey')">随机</el-button>
+                </el-input>
+              </el-col>
+            </el-row>
           </el-form-item>
 
           <el-form-item label="下载地址">
@@ -60,7 +64,6 @@
             <el-input v-model="form.extension.payurl" clearable />
           </el-form-item>
 
-          <!-- todo 自动填充域名（直接后端处理？？）-->
           <el-form-item label="report域名">
             <el-input v-model="form.extension.domain.report" clearable />
           </el-form-item>
@@ -77,99 +80,107 @@
         <el-tab-pane label="第三方配置">
 
           <el-form-item label="google参数">
-            <el-col :span="10">
-              <el-input
-                v-model="form.extension.google_paykey"
-                class="colInput"
-                type="textarea"
-                :rows="3"
-                clearable
-                placeholder="paykey公钥"
-              />
-            </el-col>
+            <el-row :gutter="20">
+              <el-col :span="10">
+                <el-input
+                  v-model="form.extension.google_paykey"
+                  class="colInput"
+                  type="textarea"
+                  :rows="3"
+                  clearable
+                  placeholder="paykey公钥"
+                />
+              </el-col>
 
-            <el-col :span="10">
-              <el-input
-                v-model="form.extension.google.web_clientid"
-                class="colInput"
-                type="textarea"
-                :rows="3"
-                clearable
-                placeholder="web_client客户端id"
-              />
-            </el-col>
+              <el-col :span="10">
+                <el-input
+                  v-model="form.extension.google.web_clientid"
+                  class="colInput"
+                  type="textarea"
+                  :rows="3"
+                  clearable
+                  placeholder="web_client客户端id"
+                />
+              </el-col>
+            </el-row>
           </el-form-item>
 
           <el-form-item label="华为参数">
-            <el-col :span="10">
-              <el-input
-                v-model="form.extension.huawei.production.clientid"
-                class="colInput"
-                type="textarea"
-                :rows="3"
-                clearable
-                placeholder="正式client_id"
-              />
-            </el-col>
+            <el-row :gutter="20">
+              <el-col :span="10">
+                <el-input
+                  v-model="form.extension.huawei.production.clientid"
+                  class="colInput"
+                  type="textarea"
+                  :rows="3"
+                  clearable
+                  placeholder="正式client_id"
+                />
+              </el-col>
 
-            <el-col :span="10">
-              <el-input
-                v-model="form.extension.huawei.production.clientsecret"
-                class="colInput"
-                type="textarea"
-                :rows="3"
-                clearable
-                placeholder="正式client_secret"
-              />
-            </el-col>
+              <el-col :span="10">
+                <el-input
+                  v-model="form.extension.huawei.production.clientsecret"
+                  class="colInput"
+                  type="textarea"
+                  :rows="3"
+                  clearable
+                  placeholder="正式client_secret"
+                />
+              </el-col>
+            </el-row>
           </el-form-item>
 
           <el-form-item label="facebook参数">
-            <el-col :span="10">
-              <el-input
-                v-model="form.extension.facebook.bindnotice"
-                class="colInput"
-                type="textarea"
-                :rows="3"
-                clearable
-                placeholder="绑定通知"
-              />
-            </el-col>
+            <el-row :gutter="20">
+              <el-col :span="10">
+                <el-input
+                  v-model="form.extension.facebook.bindnotice"
+                  class="colInput"
+                  type="textarea"
+                  :rows="3"
+                  clearable
+                  placeholder="绑定通知"
+                />
+              </el-col>
 
-            <el-col :span="10">
-              <el-input
-                v-model="form.extension.facebook.appid"
-                class="colInput"
-                type="textarea"
-                :rows="3"
-                clearable
-                placeholder="appid"
-              />
-            </el-col>
+              <el-col :span="10">
+                <el-input
+                  v-model="form.extension.facebook.appid"
+                  class="colInput"
+                  type="textarea"
+                  :rows="3"
+                  clearable
+                  placeholder="appid"
+                />
+              </el-col>
+            </el-row>
           </el-form-item>
 
           <el-form-item label="MG参数">
-            <el-col :span="10">
-              <el-input
-                v-model="form.extension.mg.appkey"
-                class="colInput"
-                type="textarea"
-                :rows="3"
-                clearable
-                placeholder="appkey"
-              />
-            </el-col>
+            <el-row :gutter="20">
+              <el-col :span="10">
+                <el-input
+                  v-model="form.extension.mg.appkey"
+                  class="colInput"
+                  type="textarea"
+                  :rows="3"
+                  clearable
+                  placeholder="appkey"
+                />
+              </el-col>
 
-            <el-col :span="10">
-              <el-input
-                v-model="form.extension.mg.publickey"
-                class="colInput"
-                type="textarea"
-                :rows="3"
-                clearable
-                placeholder="publickey"
-              />
-            </el-col>
+              <el-col :span="10">
+                <el-input
+                  v-model="form.extension.mg.publickey"
+                  class="colInput"
+                  type="textarea"
+                  :rows="3"
+                  clearable
+                  placeholder="publickey"
+                />
+              </el-col>
+            </el-row>
           </el-form-item>
 
         </el-tab-pane>
@@ -206,7 +217,7 @@
                 </el-col>
               </el-row>
 
-              <el-row style="margin: 20px;">
+              <el-row :gutter="20">
                 <el-col :span="10">
                   <el-input
                     v-model="form.extension.paypal.production.clientid"
@@ -228,7 +239,7 @@
                   />
                 </el-col>
               </el-row>
-              <el-row style="margin: 20px;">
+              <el-row :gutter="20">
                 <el-col :span="10">
                   <el-input
                     v-model="form.extension.paypal.sandbox.clientid"
@@ -265,7 +276,7 @@
                 </el-col>
               </el-row>
 
-              <el-row style="margin: 20px;">
+              <el-row :gutter="20">
                 <el-col :span="10">
                   <el-input
                     v-model="form.extension.payssion.production.clientid"
@@ -287,7 +298,7 @@
                   />
                 </el-col>
               </el-row>
-              <el-row style="margin: 20px;">
+              <el-row :gutter="20">
                 <el-col :span="10">
                   <el-input
                     v-model="form.extension.payssion.sandbox.clientid"
@@ -321,9 +332,9 @@
 
           <el-form-item label="事件">
             <el-row>
-              <el-button icon="el-icon-plus" :size="size" type="success" plain @click="cp_param" />
+              <el-button icon="el-icon-plus" :size="size" type="primary" plain @click="cp_param" />
             </el-row>
-            <el-row v-for="(ipt, key) in form.extension.adjust.event" :key="key">
+            <el-row v-for="(ipt, key) in form.extension.adjust.event" :key="key" :gutter="10">
               <el-col :span="8">
                 <el-input v-model="ipt.Key" class="colInput" clearable placeholder="Key" />
               </el-col>
@@ -510,22 +521,22 @@ export default {
       return typeof this.form.id !== 'undefined'
     },
     viewbgurl() {
-      return this.isupd ? [{ url: this.form.default_path + this.form.extension.rating.bgurl }] : []
+      return (this.isupd && this.form.extension.rating.bgurl) ? [{ url: this.form.default_path + this.form.extension.rating.bgurl }] : []
     },
     viewbtnurl() {
-      return this.isupd ? [{ url: this.form.default_path + this.form.extension.rating.btnurl }] : []
+      return (this.isupd && this.form.extension.rating.btnurl) ? [{ url: this.form.default_path + this.form.extension.rating.btnurl }] : []
     },
     viewtiturl() {
-      return this.isupd ? [{ url: this.form.default_path + this.form.extension.rating.titurl }] : []
+      return (this.isupd && this.form.extension.rating.titurl) ? [{ url: this.form.default_path + this.form.extension.rating.titurl }] : []
     },
     viewlefturl() {
-      return this.isupd ? [{ url: this.form.default_path + this.form.extension.rating.lefturl }] : []
+      return (this.isupd && this.form.extension.rating.lefturl) ? [{ url: this.form.default_path + this.form.extension.rating.lefturl }] : []
     },
     viewrighturl() {
-      return this.isupd ? [{ url: this.form.default_path + this.form.extension.rating.righturl }] : []
+      return (this.isupd && this.form.extension.rating.righturl) ? [{ url: this.form.default_path + this.form.extension.rating.righturl }] : []
     },
     viewshare() {
-      return this.isupd ? [{ url: this.form.default_path + this.form.extension.share.img }] : []
+      return (this.isupd && this.form.extension.share.img) ? [{ url: this.form.default_path + this.form.extension.share.img }] : []
     }
   },
   mounted() {
@@ -594,15 +605,18 @@ export default {
           return
         }
 
-        uploadJb('/admin/package/upload', params).then(resp => {
-          const { status, data } = resp
-          if (status == 200) {
-            this.$message.success('上传成功')
-            resolve(data)
-          } else {
-            this.$message.error('上传失败了')
-          }
-        })
+        uploadJb('/admin/package/upload', params)
+          .then(({status, data}) => {
+            if (status == 200) {
+              this.$message.success('上传成功')
+              resolve(data)
+            } else {
+              this.$message.error('上传失败了')
+            }
+          })
+          .catch(error => {
+            this.$message.error(error)
+          })
       })
     },
     // 复制adjust事件框

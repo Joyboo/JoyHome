@@ -42,3 +42,11 @@ export function adminModify(method, data) {
 
   return request(obj)
 }
+
+export function adminToken(params) {
+  return request({
+    url: '/admin/admin/gettoken',
+    method: 'get',
+    params
+  })
+}

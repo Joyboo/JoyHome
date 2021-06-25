@@ -5,7 +5,7 @@
       :loading="loading"
       :data="tableData"
       pathname="role"
-      @search="getData"
+      @search="search"
     >
       <el-table-column align="center" sortable width="80" prop="id" label="ID" />
       <el-table-column align="center" prop="name" label="组名称" />
@@ -30,15 +30,18 @@
         tableData: []
       }
     },
-    mounted() {
-      this.getData()
+    activated() {
+      this.search()
     },
     methods: {
-      getData() {
+      search() {
         this.loading = true
         roleIndex()
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
+            if (!code)
+            {
+              return this.$message.error(msg)
+            }
             this.tableData = data.data || []
           })
           .catch(error => {

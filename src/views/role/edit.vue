@@ -5,6 +5,7 @@
 <script>
   import RoleInfo from './component'
   import {roleEdit} from '@/api/role'
+  import {closeTab} from "@/utils";
 
   export default {
     components: {
@@ -23,8 +24,11 @@
     mounted() {
       this.form.id = this.$route.query.id
       roleEdit('get', {id: this.form.id})
-        .then(resp => {
-          const {code, msg, data} = resp
+        .then(({code, msg, data}) => {
+          if (!code)
+          {
+            return this.$message.error(msg)
+          }
           this.form = data.data
         })
         .catch(error => {
@@ -41,12 +45,11 @@
       submit() {
         this.loading = true
         roleEdit('post', this.form)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg}) => {
             if (code)
             {
               this.$message.success(msg || '操作成功')
-              this.$router.push({ path: '/role/index' })
+              closeTab()
             } else {
               this.$message.error(msg || '操作失败')
             }

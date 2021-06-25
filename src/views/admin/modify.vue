@@ -44,9 +44,9 @@
         </el-select>
       </el-form-item>
 
-      <!--<el-form-item label="默认打开菜单">
-        <menu-cascader :pid.sync="form.extension.newnid" @setpid="setpid"></menu-cascader>
-      </el-form-item>-->
+      <el-form-item label="默认打开菜单">
+        <menu-cascader :pid.sync="form.extension.newnid" @setpid="setpid" :uid="userinfo.id"></menu-cascader>
+      </el-form-item>
 
       <el-footer>
         <el-button class="joy-btn" :size="size" type="primary" @click="submit">提 交</el-button>
@@ -67,25 +67,26 @@
       MenuCascader
     },
     computed: {
-      ...mapGetters(['size', 'filtergamelist']),
+      ...mapGetters(['size', 'filtergamelist', 'userinfo']),
     },
-    mounted() {
+    async mounted() {
       this.loading = true
-      adminModify('get')
-        .then(resp => {
-          const {code, msg, data} = resp
-          for (let i in data.data)
-          {
-            // 追加，不要覆盖
-            this.form[i] = data.data[i]
-          }
-        })
-        .catch(error => {
-          this.$message.error(error)
-        })
-        .finally(() => {
-          this.loading = false
-        })
+      try {
+        await this.$store.dispatch('filter/gameInfo')
+        const {code, msg, data} = await adminModify('get')
+        if (!code)
+        {
+          return this.$message.error(msg)
+        }
+        for (let i in data.data)
+        {
+          // 追加，不要覆盖
+          this.form[i] = data.data[i]
+        }
+      } catch (e) {
+        this.$message.error(e)
+      }
+      this.loading = false
     },
     data() {
       const _this = this
@@ -148,8 +149,7 @@
           }
           this.loading = true
           adminModify('post', this.form)
-            .then(resp => {
-              const {code, msg, data} = resp
+            .then(({code, msg, data}) => {
               if (!code)
               {
                 this.$message.error(msg || 'Modify Error')

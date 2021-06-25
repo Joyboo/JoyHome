@@ -1,16 +1,15 @@
 <template>
   <div class="view-container">
-    <layout-filter :query="query" @search="search">
+    <layout-filter :query="query" :nsch="false" @search="search" @chgTzn="chgTzn" :loading="loading">
       <template>
-        <br>
-        <el-form-item>
-          <el-radio-group v-model="menu" style="margin-right: 100px;" @change="chgRadio">
-            <el-radio v-for="(name, key) in menulist" :key="key" :label="key" border v-if="checkPermission(['admin', '/statistics/' + key])">{{name}}</el-radio>
-          </el-radio-group>
+        <el-form-item v-for="(name, key) in menulist" :key="key">
+          <el-button v-if="checkPermission(['admin', '/statistics/' + key])"
+                     :type="menu == key ? 'primary' : 'default'"
+                     @click="chgRadio(key)" round>{{name.name}}</el-button>
         </el-form-item>
       </template>
 
-      <template v-slot:after>
+      <template #after>
         <el-form-item style="float: right;">
           <export-data></export-data>
         </el-form-item>
@@ -49,7 +48,6 @@
   import TableIndex from '@/components/TableData'
   import ExportData from '@/components/ExportExcel'
   import { mapGetters } from 'vuex'
-  import {beforeDay} from '@/utils'
   import DailyComponent from './component/daily'
   import LtvComponent from './component/ltv'
   import RegkeepComponent from './component/regkeep'
@@ -80,32 +78,49 @@
           gameid: [],
           pkgbnd: [],
           ProxyRegion: 'omz',
-          tzn: '8',
+          tzn: '-5',
           begintime: true,
           endtime: true
         },
         tableData: [],
         menu: 'daily',
         menulist: {
-          roi: '流水ROI',
-          droi: '分成后ROI',
-          regkeep: '注册留存',
-          paykeep: '付费留存',
-          ltv: 'LTV',
-          daily: '游戏日报'
+          roi: {
+            name: '流水ROI',
+            tzn: '8',
+          },
+          droi: {
+            name: '分成后ROI',
+            tzn: '8',
+          },
+          regkeep: {
+            name: '注册留存',
+            tzn: '-5',
+          },
+          paykeep: {
+            name: '付费留存',
+            tzn: '-5',
+          },
+          ltv: {
+            name: 'LTV',
+            tzn: '-5',
+          },
+          daily: {
+            name: '游戏日报',
+            tzn: '-5',
+          }
         }
       }
     },
     mounted() {
-      this.search()
+      this.query.tzn = this.menulist[this.menu].tzn
     },
     methods: {
       checkPermission,
       search() {
         this.loading = true
         statistics(this.menu, this.query)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
             if (!code)
             {
               this.$message.error(msg)
@@ -120,9 +135,15 @@
             this.loading = false
           })
       },
-      // 单选框变更时清空数据，因为旧数据和字段是对不上的
-      chgRadio(label) {
+      chgRadio(val) {
         this.tableData = [];
+        this.menu = val
+        this.query.tzn = this.menulist[this.menu].tzn
+        this.search()
+      },
+      chgTzn(val) {
+        this.query.tzn = val
+        this.search()
       }
     }
   }

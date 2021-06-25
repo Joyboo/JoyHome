@@ -1,22 +1,15 @@
 <template>
   <div class="view-container">
-    <div class="crumbs">
-      <el-breadcrumb separator="/">
-        <el-breadcrumb-item>
-          <span class="danger">提醒：请先选择所属游戏再点搜索才能查看数据</span>
-        </el-breadcrumb-item>
-      </el-breadcrumb>
-    </div>
 
-    <layout-filter :query="query" @search="search">
+    <layout-filter :query="query" @search="search" :loading="loading">
 
       <el-form-item>
-        <el-input v-model="query.uid" placeholder="账号或玩家id" clearable />
+        <el-input v-model="query.uid" placeholder="账号或玩家id" @change="search" clearable />
       </el-form-item>
 
-      <template v-slot:after>
+      <template #after>
         <el-form-item style="float: right;">
-          <export-data></export-data>
+          <export-data :query="query" export-url="/reg/export"></export-data>
         </el-form-item>
       </template>
     </layout-filter>
@@ -35,9 +28,8 @@
 
     <pagination
       :total="total"
-      :limit="query.pSize"
-      :page="query.cPage"
-      @pagination="pagination"
+      :query="query"
+      @search="search"
     />
 
   </div>
@@ -49,7 +41,7 @@
   import {regIndex} from '@/api/reg'
   import LayoutFilter from '@/components/LayoutFilter'
   import { mapGetters } from 'vuex'
-  import ExportData from '@/components/ExportExcel'
+  import ExportData from '@/components/ExportExcel/all'
   import TableIndex from '@/components/TableData'
   import Pagination from '@/components/Pagination'
   import permission from '@/directive/permission'
@@ -75,9 +67,7 @@
           ProxyRegion: 'omz',
           begintime: true,
           endtime: true,
-          uid: '',
-          pSize: 20,
-          cPage: 1
+          uid: ''
         },
         total: 0,
         tableData: [],
@@ -120,14 +110,13 @@
     },
     methods: {
       search() {
-        if (this.query.gameid == '') {
+        if (this.query.gameid === '') {
           this.$message.error('请选择游戏')
           return
         }
         this.loading = true
         regIndex(this.query)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
             if (!code)
             {
               this.$message.error(msg)
@@ -148,11 +137,6 @@
       },
       detail(index, row) {
         this.$router.push({ path: '/reg/detail', query: { uid: row.uid, gameid: this.query.gameid, ProxyRegion: this.query.ProxyRegion }})
-      },
-      pagination({page, limit}) {
-        this.query.cPage = page
-        this.query.pSize = limit
-        this.search()
       }
     }
   }

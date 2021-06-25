@@ -1,6 +1,6 @@
 <template>
 
-  <table-index :size="size" :data="roidata" :column="column" :heji="true" :loading="loading"></table-index>
+  <table-index :size="size" :data="roidata" :column="column" :heji="true" :height="height" :loading="loading"></table-index>
 
 </template>
 
@@ -8,7 +8,8 @@
 
   import TableIndex from '@/components/TableData'
   import { mapGetters } from 'vuex'
-  import {ymd_to_date} from '@/utils'
+  import {ymd_to_date,caclHeight} from '@/utils'
+  import screenfull from "screenfull";
 
   export default {
     components: {
@@ -102,6 +103,7 @@
         ,{
           key: 'backrate',
           text: '回本率',
+          width: '70',
           tip: '当天新玩家至今的总充值/当天的成本',
           template: (data, rowObject) => {
             return (data * 100).toFixed(2).replace('.00', '') + '%';
@@ -115,15 +117,19 @@
         columnData.push({
           key: 'd' + ds[k],
           text: ds[k] + '日',
-          // width: '76',
+          width: '70',
           template: (data, rowObject) => {
             return rowObject.cost && typeof(data) != 'undefined' ? (data.sum * 100/rowObject.cost).toFixed(2) + '%': '';
           }
         });
       }
       return {
+        height: caclHeight(170),
         column: columnData
       }
+    },
+    mounted() {
+      screenfull.on('change', () => this.height = caclHeight(170));
     },
     methods: {
       setLoading(val) {

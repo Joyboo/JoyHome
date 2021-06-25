@@ -1,6 +1,10 @@
 /**
  * Created by PanJiaChen on 16/11/18.
  */
+import router from '@/router'
+import store from '@/store'
+import Vue from 'vue'
+import {localStorageKey} from '@/settings'
 
 /**
  * Parse the time to string
@@ -405,7 +409,7 @@ export function ymd_to_date(ymd)
 }
 
 /**
- * 将一个对象/数组的属性递归赋值给另一个对象
+ * 将一个对象的属性递归赋值给另一个对象
  * @author Joyboo
  * @param origin
  * @param data
@@ -416,12 +420,73 @@ export function copyTo(origin, data) {
   for(let i in data)
   {
     let item = data[i]
-    if (typeof item == 'object')
+    // 如果是数组，直接赋值，如package/edit页的adjust是一个 [{key: '', value: ''}]
+     if (typeof item == 'object' && data.constructor !== Array)
     {
-      origin[i] = copyTo(item)
+      origin[i] = copyTo(origin[i], item)
     } else {
-      origin[i] = item
+      // origin[i] = item
+      Vue.set(origin, i, item)
     }
   }
   return origin
+}
+
+/**
+ * 关闭当前tab
+ * @author Joyboo
+ */
+export function closeTab() {
+
+  // const tab = store.getters.visitedViews
+  // const view = tab.find(item => item.path == path)
+
+  const route = router.app.$route
+
+  // console.log(route)
+  if (route) {
+    store.dispatch('tagsView/delView', route).then(({ visitedViews }) => {
+      // 返回到最后一个tagsView
+      const latestView = visitedViews.slice(-1)[0]
+      if (latestView) {
+        router.replace(latestView.fullPath)
+      } else {
+        if (view.name === 'Dashboard') {
+          router.replace({ path: '/redirect' + view.fullPath })
+        } else {
+          router.push('/')
+        }
+      }
+    })
+  }
+}
+
+// add by Joyboo 将用户设置存储到localstorage
+export function setSettingsLocalStorage(key, val) {
+  // 设置保存为一个json内 {settings: {theme: '#abc', tagsView: []}}
+  let settings = window.localStorage.getItem(localStorageKey)
+  let json = typeof settings == 'string' ? JSON.parse(settings) : {}
+  json[key] = val
+  window.localStorage.setItem(localStorageKey, JSON.stringify(json))
+}
+
+export function getSettingsLocalStorage(key, _default) {
+  let settings = window.localStorage.getItem(localStorageKey)
+  let json = typeof settings == 'string' ? JSON.parse(settings) : {}
+
+  // 如果有值，将vuex值更新
+  if (typeof json[key] != 'undefined')
+  {
+    if (store && json[key] != store.state.settings[key]) {
+      store.dispatch('settings/changeSetting', {key: key, value: json[key]})
+    }
+    return json[key]
+  }
+  return _default ? _default : ((store && store.state.settings[key]) ? store.state.settings[key] : false)
+}
+
+export function caclHeight(offset, _default) {
+  _default = _default || 900
+  const h = window.document.documentElement.clientHeight || _default
+  return h - offset
 }

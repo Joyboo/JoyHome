@@ -1,15 +1,8 @@
 <template>
   <div class="view-container">
-    <div class="crumbs">
-      <el-breadcrumb separator="/">
-        <el-breadcrumb-item>
-          <span class="danger">提醒：请先选择所属游戏再点搜索才能查看数据</span>
-        </el-breadcrumb-item>
-      </el-breadcrumb>
-    </div>
 
-    <layout-filter :query="query" @search="search">
-      <template v-slot:after>
+    <layout-filter :query="query" @search="search" :loading="loading">
+      <template #after>
         <el-form-item style="float: right;">
           <export-data></export-data>
         </el-form-item>
@@ -24,9 +17,9 @@
 <script>
   import { statistics } from '@/api/statistics'
   import LayoutFilter from '@/components/LayoutFilter'
-  import {beforeDay} from '@/utils'
   import ExportData from '@/components/ExportExcel'
   import RoiComponent from './component/roi'
+  import {mapGetters} from "vuex";
 
   export default {
     name: 'statisticsdroi',
@@ -34,6 +27,9 @@
       LayoutFilter,
       ExportData,
       RoiComponent
+    },
+    computed: {
+      ...mapGetters(['size'])
     },
     data() {
 
@@ -58,8 +54,7 @@
         }
         this.loading = true
         statistics('droi', this.query)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
             if (!code)
             {
               this.$message.error(msg)

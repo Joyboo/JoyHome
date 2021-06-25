@@ -1,11 +1,13 @@
 <template>
-  <router-view />
+  <div class="JoybooRouterView">
+    <router-view />
+  </div>
 </template>
 
 <script>
-    export default {
-        // name: "RouterView"
-    }
+  export default {
+    name: "RouterView"
+  }
 </script>
 
 <style scoped>

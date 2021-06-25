@@ -1,6 +1,6 @@
 <template>
 
-  <table-index :size="size" :data="paykeepdata" :column="column" :loading="loading"></table-index>
+  <table-index :size="size" :data="paykeepdata" :column="column" :height="height" :loading="loading"></table-index>
 
 </template>
 
@@ -8,7 +8,8 @@
 
   import TableIndex from '@/components/TableData'
   import { mapGetters } from 'vuex'
-  import {ymd_to_date} from '@/utils'
+  import {caclHeight, ymd_to_date} from '@/utils'
+  import screenfull from "screenfull";
 
   export default {
     components: {
@@ -58,6 +59,7 @@
         columnData.push({
           key: 'd' + ds[k],
           text: k == 0 ? '次留' : (ds[k] + '日'),
+          width: '70',
           template: function (data, rowObject) {
             return data && rowObject.fstcnt && typeof(data)!='undefined' ? (data * 100/rowObject.fstcnt).toFixed(2) + '%': '';
           }
@@ -65,8 +67,12 @@
       }
 
       return {
+        height: caclHeight(170),
         column: columnData
       }
+    },
+    mounted() {
+      screenfull.on('change', () => this.height = caclHeight(170));
     },
     methods: {
       setLoading(val) {

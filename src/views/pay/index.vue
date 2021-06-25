@@ -1,14 +1,7 @@
 <template>
   <div class="view-container">
-    <div class="crumbs">
-      <el-breadcrumb separator="/">
-        <el-breadcrumb-item>
-          <span class="danger">提醒：请先选择所属游戏再点搜索才能查看数据</span>
-        </el-breadcrumb-item>
-      </el-breadcrumb>
-    </div>
 
-    <layout-filter :query="query" @search="search">
+    <layout-filter :query="query" @search="search" :loading="loading">
       <el-form-item>
         <el-select v-model="query.pf" placeholder="请选择充值平台">
           <el-option label="全部" value=""></el-option>
@@ -23,12 +16,13 @@
       </el-form-item>
 
       <el-form-item>
-        <el-input v-model="query.kwvalue" :placeholder="query.kwtype == 'expression' ? 'paysn=&uid=&sid=' : kwtype[query.kwtype]"></el-input>
+        <el-input v-model="query.kwvalue" @change="search" clearable
+                  :placeholder="query.kwtype == 'expression' ? 'paysn=&uid=&sid=' : kwtype[query.kwtype]"></el-input>
       </el-form-item>
 
-      <template v-slot:after>
+      <template #after>
         <el-form-item style="float: right;">
-          <export-data></export-data>
+          <export-data :query="query" export-url="/pay/export"></export-data>
         </el-form-item>
       </template>
     </layout-filter>
@@ -47,9 +41,8 @@
 
     <pagination
       :total="total"
-      :limit="query.pSize"
-      :page="query.cPage"
-      @pagination="pagination"
+      :query="query"
+      @search="search"
     />
 
     <!--详情-->
@@ -59,13 +52,12 @@
 
 <script>
   import LayoutFilter from '@/components/LayoutFilter'
-  import {beforeDay} from "@/utils";
   import TableIndex from '@/components/TableData'
   import {mapGetters} from "vuex";
   import {payIndex} from '@/api/reg'
   import Pagination from '@/components/Pagination'
   import Detail from './detail'
-  import ExportData from '@/components/ExportExcel'
+  import ExportData from '@/components/ExportExcel/all'
   import checkPermission from '@/utils/permission'
 
   export default {
@@ -98,9 +90,7 @@
           kwtype: 'paysn',
           kwvalue: '',
           begintime: true,
-          endtime: true,
-          pSize: 20,
-          cPage: 1
+          endtime: true
         },
         // 查询订单详情参数
         detailQuery: {},
@@ -220,9 +210,6 @@
         ]
       }
     },
-    mounted() {
-      this.search()
-    },
     methods: {
       search() {
         this.loading = true
@@ -246,11 +233,6 @@
           gameid: this.query.gameid,
           updtime: row.updtime
         }
-      },
-      pagination({page, limit}) {
-        this.query.cPage = page
-        this.query.pSize = limit
-        this.search()
       },
       // 详情页子组件设置dialog状态
       setdialog(val) {

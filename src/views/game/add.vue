@@ -5,6 +5,7 @@
 <script>
 import gameInfo from './component/index'
 import { gameAdd } from '@/api/game'
+import {closeTab} from "@/utils";
 
 export default {
   name: 'gameadd',
@@ -21,6 +22,7 @@ export default {
           paykey: '',
           logurl: '',
           payurl: '',
+          h5entry: '',
           goodsids: '',
           facebook: {
             fansurl: ''
@@ -52,11 +54,10 @@ export default {
     submit() {
       this.loading = true
       gameAdd(this.form)
-        .then(resp => {
-          const { code } = resp
+        .then(({code}) => {
           if (code) {
             this.$message.success('操作成功')
-            this.$router.push({ path: '/game/index' })
+            closeTab(this.$route.path, '/game/index')
           } else {
             this.$message.error('操作失败')
           }

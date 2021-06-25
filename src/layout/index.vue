@@ -49,6 +49,15 @@ export default {
       }
     }
   },
+  // add by Joyboo
+  watch: {
+    device: {
+      immediate: true,
+      handler: function (newVal, oldVal) {
+        this.$store.dispatch('permission/setSidebarByDevice', newVal)
+      }
+    }
+  },
   methods: {
     handleClickOutside() {
       this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })

@@ -14,7 +14,7 @@
       </el-form-item>
 
       <el-form-item>
-        <el-input v-model="query.keyword" clearable placeholder="姓名或手机号"></el-input>
+        <el-input v-model="query.keyword" @change="search" clearable placeholder="姓名或手机号"></el-input>
       </el-form-item>
 
       <el-form-item>
@@ -27,7 +27,7 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="search">查询
+        <el-button :loading="loading" type="primary" icon="el-icon-search" @click="search">查询
         </el-button>
       </el-form-item>
 
@@ -36,6 +36,7 @@
     <table-data
       :loading="loading"
       :data="data"
+      :btn-width="300"
       pathname="admin"
       @search="search"
     >
@@ -72,14 +73,15 @@
         </template>
       </el-table-column>
 
+      <template #btn="btn">
+          <el-button :size="size" type="warning" style="margin: 0 2px;" plain
+                     v-permission="['admin', '/admin/gettoken']"
+                     @click="getAdminToken(btn.row)"
+          >token</el-button>
+        </template>
     </table-data>
 
-    <pagination
-      :total="total"
-      :limit="query.pSize"
-      :page="query.cPage"
-      @pagination="pagination"
-    />
+    <pagination :total="total" :query="query" @search="search" />
   </div>
 </template>
 
@@ -87,11 +89,13 @@
   import TableData from '@/components/TableData/info'
   import Pagination from '@/components/Pagination'
   import {rolelist} from '@/api/role'
-  import {adminIndex} from '@/api/admin'
-  import {mapGetters} from "vuex";
+  import {adminIndex, adminToken} from '@/api/admin'
+  import {mapGetters} from "vuex"
+  import permission from '@/directive/permission'
 
   export default {
     name: 'adminindex',
+    directives: { permission },
     components: {
       TableData,
       Pagination
@@ -100,8 +104,7 @@
       ...mapGetters(['size'])
     },
     mounted() {
-      rolelist().then(resp => {
-        const {data} = resp
+      rolelist().then(({data}) => {
         this.rlist = data
 
         for(let i in data)
@@ -122,9 +125,7 @@
         query: {
           rid: '',
           keyword: '',
-          deltime: '1',
-          cPage: 1,
-          pSize: 20,
+          deltime: '1'
         },
         data: [],
         total: 0
@@ -134,8 +135,11 @@
       search() {
         this.loading = true
         adminIndex(this.query)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
+            if (!code)
+            {
+              return this.$message.error(msg)
+            }
             this.data = data.data || []
             this.total = data.totals || 0
           })
@@ -146,11 +150,23 @@
             this.loading = false
           })
       },
-      pagination({ page, limit }) {
-        this.query.cPage = page
-        this.query.pSize = limit
-        this.search()
-      },
+      getAdminToken(row) {
+        this.loading = true
+        adminToken({id: row.id})
+        .then(({code, msg, data}) => {
+          if (!code)
+          {
+            return this.$message.error(msg)
+          }
+          this.$alert(data, row.realname + ' 的token为：', {showClose: false})
+        })
+        .catch(error => {
+          this.$message.error(error)
+        })
+        .finally(() => {
+          this.loading = false
+        })
+      }
     }
   }
 </script>

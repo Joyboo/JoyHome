@@ -5,11 +5,33 @@
 <script>
   import packageInfo from './component'
   import {packageAdd} from '@/api/package'
+  import {closeTab} from "@/utils";
+  import {mapGetters} from "vuex";
 
   export default {
     name: 'packageadd',
     components: {
       packageInfo
+    },
+    computed: {
+      ...mapGetters(['config']),
+      domain() {
+        return this.config.region_domain.domain
+      }
+    },
+    watch: {
+      domain: {
+        immediate: true,
+        handler: function (newVal, oldVal) {
+          if (newVal) {
+            this.form.extension.domain = {
+              report: 'https://api-report.' + newVal,
+              sdk: 'https://api-sdk.' + newVal,
+              pay: 'https://api-pay.' + newVal
+            }
+          }
+        }
+      }
     },
     data() {
       return {
@@ -108,11 +130,10 @@
         this.loading = true
 
         packageAdd(this.form)
-          .then(resp => {
-            const {code, msg} = resp
+          .then(({code, msg}) => {
             if (code) {
               this.$message.success('操作成功')
-              this.$router.push({ path: '/package/index' })
+              closeTab()
             } else {
               this.$message.error(msg || '操作失败')
             }

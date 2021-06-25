@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading" class="view-container">
+  <div v-loading="loading" class="info-container">
     <el-form ref="menu-info" :rules="rules" :model="form" :size="size" label-width="15rem">
 
       <el-form-item label="上级菜单">
@@ -11,11 +11,11 @@
       </el-form-item>
 
       <el-form-item label="完整名称">
-        <el-input v-model="form.fulltitle" placeholder="在tags-view中展示的名字" clearable />
+        <el-input v-model="form.fulltitle" placeholder="在tags-view标签页中展示的名字" clearable />
       </el-form-item>
 
       <el-form-item label="name">
-        <el-input v-model="form.name" placeholder="keep-alive使用的名称" clearable />
+        <el-input v-model="form.name" placeholder="如需keep-alive缓存，请保持与组件name相同" clearable />
       </el-form-item>
 
       <el-form-item label="path">
@@ -37,7 +37,7 @@
 
       <el-form-item>
         <template slot="label">
-          <router-link slot="prepend" target="_blank" to="/icon/index" style="color: #409EFF;">
+          <router-link slot="prepend" target="_blank" to="/icon/index" :style="'color:' + theme + ';'">
             图标 <i class="el-icon-view el-icon--right" />
           </router-link>
         </template>
@@ -59,12 +59,12 @@
         <el-switch v-model="form.noCache == '0'" @change="changeKeepAlive()" />
       </el-form-item>
 
-      <el-form-item label="是否固定在tags-view中">
+      <el-form-item label="是否固定在标签页">
         <el-switch v-model="form.affix == '1'" @change="changeAffix()" />
       </el-form-item>
 
-      <el-form-item label="是否显示在面包屑中">
-        <el-switch v-model="form.breadcrumb == '1'" @change="changeBreadcrumb()" />
+      <el-form-item label="是否显示在面包屑">
+        <el-switch v-model="form.pid != 0 && form.breadcrumb == '1'" @change="changeBreadcrumb()" />
       </el-form-item>
 
       <el-form-item label="排序号">
@@ -86,7 +86,10 @@ import MenuCascader from '@/components/MenuCascader'
 export default {
   // name: 'MenuInfo',
   computed: {
-    ...mapGetters(['size'])
+    ...mapGetters(['size']),
+    theme() {
+      return this.$store.state.settings.theme
+    }
   },
   components: {
     ButtonTpl,

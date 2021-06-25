@@ -1,44 +1,48 @@
 <template>
-  <div style="padding: 0 15px;" @click="toggleClick">
-    <svg
-      :class="{'is-active':isActive}"
-      class="hamburger"
-      viewBox="0 0 1024 1024"
-      xmlns="http://www.w3.org/2000/svg"
-      width="64"
-      height="64"
-    >
-      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM142.4 642.1L298.7 519a8.84 8.84 0 0 0 0-13.9L142.4 381.9c-5.8-4.6-14.4-.5-14.4 6.9v246.3a8.9 8.9 0 0 0 14.4 7z" />
-    </svg>
+  <div class="box" :style="{'background-color': topMenuMode ? 'rgb(48, 65, 86)' : '#ffffff'}" @click="toggleClick">
+    <svg t="1622787360929" :class="{'is-active':isActive}" class="hamburger" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1592" width="200" height="200"><path d="M109.714286 841.142857a36.571429 36.571429 0 0 0-36.571429 36.571429v73.142857a36.571429 36.571429 0 0 0 36.571429 36.571428h804.571428a36.571429 36.571429 0 0 0 36.571429-36.571428v-73.142857a36.571429 36.571429 0 0 0-36.571429-36.571429z m552.228571-484.205714a24.868571 24.868571 0 0 0-3.657143 12.434286V658.285714a22.674286 22.674286 0 0 0 33.645715 19.017143l228.937142-141.165714a22.674286 22.674286 0 0 0 7.314286-30.72 16.091429 16.091429 0 0 0-7.314286-6.582857l-228.937142-146.285715a21.211429 21.211429 0 0 0-29.988572 4.388572zM109.714286 438.857143a36.571429 36.571429 0 0 0-36.571429 36.571428v73.142858a36.571429 36.571429 0 0 0 36.571429 36.571428h365.714285a36.571429 36.571429 0 0 0 36.571429-36.571428v-73.142858a36.571429 36.571429 0 0 0-36.571429-36.571428z m0-402.285714A36.571429 36.571429 0 0 0 73.142857 73.142857v73.142857a36.571429 36.571429 0 0 0 36.571429 36.571429h804.571428A36.571429 36.571429 0 0 0 950.857143 146.285714V73.142857a36.571429 36.571429 0 0 0-36.571429-36.571428z" :fill="topMenuMode ? '#ffffff' : 'rgb(48, 65, 86)'" p-id="1593" data-spm-anchor-id="a313x.7781069.0.i1" class="selected"></path></svg>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'Hamburger',
-  props: {
-    isActive: {
-      type: Boolean,
-      default: false
-    }
-  },
-  methods: {
-    toggleClick() {
-      this.$emit('toggleClick')
+
+  export default {
+    name: 'Hamburger',
+    computed: {
+      topMenuMode() {
+        return this.$store.state.permission.mode
+      }
+    },
+    props: {
+      isActive: {
+        type: Boolean,
+        default: false
+      }
+    },
+    methods: {
+      toggleClick() {
+        this.$emit('toggleClick')
+      }
     }
   }
-}
 </script>
 
-<style scoped>
-.hamburger {
-  display: inline-block;
-  vertical-align: middle;
-  width: 20px;
-  height: 20px;
-}
+<style lang="scss" scoped>
 
-.hamburger.is-active {
-  transform: rotate(180deg);
-}
+  .box {
+    padding: 0 15px;
+
+    .hamburger {
+      display: inline-block;
+      vertical-align: middle;
+      /*font-size: 2rem!important;*/
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .is-active {
+      transform: rotate(180deg);
+    }
+  }
+
 </style>

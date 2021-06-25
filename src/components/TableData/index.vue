@@ -3,13 +3,15 @@
     ref="listTable"
     v-loading="load"
     :data="data"
-    border
+    :border="border"
     :size="size"
     :height="height"
     :summary-method="getSummaries"
     :show-summary="heji"
     :id="tabid"
   >
+
+    <slot name="header"></slot>
 
     <!--
         column字段说明：
@@ -73,6 +75,7 @@
 <script>
   import {mapGetters} from "vuex";
   import JsonViewer from 'vue-json-viewer'
+  import {caclHeight} from "@/utils";
 
   export default {
     name: "TableIndex",
@@ -111,12 +114,20 @@
       // 表格高度
       height: {
         type: Number,
-        default: 700
+        default() {
+          // 默认是算上了分页组件高度的，如果该页不需要分页，实际应该 -170左右
+          return caclHeight(220)
+        }
       },
       //id
       tabid: {
         type: String,
         default: 'listTable'
+      },
+      // 纵向边框
+      border: {
+        type: Boolean,
+        default: true
       }
     },
     methods: {

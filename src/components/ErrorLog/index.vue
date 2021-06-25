@@ -1,15 +1,19 @@
 <template>
-  <div v-if="errorLogs.length>0">
-    <el-badge :is-dot="true" style="line-height: 25px;margin-top: -5px;" @click.native="dialogTableVisible=true">
+  <div v-if="errorLogs.length > 0">
+    <el-badge :is-dot="true" style="line-height: 25px;margin-top: -5px;" @click.native="dialogTableVisible = true">
       <el-button style="padding: 8px 10px;" size="small" type="danger">
-        <svg-icon icon-class="bug" />
+        <!-- 上报中，转圈圈 -->
+        <i v-if="reporting" class="el-icon-loading"></i>
+        <svg-icon v-else icon-class="bug" />
       </el-button>
     </el-badge>
 
     <el-dialog :visible.sync="dialogTableVisible" width="80%" append-to-body>
       <div slot="title">
-        <span style="padding-right: 10px;">Error Log</span>
-        <el-button size="mini" type="primary" icon="el-icon-delete" @click="clearAll">Clear All</el-button>
+        <span class="danger">有错误产生哦，已自动上报服务器
+        </span>
+
+        <el-button size="mini" style="float: right;margin-right: 100px;" type="primary" icon="el-icon-delete" @click="clearAll">清除</el-button>
       </div>
       <el-table :data="errorLogs" border>
         <el-table-column label="Message">
@@ -22,9 +26,16 @@
             </div>
             <br>
             <div>
+              <span class="message-title" style="padding-right: 10px;">Tag: </span>
+              <el-tag type="warning">
+                {{ row.vm.$vnode.tag }}
+              </el-tag>
+            </div>
+            <br>
+            <div>
               <span class="message-title" style="padding-right: 10px;">Info: </span>
               <el-tag type="warning">
-                {{ row.vm.$vnode.tag }} error in {{ row.info }}
+                {{ row.info }}
               </el-tag>
             </div>
             <br>
@@ -38,7 +49,7 @@
         </el-table-column>
         <el-table-column label="Stack">
           <template slot-scope="scope">
-            {{ scope.row.err.stack }}
+            <span class="danger">{{ scope.row.err.stack }}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -57,6 +68,16 @@ export default {
   computed: {
     errorLogs() {
       return this.$store.getters.errorLogs
+    },
+    reporting() {
+      return this.$store.state.errorLog.reporting
+    }
+  },
+  watch: {
+    dialogTableVisible: function (newVal) {
+      if (newVal) {
+        this.$store.dispatch('errorLog/doreport')
+      }
     }
   },
   methods: {

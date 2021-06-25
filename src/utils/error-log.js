@@ -27,7 +27,8 @@ if (checkNeed()) {
         err,
         vm,
         info,
-        url: window.location.href
+        url: window.location.href,
+        time: (new Date()).getTime()
       })
       console.error(err, info)
     })

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { MessageBox, Message } from 'element-ui'
+import { MessageBox, Message, Notification } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 
@@ -7,7 +7,8 @@ import { getToken } from '@/utils/auth'
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 5000 // request timeout
+  timeout: 30000, // request timeout
+  timeoutErrorMessage: '请求超时 ^_^'
 })
 
 // todo 是否需要全局loading
@@ -55,10 +56,10 @@ service.interceptors.response.use(
    * You can also judge the status by HTTP Status Code
    */
   response => {
-    // console.log('resp', response)
+    // console.log('response', response)
     const res = response.data
 
-    // if the custom code is not 20000, it is judged as an error.
+    // 重新登录
     if (res.code === 1000) {
       MessageBox.confirm(res.data || 'ReLogin', 'Confirm logout', {
         confirmButtonText: 'Re-Login',
@@ -69,16 +70,24 @@ service.interceptors.response.use(
           location.reload()
         })
       })
-    } else {
+    }
+    // 服务端程序异常
+    else if (res.code === 500) {
+      const message = res.msg || 'default Error 500'
+      Notification({
+        title: '服务端异常',
+        message: message,
+        type: 'error',
+        duration: 5 * 1000
+        // offset: 10
+      })
+      return Promise.reject(new Error(message))
+    }
+    else {
       return res
     }
   },
   error => {
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
-    })
     return Promise.reject(error)
   }
 )

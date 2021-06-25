@@ -4,6 +4,7 @@
       :data="data"
       row-key="id"
       :size="size"
+      :height="height"
       border
       lazy
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
@@ -12,11 +13,11 @@
       <!--表格插槽-->
       <slot></slot>
 
-      <el-table-column align="center" label="操作">
+      <el-table-column align="center" label="操作" :width="btnWidth">
         <template slot-scope="scope">
 
           <!--按钮插槽-->
-          <slot name="btn"></slot>
+          <slot name="btn" :index="scope.$index" :row="scope.row"></slot>
 
           <el-button type="primary"
                      v-if="checkPermission(['admin', '/' + pathname + '/edit'])"
@@ -78,6 +79,19 @@
       pathname: {
         required: true,
         type: String
+      },
+      height: {
+        type: Number,
+        default() {
+          // 默认是算上了分页组件高度的，如果该页不需要分页，实际应该 -170左右
+          const h = window.document.documentElement.clientHeight || 900
+          return h - 220
+        }
+      },
+      // 操作栏宽度
+      btnWidth: {
+        type: Number,
+        default: 180
       }
     },
     methods: {
@@ -96,9 +110,9 @@
           method: 'get',
           params: { id: rows.id }
         })
-          .then(resp => {
+          .then(({code, msg}) => {
             this.load = false
-            if (resp.code) {
+            if (code) {
               this.$message.success('操作成功')
               this.$emit('search')
             }

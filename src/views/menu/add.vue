@@ -10,6 +10,7 @@
 <script>
 import menuInfo from './component'
 import { menuAdd } from '@/api/menu'
+import {closeTab} from "@/utils";
 
 export default {
   name: 'menuadd',
@@ -43,11 +44,10 @@ export default {
       this.loading = true
 
       menuAdd(this.form)
-        .then(resp => {
-          const { code } = resp
+        .then(({code}) => {
           if (code) {
             this.$message.success('操作成功')
-            this.$router.push({ path: '/menu/index' })
+            closeTab()
           } else {
             this.$message.error('操作失败')
           }

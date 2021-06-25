@@ -1,5 +1,5 @@
 <template>
-  <div class="view-container" v-loading="loading">
+  <div class="info-container" v-loading="loading">
 
     <el-form :model="form" :size="size" label-width="15rem">
       <el-form-item label="所属日期">
@@ -50,6 +50,7 @@
   import {packageindex} from "@/api/package";
   import {mapGetters} from "vuex";
   import ButtonTpl from '@/components/ButtonTpl'
+  import {closeTab} from "@/utils";
 
   export default {
     components: {
@@ -70,30 +71,35 @@
         }
       }
     },
-    mounted() {
+    async mounted() {
       this.loading = true
-      this.$store.dispatch('filter/gameInfo')
-      const id = this.$route.query.id
-      expenseEdit('get', {id: id})
-        .then(resp => {
-          const {data} = resp
-          this.form = data.data
-          this.chgGame(this.form.gameid)
-        })
-        .finally(() => {
-          this.loading = false
-        })
+
+      try{
+        await this.$store.dispatch('filter/gameInfo')
+        const id = this.$route.query.id
+        const {code, msg, data} = await expenseEdit('get', {id: id})
+
+        if (!code)
+        {
+          return this.$message.error(msg)
+        }
+        this.form = data.data
+        this.chgGame(this.form.gameid)
+
+      } catch (e) {
+        this.$message.error(e)
+      }
+      this.loading = false
     },
     methods: {
       submit() {
         this.loading = true
         expenseEdit('post', this.form)
-          .then(resp => {
-            const {code, msg, result} = resp
+          .then(({code, msg}) => {
             if (code)
             {
               this.$message.success(msg)
-              this.$router.push({ path: '/exponse/index' })
+              closeTab()
             } else {
               this.$message.error(msg || 'add error')
             }
@@ -109,8 +115,11 @@
         this.pkglist = []
         this.loading = true
         packageindex({gameid: value})
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
+            if (!code)
+            {
+              return this.$message.error(msg)
+            }
             for(let i in data.data)
             {
               let item = data.data[i]

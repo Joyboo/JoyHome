@@ -1,5 +1,5 @@
 <template>
-  <div class="view-container" v-loading="loading">
+  <div class="info-container" v-loading="loading">
     <sysinfo :form="form" @submit="submit"></sysinfo>
   </div>
 </template>
@@ -7,6 +7,7 @@
 <script>
   import Sysinfo from './component'
   import {sysinfoAdd} from '@/api/sysinfo'
+  import {closeTab} from "@/utils";
 
   export default {
     name: 'sysinfoadd',
@@ -31,12 +32,11 @@
       submit() {
         this.loading = true
         sysinfoAdd(this.form)
-          .then(resp => {
-            const {code, msg} = resp
+          .then(({code, msg}) => {
             if (code)
             {
               this.$message.success(msg)
-              this.$router.push({ path: '/sysinfo/index' })
+              closeTab()
             } else {
               this.$message.error(msg || 'add error')
             }

@@ -25,7 +25,7 @@
 
 
     <!--h5sdk插槽-->
-    <template v-slot:h5sdk>
+    <template #h5sdk>
       <el-tab-pane label="H5SDK">
 
         <el-form-item label="本游戏是否显示">
@@ -41,7 +41,7 @@
 
         <el-form-item>
           <template slot="label">
-            包<i class="labeli">登录appid用哪个包的{{form.extension.h5sdk.pkgbnd}}</i>
+            包<i class="labeli">登录appid用哪个包的</i>
           </template>
 
           <el-select v-model="form.extension.h5sdk.pkgbnd" filterable>
@@ -125,7 +125,7 @@
 <script>
   import {gameEdit, gkey} from '@/api/game'
   import gameInfo from './component'
-  import {copyTo} from "@/utils";
+  import {closeTab, copyTo} from "@/utils";
   import {packageChildOption} from "@/api/package";
   import {uploadHttpRequest} from "@/api/upload";
   import {mapGetters} from "vuex";
@@ -137,10 +137,10 @@
     computed: {
       ...mapGetters(['size']),
       viewmnurl() {
-        return [{ url: this.form.default_path + this.form.extension.h5sdk.mnlogo }]
+        return this.form.extension.h5sdk.mnlogo ? [{ url: this.form.default_path + this.form.extension.h5sdk.mnlogo }] : []
       },
       viewgamelogo() {
-        return [{ url: this.form.default_path + this.form.extension.h5sdk.gamelogo }]
+        return this.form.extension.h5sdk.gamelogo ? [{ url: this.form.default_path + this.form.extension.h5sdk.gamelogo }] : []
       },
       viewcarousel() {
         let arr = []
@@ -165,6 +165,7 @@
             paykey: '',
             logurl: '',
             payurl: '',
+            h5entry: '',
             goodsids: '',
             facebook: {
               fansurl: ''
@@ -214,7 +215,7 @@
         }
 
         this.form = copyTo(this.form, data.data)
-        this.form.extension.h5sdk.gameid = this.form.id
+        this.form.extension.h5sdk['gameid'] = this.form.id
 
         const pkg = await packageChildOption({ gameid: this.form.id })
         if (pkg.code)
@@ -231,11 +232,10 @@
         this.loading = true
 
         gameEdit('post', this.form)
-          .then(resp => {
-            const { code } = resp
+          .then(({code}) => {
             if (code) {
               this.$message.success('操作成功')
-              this.$router.push({ path: '/game/index' })
+              closeTab()
             } else {
               this.$message.error('操作失败')
             }
@@ -250,8 +250,8 @@
 
       // 随机生成key
       get_gkey(column) {
-        gkey(column).then(resp => {
-          this.form.extension[column] = resp.data
+        gkey(column).then(({data}) => {
+          this.form.extension[column] = data
         }).catch(error => {
           this.$message.error(error)
         })

@@ -1,5 +1,5 @@
 <template>
-    <div v-loading="load" class="view-container">
+    <div v-loading="load" class="info-container">
       <el-form ref="AdminForm" :rules="rules" :model="form" :size="size" label-width="15rem">
         <el-tabs type="border-card">
           <el-tab-pane label="管理员信息">
@@ -54,10 +54,9 @@
               </el-select>
             </el-form-item>
 
-            <!--todo 默认打开菜单需要依赖于注册过的路由，暂时注释掉-->
-            <!--<el-form-item label="默认打开菜单">
+            <el-form-item label="默认打开菜单">
               <menu-cascader :pid.sync="form.extension.newnid" @setpid="setpid"></menu-cascader>
-            </el-form-item>-->
+            </el-form-item>
 
           </el-tab-pane>
 
@@ -122,13 +121,13 @@
 
             <el-form-item>
               <el-checkbox-group v-model="form.extension.ntcids">
-                <el-checkbox :label="1">支付错误警报</el-checkbox>
+                <el-checkbox label="1">支付错误警报</el-checkbox>
                 <br>
-                <el-checkbox :label="2">创角、登录、支付异常预警</el-checkbox>
+                <el-checkbox label="2">创角、登录、支付异常预警</el-checkbox>
                 <br>
-                <el-checkbox :label="3">短信发送失败</el-checkbox>
+                <el-checkbox label="3">短信发送失败</el-checkbox>
                 <br>
-                <el-checkbox :label="4">cron程序出错</el-checkbox>
+                <el-checkbox label="4">cron程序出错</el-checkbox>
               </el-checkbox-group>
             </el-form-item>
 
@@ -181,8 +180,9 @@
       }
     },
     async mounted() {
+      this.load = true
       try {
-        this.load = true
+
         await this.$store.dispatch('filter/gameInfo')
 
         const {data} = await rolelist()
@@ -198,19 +198,18 @@
         this.setChecked(this.form.rid)
 
         // 游戏分配穿梭框
-        this.gamelist.forEach((name, index) => {
+        for(let j in this.gamelist) {
           this.gametransfer.push({
-            key: index,
-            label: name,
+            key: parseInt(j),
+            label: this.gamelist[j],
             disabled: false
           })
-        })
-
-        this.load = false
+        }
 
       } catch (e) {
         console.error("mounted error=>", e)
       }
+      this.load = false
     },
     /* 侦听器 */
     watch: {
@@ -287,6 +286,7 @@
       submit() {
         this.$refs.AdminForm.validate((valid) => {
           if (!valid) {
+            this.$message.error('表单校验失败，请检查填写的信息')
             return false
           }
           if (typeof this.form.extension.newnid === 'object') {

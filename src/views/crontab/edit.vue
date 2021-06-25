@@ -1,5 +1,5 @@
 <template>
-  <div class="view-container" v-loading="loading">
+  <div class="info-container" v-loading="loading">
     <crontab-info :form="form" @submit="submit"></crontab-info>
   </div>
 </template>
@@ -7,6 +7,7 @@
 <script>
   import CrontabInfo from './component'
   import {crontabEdit} from '@/api/crontab'
+  import {closeTab, copyTo} from "@/utils";
 
   export default {
     components: {
@@ -16,9 +17,12 @@
       this.loading = true
       const id = this.$route.query.id
       crontabEdit('get', {id: id})
-        .then(resp => {
-          const {data} = resp
-          this.form = data.data
+        .then(({code, msg, data}) => {
+          if (!code)
+          {
+            return this.$message.error(msg)
+          }
+          this.form = copyTo(this.form, data.data)
         })
         .finally(() => {
           this.loading = false
@@ -51,11 +55,10 @@
       submit() {
         this.loading = true
         crontabEdit('post', this.form)
-          .then(resp => {
-            const {code, msg} = resp
+          .then(({code, msg, data}) => {
             if (code) {
               this.$message.success('操作成功')
-              this.$router.push({ path: '/crontab/index' })
+              closeTab()
             } else {
               this.$message.error(msg || '操作失败')
             }

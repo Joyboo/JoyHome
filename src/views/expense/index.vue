@@ -1,7 +1,7 @@
 <template>
   <div class="view-container">
 
-    <layout-filter :query="query" @search="search"></layout-filter>
+    <layout-filter :query="query" @search="search" :loading="loading"></layout-filter>
 
     <table-info :loading="loading" :data="tableData" @search="search" pathname="expense">
 
@@ -28,7 +28,7 @@
 
     </table-info>
 
-    <pagination :total="total" :page="query.cPage" :limit="query.pSize"></pagination>
+    <pagination :total="total" :query="query" @search="search"></pagination>
   </div>
 </template>
 
@@ -38,7 +38,6 @@
   import Pagination from '@/components/Pagination'
   import LayoutFilter from '@/components/LayoutFilter'
   import {expenseIndex} from "@/api/expense";
-  import {beforeDay} from "@/utils";
 
   export default {
     name: 'expenseindex',
@@ -50,15 +49,15 @@
     computed: {
       ...mapGetters(['size', 'gamelist'])
     },
-    mounted() {
-      this.search()
-    },
     methods: {
       search() {
         this.loading = true
         expenseIndex(this.query)
-          .then(resp => {
-            const {code, msg, data} = resp
+          .then(({code, msg, data}) => {
+            if (!code)
+            {
+              return this.$message.error(msg)
+            }
             this.tableData = data.data || []
             this.total = data.totals || 0
           })
@@ -68,11 +67,6 @@
           .finally(() => {
             this.loading = false
           })
-      },
-      pagination({page, limit}) {
-        this.query.cPage = page
-        this.query.pSize = limit
-        this.search()
       }
     },
     data() {
@@ -82,8 +76,6 @@
         query: {
           gameid: '',
           pkgbnd: [],
-          cPage: 1,
-          pSize: 20,
           begintime: true,
           endtime: true
         },

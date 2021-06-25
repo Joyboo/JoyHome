@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="load" class="view-container">
+  <div v-loading="load" class="info-container">
     <el-form ref="RoleForm" :model="form" :rules="rules" :size="size" label-width="15rem">
       <el-form-item label="角色名称" prop="name">
         <el-input class="myCol" v-model="form.name" placeholder="请输入角色名称" clearable />
@@ -81,8 +81,11 @@
     mounted() {
       this.load = true
       menuIndex()
-        .then(resp => {
-          const {data} = resp
+        .then(({code, msg, data}) => {
+          if (!code)
+          {
+            return this.$message.error(msg)
+          }
           this.menuTable = data
 
           this.setCheckNodes()

@@ -9,28 +9,29 @@
       background-color="#304156"
       text-color="#FFF"
       active-text-color="#FFF"
+      v-if="topMenuMode"
       @select="handleSelect"
     >
-      <el-menu-item v-for="menu in topmenu" :key="menu.id" :index="menu.id">
-        <i :class="menu.icon" />{{ menu.title || menu.fulltitle }}
+      <el-menu-item v-for="(menu, mk) in topmenu" :key="mk" :index="menu.id">
+        <item :icon="menu.meta.icon" :title="menu.meta.fulltitle || menu.meta.title"></item>
       </el-menu-item>
     </el-menu>
 
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
+    <breadcrumb id="breadcrumb-container" class="breadcrumb-container"/>
 
     <div class="right-menu">
-      <template v-if="device!=='mobile'">
-        <el-tooltip :content="$t('navbar.search')" placement="bottom">
+      <template>
+        <el-tooltip v-if="!isMobile" :content="$t('navbar.search')" placement="bottom">
           <search id="header-search" class="right-menu-item" />
         </el-tooltip>
 
-        <!--        <error-log class="errLog-container right-menu-item hover-effect" />-->
+        <error-log class="errLog-container right-menu-item hover-effect" />
 
-        <el-tooltip :content="$t('navbar.screenfull')" placement="bottom">
+        <el-tooltip v-if="!isMobile" :content="$t('navbar.screenfull')" placement="bottom">
           <screenfull id="screenfull" class="right-menu-item hover-effect" />
         </el-tooltip>
 
-        <el-tooltip :content="$t('navbar.size')" effect="dark" placement="bottom">
+        <el-tooltip  v-if="!isMobile" :content="$t('navbar.size')" effect="dark" placement="bottom">
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
 
@@ -46,24 +47,24 @@
 
         <el-tooltip :content="$t('navbar.user')" placement="bottom">
           <template>
-            <el-dropdown class="avatar-container right-menu-item hover-effect" size="medium" trigger="click">
+            <el-dropdown class="avatar-container right-menu-item hover-effect" :class="{'mb-right-container': isMobile}" size="medium" trigger="click">
               <div>
                 <svg-icon icon-class="user" />
               </div>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.native="reloadCache">
-                  刷新缓存
-                </el-dropdown-item>
-                <router-link to="/profile/index">
-                  <el-dropdown-item>
-                    {{ $t('navbar.profile') }}
-                  </el-dropdown-item>
-                </router-link>
+
                 <router-link to="/">
                   <el-dropdown-item>
                     {{ $t('navbar.dashboard') }}
                   </el-dropdown-item>
                 </router-link>
+
+                  <el-dropdown-item :disabled="isdev" >
+                    <a href="http://hkgame.ihengkun.com/admin/pub/login?version=0" target="_blank">
+                      {{ $t('login.toold') }}
+                    </a>
+                  </el-dropdown-item>
+
                 <el-dropdown-item divided @click.native="logout">
                   <span style="display:block;">{{ $t('navbar.logOut') }}</span>
                 </el-dropdown-item>
@@ -75,13 +76,6 @@
       </template>
     </div>
 
-    <!--刷新缓存的dialog-->
-    <el-dialog :visible.sync="recacheDialog" width="30%" :title="progress.title" :show-close="false" center>
-      <div style="text-align: center;width: 100%;">
-        <el-progress type="circle" :percentage="progress.num" :status="progress.success"></el-progress>
-      </div>
-
-    </el-dialog>
   </div>
 </template>
 
@@ -89,32 +83,23 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-// import ErrorLog from '@/components/ErrorLog'
+import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import LangSelect from '@/components/LangSelect'
 import Search from '@/components/HeaderSearch'
-import {recache} from '@/api/sysinfo'
+import Item from '@/layout/components/Sidebar/Item'
 
 export default {
   components: {
     Breadcrumb,
     Hamburger,
-    // ErrorLog,
+    ErrorLog,
     Screenfull,
     SizeSelect,
     LangSelect,
-    Search
-  },
-  data() {
-    return {
-      recacheDialog: false,
-      progress: {
-        title: '',
-        num: 0,
-        status: ''
-      }
-    }
+    Search,
+    Item
   },
   computed: {
     ...mapGetters([
@@ -122,17 +107,21 @@ export default {
       'avatar',
       'device',
       'topmenu'
-    ])
+    ]),
+    isdev() {
+      return process.env.NODE_ENV === 'development'
+    },
+    isMobile() {
+      return  this.device === 'mobile'
+    },
+    topMenuMode() {
+      return this.$store.state.permission.mode
+    }
   },
   mounted() {
     // add by Joyboo
     // console.log("%c [Github] %c https://github.com/PanJiaChen/vue-element-admin/ ", "color:red","")
     // console.log("%c [Doc] %c https://panjiachen.github.io/vue-element-admin-site/#/ ", "color:red","")
-    // 触发第一个菜单选中事件
-    if (this.$refs.refTopMenu.$children.length > 0)
-    {
-      this.$refs.refTopMenu.$children[0].$el.click()
-    }
   },
   methods: {
     toggleSideBar() {
@@ -142,48 +131,12 @@ export default {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     },
-    async handleSelect(key, keyPath) {
-      await this.$store.dispatch('permission/setPid', key)
-      await this.$store.dispatch('permission/generateRoutes')
+    handleSelect(key, keyPath) {
+      this.$store.dispatch('permission/generateRoutes', key)
     },
     // add by Joyboo
     rightPanel() {
       this.$store.dispatch('settings/boolSetting', 'rightPanel')
-    },
-    // 刷新缓存
-    reloadCache() {
-      this.recacheDialog = true
-      const _this = this
-      const loop = setInterval(() => {
-        if (_this.progress.num < 95)
-        {
-          _this.progress.num++
-        }
-      }, 10)
-
-      recache()
-        .then(resp => {
-          const {code, msg} = resp
-          _this.progress.title = msg
-          if (code)
-          {
-            this.$message.success(msg)
-
-            _this.progress.status = 'success'
-            // 让进度条跑完
-            setTimeout(() => window.location.reload(), 500)
-          } else {
-            _this.progress.status = 'exception'
-            this.$message.error(msg)
-          }
-        })
-        .catch(error => {
-          this.$message.error(error)
-        })
-        .finally(() => {
-          clearInterval(loop)
-          _this.progress.num = 100
-        })
     }
   }
 }
@@ -217,14 +170,14 @@ export default {
   }
 
   .hamburger-container {
-    line-height: 49px;
+    line-height: 50px;
     height: 100%;
     float: left;
     cursor: pointer;
     transition: background .3s;
     -webkit-tap-highlight-color:transparent;
     /*background-color: #2b2f3a;*/
-    border-bottom: 1px solid #ccc;
+    /*border-bottom: 1px solid #ccc;*/
 
     &:hover {
       background: rgba(34, 38, 46, .8)
@@ -269,26 +222,10 @@ export default {
 
     .avatar-container {
       margin-right: 30px;
+    }
 
-      .avatar-wrapper {
-        margin-top: 5px;
-        position: relative;
-
-        .user-avatar {
-          cursor: pointer;
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
-        }
-
-        .el-icon-caret-bottom {
-          cursor: pointer;
-          position: absolute;
-          right: -20px;
-          top: 25px;
-          font-size: 12px;
-        }
-      }
+    .mb-right-container {
+      margin-right: 0;
     }
   }
 }

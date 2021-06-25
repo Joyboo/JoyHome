@@ -6,7 +6,7 @@ const state = {
   token: getToken(),
   name: '',
   info: {},
-  avatar: '',
+  avatar: require('@/assets/image/defualt.jpg'),
   introduction: '',
   roles: []
 }
@@ -32,11 +32,15 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
-        resolve()
+      login({ username: username.trim(), password: password }).then(({ code, msg, data }) => {
+        if (!code)
+        {
+          reject(msg)
+        } else {
+          commit('SET_TOKEN', data.token)
+          setToken(data.token)
+          resolve()
+        }
       }).catch(error => {
         reject(error)
       })
@@ -46,8 +50,7 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(/* state.token*/).then(response => {
-        const { code, msg, data } = response
+      getInfo().then(({ code, msg, data }) => {
 
         if (!code) {
           reject(msg)
