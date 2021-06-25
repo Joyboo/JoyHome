@@ -89,7 +89,7 @@
             key: 'itime',
             text: '操作时间',
             sort: true,
-            width: 120
+            width: 150
           },
           {
             key: 'ip',
@@ -98,6 +98,7 @@
           },
           {
             key: 'content',
+            align: 'left',
             text: 'SQL',
           }
         ]

@@ -1,6 +1,7 @@
 <template>
-  <el-row class="pma">
-    <el-col :xs="{span: 15}" :sm="{span: 15}" :md="{span: 15}" :lg="{span: 8}" :xl="{span: 8}"
+  <el-row :class="{pma: device == 'desktop', pmaMobile: device == 'mobile'}">
+    <!-- 有一个el-col-offset-1 -->
+    <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}"
             style="margin-top: 3rem;"
             v-for="(o, index) in pma" :key="index" :offset="1">
       <el-card :body-style="{ padding: '0px' }">
@@ -26,7 +27,7 @@
   export default {
     name: "phpmyadminindex",
     computed: {
-      ...mapGetters(['config']),
+      ...mapGetters(['config', 'device']),
       pma() {
         return this.config.pma
       }

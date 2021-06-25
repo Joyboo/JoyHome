@@ -8,6 +8,8 @@
       border
       lazy
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+      @cell-mouse-enter="cellMouseEnter"
+      @cell-mouse-leave="cellMouseLeave"
     >
 
       <!--表格插槽-->
@@ -122,6 +124,14 @@
             console.error(error)
             this.$message.error('操作失败')
           })
+      },
+      // 当单元格 hover 进入时会触发该事件
+      cellMouseEnter(row, column, cell, event) {
+        this.$emit('cellMouseEnter', row, column, cell, event)
+      },
+      // 当单元格 hover 退出时会触发该事件
+      cellMouseLeave(row, column, cell, event) {
+        this.$emit('cellMouseLeave', row, column, cell, event)
       }
     }
   }
