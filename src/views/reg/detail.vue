@@ -78,21 +78,21 @@
             </el-form-item>
           </layout-filter>
 
-          <table-data :height="500" :loading="payloading" :column="payColumn" :data="payData"></table-data>
+          <table-data :loading="payloading" :column="payColumn" :data="payData"></table-data>
         </el-tab-pane>
 
         <el-tab-pane label="登录信息">
 
           <layout-filter :query="query" @search="searchLogin" :loading="loginloading"></layout-filter>
-          <table-data :height="500" :loading="loginloading" :column="loginColumn" :data="loginData"></table-data>
+          <table-data :loading="loginloading" :column="loginColumn" :data="loginData"></table-data>
 
         </el-tab-pane>
       </el-tabs>
 
       <el-footer>
-        <el-button type="primary" icon="el-icon-edit-outline" v-permission="['admin', '/user/edit']" @click="openDialog">操作</el-button>
+        <el-button type="primary" icon="el-icon-edit-outline" v-permission="['admin', '/user/edit']" @click="openDialog" :size="size">操作</el-button>
         <router-link class="joy-btn" to="/reg/index">
-          <el-button type="success" icon="el-icon-c-scale-to-original">列 表</el-button>
+          <el-button type="success" icon="el-icon-c-scale-to-original" :size="size">列 表</el-button>
         </router-link>
       </el-footer>
     </el-form>

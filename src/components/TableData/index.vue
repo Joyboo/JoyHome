@@ -75,7 +75,8 @@
 <script>
   import {mapGetters} from "vuex";
   import JsonViewer from 'vue-json-viewer'
-  import {caclHeight} from "@/utils";
+  import screenfull from "screenfull";
+  import {calcHeight} from "@/utils";
 
   export default {
     name: "TableIndex",
@@ -111,14 +112,7 @@
         type: Boolean,
         default: false
       },
-      // 表格高度
-      height: {
-        type: Number,
-        default() {
-          // 默认是算上了分页组件高度的，如果该页不需要分页，实际应该 -170左右
-          return caclHeight(220)
-        }
-      },
+
       //id
       tabid: {
         type: String,
@@ -129,6 +123,41 @@
         type: Boolean,
         default: true
       }
+    },
+    data() {
+      return {
+        height: 0
+      }
+    },
+    mounted() {
+
+      // 按当前视口自动计算表格高度
+      const autoSetHeight = () => {
+        //  全屏 - Header - 搜索栏 | 全屏 - el-table起始高度
+        const el = window.document.getElementsByClassName('el-table')
+        if (el.length > 0)
+        {
+          let offsetTop = el[0].getBoundingClientRect().top
+
+          // 如果需要分页，再加分页高度
+          const elPage = window.document.getElementsByClassName('pagination-container')
+          if (elPage.length > 0)
+          {
+            offsetTop += elPage[0].getBoundingClientRect().height
+          }
+          // +20是为了给padding留位置,否则会出现滚动条
+          offsetTop += 20
+
+          this.height = calcHeight(offsetTop)
+        } else {
+          this.height = calcHeight(220)
+        }
+      }
+      setTimeout(autoSetHeight, 0)
+      // 监听全屏切换
+      // screenfull.on('change', autoSetHeight);
+      // 监听视口变化
+      window.addEventListener('resize', autoSetHeight)
     },
     methods: {
       // todo  暂时只有一行能固定
