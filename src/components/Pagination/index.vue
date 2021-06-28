@@ -1,16 +1,19 @@
 <template>
-  <div :class="{'hidden':hidden}" class="pagination-container">
-    <el-pagination
-      :background="background"
-      :current-page.sync="currentPage"
-      :page-size.sync="pageSize"
-      :layout="layout"
-      :page-sizes="sizelist"
-      :total="total"
-      v-bind="$attrs"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-    />
+  <div :class="{'hidden':hidden, pagerMobile: isMobile}" class="pagination-container">
+    <el-scrollbar :vertical="false" class="scroll-container">
+      <el-pagination
+        :background="background"
+        :current-page.sync="currentPage"
+        :page-size.sync="pageSize"
+        :layout="layout"
+        :page-sizes="sizelist"
+        :pager-count="isMobile ? 5 : 7"
+        :total="total"
+        v-bind="$attrs"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
+    </el-scrollbar>
   </div>
 </template>
 
@@ -61,7 +64,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['config']),
+    ...mapGetters(['config', 'device']),
+    isMobile() {
+      return this.device === 'mobile'
+    },
     sizelist() {
       if (this.pageSizes.length > 0)
       {
@@ -158,15 +164,36 @@ export default {
 }
 </script>
 
-<style scoped>
-.pagination-container {
-  background: #fff;
-  padding: 5px 16px;
-  float: right;
-  margin: 10px;
+<style lang="scss" scoped>
+  .pagination-container {
+    background: #fff;
+    padding: 5px 16px;
+    float: right;
+    margin: 10px;
+    /*width: 100%;*/
+  }
 
-}
-.pagination-container.hidden {
-  display: none;
-}
+  .pagination-container.hidden {
+    display: none;
+  }
+
+  .scroll-container {
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    ::v-deep {
+      .el-scrollbar__bar {
+        bottom: 0px;
+      }
+      .el-scrollbar__wrap {
+        height: 49px;
+      }
+    }
+  }
+
+  // 移动端加上width:100%才能横向滚动，PC端加了后会导致float:right失效，整个分页组件会跑到左边
+  .pagerMobile {
+    width: 100%;
+  }
 </style>

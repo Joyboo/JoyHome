@@ -77,6 +77,7 @@
   import JsonViewer from 'vue-json-viewer'
   import screenfull from "screenfull";
   import {calcHeight} from "@/utils";
+  import Bus from '@/utils/bus'
 
   export default {
     name: "TableIndex",
@@ -131,8 +132,21 @@
     },
     mounted() {
 
+      setTimeout(this.autoSetHeight, 0)
+      // 监听全屏切换
+      // screenfull.on('change', autoSetHeight);
+      // 监听视口变化
+      window.addEventListener('resize', this.autoSetHeight)
+      // 监听Bus
+      Bus.$on('setHeight', this.autoSetHeight)
+    },
+    beforeDestroy() {
+      Bus.$off('setHeight')
+    },
+    methods: {
       // 按当前视口自动计算表格高度
-      const autoSetHeight = () => {
+      autoSetHeight() {
+        console.log('auto set')
         //  全屏 - Header - 搜索栏 | 全屏 - el-table起始高度
         const el = window.document.getElementsByClassName('el-table')
         if (el.length > 0)
@@ -152,14 +166,7 @@
         } else {
           this.height = calcHeight(220)
         }
-      }
-      setTimeout(autoSetHeight, 0)
-      // 监听全屏切换
-      // screenfull.on('change', autoSetHeight);
-      // 监听视口变化
-      window.addEventListener('resize', autoSetHeight)
-    },
-    methods: {
+      },
       // todo  暂时只有一行能固定
       getSummaries(param) {
         const { columns, data } = param;
