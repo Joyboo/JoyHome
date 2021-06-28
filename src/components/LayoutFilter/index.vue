@@ -114,8 +114,12 @@
         'size',
         'filtergamelist',
         'userinfo',
-        'config'
+        'config',
+        'device'
       ]),
+      isMobile() {
+        return this.device === 'mobile'
+      },
       theme() {
         return this.$store.state.settings.theme
       },
