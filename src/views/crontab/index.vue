@@ -64,7 +64,7 @@
 
       <el-table-column width="80" align="center" label="状态">
         <template slot-scope="scope">
-          <el-switch v-model="scope.row.status != '1'" />
+          <el-switch v-model="scope.row.status != '1'" @change="chgStatus(scope.row.id, scope.row.status)" />
         </template>
       </el-table-column>
 
@@ -79,9 +79,10 @@
 <script>
   import {mapGetters} from "vuex";
   import TableInfo from '@/components/TableData/info'
-  import {crontabIndex} from "@/api/crontab";
+  import {crontabIndex, crontabEdit} from "@/api/crontab"
   import JsonViewer from 'vue-json-viewer'
   import Pagination from '@/components/Pagination'
+  import checkPermission from "@/utils/permission"
 
   export default {
     name: 'crontabindex',
@@ -114,6 +115,33 @@
           .finally(() => {
             this.loading = false
           })
+      },
+      chgStatus(id, status) {
+        if (!checkPermission(['admin', '/crontab/edit']))
+        {
+          this.$confirm('对不起，没有权限', {
+            type: 'error',
+            showClose: false,
+            showCancelButton: false
+          }).catch(error => {})
+        } else {
+          this.loading = true
+          crontabEdit('post', {id: id, status: status == '1' ? 0 : 1})
+            .then(({code, msg}) => {
+              if (code) {
+                this.$message.success('操作成功')
+                this.search()
+              } else {
+                this.$message.error(msg)
+              }
+            })
+            .catch(error => {
+              console.log(error)
+            })
+            .finally(() => {
+              this.loading = false
+            })
+        }
       }
     },
     data() {
