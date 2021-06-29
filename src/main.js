@@ -25,6 +25,10 @@ Vue.use(Element, {
   i18n: (key, value) => i18n.t(key, value)
 })
 
+// 全局bus add by Joyboo
+import Bus from '@/utils/bus'
+Vue.use(Bus)
+
 // register global utility filters
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])

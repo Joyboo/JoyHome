@@ -48,10 +48,10 @@
 </template>
 
 <script>
-  import {mapGetters} from "vuex";
-  import request from "@/utils/request";
+  import {mapGetters} from "vuex"
+  import request from "@/utils/request"
   import checkPermission from '@/utils/permission'
-  import {calcHeight} from "@/utils";
+  import {calcHeight} from "@/utils"
 
   export default {
     name: "TableInfo",
@@ -96,8 +96,20 @@
     },
     mounted() {
 
-      // 按当前视口自动计算表格高度
-      const autoSetHeight = () => {
+      setTimeout(this.autoSetHeight, 0)
+      // 监听全屏切换
+      // screenfull.on('change', autoSetHeight);
+      // 监听视口变化
+      window.addEventListener('resize', this.autoSetHeight)
+      // 监听Bus
+      this.$bus.$on('setHeight', this.autoSetHeight)
+    },
+    beforeDestroy() {
+      this.$bus.$off('setHeight')
+    },
+    methods: {
+      checkPermission,
+      autoSetHeight() {
         //  全屏 - Header - 搜索栏 | 全屏 - el-table起始高度
         const el = window.document.getElementsByClassName('el-table')
         if (el.length > 0)
@@ -117,15 +129,7 @@
         } else {
           this.height = calcHeight(220)
         }
-      }
-      setTimeout(autoSetHeight, 0)
-      // 监听全屏切换
-      // screenfull.on('change', autoSetHeight);
-      // 监听视口变化
-      window.addEventListener('resize', autoSetHeight)
-    },
-    methods: {
-      checkPermission,
+      },
       // 编辑
       edit(index, row) {
         const path = '/' + this.pathname + '/edit'

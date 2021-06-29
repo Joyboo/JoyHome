@@ -76,8 +76,7 @@
   import {mapGetters} from "vuex";
   import JsonViewer from 'vue-json-viewer'
   import screenfull from "screenfull";
-  import {calcHeight} from "@/utils";
-  import Bus from '@/utils/bus'
+  import {calcHeight} from "@/utils"
 
   export default {
     name: "TableIndex",
@@ -138,15 +137,14 @@
       // 监听视口变化
       window.addEventListener('resize', this.autoSetHeight)
       // 监听Bus
-      Bus.$on('setHeight', this.autoSetHeight)
+      this.$bus.$on('setHeight', this.autoSetHeight)
     },
     beforeDestroy() {
-      Bus.$off('setHeight')
+      this.$bus.$off('setHeight')
     },
     methods: {
       // 按当前视口自动计算表格高度
       autoSetHeight() {
-        console.log('auto set')
         //  全屏 - Header - 搜索栏 | 全屏 - el-table起始高度
         const el = window.document.getElementsByClassName('el-table')
         if (el.length > 0)

@@ -119,7 +119,6 @@
   import { mapGetters } from 'vuex'
   import { packageChildOption } from '@/api/package'
   import {beforeDay,parseTime} from '@/utils'
-  import Bus from '@/utils/bus'
 
   export default {
     name: "LayoutFilter",
@@ -174,7 +173,7 @@
     mounted() {
       this.$store.dispatch('filter/gameInfo')
 
-      Bus.$on('changeFilterShow', (val) => {
+      this.$bus.$on('changeFilterShow', (val) => {
         this.show = val
       })
 
@@ -322,11 +321,11 @@
       },
       // 动画结束
       afterLeave() {
-        Bus.$emit('setHeight')
+        this.$bus.$emit('setHeight')
       }
     },
     beforeDestroy() {
-      Bus.$off('changeFilterShow')
+      this.$bus.$off('changeFilterShow')
     }
   }
 </script>
