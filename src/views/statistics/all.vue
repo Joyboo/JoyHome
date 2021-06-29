@@ -16,29 +16,7 @@
       </template>
     </layout-filter>
 
-    <template v-if="menu == 'daily'">
-      <daily-component :loading="loading" :dailydata="tableData"></daily-component>
-    </template>
-
-    <template v-else-if="menu == 'ltv'">
-      <ltv-component :loading="loading" :ltvdata="tableData"></ltv-component>
-    </template>
-
-    <template v-else-if="menu == 'regkeep'">
-      <regkeep-component :loading="loading" :regkeepdata="tableData"></regkeep-component>
-    </template>
-
-    <template v-else-if="menu == 'paykeep'">
-      <paykeep-component :loading="loading" :paykeepdata="tableData"></paykeep-component>
-    </template>
-
-    <template v-else-if="menu == 'roi'">
-      <roi-component :loading="loading" :roidata="tableData"></roi-component>
-    </template>
-
-    <template v-else-if="menu == 'droi'">
-      <roi-component :loading="loading" :roidata="tableData"></roi-component>
-    </template>
+    <component :is="using" :data="tableData" :loading="loading"/>
   </div>
 </template>
 
@@ -73,6 +51,7 @@
     data() {
 
       return {
+        using: '',
         loading: false,
         query: {
           gameid: [],
@@ -83,37 +62,43 @@
           endtime: true
         },
         tableData: [],
-        menu: 'daily',
+        menu: '',
         menulist: {
           roi: {
             name: '流水ROI',
             tzn: '8',
+            components: 'RoiComponent',
           },
           droi: {
             name: '分成后ROI',
             tzn: '8',
+            components: 'RoiComponent',
           },
           regkeep: {
             name: '注册留存',
             tzn: '-5',
+            components: 'RegkeepComponent',
           },
           paykeep: {
             name: '付费留存',
             tzn: '-5',
+            components: 'PaykeepComponent',
           },
           ltv: {
             name: 'LTV',
             tzn: '-5',
+            components: 'LtvComponent',
           },
           daily: {
             name: '游戏日报',
             tzn: '-5',
+            components: 'DailyComponent',
           }
         }
       }
     },
     mounted() {
-      this.query.tzn = this.menulist[this.menu].tzn
+      this.chgRadio('daily')
     },
     methods: {
       checkPermission,
@@ -142,6 +127,7 @@
         this.tableData = [];
         this.menu = val
         this.query.tzn = this.menulist[this.menu].tzn
+        this.using = this.menulist[this.menu].components
         this.search()
       },
       chgTzn(val) {

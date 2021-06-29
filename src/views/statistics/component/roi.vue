@@ -1,6 +1,6 @@
 <template>
 
-  <table-index :size="size" :data="roidata" :column="column" :heji="true" :loading="loading"></table-index>
+  <table-index :size="size" :data="data" :column="column" :heji="true" :loading="loading"></table-index>
 
 </template>
 
@@ -18,7 +18,7 @@
       ...mapGetters(['size'])
     },
     props: {
-      roidata: {
+      data: {
         required: true,
         type: Array,
         defualt: [],

@@ -9,7 +9,7 @@
       </template>
     </layout-filter>
 
-    <daily-component :loading="loading" :dailydata="tableData"></daily-component>
+    <daily-component :loading="loading" :data="tableData"></daily-component>
 
   </div>
 

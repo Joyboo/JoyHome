@@ -9,7 +9,7 @@
       </template>
     </layout-filter>
 
-    <paykeep-component :paykeepdata="tableData" :loading="loading"></paykeep-component>
+    <paykeep-component :data="tableData" :loading="loading"></paykeep-component>
 
   </div>
 </template>

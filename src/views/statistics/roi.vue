@@ -9,7 +9,7 @@
       </template>
     </layout-filter>
 
-    <roi-component :roidata="tableData" :loading="loading"></roi-component>
+    <roi-component :data="tableData" :loading="loading"></roi-component>
 
   </div>
 </template>

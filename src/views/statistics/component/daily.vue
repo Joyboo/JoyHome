@@ -1,6 +1,6 @@
 <template>
 
-    <table-index :size="size" :data="dailydata" :column="column" :loading="loading" :heji="true"></table-index>
+    <table-index :size="size" :data="data" :column="column" :loading="loading" :heji="true"></table-index>
 
 </template>
 
@@ -18,7 +18,7 @@
       ...mapGetters(['size'])
     },
     props: {
-      dailydata: {
+      data: {
         required: true,
         type: Array,
         defualt: [],

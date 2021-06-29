@@ -1,6 +1,6 @@
 <template>
 
-    <table-index :loading="loading" :data="ltvdata" :column="column"></table-index>
+    <table-index :loading="loading" :data="data" :column="column"></table-index>
 
 </template>
 
@@ -17,7 +17,7 @@
       ...mapGetters(['size', 'gamelist'])
     },
     props: {
-      ltvdata: {
+      data: {
         required: true,
         type: Array,
         defualt: [],

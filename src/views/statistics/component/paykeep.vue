@@ -1,6 +1,6 @@
 <template>
 
-  <table-index :size="size" :data="paykeepdata" :column="column" :loading="loading"></table-index>
+  <table-index :size="size" :data="data" :column="column" :loading="loading"></table-index>
 
 </template>
 
@@ -18,7 +18,7 @@
       ...mapGetters(['size'])
     },
     props: {
-      paykeepdata: {
+      data: {
         required: true,
         type: Array,
         defualt: [],

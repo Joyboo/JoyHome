@@ -9,7 +9,7 @@
       </template>
     </layout-filter>
 
-    <ltv-component :ltvdata="tableData" :loading="loading"></ltv-component>
+    <ltv-component :data="tableData" :loading="loading"></ltv-component>
 
   </div>
 </template>

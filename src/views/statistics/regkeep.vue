@@ -9,7 +9,7 @@
       </template>
     </layout-filter>
 
-    <regkeep-component :regkeepdata="tableData" :loading="loading"></regkeep-component>
+    <regkeep-component :data="tableData" :loading="loading"></regkeep-component>
 
   </div>
 </template>
