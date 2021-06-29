@@ -61,7 +61,7 @@
             </el-col>
             <el-col :span="10">
               <fieldset>
-                <legend><b>请使用csv、xls、xlsx文档导入,以Excel为例：</b></legend>
+                <legend><b>请使用下方模板文件为原型上传：</b></legend>
                 <span>首行空出将被视为表头而不被导入。 </span><br>
                 <span><b>A列</b>：包含年月日的任意格式日期值。</span><br>
                 <span><b>B列</b>：所属游戏的id。</span><br>
