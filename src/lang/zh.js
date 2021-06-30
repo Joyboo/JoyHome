@@ -185,7 +185,8 @@ export default {
     sidebarLogo: '侧边栏 Logo',
     setThemeIng: '编译主题',
     accordion: '菜单手风琴模式',
-    topMenu: 'TOP菜单模式'
+    topMenu: 'TOP菜单模式',
+    duration: '过渡效果时长'
   },
   open: '打开'
 }

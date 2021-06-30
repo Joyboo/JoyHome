@@ -1,6 +1,6 @@
 <template>
   <div>
-    <transition name="el-zoom-in-top" @afterLeave="afterLeave">
+    <transition name="el-zoom-in-top" @afterLeave="afterLeave" mode="in-out" :duration="duration">
       <div v-show="show || !isMobile">
         <el-form :model="query" :size="size" :inline="true">
 
@@ -103,9 +103,9 @@
       </div>
     </transition>
 
-    <transition v-if="isMobile" name="el-fade-in-linear" @afterLeave="afterLeave">
+    <transition v-if="isMobile" name="el-fade-in-linear" mode="out-in" @afterLeave="afterLeave" :duration="duration">
       <div v-show="!show" style="margin-bottom: 15px;">
-        <el-button type="primary" :size="size" @click="show = true">
+        <el-button type="primary" :size="size" @click="setShowTimeout(true)">
           <svg-icon icon-class="filter" /> 筛选
         </el-button>
       </div>
@@ -135,6 +135,9 @@
       },
       theme() {
         return this.$store.state.settings.theme
+      },
+      duration() {
+        return this.$store.state.settings.duration
       },
       region() {
         return this.config.region_domain.region;
@@ -173,9 +176,7 @@
     mounted() {
       this.$store.dispatch('filter/gameInfo')
 
-      this.$bus.$on('changeFilterShow', (val) => {
-        this.show = val
-      })
+      this.$bus.$on('changeFilterShow', this.setShowTimeout)
 
       // 时间
       if (this.isBegin)
@@ -312,7 +313,7 @@
         }
       },
       search() {
-        this.show = false
+        this.setShowTimeout(false)
         this.$emit('search')
       },
       // 改变时区
@@ -322,6 +323,10 @@
       // 动画结束
       afterLeave() {
         this.$bus.$emit('setHeight')
+      },
+      // 在动画时间结束后执行
+      setShowTimeout(val) {
+        setTimeout(() => this.show = val, this.duration)
       }
     },
     beforeDestroy() {

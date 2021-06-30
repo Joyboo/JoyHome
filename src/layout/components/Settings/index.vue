@@ -38,6 +38,14 @@
         <el-switch v-model="topMenuMode" :disabled="device === 'mobile'" class="drawer-switch" />
       </div>
 
+      <fieldset class="fieldset">
+        <legend>&nbsp;&nbsp;{{$t('settings.duration')}}&nbsp;&nbsp;</legend>
+        <div class="block">
+          <el-slider v-model="duration" :min="1" :max="700" :show-tooltip="false"></el-slider>
+        </div>
+        <div class="block slider-number">{{duration}}</div>
+      </fieldset>
+
     </div>
   </div>
 </template>
@@ -105,6 +113,14 @@ export default {
         this.setMode('topMenuMode', val)
         this.$store.dispatch('permission/setSidebarByMode', val)
       }
+    },
+    duration: {
+      get() {
+        return this.getMode('duration')
+      },
+      set(val) {
+        this.setMode('duration', val)
+      }
     }
   },
   methods: {
@@ -146,6 +162,18 @@ export default {
 
   .drawer-switch {
     float: right
+  }
+
+  .fieldset {
+    border: 1px dotted #ccc;
+    color: rgba(0, 0, 0, 0.65);
+    margin-top: 5px;
+
+    .slider-number {
+      text-align: center;
+      line-height: 10px;
+      font-size: 12px;
+    }
   }
 }
 </style>

@@ -185,7 +185,8 @@ export default {
     sidebarLogo: 'Sidebar Logo',
     setThemeIng: 'Compiling the theme',
     accordion: 'Menu Accordion Mode',
-    topMenu: 'Top Menu Mode'
+    topMenu: 'Top Menu Mode',
+    duration: 'Transition duration'
   },
   open: 'Open'
 }

@@ -1,6 +1,6 @@
 <template>
   <el-breadcrumb class="app-breadcrumb" separator="/">
-    <transition-group name="breadcrumb">
+    <transition-group name="breadcrumb" :duration="duration">
       <el-breadcrumb-item v-for="(item,index) in levelList" :key="item.path">
         <!--add by Joyboo 面包屑中优先显示完整名-->
         <span v-if="item.redirect==='noRedirect'||index==levelList.length-1" class="no-redirect">
@@ -20,6 +20,11 @@ export default {
   data() {
     return {
       levelList: null
+    }
+  },
+  computed: {
+    duration() {
+      return this.$store.state.settings.duration
     }
   },
   watch: {
