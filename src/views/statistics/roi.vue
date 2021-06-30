@@ -53,7 +53,11 @@
           return
         }
         this.loading = true
-        statistics('roi', this.query)
+        const query = Object.assign({}, this.query, {
+          pkgbnd: this.query.pkgbnd.join(','),
+          gameid: this.query.gameid.join(',')
+        })
+        statistics('roi', query)
           .then(({code, msg, data}) => {
             if (!code)
             {

@@ -349,7 +349,8 @@
       // 查充值数据
       searchPayment() {
         this.payloading = true
-        payIndex(this.query)
+        const query = Object.assign({}, this.query, {pkgbnd: this.query.pkgbnd.join(',')})
+        payIndex(query)
           .then(({code, msg, data}) => {
             if (!code )
             {
@@ -365,7 +366,8 @@
       // 查登录数据
       searchLogin() {
         this.loginloading = true
-        loginIndex(this.query)
+        const query = Object.assign({}, this.query, {pkgbnd: this.query.pkgbnd.join(',')})
+        loginIndex(query)
           .then(({code, msg, data}) => {
             if (!code)
             {

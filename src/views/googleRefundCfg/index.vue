@@ -67,7 +67,8 @@
     methods: {
       search() {
         this.loading = true
-        googlerefountIndex(this.query)
+        const query = Object.assign({}, this.query, {pkgbnd: this.query.pkgbnd.join(',')})
+        googlerefountIndex(query)
           .then(({code, msg, data}) => {
             if (!code)
             {

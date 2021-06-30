@@ -115,7 +115,8 @@
           return
         }
         this.loading = true
-        regIndex(this.query)
+        const query = Object.assign({}, this.query, {pkgbnd: this.query.pkgbnd.join(',')})
+        regIndex(query)
           .then(({code, msg, data}) => {
             if (!code)
             {

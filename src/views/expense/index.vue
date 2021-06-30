@@ -52,7 +52,8 @@
     methods: {
       search() {
         this.loading = true
-        expenseIndex(this.query)
+        const query = Object.assign({}, this.query, {pkgbnd: this.query.pkgbnd.join(',')})
+        expenseIndex(query)
           .then(({code, msg, data}) => {
             if (!code)
             {

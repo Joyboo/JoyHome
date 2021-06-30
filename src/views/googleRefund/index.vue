@@ -183,7 +183,8 @@
     methods: {
       search() {
         this.loading = true
-        refundIndex(this.query)
+        const query = Object.assign({}, this.query, {pkgbnd: this.query.pkgbnd.join(',')})
+        refundIndex(query)
           .then(({code, msg, data}) => {
             if (!code)
             {

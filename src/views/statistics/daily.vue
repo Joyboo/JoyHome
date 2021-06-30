@@ -53,7 +53,11 @@ export default {
         return
       }
       this.loading = true
-      statistics('daily', this.query)
+      const query = Object.assign({}, this.query, {
+        pkgbnd: this.query.pkgbnd.join(','),
+        gameid: this.query.gameid.join(',')
+      })
+      statistics('daily', query)
         .then(({code, msg, data}) => {
           if (!code)
           {

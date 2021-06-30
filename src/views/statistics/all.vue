@@ -107,7 +107,11 @@
         // 虽然在TableData组件加入data变量的侦听器也可以统一处理，但筛选区收起的动作会在data变化之后，这延长了用户等待时间
         this.$bus.$emit('changeFilterShow', false)
         this.loading = true
-        statistics(this.menu, this.query)
+        const query = Object.assign({}, this.query, {
+          pkgbnd: this.query.pkgbnd.join(','),
+          gameid: this.query.gameid.join(',')
+        })
+        statistics(this.menu, query)
           .then(({code, msg, data}) => {
             if (!code)
             {

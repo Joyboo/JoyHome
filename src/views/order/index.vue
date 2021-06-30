@@ -138,7 +138,7 @@
               if (row.id == 'sum') {
                 return '<span style="color: red;">' + row.pk + '</span>'
               } else {
-                return this.query.gameid + '-' + row.id + '-' + index
+                return row.gameid + '-' + row.id + '-' + index
               }
             }
           }
@@ -173,7 +173,7 @@
               } else {
                 this.$router.push({
                   path: router,
-                  query: { uid: index, gameid: this.query.gameid, ProxyRegion: this.query.ProxyRegion }
+                  query: { uid: index, gameid: row.gameid, ProxyRegion: this.query.ProxyRegion }
                 })
               }
             },
@@ -225,11 +225,20 @@
     methods: {
       search() {
         this.loading = true
-        orderIndex(this.query)
+        const query = Object.assign({}, this.query, {pkgbnd: this.query.pkgbnd.join(',')})
+        const {gameid} = query
+        orderIndex(query)
           .then(({code, msg, data}) => {
             if (!code)
             {
               return this.$message.error(msg)
+            }
+            if (data.data)
+            {
+              for(const i in data.data)
+              {
+                data.data[i].gameid = gameid
+              }
             }
             this.tableData = data.data || []
             this.total = data.totals || 0
@@ -245,7 +254,7 @@
         this.dialog = true
         this.detailQuery = {
           id: row.id,
-          gameid: this.query.gameid,
+          gameid: row.gameid,
           instime: row.instime
         }
       },
@@ -263,8 +272,8 @@
           this.repairQuery = {
             pf: row.pf,
             ProxyRegion: this.query.ProxyRegion,
-            gameid: this.query.gameid,
-            ordersn: this.query.gameid + '-' + row.id + '-' + row.instime
+            gameid: row.gameid,
+            ordersn: row.gameid + '-' + row.id + '-' + row.instime
           }
         }
       },
