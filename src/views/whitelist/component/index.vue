@@ -1,5 +1,5 @@
 <template>
-  <el-form :model="form" :size="size" label-width="15rem">
+  <el-form :model="form" :size="size" label-width="15rem" :label-position="device === 'mobile' ? 'top' : 'right'">
     <el-form-item label="设备号">
       <el-input v-model="form.devid" clearable />
     </el-form-item>
@@ -28,7 +28,7 @@
       ButtonTpl
     },
     computed: {
-      ...mapGetters(['size']),
+      ...mapGetters(['size', 'device']),
     },
     props: {
       form: Object,

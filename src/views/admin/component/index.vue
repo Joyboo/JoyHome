@@ -1,6 +1,6 @@
 <template>
-    <div v-loading="load" class="info-container">
-      <el-form ref="AdminForm" :rules="rules" :model="form" :size="size" label-width="15rem">
+    <div v-loading="load" class="view-container">
+      <el-form ref="AdminForm" :rules="rules" :model="form" :size="size" label-width="15rem" :label-position="device === 'mobile' ? 'top' : 'right'">
         <el-tabs type="border-card">
           <el-tab-pane label="管理员信息">
 
@@ -163,7 +163,7 @@
       }
     },
     computed: {
-      ...mapGetters(['size', 'filtergamelist', 'gamelist']),
+      ...mapGetters(['size', 'filtergamelist', 'gamelist', 'device']),
       isupd() {
         return typeof this.form.id != 'undefined'
       },
@@ -281,7 +281,7 @@
       // 允许按id,title和path匹配
       filterNode(value, data) {
         if (!value) return true;
-        return data.title.indexOf(value) !== -1 || data.path.indexOf(value) !== -1;
+        return data.title.indexOf(value) !== -1 || data.path.indexOf(value) !== -1 || data.id == value;
       },
       submit() {
         this.$refs.AdminForm.validate((valid) => {

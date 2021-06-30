@@ -1,5 +1,5 @@
 <template>
-  <div class="info-container" v-loading="loading">
+  <div class="view-container" v-loading="loading">
     <crontab-info :form="form" @submit="submit"></crontab-info>
   </div>
 </template>

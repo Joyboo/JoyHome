@@ -1,6 +1,6 @@
 <template>
-  <div v-loading="loading" class="info-container">
-    <el-form ref="package-search" :model="form" :size="size" :rules="rules" label-width="15rem">
+  <div v-loading="loading" class="view-container">
+    <el-form ref="package-search" :model="form" :size="size" :rules="rules" label-width="15rem" :label-position="device === 'mobile' ? 'top' : 'right'">
       <el-tabs type="border-card">
         <el-tab-pane label="基本信息">
           <el-form-item label="所属游戏">
@@ -20,11 +20,11 @@
 
           <el-form-item label="包">
             <el-row :gutter="20">
-              <el-col :span="10">
+              <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
                 <el-input v-model="form.name" class="colInput" clearable placeholder="包名" />
               </el-col>
 
-              <el-col :span="10">
+              <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
                 <el-input v-model="form.pkgbnd" class="colInput" clearable placeholder="包id(bundle_id或pkg_id)" />
               </el-col>
             </el-row>
@@ -32,13 +32,13 @@
 
           <el-form-item label="密钥">
             <el-row :gutter="20">
-              <el-col :span="10">
+              <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
                 <el-input v-model="form.extension.logkey" class="colInput" clearable placeholder="登录密钥">
                   <el-button slot="prepend" @click="get_gkey('logkey')">随机</el-button>
                 </el-input>
               </el-col>
 
-              <el-col :span="10">
+              <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
                 <el-input v-model="form.extension.paykey" class="colInput" clearable placeholder="支付密钥">
                   <el-button slot="prepend" @click="get_gkey('paykey')">随机</el-button>
                 </el-input>
@@ -81,7 +81,7 @@
 
           <el-form-item label="google参数">
             <el-row :gutter="20">
-              <el-col :span="10">
+              <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
                 <el-input
                   v-model="form.extension.google_paykey"
                   class="colInput"
@@ -92,7 +92,7 @@
                 />
               </el-col>
 
-              <el-col :span="10">
+              <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
                 <el-input
                   v-model="form.extension.google.web_clientid"
                   class="colInput"
@@ -107,7 +107,7 @@
 
           <el-form-item label="华为参数">
             <el-row :gutter="20">
-              <el-col :span="10">
+              <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
                 <el-input
                   v-model="form.extension.huawei.production.clientid"
                   class="colInput"
@@ -118,7 +118,7 @@
                 />
               </el-col>
 
-              <el-col :span="10">
+              <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
                 <el-input
                   v-model="form.extension.huawei.production.clientsecret"
                   class="colInput"
@@ -133,7 +133,7 @@
 
           <el-form-item label="facebook参数">
             <el-row :gutter="20">
-              <el-col :span="10">
+              <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
                 <el-input
                   v-model="form.extension.facebook.bindnotice"
                   class="colInput"
@@ -144,7 +144,7 @@
                 />
               </el-col>
 
-              <el-col :span="10">
+              <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
                 <el-input
                   v-model="form.extension.facebook.appid"
                   class="colInput"
@@ -159,7 +159,7 @@
 
           <el-form-item label="MG参数">
             <el-row :gutter="20">
-              <el-col :span="10">
+              <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
                 <el-input
                   v-model="form.extension.mg.appkey"
                   class="colInput"
@@ -170,7 +170,7 @@
                 />
               </el-col>
 
-              <el-col :span="10">
+              <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
                 <el-input
                   v-model="form.extension.mg.publickey"
                   class="colInput"
@@ -218,7 +218,7 @@
               </el-row>
 
               <el-row :gutter="20">
-                <el-col :span="10">
+                <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
                   <el-input
                     v-model="form.extension.paypal.production.clientid"
                     class="colInput"
@@ -228,7 +228,7 @@
                     placeholder="正式clientId"
                   />
                 </el-col>
-                <el-col :span="10">
+                <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
                   <el-input
                     v-model="form.extension.paypal.production.clientsecret"
                     class="colInput"
@@ -240,7 +240,7 @@
                 </el-col>
               </el-row>
               <el-row :gutter="20">
-                <el-col :span="10">
+                <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
                   <el-input
                     v-model="form.extension.paypal.sandbox.clientid"
                     class="colInput"
@@ -250,7 +250,7 @@
                     placeholder="沙盒clientId"
                   />
                 </el-col>
-                <el-col :span="10">
+                <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
                   <el-input
                     v-model="form.extension.paypal.sandbox.clientsecret"
                     class="colInput"
@@ -277,7 +277,7 @@
               </el-row>
 
               <el-row :gutter="20">
-                <el-col :span="10">
+                <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
                   <el-input
                     v-model="form.extension.payssion.production.clientid"
                     class="colInput"
@@ -287,7 +287,7 @@
                     placeholder="正式clientId"
                   />
                 </el-col>
-                <el-col :span="10">
+                <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
                   <el-input
                     v-model="form.extension.payssion.production.clientsecret"
                     class="colInput"
@@ -299,7 +299,7 @@
                 </el-col>
               </el-row>
               <el-row :gutter="20">
-                <el-col :span="10">
+                <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
                   <el-input
                     v-model="form.extension.payssion.sandbox.clientid"
                     class="colInput"
@@ -309,7 +309,7 @@
                     placeholder="沙盒clientId"
                   />
                 </el-col>
-                <el-col :span="10">
+                <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
                   <el-input
                     v-model="form.extension.payssion.sandbox.clientsecret"
                     class="colInput"
@@ -335,10 +335,10 @@
               <el-button icon="el-icon-plus" :size="size" type="primary" plain @click="cp_param" />
             </el-row>
             <el-row v-for="(ipt, key) in form.extension.adjust.event" :key="key" :gutter="10">
-              <el-col :span="8">
+              <el-col :span="10">
                 <el-input v-model="ipt.Key" class="colInput" clearable placeholder="Key" />
               </el-col>
-              <el-col :span="8">
+              <el-col :span="10">
                 <el-input v-model="ipt.Value" class="colInput" clearable placeholder="Value" />
               </el-col>
               <el-col :span="4">
@@ -364,7 +364,7 @@
           <div class="joyline" />
 
           <el-form-item label="背景图">
-            <el-col :span="12">
+            <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
               <el-upload
                 class="upload-demo"
                 action="joyboo"
@@ -382,7 +382,7 @@
           <div class="joyline" />
 
           <el-form-item label="按钮图">
-            <el-col :span="12">
+            <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
               <el-upload
                 class="upload-demo"
                 action="joyboo"
@@ -400,7 +400,7 @@
           <div class="joyline" />
 
           <el-form-item label="标题图 rate now">
-            <el-col :span="12">
+            <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
               <el-upload
                 class="upload-demo"
                 action="joyboo"
@@ -418,7 +418,7 @@
           <div class="joyline" />
 
           <el-form-item label="左按钮图 its ok">
-            <el-col :span="12">
+            <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
               <el-upload
                 class="upload-demo"
                 action="joyboo"
@@ -436,7 +436,7 @@
           <div class="joyline" />
 
           <el-form-item label="右按钮图 love it">
-            <el-col :span="12">
+            <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
               <el-upload
                 class="upload-demo"
                 action="joyboo"
@@ -458,7 +458,7 @@
         </el-tab-pane>
         <el-tab-pane label="分享配置">
           <el-form-item label="分享图">
-            <el-col :span="12">
+            <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
               <el-upload
                 class="upload-demo"
                 action="joyboo"
@@ -515,7 +515,8 @@ export default {
       'size',
       'gamelist',
       'filtergamelist',
-      'packos'
+      'packos',
+      'device'
     ]),
     isupd() {
       return typeof this.form.id !== 'undefined'

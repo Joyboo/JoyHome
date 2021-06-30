@@ -1,6 +1,6 @@
 <template>
-  <div v-loading="loading" class="info-container">
-    <el-form :model="form" :size="size" label-width="15rem">
+  <div v-loading="loading" class="view-container">
+    <el-form :model="form" :size="size" label-width="15rem" :label-position="device === 'mobile' ? 'top' : 'right'">
       <el-form-item label="所属游戏">
         <el-select v-model="form.gameid" filterable>
           <el-option
@@ -38,7 +38,7 @@
       this.$store.dispatch('filter/gameInfo')
     },
     computed: {
-      ...mapGetters(['size', 'filtergamelist'])
+      ...mapGetters(['size', 'filtergamelist', 'device'])
     },
     props: {
       loading: {

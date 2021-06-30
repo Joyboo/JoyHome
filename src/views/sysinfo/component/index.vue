@@ -1,5 +1,5 @@
 <template>
-  <el-form :model="form" :size="size" label-width="15rem">
+  <el-form :model="form" :size="size" label-width="15rem" :label-position="device === 'mobile' ? 'top' : 'right'">
     <el-form-item label="所属组">
       <el-select v-model="form.grpid" placeholder="请选择所属组">
         <el-option v-for="(s, k) in grpid" :key="k" :label="s" :value="k" />
@@ -26,7 +26,7 @@
         v-model="form.value"
         type="textarea"
         :rows="10"
-        style="width: 50%;"
+        :style="{width: device === 'mobile' ? '100%' : '50%'}"
         clearable
       />
     </el-form-item>
@@ -43,7 +43,7 @@
       ButtonTpl
     },
     computed: {
-      ...mapGetters(['size']),
+      ...mapGetters(['size', 'device']),
     },
     mounted() {
       // 获取配置

@@ -1,8 +1,8 @@
 <template>
-  <div v-loading="load" class="info-container">
-    <el-form ref="RoleForm" :model="form" :rules="rules" :size="size" label-width="15rem">
+  <div v-loading="load" class="view-container">
+    <el-form ref="RoleForm" :model="form" :rules="rules" :size="size" label-width="15rem" :label-position="isMobile ? 'top' : 'right'">
       <el-form-item label="角色名称" prop="name">
-        <el-input class="myCol" v-model="form.name" placeholder="请输入角色名称" clearable />
+        <el-input :class="{myCol: !isMobile}" v-model="form.name" placeholder="请输入角色名称" clearable />
       </el-form-item>
 
       <el-form-item label="角色描述">
@@ -10,7 +10,7 @@
           v-model="form.summary"
           type="textarea"
           :rows="3"
-          class="myCol"
+          :class="{myCol: !isMobile}"
           clearable
           placeholder="请输入角色描述"
         />
@@ -19,12 +19,13 @@
       <el-form-item label="权限列表">
         <el-input
           placeholder="输入关键字进行过滤,可选 id，name，path"
-          class="myCol"
+          :class="{myCol: !isMobile}"
           v-model="filterText">
         </el-input>
 
         <el-tree
-          class="filter-tree myCol"
+          class="filter-tree"
+          :class="{myCol: !isMobile}"
           :data="menuTable"
           highlight-current
           show-checkbox
@@ -58,7 +59,10 @@
       ButtonTpl
     },
     computed: {
-      ...mapGetters(['size']),
+      ...mapGetters(['size', 'device']),
+      isMobile() {
+        return this.device === 'mobile'
+      },
       load: {
         get() {
           return this.loading

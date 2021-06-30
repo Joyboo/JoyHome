@@ -1,5 +1,5 @@
 <template>
-  <div class="info-container" v-loading="loading">
+  <div class="view-container" v-loading="loading">
     <whitelist-info :form="form" @submit="submit"></whitelist-info>
   </div>
 </template>

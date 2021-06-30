@@ -1,11 +1,13 @@
 <template>
-  <div v-loading="loading" class="info-container">
-    <el-form ref="game-search" :model="form" :size="size" label-width="15rem">
+  <div v-loading="loading" class="view-container">
+    <el-form ref="game-search" :model="form" :size="size" label-width="15rem" :label-position="device === 'mobile' ? 'top' : 'right'">
       <el-tabs type="border-card">
         <el-tab-pane label="对接信息">
 
           <el-form-item label="名称">
-            <el-input v-model="form.name" placeholder="产品名称" style="width: 50%" maxlength="50" show-word-limit clearable />
+            <el-input v-model="form.name" placeholder="产品名称"
+                      :style="{width: device === 'mobile' ? '100%' : '50%'}"
+                      maxlength="50" show-word-limit clearable />
           </el-form-item>
 
           <el-form-item label="类型">
@@ -152,7 +154,8 @@ export default {
   props: ['form', 'loading'],
   computed: {
     ...mapGetters([
-      'size'
+      'size',
+      'device'
     ])
   },
   data() {

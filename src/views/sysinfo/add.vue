@@ -1,5 +1,5 @@
 <template>
-  <div class="info-container" v-loading="loading">
+  <div class="view-container" v-loading="loading">
     <sysinfo :form="form" @submit="submit"></sysinfo>
   </div>
 </template>
