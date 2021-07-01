@@ -72,18 +72,18 @@
           {
             key: 'id',
             text: 'ID',
-            width: 100,
+            // width: 100,
             sort: true
           },
           {
             key: 'admname',
             text: '管理员',
-            width: 100
+            // width: 100
           },
           {
             key: 'admid',
             text: '管理员ID',
-            width: 80
+            // width: 80
           },
           {
             key: 'itime',
@@ -100,6 +100,7 @@
             key: 'content',
             align: 'left',
             text: 'SQL',
+            width: 1000
           }
         ]
       }

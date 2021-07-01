@@ -197,7 +197,7 @@
               {
                 return '<span style="color: red;">' + row.pk + '<h3/>'
               } else {
-                return this.gameid + '-' + row.id + '-' + index
+                return row.gameid + '-' + row.id + '-' + index
               }
             }
           },{
@@ -350,12 +350,20 @@
       searchPayment() {
         this.payloading = true
         const query = Object.assign({}, this.query, {pkgbnd: this.query.pkgbnd.join(',')})
+        const {gameid} = query
         payIndex(query)
           .then(({code, msg, data}) => {
             if (!code )
             {
               this.$message.error(msg)
             } else {
+              if (data.data)
+              {
+                for (const i in data.data)
+                {
+                  data.data[i].gameid = gameid
+                }
+              }
               this.payData = data.data || [];
             }
           })
@@ -367,12 +375,20 @@
       searchLogin() {
         this.loginloading = true
         const query = Object.assign({}, this.query, {pkgbnd: this.query.pkgbnd.join(',')})
+        const {gameid} = query
         loginIndex(query)
           .then(({code, msg, data}) => {
             if (!code)
             {
               this.$message.error(msg)
             } else {
+              if (data.data)
+              {
+                for (const i in data.data)
+                {
+                  data.data[i].gameid = gameid
+                }
+              }
               this.loginData = data.data || [];
             }
           })

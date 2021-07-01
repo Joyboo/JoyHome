@@ -1,6 +1,6 @@
 <template>
   <div class="view-container">
-    <el-form ref="ModifyForm" :rules="rules" :model="form" :size="size" v-loading="loading" label-width="15rem">
+    <el-form ref="ModifyForm" :rules="rules" :model="form" :size="size" v-loading="loading" label-width="15rem" :label-position="device === 'mobile' ? 'top' : 'right'">
       <el-form-item  prop="username">
         <template slot="label">
           用户名 <i class="labeli">请输入手机号</i>
@@ -12,21 +12,21 @@
         <template slot="label">
           旧密码 <i class="labeli">如留空,则原密码保持不变</i>
         </template>
-        <el-input type="password" v-model="form.__password" clearable />
+        <el-input type="password" v-model="form.__password" autocomplete="new-password" clearable />
       </el-form-item>
 
       <el-form-item >
         <template slot="label">
           新密码 <i class="labeli">如想修改,请先填写旧密码</i>
         </template>
-        <el-input type="password" v-model="form.password" clearable />
+        <el-input type="password" v-model="form.password" autocomplete="new-password" clearable />
       </el-form-item>
 
       <el-form-item prop="password">
         <template slot="label">
           确认新密码 <i class="labeli"></i>
         </template>
-        <el-input type="password" v-model="password" clearable />
+        <el-input type="password" v-model="password" autocomplete="new-password" clearable />
       </el-form-item>
 
       <el-form-item label="真实姓名">
@@ -67,7 +67,7 @@
       MenuCascader
     },
     computed: {
-      ...mapGetters(['size', 'filtergamelist', 'userinfo']),
+      ...mapGetters(['size', 'filtergamelist', 'userinfo', 'device']),
     },
     async mounted() {
       this.loading = true

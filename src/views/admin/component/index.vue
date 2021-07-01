@@ -15,14 +15,14 @@
               <template slot="label">
                 密码 <i v-if="isupd" class="labeli">如留空,则原密码保持不变</i>
               </template>
-              <el-input type="password" v-model="form.password" clearable />
+              <el-input type="password" v-model="form.password" autocomplete="new-password" clearable />
             </el-form-item>
 
             <el-form-item prop="password">
               <template slot="label">
                 确认密码 <i v-if="isupd" class="labeli"></i>
               </template>
-              <el-input type="password" v-model="password" clearable />
+              <el-input type="password" v-model="password" autocomplete="new-password" clearable />
             </el-form-item>
 
             <el-form-item label="真实姓名">
