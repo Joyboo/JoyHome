@@ -331,19 +331,21 @@
           </el-form-item>
 
           <el-form-item label="事件">
-            <el-row>
-              <el-button icon="el-icon-plus" :size="size" type="primary" plain @click="cp_param" />
-            </el-row>
+            <br v-if="device !== 'mobile'" />
             <el-row v-for="(ipt, key) in form.extension.adjust.event" :key="key" :gutter="10">
-              <el-col :span="10">
+              <el-col :span="9">
                 <el-input v-model="ipt.Key" class="colInput" clearable placeholder="Key" />
               </el-col>
-              <el-col :span="10">
+              <el-col :span="9">
                 <el-input v-model="ipt.Value" class="colInput" clearable placeholder="Value" />
               </el-col>
               <el-col :span="4">
                 <el-button icon="el-icon-delete" :size="size" type="danger" plain @click="del_param(ipt)" />
               </el-col>
+            </el-row>
+            <el-row>
+              <el-button icon="el-icon-plus" :size="size" type="primary" plain @click="cp_param" />
+              <slot name="adjust"></slot>
             </el-row>
           </el-form-item>
 

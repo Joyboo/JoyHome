@@ -1,16 +1,24 @@
 <template>
-  <package-info :form="form" :loading="loading" @submit="submit" />
+  <package-info :form="form" :loading="loading" @submit="submit" >
+    <template #adjust>
+      <el-button type="success" :size="size" icon="el-icon-check" plain @click="saceAdjust"></el-button>
+    </template>
+  </package-info>
 </template>
 
 <script>
 import packageInfo from './component'
-import { packageEdit } from '@/api/package'
+import { packageEdit,saveAdjustEvent } from '@/api/package'
 import {closeTab, copyTo} from "@/utils";
+import {mapGetters} from "vuex";
 
 export default {
   name: 'Edit',
   components: {
     packageInfo
+  },
+  computed: {
+    ...mapGetters(['size'])
   },
   data() {
     return {
@@ -136,6 +144,28 @@ export default {
         })
         .catch(error => {
           this.$message.error(error || '操作失败')
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
+    // 保存adjust数据
+    saceAdjust() {
+      this.loading = true
+      const post = {
+        id: this.form.id,
+        event: this.form.extension.adjust.event
+      }
+      saveAdjustEvent(post)
+        .then(({code, msg}) => {
+          if (code) {
+            this.$message.success(msg)
+          } else {
+            this.$message.error(msg)
+          }
+        })
+        .catch(error => {
+          this.$message.error(error)
         })
         .finally(() => {
           this.loading = false
