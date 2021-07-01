@@ -1,5 +1,5 @@
 module.exports = {
-  title: '恒坤游戏管理后台',
+  title: 'Joyboo',
 
   /**
    * @type {boolean} true | false

@@ -50,15 +50,9 @@
       </el-tooltip>
 
       <el-row>
-        <el-col :xs="{span: 12}" :sm="{span: 12}" :md="{span: 15}" :lg="{span: 15}" :xl="{span: 15}">
+        <el-col :span="24">
           <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">
             {{ $t('login.logIn') }}
-          </el-button>
-        </el-col>
-
-        <el-col :xs="{span: 12}" :sm="{span: 12}" :md="{span: 9}" :lg="{span: 9}" :xl="{span: 9}">
-          <el-button type="warning" style="width:80%;margin-bottom:30px;float: right;" @click="changeVersion" :disabled="local">
-            {{ $t('login.toold') }}
           </el-button>
         </el-col>
       </el-row>
@@ -71,12 +65,6 @@
 
         <el-button class="thirdparty-button" type="primary" @click="showDialog=true">
           {{ $t('login.thirdparty') }}
-        </el-button>
-      </div>-->
-
-      <!--<div v-show="!local" style="position:relative;height: 25px;">
-        <el-button class="thirdparty-button" type="warning" @click="changeVersion">
-          {{ $t('login.toold') }}
         </el-button>
       </div>-->
 
@@ -163,10 +151,6 @@ export default {
     // window.removeEventListener('storage', this.afterQRScan)
   },
   methods: {
-    // 去旧版后台
-    changeVersion() {
-      window.location.href = 'http://hkgame.ihengkun.com/admin/pub/login?version=0'
-    },
     checkCapslock(e) {
       const { key } = e
       this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')
