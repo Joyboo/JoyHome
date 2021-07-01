@@ -2,9 +2,19 @@ const Mock = require('mockjs')
 const { param2Obj } = require('./utils')
 
 const user = require('./user')
+const menu = require('./menu')
+const sysinfo = require('./sysinfo')
+const game = require('./game')
+const statistics = require('./statistics')
+const _package = require('./package')
 
 const mocks = [
   ...user,
+  ...menu,
+  ...sysinfo,
+  ...game,
+  ...statistics,
+  ..._package
 ]
 
 // for front mock

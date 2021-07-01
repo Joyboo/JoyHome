@@ -113,7 +113,8 @@ npm install --registry=https://registry.npm.taobao.org
 npm run dev
 ```
 
-浏览器访问 http://localhost:9557
+浏览器访问 http://localhost:9557  
+>登录账号: Joyboo 登录密码: 123456
 
 ## 发布
 
@@ -143,4 +144,5 @@ npm run lint -- --fix
 
 更多信息请参考 [使用文档](https://panjiachen.github.io/vue-element-admin-site/zh/)
 
-    后端仔一枚，多多包涵~~ 交流邮箱：Joyboo@aliyun.com
+- Mockdata的字段有需要可以自行定义，可能有些地方并不适用，请自行调整
+- 后端仔一枚，多多包涵~~ 交流邮箱：Joyboo@aliyun.com

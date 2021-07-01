@@ -56,5 +56,16 @@ module.exports = [
         }
       }
     }
+  },
+
+  {
+    url: '/admin/pub/logout',
+    type: 'post',
+    response: config => {
+      return {
+        code: 1,
+        msg: "success",
+      }
+    }
   }
 ]
