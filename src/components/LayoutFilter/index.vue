@@ -1,102 +1,115 @@
 <template>
   <div>
-    <el-form :model="query" :size="size" :inline="true">
+    <transition name="el-zoom-in-top" @afterLeave="afterLeave" mode="in-out" :duration="duration">
+      <div v-show="show || !isMobile">
+        <el-form :model="query" :size="size" :inline="true">
 
-      <!--传递query.gameid表示需要该下拉框，传递类型为字符串时表示为单选，为数组时表示为多选-->
-      <el-form-item v-if="typeof query.gameid != 'undefined'">
-        <el-select v-model="query.gameid" filterable :multiple="gameMul" placeholder="游戏" clearable>
-          <el-option
-            v-for="item in filtergamelist"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-            {{ item.label }} (id:{{ item.value }})
-          </el-option>
-        </el-select>
-      </el-form-item>
+          <!--传递query.gameid表示需要该下拉框，传递类型为字符串时表示为单选，为数组时表示为多选-->
+          <el-form-item v-if="typeof query.gameid != 'undefined'">
+            <el-select v-model="query.gameid" filterable :multiple="gameMul" placeholder="游戏" clearable>
+              <el-option
+                v-for="item in filtergamelist"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+                {{ item.label }} (id:{{ item.value }})
+              </el-option>
+            </el-select>
+          </el-form-item>
 
-      <el-form-item v-if="typeof query.pkgbnd != 'undefined'">
-        <el-select v-model="query.pkgbnd" filterable :multiple="packageMul" placeholder="包" clearable>
-          <el-option
-            v-for="item in packagelist"
-            :key="item.pkgbnd"
-            :label="item.name"
-            :value="item.pkgbnd"
-          >
-            {{ item.name }} (id:{{ item.id }})
-          </el-option>
-        </el-select>
-      </el-form-item>
+          <el-form-item v-if="typeof query.pkgbnd != 'undefined'">
+            <el-select v-model="query.pkgbnd" filterable :multiple="packageMul" placeholder="包" clearable>
+              <el-option
+                v-for="item in packagelist"
+                :key="item.pkgbnd"
+                :label="item.name"
+                :value="item.pkgbnd"
+              >
+                {{ item.name }} (id:{{ item.id }})
+              </el-option>
+            </el-select>
+          </el-form-item>
 
-      <el-form-item v-if="typeof query.ProxyRegion != 'undefined'">
-        <el-select style="width: 100px;" v-model="query.ProxyRegion" placeholder="地区" class="mySelect">
-          <el-option v-for="(rn, rk) in region" :key="rk" :label="rn.name" :value="rk" />
-        </el-select>
-      </el-form-item>
+          <el-form-item v-if="typeof query.ProxyRegion != 'undefined'">
+            <el-select style="width: 100px;" v-model="query.ProxyRegion" placeholder="地区" class="mySelect">
+              <el-option v-for="(rn, rk) in region" :key="rk" :label="rn.name" :value="rk" />
+            </el-select>
+          </el-form-item>
 
-      <el-form-item v-if="typeof query.tzn != 'undefined'">
-        <el-select style="width: 80px;" v-model="query.tzn" placeholder="时区" class="mySelect" @change="chgTzn">
-          <el-option v-for="(rn, rk) in region" :key="rk" :label="rn.tzn + '区'" :value="rn.tzn" />
-        </el-select>
-      </el-form-item>
+          <el-form-item v-if="typeof query.tzn != 'undefined'">
+            <el-select style="width: 80px;" v-model="query.tzn" placeholder="时区" class="mySelect" @change="chgTzn">
+              <el-option v-for="(rn, rk) in region" :key="rk" :label="rn.tzn + '区'" :value="rn.tzn" />
+            </el-select>
+          </el-form-item>
 
-      <el-form-item v-if="isBegin">
-        <el-date-picker
-          v-model="begin"
-          :format="format"
-          :type="query.datetype || 'date'"
-          placeholder="开始时间"
-          value-format="timestamp"
-          :style="{width: (format.length -2) + 'rem'}"
-          :clearable="false"
-        />
-      </el-form-item>
+          <el-form-item v-if="isBegin">
+            <el-date-picker
+              v-model="begin"
+              :format="format"
+              :type="query.datetype || 'date'"
+              placeholder="开始时间"
+              value-format="timestamp"
+              :style="{width: (format.length -2) + 'rem'}"
+              :clearable="false"
+            />
+          </el-form-item>
 
-      <el-form-item v-if="isEnd">
-        <el-date-picker
-          v-model="end"
-          :format="format"
-          :type="query.datetype || 'date'"
-          placeholder="结束时间"
-          value-format="timestamp"
-          :style="{width: (format.length -2) + 'rem'}"
-          :clearable="false"
-        />
-      </el-form-item>
+          <el-form-item v-if="isEnd">
+            <el-date-picker
+              v-model="end"
+              :format="format"
+              :type="query.datetype || 'date'"
+              placeholder="结束时间"
+              value-format="timestamp"
+              :style="{width: (format.length -2) + 'rem'}"
+              :clearable="false"
+            />
+          </el-form-item>
 
-      <!--快捷操作-->
-      <el-form-item v-if="isBegin && isEnd">
-        <el-dropdown trigger="click">
-          <div>
-            <el-button icon="el-icon-date"></el-button>
-          </div>
-          <el-dropdown-menu slot="dropdown" :style="{padding: '0'}">
-            <el-dropdown-item :style="{padding: '10px'}">
-              <el-button class="dateBtn" type="primary" @click="fastdate(8)">近一年</el-button>
-              <el-button class="dateBtn" type="primary" @click="fastdate(7)">近90天</el-button>
-              <el-button class="dateBtn" type="primary" @click="fastdate(6)">近30天</el-button>
-              <el-button class="dateBtn" type="primary" @click="fastdate(5)">近7天</el-button>
-              <el-button class="dateBtn" type="primary" @click="fastdate(4)">上月</el-button>
-              <el-button class="dateBtn" type="primary" @click="fastdate(3)">本月</el-button>
-              <el-button class="dateBtn" type="primary" @click="fastdate(2)">昨天</el-button>
-              <el-button class="dateBtn" type="primary" @click="fastdate(1)">今天</el-button>
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </el-form-item>
+          <!--快捷操作-->
+          <el-form-item v-if="isBegin && isEnd">
+            <el-dropdown trigger="click">
+              <div>
+                <el-button icon="el-icon-date"></el-button>
+              </div>
+              <el-dropdown-menu slot="dropdown" :style="{padding: '0'}">
+                <el-dropdown-item :style="{padding: '10px'}">
+                  <el-button class="dateBtn" type="primary" @click="fastdate(8)">近一年</el-button>
+                  <el-button class="dateBtn" type="primary" @click="fastdate(7)">近90天</el-button>
+                  <el-button class="dateBtn" type="primary" @click="fastdate(6)">近30天</el-button>
+                  <el-button class="dateBtn" type="primary" @click="fastdate(5)">近7天</el-button>
+                  <el-button class="dateBtn" type="primary" @click="fastdate(4)">上月</el-button>
+                  <el-button class="dateBtn" type="primary" @click="fastdate(3)">本月</el-button>
+                  <el-button class="dateBtn" type="primary" @click="fastdate(2)">昨天</el-button>
+                  <el-button class="dateBtn" type="primary" @click="fastdate(1)">今天</el-button>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </el-form-item>
 
-      <!--插槽位-->
-      <slot />
+          <!--插槽位-->
+          <slot />
 
-      <el-form-item v-if="nsch">
-        <el-button :loading="loading" type="primary" icon="el-icon-search" @click="search">查询
+          <el-form-item v-if="nsch">
+            <el-button :loading="loading" type="primary" icon="el-icon-search" @click="search">查询
+            </el-button>
+          </el-form-item>
+
+          <slot name="after"></slot>
+
+        </el-form>
+
+      </div>
+    </transition>
+
+    <transition v-if="isMobile" name="el-fade-in-linear" mode="out-in" @afterLeave="afterLeave" :duration="duration">
+      <div v-show="!show" style="margin-bottom: 15px;">
+        <el-button type="primary" :size="size" @click="setShowTimeout(true)">
+          <svg-icon icon-class="filter" /> 筛选
         </el-button>
-      </el-form-item>
-
-      <slot name="after"></slot>
-
-    </el-form>
+      </div>
+    </transition>
 
   </div>
 </template>
@@ -114,10 +127,17 @@
         'size',
         'filtergamelist',
         'userinfo',
-        'config'
+        'config',
+        'device'
       ]),
+      isMobile() {
+        return this.device === 'mobile'
+      },
       theme() {
         return this.$store.state.settings.theme
+      },
+      duration() {
+        return this.$store.state.settings.duration
       },
       region() {
         return this.config.region_domain.region;
@@ -155,6 +175,8 @@
     },
     mounted() {
       this.$store.dispatch('filter/gameInfo')
+
+      this.$bus.$on('changeFilterShow', this.setShowTimeout)
 
       // 时间
       if (this.isBegin)
@@ -225,7 +247,8 @@
       return {
         begin: '',
         end: '',
-        packagelist: []
+        packagelist: [],
+        show: true
       }
     },
     methods: {
@@ -290,12 +313,24 @@
         }
       },
       search() {
+        this.setShowTimeout(false)
         this.$emit('search')
       },
       // 改变时区
       chgTzn(val) {
         this.$emit('chgTzn', val)
+      },
+      // 动画结束
+      afterLeave() {
+        this.$bus.$emit('setHeight')
+      },
+      // 在动画时间结束后执行
+      setShowTimeout(val) {
+        setTimeout(() => this.show = val, this.duration)
       }
+    },
+    beforeDestroy() {
+      this.$bus.$off('changeFilterShow')
     }
   }
 </script>

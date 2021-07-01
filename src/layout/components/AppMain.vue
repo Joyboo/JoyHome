@@ -1,6 +1,6 @@
 <template>
   <section class="app-main">
-    <transition name="fade-transform" mode="out-in">
+    <transition name="fade-transform" mode="out-in" :duration="duration">
       <keep-alive :include="cachedViews">
         <router-view :key="key" />
       </keep-alive>
@@ -24,6 +24,9 @@
       },
       key() {
         return this.$route.path
+      },
+      duration() {
+        return this.$store.state.settings.duration
       }
     }
   }

@@ -60,7 +60,7 @@
 
       <el-table-column width="80" align="center" prop="isshow" label="是否显示">
         <template slot-scope="scope">
-          <el-switch v-model="scope.row.isshow == '1'" />
+          <el-switch v-model="scope.row.isshow == '1'" @change="chgShow(scope.row.id, scope.row.isshow)" />
         </template>
       </el-table-column>
 
@@ -79,7 +79,8 @@
 import { mapGetters } from 'vuex'
 import TableData from '@/components/TableData/info'
 import pagination from '@/components/Pagination'
-import { gameIndex } from '@/api/game'
+import { gameIndex, gameEdit } from '@/api/game'
+import checkPermission from "@/utils/permission"
 
 export default {
   name: 'gameindex',
@@ -142,6 +143,33 @@ export default {
     openAlter(msg) {
       this.$alert(msg)
     },
+    chgShow(id, show) {
+      if (!checkPermission(['admin', '/game/edit']))
+      {
+        this.$confirm('对不起，没有权限', {
+          type: 'error',
+          showClose: false,
+          showCancelButton: false
+        }).catch(error => {})
+      } else {
+        this.loading = true
+        gameEdit('post', {id: id, isshow: show == '1' ? 0 : 1})
+          .then(({code, msg}) => {
+            if (code) {
+              this.$message.success('操作成功')
+              this.search()
+            } else {
+              this.$message.error(msg)
+            }
+          })
+          .catch(error => {
+            console.log(error)
+          })
+          .finally(() => {
+            this.loading = false
+          })
+      }
+    }
   }
 }
 </script>

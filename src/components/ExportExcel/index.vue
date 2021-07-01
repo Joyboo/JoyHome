@@ -1,5 +1,5 @@
 <template>
-    <el-button type="primary" icon="el-icon-download" clearable @click="exportExcel"></el-button>
+    <el-button v-if="isshow" type="primary" icon="el-icon-download" clearable @click="exportExcel"></el-button>
 </template>
 
 <script>
@@ -12,6 +12,7 @@
   // import FileSaver from "file-saver";
   // import XLSX from "xlsx";
   import {export_table_to_excel_joyboo} from '@/vendor/Export2Excel'
+  import {mapGetters} from "vuex"
 
   export default {
     name: 'ExportExcel',
@@ -29,9 +30,23 @@
       bookType: {
         type: String,
         default: 'xlsx'
+      },
+
+      // 是否显示，在手机端默认是不显示导出按钮的
+      forceview: {
+        type: Boolean,
+        default: false
       }
     },
     computed: {
+      ...mapGetters(['size', 'device']),
+      isshow() {
+        if (this.device === 'mobile')
+        {
+          return this.forceview ? true : false
+        }
+        return true
+      },
       fname() {
         return this.filename + '.' + this.bookType
       }

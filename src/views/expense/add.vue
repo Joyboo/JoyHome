@@ -1,6 +1,6 @@
 <template>
-  <div class="info-container" v-loading="loading">
-    <el-form :model="form" :size="size" label-width="15rem">
+  <div class="view-container" v-loading="loading">
+    <el-form :model="form" :size="size" label-width="15rem" :label-position="device === 'mobile' ? 'top' : 'right'">
 
       <el-tabs type="border-card" @tab-click="tabClick">
         <el-tab-pane label="普通录入">
@@ -47,7 +47,7 @@
 
         <el-tab-pane label="文件上传">
           <el-row>
-            <el-col :span="10" class="UploadJoyboo">
+            <el-col  :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}" class="UploadJoyboo">
               <el-upload
                 class="upload-demo"
                 drag
@@ -59,9 +59,9 @@
                 <!--            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>-->
               </el-upload>
             </el-col>
-            <el-col :span="10">
+            <el-col  :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}">
               <fieldset>
-                <legend><b>请使用csv、xls、xlsx文档导入,以Excel为例：</b></legend>
+                <legend><b>请使用下方模板文件为原型上传：</b></legend>
                 <span>首行空出将被视为表头而不被导入。 </span><br>
                 <span><b>A列</b>：包含年月日的任意格式日期值。</span><br>
                 <span><b>B列</b>：所属游戏的id。</span><br>
@@ -111,7 +111,7 @@
       ButtonTpl
     },
     computed: {
-      ...mapGetters(['size', 'filtergamelist'])
+      ...mapGetters(['size', 'filtergamelist', 'device'])
     },
     mounted() {
       this.$store.dispatch('filter/gameInfo')

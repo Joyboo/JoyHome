@@ -8,6 +8,8 @@
       border
       lazy
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+      @cell-mouse-enter="cellMouseEnter"
+      @cell-mouse-leave="cellMouseLeave"
     >
 
       <!--表格插槽-->
@@ -46,9 +48,10 @@
 </template>
 
 <script>
-  import {mapGetters} from "vuex";
-  import request from "@/utils/request";
+  import {mapGetters} from "vuex"
+  import request from "@/utils/request"
   import checkPermission from '@/utils/permission'
+  import {calcHeight} from "@/utils"
 
   export default {
     name: "TableInfo",
@@ -80,22 +83,53 @@
         required: true,
         type: String
       },
-      height: {
-        type: Number,
-        default() {
-          // 默认是算上了分页组件高度的，如果该页不需要分页，实际应该 -170左右
-          const h = window.document.documentElement.clientHeight || 900
-          return h - 220
-        }
-      },
       // 操作栏宽度
       btnWidth: {
         type: Number,
         default: 180
       }
     },
+    data() {
+      return {
+        height: 0
+      }
+    },
+    mounted() {
+
+      setTimeout(this.autoSetHeight, 0)
+      // 监听全屏切换
+      // screenfull.on('change', autoSetHeight);
+      // 监听视口变化
+      window.addEventListener('resize', this.autoSetHeight)
+      // 监听Bus
+      this.$bus.$on('setHeight', this.autoSetHeight)
+    },
+    beforeDestroy() {
+      this.$bus.$off('setHeight')
+    },
     methods: {
       checkPermission,
+      autoSetHeight() {
+        //  全屏 - Header - 搜索栏 | 全屏 - el-table起始高度
+        const el = window.document.getElementsByClassName('el-table')
+        if (el.length > 0)
+        {
+          let offsetTop = el[0].getBoundingClientRect().top
+
+          // 如果需要分页，再加分页高度
+          const elPage = window.document.getElementsByClassName('pagination-container')
+          if (elPage.length > 0)
+          {
+            offsetTop += elPage[0].getBoundingClientRect().height
+          }
+          // +20是为了给padding留位置,否则会出现滚动条
+          offsetTop += 20
+
+          this.height = calcHeight(offsetTop)
+        } else {
+          this.height = calcHeight(220)
+        }
+      },
       // 编辑
       edit(index, row) {
         const path = '/' + this.pathname + '/edit'
@@ -122,6 +156,14 @@
             console.error(error)
             this.$message.error('操作失败')
           })
+      },
+      // 当单元格 hover 进入时会触发该事件
+      cellMouseEnter(row, column, cell, event) {
+        this.$emit('cellMouseEnter', row, column, cell, event)
+      },
+      // 当单元格 hover 退出时会触发该事件
+      cellMouseLeave(row, column, cell, event) {
+        this.$emit('cellMouseLeave', row, column, cell, event)
       }
     }
   }

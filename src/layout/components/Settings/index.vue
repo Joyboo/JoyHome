@@ -22,13 +22,6 @@
         <span>{{ $t('settings.sidebarLogo') }}</span>
         <el-switch v-model="sidebarLogo" class="drawer-switch" />
       </div>
-      <!--<a v-if="isShowJob" href="https://panjiachen.github.io/vue-element-admin-site/zh/job/" target="_blank" class="job-link">
-        <el-alert
-          title="部门目前非常缺人！有兴趣的可以点击了解详情。坐标: 字节跳动"
-          type="success"
-          :closable="false"
-        />
-      </a>-->
 
       <div v-if="lang === 'zh'" class="drawer-item">
         <span>菜单支持拼音搜索</span>
@@ -40,10 +33,18 @@
         <el-switch v-model="sidebarMode" class="drawer-switch" />
       </div>
 
-      <div class="drawer-item" v-if="device !== 'mobile'">
+      <div class="drawer-item">
         <span>{{$t('settings.topMenu')}}</span>
-        <el-switch v-model="topMenuMode" class="drawer-switch" />
+        <el-switch v-model="topMenuMode" :disabled="device === 'mobile'" class="drawer-switch" />
       </div>
+
+      <fieldset class="fieldset">
+        <legend>&nbsp;&nbsp;{{$t('settings.duration')}}&nbsp;&nbsp;</legend>
+        <div class="block">
+          <el-slider v-model="duration" :min="1" :max="700" :show-tooltip="false"></el-slider>
+        </div>
+        <div class="block slider-number">{{duration}}</div>
+      </fieldset>
 
     </div>
   </div>
@@ -112,6 +113,14 @@ export default {
         this.setMode('topMenuMode', val)
         this.$store.dispatch('permission/setSidebarByMode', val)
       }
+    },
+    duration: {
+      get() {
+        return this.getMode('duration')
+      },
+      set(val) {
+        this.setMode('duration', val)
+      }
     }
   },
   methods: {
@@ -155,12 +164,16 @@ export default {
     float: right
   }
 
-  .job-link{
-    display: block;
-    position: absolute;
-    width: 100%;
-    left: 0;
-    bottom: 0;
+  .fieldset {
+    border: 1px dotted #ccc;
+    color: rgba(0, 0, 0, 0.65);
+    margin-top: 5px;
+
+    .slider-number {
+      text-align: center;
+      line-height: 10px;
+      font-size: 12px;
+    }
   }
 }
 </style>

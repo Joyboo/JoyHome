@@ -22,7 +22,7 @@
 
       <el-table-column width="80" align="center" label="状态">
         <template slot-scope="scope">
-          <el-switch v-model="scope.row.status == '0'" />
+          <el-switch v-model="scope.row.status == '0'" @change="chgStatus(scope.row.id, scope.row.status)" />
         </template>
       </el-table-column>
     </table-data>
@@ -40,7 +40,8 @@
   import TableData from '@/components/TableData/info'
   import Pagination from '@/components/Pagination'
   import {mapGetters} from "vuex";
-  import {googlerefountIndex} from '@/api/googlerefundcfg'
+  import {googlerefountIndex, googlerefountEdit} from '@/api/googlerefundcfg'
+  import checkPermission from "@/utils/permission"
 
   export default {
     name: 'googlerefundcfgindex',
@@ -66,7 +67,8 @@
     methods: {
       search() {
         this.loading = true
-        googlerefountIndex(this.query)
+        const query = Object.assign({}, this.query, {pkgbnd: this.query.pkgbnd.join(',')})
+        googlerefountIndex(query)
           .then(({code, msg, data}) => {
             if (!code)
             {
@@ -81,6 +83,33 @@
           .finally(() => {
             this.loading = false
           })
+      },
+      chgStatus(id, status) {
+        if (!checkPermission(['admin', '/googleRefountEdit/edit']))
+        {
+          this.$confirm('对不起，没有权限', {
+            type: 'error',
+            showClose: false,
+            showCancelButton: false
+          }).catch(error => {})
+        } else {
+          this.loading = true
+          googlerefountEdit('post', {id: id, status: status == '1' ? 0 : 1})
+            .then(({code, msg}) => {
+              if (code) {
+                this.$message.success('操作成功')
+                this.search()
+              } else {
+                this.$message.error(msg)
+              }
+            })
+            .catch(error => {
+              console.log(error)
+            })
+            .finally(() => {
+              this.loading = false
+            })
+        }
       }
     }
   }

@@ -1,14 +1,13 @@
 <template>
 
-    <table-index :loading="loading" :data="ltvdata" :height="height" :column="column"></table-index>
+    <table-index :loading="loading" :data="data" :column="column"></table-index>
 
 </template>
 
 <script>
   import TableIndex from '@/components/TableData'
   import { mapGetters } from 'vuex'
-  import {caclHeight, ymd_to_date} from '@/utils'
-  import screenfull from "screenfull";
+  import {ymd_to_date} from '@/utils'
 
   export default {
     components: {
@@ -18,7 +17,7 @@
       ...mapGetters(['size', 'gamelist'])
     },
     props: {
-      ltvdata: {
+      data: {
         required: true,
         type: Array,
         defualt: [],
@@ -75,12 +74,8 @@
       }
 
       return {
-        height: caclHeight(170),
         column: columnData,
       }
-    },
-    mounted() {
-      screenfull.on('change', () => this.height = caclHeight(170));
     },
     methods: {
       setLoading(val) {

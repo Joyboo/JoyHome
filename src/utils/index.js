@@ -485,7 +485,7 @@ export function getSettingsLocalStorage(key, _default) {
   return _default ? _default : ((store && store.state.settings[key]) ? store.state.settings[key] : false)
 }
 
-export function caclHeight(offset, _default) {
+export function calcHeight(offset, _default) {
   _default = _default || 900
   const h = window.document.documentElement.clientHeight || _default
   return h - offset

@@ -16,29 +16,7 @@
       </template>
     </layout-filter>
 
-    <template v-if="menu == 'daily'">
-      <daily-component :loading="loading" :dailydata="tableData"></daily-component>
-    </template>
-
-    <template v-else-if="menu == 'ltv'">
-      <ltv-component :loading="loading" :ltvdata="tableData"></ltv-component>
-    </template>
-
-    <template v-else-if="menu == 'regkeep'">
-      <regkeep-component :loading="loading" :regkeepdata="tableData"></regkeep-component>
-    </template>
-
-    <template v-else-if="menu == 'paykeep'">
-      <paykeep-component :loading="loading" :paykeepdata="tableData"></paykeep-component>
-    </template>
-
-    <template v-else-if="menu == 'roi'">
-      <roi-component :loading="loading" :roidata="tableData"></roi-component>
-    </template>
-
-    <template v-else-if="menu == 'droi'">
-      <roi-component :loading="loading" :roidata="tableData"></roi-component>
-    </template>
+    <component :is="using" :data="tableData" :loading="loading"/>
   </div>
 </template>
 
@@ -73,6 +51,7 @@
     data() {
 
       return {
+        using: '',
         loading: false,
         query: {
           gameid: [],
@@ -83,43 +62,56 @@
           endtime: true
         },
         tableData: [],
-        menu: 'daily',
+        menu: '',
         menulist: {
           roi: {
             name: '流水ROI',
             tzn: '8',
+            components: 'RoiComponent',
           },
           droi: {
             name: '分成后ROI',
             tzn: '8',
+            components: 'RoiComponent',
           },
           regkeep: {
             name: '注册留存',
             tzn: '-5',
+            components: 'RegkeepComponent',
           },
           paykeep: {
             name: '付费留存',
             tzn: '-5',
+            components: 'PaykeepComponent',
           },
           ltv: {
             name: 'LTV',
             tzn: '-5',
+            components: 'LtvComponent',
           },
           daily: {
             name: '游戏日报',
             tzn: '-5',
+            components: 'DailyComponent',
           }
         }
       }
     },
     mounted() {
-      this.query.tzn = this.menulist[this.menu].tzn
+      this.chgRadio('daily')
     },
     methods: {
       checkPermission,
       search() {
+        // 正常情况是在Layout-filter内search事件触发的Bus事件，此页面较特殊，并没有使用子组件的search来触发查询事件
+        // 虽然在TableData组件加入data变量的侦听器也可以统一处理，但筛选区收起的动作会在data变化之后，这延长了用户等待时间
+        this.$bus.$emit('changeFilterShow', false)
         this.loading = true
-        statistics(this.menu, this.query)
+        const query = Object.assign({}, this.query, {
+          pkgbnd: this.query.pkgbnd.join(','),
+          gameid: this.query.gameid.join(',')
+        })
+        statistics(this.menu, query)
           .then(({code, msg, data}) => {
             if (!code)
             {
@@ -139,6 +131,7 @@
         this.tableData = [];
         this.menu = val
         this.query.tzn = this.menulist[this.menu].tzn
+        this.using = this.menulist[this.menu].components
         this.search()
       },
       chgTzn(val) {

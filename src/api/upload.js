@@ -12,6 +12,8 @@ export async function uploadJb(uri, params) {
 
   const doSend = params => {
     return axios.post(action, params, {
+      timeout: 30000,
+      timeoutErrorMessage: '上传超时 ^_^',
       headers: {
         "Content-Type": "multipart/form-data",
         "Token": getToken()

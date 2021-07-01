@@ -1,6 +1,6 @@
 <template>
-  <div v-loading="loading" class="info-container">
-    <el-form ref="menu-info" :rules="rules" :model="form" :size="size" label-width="15rem">
+  <div v-loading="loading" class="view-container">
+    <el-form ref="menu-info" :rules="rules" :model="form" :size="size" label-width="15rem" :label-position="device === 'mobile' ? 'top' : 'right'">
 
       <el-form-item label="上级菜单">
         <menu-cascader :pid="form.pid" @setpid="setpid"></menu-cascader>
@@ -86,7 +86,7 @@ import MenuCascader from '@/components/MenuCascader'
 export default {
   // name: 'MenuInfo',
   computed: {
-    ...mapGetters(['size']),
+    ...mapGetters(['size', 'device']),
     theme() {
       return this.$store.state.settings.theme
     }

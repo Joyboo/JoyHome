@@ -1,7 +1,7 @@
 <template>
-  <div class="info-container" v-loading="loading">
+  <div class="view-container" v-loading="loading">
 
-    <el-form :model="form" :size="size" label-width="15rem">
+    <el-form :model="form" :size="size" label-width="15rem" :label-position="device === 'mobile' ? 'top' : 'right'">
       <el-form-item label="所属日期">
         <el-date-picker
           v-model="form.exptime"
@@ -57,7 +57,7 @@
       ButtonTpl
     },
     computed: {
-      ...mapGetters(['size', 'filtergamelist'])
+      ...mapGetters(['size', 'filtergamelist', 'device'])
     },
     data() {
       return {

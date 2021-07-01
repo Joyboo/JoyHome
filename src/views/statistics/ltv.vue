@@ -9,7 +9,7 @@
       </template>
     </layout-filter>
 
-    <ltv-component :ltvdata="tableData" :loading="loading"></ltv-component>
+    <ltv-component :data="tableData" :loading="loading"></ltv-component>
 
   </div>
 </template>
@@ -53,7 +53,11 @@
           return
         }
         this.loading = true
-        statistics('ltv', this.query)
+        const query = Object.assign({}, this.query, {
+          pkgbnd: this.query.pkgbnd.join(','),
+          gameid: this.query.gameid.join(',')
+        })
+        statistics('ltv', query)
           .then(({code, msg, data}) => {
             if (!code)
             {

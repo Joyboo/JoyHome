@@ -9,7 +9,7 @@
       </template>
     </layout-filter>
 
-    <roi-component :roidata="tableData" :loading="loading"></roi-component>
+    <roi-component :data="tableData" :loading="loading"></roi-component>
 
   </div>
 </template>
@@ -53,7 +53,11 @@
           return
         }
         this.loading = true
-        statistics('droi', this.query)
+        const query = Object.assign({}, this.query, {
+          pkgbnd: this.query.pkgbnd.join(','),
+          gameid: this.query.gameid.join(',')
+        })
+        statistics('droi', query)
           .then(({code, msg, data}) => {
             if (!code)
             {

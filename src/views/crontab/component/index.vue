@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="menu-info" :rules="rules" :model="form" :size="size" label-width="15rem">
+  <el-form ref="menu-info" :rules="rules" :model="form" :size="size" label-width="15rem" :label-position="device === 'mobile' ? 'top' : 'right'">
     <el-form-item label="任务名">
       <el-input type="text" v-model="form.name" clearable />
     </el-form-item>
@@ -14,13 +14,13 @@
 
     <el-form-item label="运行类和方法">
       <el-row :gutter="10">
-        <el-col :span="8">
+        <el-col  :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 8}" :xl="{span: 8}">
           <el-input type="text" v-model="form.eclass" clearable />
         </el-col>
-        <el-col :span="1" style="text-align: center;">
+        <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 1}" :xl="{span: 1}" style="text-align: center;">
           <i class="el-icon-right" />
         </el-col>
-        <el-col :span="8">
+        <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 8}" :xl="{span: 8}">
           <el-input type="text" v-model="form.method" clearable />
         </el-col>
       </el-row>
@@ -30,11 +30,11 @@
       <el-row>
         <el-button icon="el-icon-plus" type="primary" plain @click="cp_param" />
       </el-row>
-      <el-row v-for="(ipt, key) in form.args" :key="key">
-        <el-col :span="8">
+      <el-row v-for="(ipt, key) in form.args" :key="key" :gutter="20">
+        <el-col :span="10">
           <el-input v-model="ipt.key" class="colInput" clearable placeholder="key" />
         </el-col>
-        <el-col :span="8">
+        <el-col :span="10">
           <el-input v-model="ipt.value" class="colInput" clearable placeholder="value" />
         </el-col>
         <el-col :span="4">
@@ -81,7 +81,7 @@
       ButtonTpl
     },
     computed: {
-      ...mapGetters(['size'])
+      ...mapGetters(['size', 'device'])
     },
     props: {
       form: {

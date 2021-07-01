@@ -9,7 +9,7 @@
       </template>
     </layout-filter>
 
-    <paykeep-component :paykeepdata="tableData" :loading="loading"></paykeep-component>
+    <paykeep-component :data="tableData" :loading="loading"></paykeep-component>
 
   </div>
 </template>
@@ -36,7 +36,7 @@
       return {
         loading: false,
         query: {
-          gameid: '',
+          gameid: [],
           pkgbnd: [],
           ProxyRegion: 'omz',
           tzn: '-5',
@@ -53,7 +53,11 @@
           return
         }
         this.loading = true
-        statistics('paykeep', this.query)
+        const query = Object.assign({}, this.query, {
+          pkgbnd: this.query.pkgbnd.join(','),
+          gameid: this.query.gameid.join(',')
+        })
+        statistics('paykeep', query)
           .then(({code, msg, data}) => {
             if (!code)
             {

@@ -58,8 +58,8 @@
             key: 'itime',
             text: '时间',
             sort: true,
-            fixed: 'left',
-            width: '150',
+            // fixed: 'left',
+            // width: '150',
           }, {
             key: 'username',
             align: 'left',
@@ -84,7 +84,8 @@
             }
           }, {
             key: 'content',
-            text: '堆栈跟踪'
+            text: '堆栈跟踪',
+            width: '1000',
           }
         ]
       }

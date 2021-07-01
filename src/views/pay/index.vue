@@ -112,7 +112,7 @@
               if (row.id == 'sum') {
                 return '<span style="color: red;">' + row.pk + '</span>'
               } else {
-                return this.query.gameid + '-' + row.id + '-' + index
+                return row.gameid + '-' + row.id + '-' + index
               }
             }
           }
@@ -147,7 +147,7 @@
               } else {
                 this.$router.push({
                   path: router,
-                  query: { uid: index, gameid: this.query.gameid, ProxyRegion: this.query.ProxyRegion }
+                  query: { uid: index, gameid: row.gameid, ProxyRegion: this.query.ProxyRegion }
                 })
               }
             },
@@ -213,9 +213,18 @@
     methods: {
       search() {
         this.loading = true
-        payIndex(this.query)
+        const query = Object.assign({}, this.query, {pkgbnd: this.query.pkgbnd.join(',')})
+        const {gameid} = query
+        payIndex(query)
           .then(resp => {
             const {data} = resp
+            if (data.data)
+            {
+              for(const i in data.data)
+              {
+                data.data[i].gameid = gameid
+              }
+            }
             this.tableData = data.data || []
             this.total = data.totals || 0
           })
@@ -230,7 +239,7 @@
         this.dialog = true
         this.detailQuery = {
           id: row.id,
-          gameid: this.query.gameid,
+          gameid: row.gameid,
           updtime: row.updtime
         }
       },

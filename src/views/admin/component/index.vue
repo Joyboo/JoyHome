@@ -1,6 +1,6 @@
 <template>
-    <div v-loading="load" class="info-container">
-      <el-form ref="AdminForm" :rules="rules" :model="form" :size="size" label-width="15rem">
+    <div v-loading="load" class="view-container">
+      <el-form ref="AdminForm" :rules="rules" :model="form" :size="size" label-width="15rem" :label-position="device === 'mobile' ? 'top' : 'right'">
         <el-tabs type="border-card">
           <el-tab-pane label="管理员信息">
 
@@ -15,14 +15,14 @@
               <template slot="label">
                 密码 <i v-if="isupd" class="labeli">如留空,则原密码保持不变</i>
               </template>
-              <el-input type="password" v-model="form.password" clearable />
+              <el-input type="password" v-model="form.password" autocomplete="new-password" clearable />
             </el-form-item>
 
             <el-form-item prop="password">
               <template slot="label">
                 确认密码 <i v-if="isupd" class="labeli"></i>
               </template>
-              <el-input type="password" v-model="password" clearable />
+              <el-input type="password" v-model="password" autocomplete="new-password" clearable />
             </el-form-item>
 
             <el-form-item label="真实姓名">
@@ -163,7 +163,7 @@
       }
     },
     computed: {
-      ...mapGetters(['size', 'filtergamelist', 'gamelist']),
+      ...mapGetters(['size', 'filtergamelist', 'gamelist', 'device']),
       isupd() {
         return typeof this.form.id != 'undefined'
       },
@@ -281,7 +281,7 @@
       // 允许按id,title和path匹配
       filterNode(value, data) {
         if (!value) return true;
-        return data.title.indexOf(value) !== -1 || data.path.indexOf(value) !== -1;
+        return data.title.indexOf(value) !== -1 || data.path.indexOf(value) !== -1 || data.id == value;
       },
       submit() {
         this.$refs.AdminForm.validate((valid) => {
