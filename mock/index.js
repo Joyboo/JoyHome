@@ -7,6 +7,7 @@ const sysinfo = require('./sysinfo')
 const game = require('./game')
 const statistics = require('./statistics')
 const _package = require('./package')
+const dashboard = require('./dashboard')
 
 const mocks = [
   ...user,
@@ -14,7 +15,8 @@ const mocks = [
   ...sysinfo,
   ...game,
   ...statistics,
-  ..._package
+  ..._package,
+  ...dashboard
 ]
 
 // for front mock
