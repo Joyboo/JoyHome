@@ -6,10 +6,10 @@
           <el-form-item label="所属游戏">
             <el-select v-model="form.gameid" filterable clearable>
               <el-option
-                v-for="item in filtergamelist"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                v-for="(_gname, _gid) in gamelist"
+                :key="_gid"
+                :label="_gname"
+                :value="parseInt(_gid)"
               />
             </el-select>
           </el-form-item>
@@ -516,7 +516,6 @@ export default {
     ...mapGetters([
       'size',
       'gamelist',
-      'filtergamelist',
       'packos',
       'device'
     ]),
@@ -541,9 +540,6 @@ export default {
     viewshare() {
       return (this.isupd && this.form.extension.share.img) ? [{ url: this.form.default_path + this.form.extension.share.img }] : []
     }
-  },
-  mounted() {
-    this.$store.dispatch('filter/gameInfo')
   },
   methods: {
     submit() {

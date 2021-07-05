@@ -15,7 +15,6 @@ const getters = {
   errorLogs: state => state.errorLog.logs,
   topmenu: state => state.permission.topmenu,
   gamelist: state => state.filter.gamelist,
-  filtergamelist: state => state.filter.filtergamelist,
   packos: state => state.filter.pack_os,
   config: state => state.config.config
 }

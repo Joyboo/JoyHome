@@ -48,7 +48,7 @@ const actions = {
   },
 
   // get user info
-  getInfo({ commit, state }) {
+  getInfo({ commit, dispatch, state }) {
     return new Promise((resolve, reject) => {
       getInfo().then(({ code, msg, data }) => {
 
@@ -56,10 +56,11 @@ const actions = {
           reject(msg)
         }
 
-        const { roles } = data
+        const { roles,gamelist } = data
 
         commit('SET_ROLES', roles)
         commit('SET_INFO', data)
+        dispatch('filter/gameInfo', gamelist, { root: true })
         // console.log('getInfo resolve', data)
         resolve(data)
       }).catch(error => {

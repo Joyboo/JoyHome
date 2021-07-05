@@ -52,7 +52,11 @@ module.exports = [
           instime:"1615960868",
           deltime:"0",
           itime:"2021-03-17 14:01:08",
-          name:"系统管理员"
+          name:"系统管理员",
+          gamelist: {
+            1: '炉石传说',
+            2: '和平精英'
+          }
         }
       }
     }

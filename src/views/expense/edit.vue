@@ -14,10 +14,10 @@
       <el-form-item label="所属游戏">
         <el-select v-model="form.gameid" @change="chgGame" filterable>
           <el-option
-            v-for="item in filtergamelist"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            v-for="(_gname, _gid) in gamelist"
+            :key="_gid"
+            :label="_gname"
+            :value="parseInt(_gid)"
           />
         </el-select>
       </el-form-item>
@@ -57,7 +57,7 @@
       ButtonTpl
     },
     computed: {
-      ...mapGetters(['size', 'filtergamelist', 'device'])
+      ...mapGetters(['size', 'device', 'gamelist'])
     },
     data() {
       return {
@@ -75,7 +75,6 @@
       this.loading = true
 
       try{
-        await this.$store.dispatch('filter/gameInfo')
         const id = this.$route.query.id
         const {code, msg, data} = await expenseEdit('get', {id: id})
 

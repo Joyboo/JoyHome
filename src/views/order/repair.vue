@@ -78,12 +78,15 @@
             {
               this.$message.error(msg)
             } else {
-              this.form.content = data
+              this.$set(this.form, 'content', data)
             }
           })
           .finally(() => {
             this.loading = false
           })
+      },
+      changed(content) {
+        this.$set(this.form, 'content', content)
       },
       doRepair() {
         this.$confirm('确定要补单吗？')
@@ -93,6 +96,11 @@
             data.pf = this.query.pf
             data.gameid = this.query.gameid
             data.ProxyRegion = this.query.ProxyRegion
+
+            if (typeof data.content == 'string')
+            {
+              data.content = JSON.parse(data.content)
+            }
 
             repairOrder(data)
               .then(({code, msg}) => {

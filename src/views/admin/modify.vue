@@ -30,16 +30,16 @@
       </el-form-item>
 
       <el-form-item label="真实姓名">
-        <el-input type="realname" v-model="form.realname" placeholder="请输入真实姓名" clearable />
+        <el-input type="text" v-model="form.realname" placeholder="请输入真实姓名" clearable />
       </el-form-item>
 
       <el-form-item label="默认游戏">
         <el-select v-model="form.extension.gid" filterable>
           <el-option
-            v-for="item in filtergamelist"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            v-for="(_gname, _gid) in gamelist"
+            :key="_gid"
+            :label="_gname"
+            :value="parseInt(_gid)"
           />
         </el-select>
       </el-form-item>
@@ -67,12 +67,11 @@
       MenuCascader
     },
     computed: {
-      ...mapGetters(['size', 'filtergamelist', 'userinfo', 'device']),
+      ...mapGetters(['size', 'userinfo', 'device', 'gamelist']),
     },
     async mounted() {
       this.loading = true
       try {
-        await this.$store.dispatch('filter/gameInfo')
         const {code, msg, data} = await adminModify('get')
         if (!code)
         {

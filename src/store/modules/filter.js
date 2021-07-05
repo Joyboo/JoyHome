@@ -1,8 +1,6 @@
-import {gamelist} from '@/api/game'
 
 const state = {
   gamelist: {},
-  filtergamelist: [], // 给选择游戏下拉框使用的，有label和 vlaue属性
   pack_os: ['安卓','苹果','微软'],
   pay: {
     pf: { // 支付平台
@@ -25,31 +23,21 @@ const state = {
 }
 
 const mutations = {
-  SET_SELECT_GAMELIST: (state, data) => {
-    state.filtergamelist = data
-  },
   SET_GAMELIST: (state, data) => {
-    state.gamelist = data
+    // key必须为Number
+    let list = {}
+    for (const i  in data)
+    {
+      const key = parseInt(i)
+      list[key] = data[i]
+    }
+    state.gamelist = list
   }
 }
 
 const actions = {
-  gameInfo({commit, state}){
-    gamelist().then(({data}) => {
-
-      // 生成select 的label和value
-      let list = []
-      for(let i in data)
-      {
-        list.push({
-          label: data[i],
-          value: parseInt(i)
-        })
-      }
-
-      commit('SET_GAMELIST', data)
-      commit('SET_SELECT_GAMELIST', list)
-    })
+  gameInfo({commit, state}, data){
+    commit('SET_GAMELIST', data)
   }
 }
 
