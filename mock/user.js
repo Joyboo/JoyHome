@@ -43,8 +43,7 @@ module.exports = [
           sort:"2",
           extension:{
             gid:"2",
-            nid:"48",
-            newnid:"/statistics/daily",
+            // newnid:"/statistics/daily", // 打开菜单跳转的页面
             ntcids:"0,2,4",
             status:"1",
             gameids:"0,1,2,3,4"

@@ -1,6 +1,6 @@
 <template>
   <el-dialog title="请输入平台回调数据" :visible.sync="showdialog" width="50%" center @open="search" v-loading="loading">
-    <json-editor :value="form.content"></json-editor>
+    <json-editor :value="form.content" @changed="changed"></json-editor>
 
     <br>
     <br>

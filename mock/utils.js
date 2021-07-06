@@ -117,13 +117,21 @@ function makeRound(n, f){
   f = f || 0
   let t = '';
   const len = n + f
-  for(let i = 0; i < len; i++){
-    t += Math.floor(Math.random()*10);
+  for(let i = 0; i < len;){
+    const rd = Math.floor(Math.random()*10);
+    // 避免出现类似 0012 的数字
+    if (t !== '' || rd !== 0)
+    {
+      t += rd
+      i++
+    }
   }
 
   if (f > 0)
   {
     t = t / f * 10
+  } else {
+    t = parseInt(t)
   }
   return t;
 }
