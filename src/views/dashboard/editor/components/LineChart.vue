@@ -5,7 +5,7 @@
 <script>
   import echarts from 'echarts'
   import {mapGetters} from "vuex";
-  require('echarts/theme/macarons') // echarts theme
+  // require('echarts/theme/macarons') // echarts theme
   import resize from '@/views/dashboard/admin/components/mixins/resize'
 
   export default {
@@ -70,9 +70,12 @@
     watch: {
       chartData: {
         deep: true,
-        handler(val) {
+        handler: function(val) {
           this.setOptions(val)
         }
+      },
+      theme: function(newVal, oldVal) {
+        this.setOptions(this.chartData)
       }
     },
     mounted() {
@@ -89,7 +92,8 @@
     },
     methods: {
       initChart() {
-        this.chart = echarts.init(this.$el, 'macarons')
+        // this.chart = echarts.init(this.$el, 'macarons')
+        this.chart = echarts.init(this.$el)
         this.setOptions(this.chartData)
       },
       setOptions({week, last}) {
@@ -144,6 +148,11 @@
             splitLine: {
               show: false
             },
+            axisLine: {
+              lineStyle: {
+                color: this.theme
+              }
+            },
             data: ['一', '二', '三', '四', '五', '六', '日']
           },
           grid: {
@@ -166,6 +175,11 @@
             axisLabel: {
               formatter(data) {
                 return ystart + data + yend
+              }
+            },
+            axisLine: {
+              lineStyle: {
+                color: this.theme
               }
             }
           },
