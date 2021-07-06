@@ -1,17 +1,9 @@
 import request from '@/utils/request'
 
-export function topmenu(data) {
+export function getmenu() {
   return request({
-    url: '/admin/menu/topmenu',
+    url: '/admin/menu/getmenu',
     method: 'get'
-  })
-}
-
-export function leftmenu(query) {
-  return request({
-    url: '/admin/menu/leftmenu',
-    method: 'get',
-    params: query
   })
 }
 

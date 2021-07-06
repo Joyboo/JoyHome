@@ -74,7 +74,9 @@ export default {
       const xhr = new XMLHttpRequest()
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4 && xhr.status === 200) {
-          this[variable] = xhr.responseText.replace(/@font-face{[^}]+}/, '')
+          if (xhr.responseText) {
+            this[variable] = xhr.responseText.replace(/@font-face{[^}]+}/, '')
+          }
           resolve()
         }
       }

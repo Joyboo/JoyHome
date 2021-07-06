@@ -89,7 +89,7 @@ export default {
     any: 'any',
     thirdparty: 'Or connect with',
     thirdpartyTips: 'Can not be simulated on local, so please combine you own business simulation! ! !',
-    hk: 'HKGAME',
+    hk: 'Joyboo',
     inputUsername: 'Please enter the correct user name',
     inputPassword: 'The password can not be less than 6 digits'
   },

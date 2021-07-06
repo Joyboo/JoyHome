@@ -59,12 +59,6 @@
                   </el-dropdown-item>
                 </router-link>
 
-                  <el-dropdown-item :disabled="isdev" >
-                    <a href="http://hkgame.ihengkun.com/admin/pub/login?version=0" target="_blank">
-                      {{ $t('login.toold') }}
-                    </a>
-                  </el-dropdown-item>
-
                 <el-dropdown-item divided @click.native="logout">
                   <span style="display:block;">{{ $t('navbar.logOut') }}</span>
                 </el-dropdown-item>

@@ -118,7 +118,6 @@ export default {
     }
   },
   async mounted() {
-    await this.$store.dispatch('filter/gameInfo')
     this.search()
   },
   methods: {

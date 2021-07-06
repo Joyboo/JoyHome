@@ -405,7 +405,11 @@ export function ymd_to_date(ymd)
   }
 
   ymd = String(ymd);
-  return '20' + ymd.substr(0,2) + '-' + ymd.substr(2,2) + '-'  + ymd.substr(4,2);
+  if (ymd.length === 6)
+  {
+    ymd = '20' + ymd.substr(0,2) + '-' + ymd.substr(2,2) + '-'  + ymd.substr(4,2);
+  }
+  return ymd
 }
 
 /**

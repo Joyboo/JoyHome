@@ -6,10 +6,10 @@
           <el-form-item label="所属游戏">
             <el-select v-model="form.gameid" filterable clearable>
               <el-option
-                v-for="item in filtergamelist"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                v-for="(_gname, _gid) in gamelist"
+                :key="_gid"
+                :label="_gname"
+                :value="parseInt(_gid)"
               />
             </el-select>
           </el-form-item>
@@ -331,19 +331,21 @@
           </el-form-item>
 
           <el-form-item label="事件">
-            <el-row>
-              <el-button icon="el-icon-plus" :size="size" type="primary" plain @click="cp_param" />
-            </el-row>
+            <br v-if="device !== 'mobile'" />
             <el-row v-for="(ipt, key) in form.extension.adjust.event" :key="key" :gutter="10">
-              <el-col :span="10">
+              <el-col :span="9">
                 <el-input v-model="ipt.Key" class="colInput" clearable placeholder="Key" />
               </el-col>
-              <el-col :span="10">
+              <el-col :span="9">
                 <el-input v-model="ipt.Value" class="colInput" clearable placeholder="Value" />
               </el-col>
               <el-col :span="4">
                 <el-button icon="el-icon-delete" :size="size" type="danger" plain @click="del_param(ipt)" />
               </el-col>
+            </el-row>
+            <el-row>
+              <el-button icon="el-icon-plus" :size="size" type="primary" plain @click="cp_param" />
+              <slot name="adjust"></slot>
             </el-row>
           </el-form-item>
 
@@ -514,7 +516,6 @@ export default {
     ...mapGetters([
       'size',
       'gamelist',
-      'filtergamelist',
       'packos',
       'device'
     ]),
@@ -539,9 +540,6 @@ export default {
     viewshare() {
       return (this.isupd && this.form.extension.share.img) ? [{ url: this.form.default_path + this.form.extension.share.img }] : []
     }
-  },
-  mounted() {
-    this.$store.dispatch('filter/gameInfo')
   },
   methods: {
     submit() {

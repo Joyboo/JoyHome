@@ -26,7 +26,7 @@
             </el-form-item>
 
             <el-form-item label="真实姓名">
-              <el-input type="realname" v-model="form.realname" placeholder="请输入真实姓名" clearable />
+              <el-input type="text" v-model="form.realname" placeholder="请输入真实姓名" clearable />
             </el-form-item>
 
             <el-form-item label="状态">
@@ -46,10 +46,10 @@
             <el-form-item label="默认游戏">
               <el-select v-model="form.extension.gid" filterable>
                 <el-option
-                  v-for="item in filtergamelist"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  v-for="(_gname, _gid) in gamelist"
+                  :key="_gid"
+                  :label="_gname"
+                  :value="parseInt(_gid)"
                 />
               </el-select>
             </el-form-item>
@@ -163,7 +163,7 @@
       }
     },
     computed: {
-      ...mapGetters(['size', 'filtergamelist', 'gamelist', 'device']),
+      ...mapGetters(['size', 'gamelist', 'device']),
       isupd() {
         return typeof this.form.id != 'undefined'
       },
@@ -182,8 +182,6 @@
     async mounted() {
       this.load = true
       try {
-
-        await this.$store.dispatch('filter/gameInfo')
 
         const {data} = await rolelist()
         for (let i in data) {

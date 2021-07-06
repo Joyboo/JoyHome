@@ -8,12 +8,12 @@
           <el-form-item v-if="typeof query.gameid != 'undefined'">
             <el-select v-model="query.gameid" filterable :multiple="gameMul" placeholder="游戏" clearable>
               <el-option
-                v-for="item in filtergamelist"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                v-for="(_gname, _gid) in gamelist"
+                :key="_gid"
+                :label="_gname"
+                :value="parseInt(_gid)"
               >
-                {{ item.label }} (id:{{ item.value }})
+                {{ _gname }} (id:{{ _gid }})
               </el-option>
             </el-select>
           </el-form-item>
@@ -125,10 +125,10 @@
     computed: {
       ...mapGetters([
         'size',
-        'filtergamelist',
         'userinfo',
         'config',
-        'device'
+        'device',
+        'gamelist'
       ]),
       isMobile() {
         return this.device === 'mobile'
@@ -174,7 +174,6 @@
       }
     },
     mounted() {
-      this.$store.dispatch('filter/gameInfo')
 
       this.$bus.$on('changeFilterShow', this.setShowTimeout)
 

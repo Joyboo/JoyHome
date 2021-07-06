@@ -1,5 +1,5 @@
 import router from '@/router'
-import { leftmenu } from '@/api/menu'
+import { getmenu } from '@/api/menu'
 import Layout from '@/layout'
 import RouterView from '@/layout/components/RouterView'
 import {getSettingsLocalStorage} from "@/utils";
@@ -135,7 +135,7 @@ const actions = {
   getRouter({ commit, rootState }) {
 
     return new Promise((resolve, reject) => {
-      leftmenu({pid: 0})
+      getmenu()
         .then(({ code, msg, data }) => {
           if (!code)
           {

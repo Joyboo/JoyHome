@@ -43,3 +43,11 @@ export function packageChildOption(query) {
     params: query
   })
 }
+
+export function saveAdjustEvent(data) {
+  return request({
+    url: '/admin/package/saveAdjustEvent',
+    method: 'post',
+    data
+  })
+}

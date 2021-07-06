@@ -1,83 +1,73 @@
 
-const tokens = {
-  admin: {
-    token: 'admin-token'
-  },
-  editor: {
-    token: 'editor-token'
-  }
-}
-
-const users = {
-  'admin-token': {
-    roles: ['admin'],
-    introduction: 'I am a super administrator',
-    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    name: 'Super Admin'
-  },
-  'editor-token': {
-    roles: ['editor'],
-    introduction: 'I am an editor',
-    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    name: 'Normal Editor'
-  }
-}
-
 module.exports = [
   // user login
   {
-    url: '/admin/login/login',
+    url: '/admin/pub/login',
     type: 'post',
     response: config => {
-      const { username } = config.body
-      const token = tokens[username]
 
-      // mock error
-      if (!token) {
+      const { username,password } = config.body
+
+      if (username == 'Joyboo' && password == '123456')
+      {
         return {
-          code: 60204,
-          message: 'Account and password are incorrect.'
+          code: 1,
+          data: {
+            token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJMYW1zb24iLCJpYXQiOjE2MjUxMjEzMTMsImV4cCI6MTYyNTM4MDUxMywibmJmIjoxNjI1MTIxMzA4LCJzdWIiOiIiLCJqdGkiOiI2MGRkNjIyMWJlNTI3IiwiZGF0YSI6eyJpZCI6IjQifX0.EbWfqQ7a7EEQDvNjyX500WE1hknkqozm8ehZeVAbAeM'
+          },
+          msg: 'Login Success'
         }
-      }
-
-      return {
-        code: 20000,
-        data: token
+      } else {
+        return {
+          code: 0,
+          msg: 'Username or Password error!'
+        }
       }
     }
   },
 
   // get user info
   {
-    url: '/vue-element-admin/user/info\.*',
+    url: '/admin/admin/userinfo',
     type: 'get',
     response: config => {
-      const { token } = config.query
-      const info = users[token]
-
-      // mock error
-      if (!info) {
-        return {
-          code: 50008,
-          message: 'Login failed, unable to get user details.'
-        }
-      }
-
       return {
-        code: 20000,
-        data: info
+        code: 1,
+        msg: "success",
+        data: {
+          roles: ["admin"],
+          id: 4,
+          username:"18666666666",
+          realname:"Joyboo",
+          rid:"1",
+          sort:"2",
+          extension:{
+            gid:"2",
+            // newnid:"/statistics/daily", // 打开菜单跳转的页面
+            ntcids:"0,2,4",
+            status:"1",
+            gameids:"0,1,2,3,4"
+          },
+          instime:"1615960868",
+          deltime:"0",
+          itime:"2021-03-17 14:01:08",
+          name:"系统管理员",
+          gamelist: {
+            1: '炉石传说',
+            2: '和平精英'
+          }
+        }
       }
     }
   },
 
-  // user logout
   {
-    url: '/vue-element-admin/user/logout',
+    url: '/admin/pub/logout',
     type: 'post',
-    response: _ => {
+    response: config => {
       return {
-        code: 20000,
-        data: 'success'
+        code: 1,
+        msg: "success",
       }
     }
   }

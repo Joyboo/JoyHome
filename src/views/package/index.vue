@@ -92,7 +92,6 @@ export default {
     ...mapGetters([
       'size',
       'gamelist',
-      'filtergamelist',
       'packos'
     ])
   },
