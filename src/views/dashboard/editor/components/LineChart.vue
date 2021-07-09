@@ -47,10 +47,10 @@
         default: ''
       },
       // 鼠标十字准星左侧tooltip小数点精度
-      precision: {
+      /*precision: {
         type: Number,
         default: 0
-      },
+      },*/
       // 自定义Y轴起始内容
       ystart: {
         type: String,

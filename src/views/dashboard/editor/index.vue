@@ -13,13 +13,12 @@
               本日营收
             </div>
             <div>
-              <span class="us">$</span>
-              <count-to :start-val="0" :end-val="revenue.today" :duration="2600" class="card-panel-num" />
+              <count-to :start-val="0" :end-val="revenue.today" :duration="2600" prefix="$ " class="card-panel-num" />
               <i v-if="revenue.today > revenue.yesterday" class="el-icon-top success arrow" />
               <i v-else-if="revenue.today < revenue.yesterday" class="el-icon-bottom danger arrow" />
             </div>
             <div style="margin-top: 10px;font-size: 12px;">
-              <span class="danger">对比昨天</span> $ <count-to :start-val="0" :end-val="revenue.yesterday" :duration="3000" />
+              <span class="danger">对比昨天</span><count-to :start-val="0"  prefix="$ " :end-val="revenue.yesterday" :duration="3000" />
             </div>
           </div>
         </div>
@@ -35,13 +34,12 @@
               本月营收
             </div>
             <div>
-              <span class="us">$</span>
-              <count-to :start-val="0" :end-val="revenue.month" :duration="2600" class="card-panel-num" />
+              <count-to :start-val="0" :end-val="revenue.month"  prefix="$ " :duration="2600" class="card-panel-num" />
               <i v-if="revenue.month > revenue.lastmonth" class="el-icon-top success arrow" />
               <i v-else-if="revenue.month < revenue.lastmonth" class="el-icon-bottom danger arrow" />
             </div>
             <div style="margin-top: 10px;font-size: 12px;">
-              <span class="danger">对比上月</span> $ <count-to :start-val="0" :end-val="revenue.lastmonth" :duration="3000" />
+              <span class="danger">对比上月</span><count-to :start-val="0" prefix="$ " :end-val="revenue.lastmonth" :duration="3000" />
             </div>
           </div>
         </div>
@@ -119,21 +117,18 @@
         chart: {
           reg: {
             title: '新增账号',
-            precision: 0,
             ystart: '',
             yend: '',
             chartData: chart
           },
           dau: {
             title: 'DAU',
-            precision: 0,
             ystart: '',
             yend: '',
             chartData: chart
           },
           money: {
             title: '付费',
-            precision: 2,
             ystart: '$ ',
             yend: '',
             chartData: chart
@@ -142,21 +137,18 @@
             title: '付费率',
             yend: '%',
             ystart: '',
-            precision: 2,
             chartData: chart
           },
           arppu: {
             title: 'ARPPU',
             ystart: '$ ',
             yend: '',
-            precision: 2,
             chartData: chart
           },
           arpu: {
             title: 'ARPU',
             ystart: '$ ',
             yend: '',
-            precision: 2,
             chartData: chart
           }
         }

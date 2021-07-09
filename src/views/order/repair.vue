@@ -109,6 +109,7 @@
                   this.$message.error('操作失败: ' + msg)
                 } else {
                   this.$message.success('操作成功: ' + msg)
+                  this.showdialog = false
                 }
               })
               .catch(error => {
