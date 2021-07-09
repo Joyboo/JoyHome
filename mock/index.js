@@ -9,6 +9,7 @@ const statistics = require('./statistics')
 const _package = require('./package')
 const dashboard = require('./dashboard')
 const reg = require('./reg')
+const order = require('./order')
 
 const mocks = [
   ...user,
@@ -18,7 +19,8 @@ const mocks = [
   ...statistics,
   ..._package,
   ...dashboard,
-  ...reg
+  ...reg,
+  ...order
 ]
 
 // for front mock

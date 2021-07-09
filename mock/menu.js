@@ -23,95 +23,99 @@ module.exports = [
             },
             "always": false,
             "hidden": false,
-            "children": [{
-              "id": "13",
-              "path": "\/statistics",
-              "component": "Layout",
-              "name": "\/statistics",
-              "meta": {
-                "title": "数据统计",
-                "icon": "el-icon-s-data",
-                "affix": false,
-                "noCache": true,
-                "breadcrumb": false
+            "children": [
+              {
+                "id": "13",
+                "path": "\/statistics",
+                "component": "Layout",
+                "name": "\/statistics",
+                "meta": {
+                  "title": "数据统计",
+                  "icon": "el-icon-s-data",
+                  "affix": false,
+                  "noCache": true,
+                  "breadcrumb": false
+                },
+                "always": false,
+                "hidden": false,
+                "children": [
+                  {
+                    "id": "22",
+                    "path": "\/statistics\/daily",
+                    "component": "statistics\/daily",
+                    "name": "statisticsdaily",
+                    "meta": {
+                      "title": "游戏日报",
+                      "icon": "el-icon-s-marketing",
+                      "affix": false,
+                      "noCache": false,
+                      "breadcrumb": true
+                    },
+                    "always": false,
+                    "hidden": false
+                  }, {
+                    "id": "23",
+                    "path": "\/statistics\/ltv",
+                    "component": "statistics\/ltv",
+                    "name": "statisticsltv",
+                    "meta": {
+                      "title": "LTV",
+                      "icon": "el-icon-s-operation",
+                      "affix": false,
+                      "noCache": false,
+                      "breadcrumb": true
+                    },
+                    "always": false,
+                    "hidden": false
+                  }, {
+                    "id": "58",
+                    "path": "\/statistics\/regkeep",
+                    "component": "statistics\/regkeep",
+                    "name": "statisticsregkeep",
+                    "meta": {
+                      "title": "注册留存",
+                      "icon": "el-icon-data-board",
+                      "affix": false,
+                      "noCache": false,
+                      "breadcrumb": true
+                    },
+                    "always": false,
+                    "hidden": false
+                  }, {
+                    "id": "59",
+                    "path": "\/statistics\/paykeep",
+                    "component": "statistics\/paykeep",
+                    "name": "statisticspaykeep",
+                    "meta": {
+                      "title": "付费留存",
+                      "icon": "el-icon-data-board",
+                      "affix": false,
+                      "noCache": false,
+                      "breadcrumb": true
+                    },
+                    "always": false,
+                    "hidden": false
+                  }, {
+                    "id": "57",
+                    "path": "\/statistics\/all",
+                    "component": "statistics\/all",
+                    "name": "statisticsall",
+                    "meta": {
+                      "title": "综合数据",
+                      "icon": "el-icon-data-line",
+                      "affix": false,
+                      "noCache": false,
+                      "breadcrumb": true
+                    },
+                    "always": false,
+                    "hidden": false
+                  }
+                ]
               },
-              "always": false,
-              "hidden": false,
-              "children": [{
-                "id": "22",
-                "path": "\/statistics\/daily",
-                "component": "statistics\/daily",
-                "name": "statisticsdaily",
-                "meta": {
-                  "title": "游戏日报",
-                  "icon": "el-icon-s-marketing",
-                  "affix": false,
-                  "noCache": false,
-                  "breadcrumb": true
-                },
-                "always": false,
-                "hidden": false
-              }, {
-                "id": "23",
-                "path": "\/statistics\/ltv",
-                "component": "statistics\/ltv",
-                "name": "statisticsltv",
-                "meta": {
-                  "title": "LTV",
-                  "icon": "el-icon-s-operation",
-                  "affix": false,
-                  "noCache": false,
-                  "breadcrumb": true
-                },
-                "always": false,
-                "hidden": false
-              }, {
-                "id": "58",
-                "path": "\/statistics\/regkeep",
-                "component": "statistics\/regkeep",
-                "name": "statisticsregkeep",
-                "meta": {
-                  "title": "注册留存",
-                  "icon": "el-icon-data-board",
-                  "affix": false,
-                  "noCache": false,
-                  "breadcrumb": true
-                },
-                "always": false,
-                "hidden": false
-              }, {
-                "id": "59",
-                "path": "\/statistics\/paykeep",
-                "component": "statistics\/paykeep",
-                "name": "statisticspaykeep",
-                "meta": {
-                  "title": "付费留存",
-                  "icon": "el-icon-data-board",
-                  "affix": false,
-                  "noCache": false,
-                  "breadcrumb": true
-                },
-                "always": false,
-                "hidden": false
-              }, {
-                "id": "57",
-                "path": "\/statistics\/all",
-                "component": "statistics\/all",
-                "name": "statisticsall",
-                "meta": {
-                  "title": "综合数据",
-                  "icon": "el-icon-data-line",
-                  "affix": false,
-                  "noCache": false,
-                  "breadcrumb": true
-                },
-                "always": false,
-                "hidden": false
-              }]
-            }, {
-              "id": "60",
-              "path": "\/data",
-              "component": "Layout",
+              {
+                "id": "60",
+                "path": "\/data",
+                "component": "Layout",
               "name": "\/data",
               "meta": {
                 "title": "数据管理",
@@ -143,7 +147,7 @@ module.exports = [
                 "name": "payindex",
                 "meta": {
                   "title": "充值列表",
-                  "icon": "el-icon-money",
+                  "icon": "money",
                   "affix": false,
                   "noCache": false,
                   "breadcrumb": true
@@ -158,20 +162,6 @@ module.exports = [
                 "meta": {
                   "title": "订单列表",
                   "icon": "el-icon-s-order",
-                  "affix": false,
-                  "noCache": false,
-                  "breadcrumb": true
-                },
-                "always": false,
-                "hidden": false
-              }, {
-                "id": "64",
-                "path": "\/googleRefund\/index",
-                "component": "googleRefund\/index",
-                "name": "googlerefundindex",
-                "meta": {
-                  "title": "Google退款单",
-                  "icon": "el-icon-paperclip",
                   "affix": false,
                   "noCache": false,
                   "breadcrumb": true
@@ -222,96 +212,6 @@ module.exports = [
             "always": false,
             "hidden": false,
             "children": [{
-              "id": "65",
-              "path": "\/dataman",
-              "component": "Layout",
-              "name": "\/dataman",
-              "meta": {
-                "title": "数据管理",
-                "icon": "el-icon-s-ticket",
-                "affix": false,
-                "noCache": true,
-                "breadcrumb": false
-              },
-              "always": false,
-              "hidden": false,
-              "children": [{
-                "id": "67",
-                "path": "\/expense",
-                "component": "RouterView",
-                "name": "\/expense",
-                "meta": {
-                  "title": "广告消耗",
-                  "icon": "el-icon-toilet-paper",
-                  "affix": false,
-                  "noCache": true,
-                  "breadcrumb": false
-                },
-                "always": false,
-                "hidden": false,
-                "children": [{
-                  "id": "68",
-                  "path": "\/expense\/index",
-                  "component": "expense\/index",
-                  "name": "expenseindex",
-                  "meta": {
-                    "title": "列表",
-                    "fulltitle": "广告消耗列表",
-                    "icon": "el-icon-c-scale-to-original",
-                    "affix": false,
-                    "noCache": false,
-                    "breadcrumb": true
-                  },
-                  "always": false,
-                  "hidden": false
-                }, {
-                  "id": "69",
-                  "path": "\/expense\/add",
-                  "component": "expense\/add",
-                  "name": "expenseadd",
-                  "meta": {
-                    "title": "添加",
-                    "fulltitle": "添加广告消耗",
-                    "icon": "el-icon-plus",
-                    "affix": false,
-                    "noCache": false,
-                    "breadcrumb": true
-                  },
-                  "always": false,
-                  "hidden": false
-                }, {
-                  "id": "70",
-                  "path": "\/expense\/edit",
-                  "component": "expense\/edit",
-                  "name": "expenseedit",
-                  "meta": {
-                    "title": "编辑",
-                    "fulltitle": "编辑 广告消耗",
-                    "icon": "el-icon-edit",
-                    "affix": false,
-                    "noCache": true,
-                    "breadcrumb": true
-                  },
-                  "always": false,
-                  "hidden": true
-                }, {
-                  "id": "71",
-                  "path": "\/expense\/del",
-                  "component": "expense\/del",
-                  "name": "\/expense\/del",
-                  "meta": {
-                    "title": "删除",
-                    "fulltitle": "删除广告消耗",
-                    "icon": "el-icon-delete",
-                    "affix": false,
-                    "noCache": true,
-                    "breadcrumb": true
-                  },
-                  "always": false,
-                  "hidden": true
-                }]
-              }]
-            }, {
               "id": "66",
               "path": "\/stati11",
               "component": "Layout",
@@ -530,81 +430,6 @@ module.exports = [
                     "icon": "el-icon-delete",
                     "affix": false,
                     "noCache": false,
-                    "breadcrumb": true
-                  },
-                  "always": false,
-                  "hidden": true
-                }]
-              }, {
-                "id": "18",
-                "path": "\/google_refund_cfg",
-                "component": "RouterView",
-                "name": "\/google_refund_cfg",
-                "meta": {
-                  "title": "退款配置",
-                  "icon": "el-icon-money",
-                  "affix": false,
-                  "noCache": true,
-                  "breadcrumb": false
-                },
-                "always": false,
-                "hidden": false,
-                "children": [{
-                  "id": "19",
-                  "path": "\/googleRefundCfg\/index",
-                  "component": "googleRefundCfg\/index",
-                  "name": "googlerefundcfgindex",
-                  "meta": {
-                    "title": "列表",
-                    "fulltitle": "退款配置列表",
-                    "icon": "el-icon-c-scale-to-original",
-                    "affix": false,
-                    "noCache": false,
-                    "breadcrumb": true
-                  },
-                  "always": false,
-                  "hidden": false
-                }, {
-                  "id": "20",
-                  "path": "\/googleRefundCfg\/add",
-                  "component": "googleRefundCfg\/add",
-                  "name": "googlerefundcfgadd",
-                  "meta": {
-                    "title": "添加",
-                    "fulltitle": "添加退款配置",
-                    "icon": "el-icon-plus",
-                    "affix": false,
-                    "noCache": false,
-                    "breadcrumb": true
-                  },
-                  "always": false,
-                  "hidden": false
-                }, {
-                  "id": "21",
-                  "path": "\/googleRefundCfg\/edit",
-                  "component": "googleRefundCfg\/edit",
-                  "name": "\/googlerefundcfg\/edit",
-                  "meta": {
-                    "title": "编辑",
-                    "fulltitle": "编辑退款配置",
-                    "icon": "el-icon-edit-outline",
-                    "affix": false,
-                    "noCache": true,
-                    "breadcrumb": true
-                  },
-                  "always": false,
-                  "hidden": true
-                }, {
-                  "id": "36",
-                  "path": "\/googleRefundCfg\/del",
-                  "component": "googleRefundCfg\/del",
-                  "name": "\/googleRefundCfg\/del",
-                  "meta": {
-                    "title": "删除",
-                    "fulltitle": "删除退款配置",
-                    "icon": "el-icon-delete",
-                    "affix": false,
-                    "noCache": true,
                     "breadcrumb": true
                   },
                   "always": false,
@@ -981,95 +806,6 @@ module.exports = [
                   "always": false,
                   "hidden": true
                 }]
-              }, {
-                "id": "51",
-                "path": "\/whitelist",
-                "component": "RouterView",
-                "name": "\/whitelist",
-                "meta": {
-                  "title": "白名单",
-                  "icon": "el-icon-s-claim",
-                  "affix": false,
-                  "noCache": true,
-                  "breadcrumb": false
-                },
-                "always": false,
-                "hidden": false,
-                "children": [{
-                  "id": "52",
-                  "path": "\/whitelist\/index",
-                  "component": "whitelist\/index",
-                  "name": "whitelistindex",
-                  "meta": {
-                    "title": "列表",
-                    "fulltitle": "白名单列表",
-                    "icon": "el-icon-c-scale-to-original",
-                    "affix": false,
-                    "noCache": false,
-                    "breadcrumb": true
-                  },
-                  "always": false,
-                  "hidden": false
-                }, {
-                  "id": "53",
-                  "path": "\/whitelist\/add",
-                  "component": "whitelist\/add",
-                  "name": "whitelistadd",
-                  "meta": {
-                    "title": "添加",
-                    "fulltitle": "添加白名单",
-                    "icon": "el-icon-plus",
-                    "affix": false,
-                    "noCache": false,
-                    "breadcrumb": true
-                  },
-                  "always": false,
-                  "hidden": false
-                }, {
-                  "id": "54",
-                  "path": "\/whitelist\/edit",
-                  "component": "whitelist\/edit",
-                  "name": "\/whitelist\/edit",
-                  "meta": {
-                    "title": "编辑",
-                    "fulltitle": "编辑白名单",
-                    "icon": "el-icon-edit",
-                    "affix": false,
-                    "noCache": true,
-                    "breadcrumb": true
-                  },
-                  "always": false,
-                  "hidden": true
-                }, {
-                  "id": "55",
-                  "path": "\/whitelist\/del",
-                  "component": "whitelist\/del",
-                  "name": "\/whitelist\/del",
-                  "meta": {
-                    "title": "删除",
-                    "fulltitle": "删除白名单",
-                    "icon": "el-icon-delete",
-                    "affix": false,
-                    "noCache": true,
-                    "breadcrumb": true
-                  },
-                  "always": false,
-                  "hidden": true
-                }]
-              }, {
-                "id": "56",
-                "path": "\/logs\/index",
-                "component": "logs\/index",
-                "name": "logsindex",
-                "meta": {
-                  "title": "日志文件列表",
-                  "icon": "el-icon-folder-opened",
-                  "affix": false,
-                  "noCache": false,
-                  "breadcrumb": true
-                },
-                "always": false,
-                "hidden": false
               }, {
                 "id": "137",
                 "path": "\/cerror\/index",

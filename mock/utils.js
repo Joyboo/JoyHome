@@ -92,16 +92,17 @@ function beforeDay(day) {
   return d.getTime()
 }
 
-function listdate(beginday, endday)
+function listdate(beginday, endday, fmt)
 {
   endday = endday || 0
+  fmt = fmt || '{y}{m}{d}'
   let beginStamp = beforeDay(beginday)
   const endStamp = beforeDay(endday)
 
   const list = []
   while (beginStamp <= endStamp)
   {
-    list.push(parseTime(beginStamp, '{y}{m}{d}'))
+    list.push(parseTime(beginStamp, fmt))
     beginStamp += 86400 * 1000
   }
   return list
@@ -129,11 +130,34 @@ function makeRound(n, f){
 
   if (f > 0)
   {
-    t = t / f * 10
+    // 1位小数/10, 2位/100, 3位/1000 ...
+    const func = n => {
+      let mul = 1;
+      for(let i = 1; i<= n; i++)
+      {
+        mul *= 10
+      }
+      return mul
+    }
+    t = t / func(f)
   } else {
     t = parseInt(t)
   }
   return t;
+}
+
+/**
+ * 生成随机字符串
+ * @param e 长度
+ * @returns {string}
+ */
+function makeRoundString(e) {
+  e = e || 32;
+  let t = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678",
+    a = t.length,
+    n = "";
+  for (i = 0; i < e; i++) n += t.charAt(Math.floor(Math.random() * a));
+  return n
 }
 
 module.exports = {
@@ -142,5 +166,6 @@ module.exports = {
   beforeDay,
   parseTime,
   listdate,
-  makeRound
+  makeRound,
+  makeRoundString
 }

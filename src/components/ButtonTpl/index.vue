@@ -10,7 +10,7 @@
     <slot />
 
     <router-link class="joy-btn" :to="{path: index}">
-      <el-button type="success" :size="size">列 表</el-button>
+      <el-button :size="size">列 表</el-button>
     </router-link>
 
     <!--后插槽位-->

@@ -92,7 +92,7 @@
       <el-footer>
         <el-button type="primary" icon="el-icon-edit-outline" v-permission="['admin', '/user/edit']" @click="openDialog" :size="size">操作</el-button>
         <router-link class="joy-btn" to="/reg/index">
-          <el-button type="success" icon="el-icon-c-scale-to-original" :size="size">列 表</el-button>
+          <el-button icon="el-icon-c-scale-to-original" :size="size">列 表</el-button>
         </router-link>
       </el-footer>
     </el-form>
