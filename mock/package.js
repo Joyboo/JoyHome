@@ -1,4 +1,4 @@
-const { listdate, makeRound, makeRoundString, parseTime } = require('./utils')
+const { listdate, makeRound, makeRoundString } = require('./utils')
 
 const list = listdate(-30, 0, '{y}-{m}-{d} {h}:{i}:{s}')
 
