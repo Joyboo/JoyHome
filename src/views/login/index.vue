@@ -51,7 +51,7 @@
 
       <el-row>
         <el-col :span="24">
-          <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">
+          <el-button size="medium" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">
             {{ $t('login.logIn') }}
           </el-button>
         </el-col>

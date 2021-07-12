@@ -9,7 +9,7 @@ module.exports = [
         msg: 'success',
         data: {
           region_domain: {
-            domain: 'http://vveq.com',
+            domain: 'https://github.com/Joyboo',
             region: {
               omz: {
                 name: "欧美区",
@@ -35,12 +35,12 @@ module.exports = [
             {
               class: "danger",
               name: "正式版!",
-              url: "https://www.baidu.com"
+              url: "https://github.com/Joyboo"
             },
             {
               class: "",
               name: "测试版",
-              url: "https://www.baidu.com"
+              url: "https://github.com/Joyboo"
             }
           ]
         }

@@ -179,9 +179,10 @@
 
         columns.forEach((column, index) => {
           if (index === 0) {
-            sums[index] = joy.h == '--' ? '页合计' : (joy.h == '-' ? '总合计' : '');
+            sums[index] = joy.h == '--' ? '页合计1' : (joy.h == '-' ? '总合计' : '');
           } else {
-            sums[index] = joy[column.property] || ''
+            // *100 /100 保存两位小数
+            sums[index] = parseInt(joy[column.property] * 100) / 100 || ''
           }
         })
 

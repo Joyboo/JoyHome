@@ -358,7 +358,7 @@
           </el-form-item>
 
           <el-form-item label="定时器">
-            <el-input v-model="form.extension.rating.time" style="width: 300px;" clearable>
+            <el-input v-model.number="form.extension.rating.time" style="width: 300px;" clearable>
               <span slot="suffix">分钟后弹出（开关打开时有效）</span>
             </el-input>
           </el-form-item>
