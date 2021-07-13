@@ -23,12 +23,17 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  props: {
+    index: {
+      type: String,
+      default: ''
+    }
+  },
   computed: {
     ...mapGetters([
       'size'
     ])
   },
-  props: ['index'],
   methods: {
     submit() {
       this.$emit('submit')

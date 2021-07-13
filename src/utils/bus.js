@@ -6,10 +6,10 @@ import Vue from 'vue'
 export default new Vue()
 */
 
-import Bus from 'vue';
+import Bus from 'vue'
 
-const install = function (Vue) {
-  Vue.prototype.$bus = new Bus();
+const install = function(Vue) {
+  Vue.prototype.$bus = new Bus()
 }
 
-export default { install };
+export default { install }

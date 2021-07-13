@@ -35,8 +35,7 @@ export function adminModify(method, data) {
     method: method
   }
   // get不需要参数
-  if (method.toLowerCase() == 'post')
-  {
+  if (method.toLowerCase() == 'post') {
     obj.data = data
   }
 

@@ -1,6 +1,6 @@
 <template>
   <div class="view-container">
-    <layout-filter :query="query" @search="search" :loading="loading"></layout-filter>
+    <layout-filter :query="query" :loading="loading" @search="search" />
 
     <table-data
       :loading="loading"
@@ -12,7 +12,7 @@
 
       <el-table-column align="center" label="游戏名">
         <template slot-scope="scope">
-          {{ gamelist[scope.row.gameid]}}
+          {{ gamelist[scope.row.gameid] }}
         </template>
       </el-table-column>
 
@@ -22,7 +22,7 @@
 
       <el-table-column width="80" align="center" label="状态">
         <template slot-scope="scope">
-          <el-switch v-model="scope.row.status == '0'" @change="chgStatus(scope.row.id, scope.row.status)" />
+          <el-switch :value="scope.row.status == '0'" @change="chgStatus(scope.row.id, scope.row.status)" />
         </template>
       </el-table-column>
     </table-data>
@@ -36,83 +36,81 @@
 </template>
 
 <script>
-  import LayoutFilter from '@/components/LayoutFilter'
-  import TableData from '@/components/TableData/info'
-  import Pagination from '@/components/Pagination'
-  import {mapGetters} from "vuex";
-  import {googlerefountIndex, googlerefountEdit} from '@/api/googlerefundcfg'
-  import checkPermission from "@/utils/permission"
+import LayoutFilter from '@/components/LayoutFilter'
+import TableData from '@/components/TableData/info'
+import Pagination from '@/components/Pagination'
+import { mapGetters } from 'vuex'
+import { googlerefountIndex, googlerefountEdit } from '@/api/googlerefundcfg'
+import checkPermission from '@/utils/permission'
 
-  export default {
-    name: 'googlerefundcfgindex',
-    computed: {
-      ...mapGetters(['size', 'gamelist'])
+export default {
+  name: 'googlerefundcfgindex',
+  components: {
+    LayoutFilter,
+    TableData,
+    Pagination
+  },
+  data() {
+    return {
+      query: {
+        gameid: '',
+        pkgbnd: []
+      },
+      loading: false,
+      tableData: [],
+      total: 0
+    }
+  },
+  computed: {
+    ...mapGetters(['size', 'gamelist'])
+  },
+  methods: {
+    search() {
+      this.loading = true
+      const query = Object.assign({}, this.query, { pkgbnd: this.query.pkgbnd.join(',') })
+      googlerefountIndex(query)
+        .then(({ code, msg, data }) => {
+          if (!code) {
+            return this.$message.error(msg)
+          }
+          this.tableData = data.data || []
+          this.total = data.totals || 0
+        })
+        .catch(error => {
+          this.$message.error(error)
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
-    components: {
-      LayoutFilter,
-      TableData,
-      Pagination
-    },
-    data() {
-      return {
-        query: {
-          gameid: '',
-          pkgbnd: []
-        },
-        loading: false,
-        tableData: [],
-        total: 0
-      }
-    },
-    methods: {
-      search() {
+    chgStatus(id, status) {
+      if (!checkPermission(['admin', '/googleRefountEdit/edit'])) {
+        this.$confirm('对不起，没有权限', {
+          type: 'error',
+          showClose: false,
+          showCancelButton: false
+        }).catch(_ => {})
+      } else {
         this.loading = true
-        const query = Object.assign({}, this.query, {pkgbnd: this.query.pkgbnd.join(',')})
-        googlerefountIndex(query)
-          .then(({code, msg, data}) => {
-            if (!code)
-            {
-              return this.$message.error(msg)
+        googlerefountEdit('post', { id: id, status: status == '1' ? 0 : 1 })
+          .then(({ code, msg }) => {
+            if (code) {
+              this.$message.success('操作成功')
+              this.search()
+            } else {
+              this.$message.error(msg)
             }
-            this.tableData = data.data || []
-            this.total = data.totals || 0
           })
           .catch(error => {
-            this.$message.error(error)
+            console.log(error)
           })
           .finally(() => {
             this.loading = false
           })
-      },
-      chgStatus(id, status) {
-        if (!checkPermission(['admin', '/googleRefountEdit/edit']))
-        {
-          this.$confirm('对不起，没有权限', {
-            type: 'error',
-            showClose: false,
-            showCancelButton: false
-          }).catch(error => {})
-        } else {
-          this.loading = true
-          googlerefountEdit('post', {id: id, status: status == '1' ? 0 : 1})
-            .then(({code, msg}) => {
-              if (code) {
-                this.$message.success('操作成功')
-                this.search()
-              } else {
-                this.$message.error(msg)
-              }
-            })
-            .catch(error => {
-              console.log(error)
-            })
-            .finally(() => {
-              this.loading = false
-            })
-        }
       }
     }
   }
+}
 </script>
 
 <style scoped>

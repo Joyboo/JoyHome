@@ -15,21 +15,17 @@ const whiteList = ['/login', '/auth-redirect', '/redirect', '/404']
 
 // add by Joyboo 嵌套2级以上菜单时，处理多个router-view容器keep-alive不生效的问题，参考：https://blog.csdn.net/qq_41912398/article/details/109576635
 const handleKeepAlive = (to) => {
-
-  if (to.matched)
-  {
+  if (to.matched) {
     // const topMenuMode = store.state.permission.mode
 
-    for (let i = 0; i < to.matched.length; i++)
-    {
+    for (let i = 0; i < to.matched.length; i++) {
       const element = to.matched[i]
       /**
        * 1. 注意keep-alive的include匹配的是组件的name值而非router的name
        * 2. 因为同一套动态路由版本需要支持两种模式的菜单，故而需要动态处理一下Layout和RouterView
        */
-      if (element.components.default.name === 'RouterView'
-      || (to.matched.length > 2 && element.components.default.name === 'Layout'))
-      {
+      if (element.components.default.name === 'RouterView' ||
+      (to.matched.length > 2 && element.components.default.name === 'Layout')) {
         to.matched.splice(i, 1)
       }
     }
@@ -55,13 +51,11 @@ router.beforeEach(async(to, from, next) => {
       // 是否已通过getInfo获得其权限角色
       const hasRoles = store.getters.roles && store.getters.roles.length > 0
       if (hasRoles) {
-
         handleKeepAlive(to)
         next()
-
       } else {
         try {
-          let myLoading = Loading.service();
+          const myLoading = Loading.service()
 
           // 获取菜单，动态路由
           await store.dispatch('permission/getRouter')
@@ -75,7 +69,7 @@ router.beforeEach(async(to, from, next) => {
           // 监听错误日志上报
           store.dispatch('errorLog/listen')
 
-          myLoading.close();
+          myLoading.close()
 
           // hack method to ensure that addRoutes is complete
           // set the replace: true, so the navigation will not leave a history record

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <transition name="el-zoom-in-top" @afterLeave="afterLeave" mode="in-out" :duration="duration">
+    <transition name="el-zoom-in-top" mode="in-out" :duration="duration" @afterLeave="afterLeave">
       <div v-show="show || !isMobile">
         <el-form :model="query" :size="size" :inline="true">
 
@@ -32,13 +32,13 @@
           </el-form-item>
 
           <el-form-item v-if="typeof query.ProxyRegion != 'undefined'">
-            <el-select style="width: 100px;" v-model="query.ProxyRegion" placeholder="地区" class="mySelect">
+            <el-select v-model="query.ProxyRegion" style="width: 100px;" placeholder="地区" class="mySelect">
               <el-option v-for="(rn, rk) in region" :key="rk" :label="rn.name" :value="rk" />
             </el-select>
           </el-form-item>
 
           <el-form-item v-if="typeof query.tzn != 'undefined'">
-            <el-select style="width: 80px;" v-model="query.tzn" placeholder="时区" class="mySelect" @change="chgTzn">
+            <el-select v-model="query.tzn" style="width: 80px;" placeholder="时区" class="mySelect" @change="chgTzn">
               <el-option v-for="(rn, rk) in region" :key="rk" :label="rn.tzn + '区'" :value="rn.tzn" />
             </el-select>
           </el-form-item>
@@ -71,7 +71,7 @@
           <el-form-item v-if="isBegin && isEnd">
             <el-dropdown trigger="click">
               <div>
-                <el-button icon="el-icon-date"></el-button>
+                <el-button icon="el-icon-date" />
               </div>
               <el-dropdown-menu slot="dropdown" :style="{padding: '0'}">
                 <el-dropdown-item :style="{padding: '10px'}">
@@ -96,14 +96,14 @@
             </el-button>
           </el-form-item>
 
-          <slot name="after"></slot>
+          <slot name="after" />
 
         </el-form>
 
       </div>
     </transition>
 
-    <transition v-if="isMobile" name="el-fade-in-linear" mode="out-in" @afterLeave="afterLeave" :duration="duration">
+    <transition v-if="isMobile" name="el-fade-in-linear" mode="out-in" :duration="duration" @afterLeave="afterLeave">
       <div v-show="!show" style="margin-bottom: 15px;">
         <el-button type="primary" :size="size" @click="setShowTimeout(true)">
           <svg-icon icon-class="filter" /> 筛选
@@ -116,222 +116,215 @@
 
 <script>
 
-  import { mapGetters } from 'vuex'
-  import { packageChildOption } from '@/api/package'
-  import {beforeDay,parseTime} from '@/utils'
+import { mapGetters } from 'vuex'
+import { packageChildOption } from '@/api/package'
+import { beforeDay, parseTime } from '@/utils'
 
-  export default {
-    name: "LayoutFilter",
-    computed: {
-      ...mapGetters([
-        'size',
-        'userinfo',
-        'config',
-        'device',
-        'gamelist'
-      ]),
-      isMobile() {
-        return this.device === 'mobile'
-      },
-      theme() {
-        return this.$store.state.settings.theme
-      },
-      duration() {
-        return this.$store.state.settings.duration
-      },
-      region() {
-        return this.config.region_domain.region;
-      },
-      // 是否多选游戏
-      gameMul() {
-        return typeof this.query.gameid === 'object'
-      },
-      // 是否多选包
-      packageMul() {
-        return typeof this.query.pkgbnd === 'object'
-      },
-      isBegin() {
-        return typeof this.query.begintime != 'undefined'
-      },
-      isEnd() {
-        return typeof this.query.endtime != 'undefined'
-      },
-      format() {
-        return typeof this.query.format === 'undefined' ? 'yyyy-MM-dd' : this.query.format
-      },
-      // 最终赋值给begintime或endtime的格式,值参考 parseTime format参数
-      outFmt() {
-        return typeof this.query.outfmt === 'undefined' ? '{y}-{m}-{d}' : this.query.outfmt
-      },
-      // 管理员编辑页设置的默认选中游戏
-      defaultGid() {
-        if (typeof this.userinfo.extension.gid == 'undefined')
-        {
-          return ''
-        }
-        const gid = this.userinfo.extension.gid
-        return gid == '' ? gid : parseInt(gid);
+export default {
+  name: 'LayoutFilter',
+  props: {
+    query: {
+      // required: true,
+      type: Object,
+      default() {
+        return {}
       }
     },
-    mounted() {
-
-      this.$bus.$on('changeFilterShow', this.setShowTimeout)
-
-      // 时间
-      if (this.isBegin)
-      {
-        this.begin = beforeDay(this.query.begintime)
+    loading: {
+      type: Boolean,
+      default: false
+    },
+    // need search
+    nsch: {
+      type: Boolean,
+      default: true
+    }
+  },
+  data() {
+    return {
+      begin: '',
+      end: '',
+      packagelist: [],
+      show: true
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'size',
+      'userinfo',
+      'config',
+      'device',
+      'gamelist'
+    ]),
+    isMobile() {
+      return this.device === 'mobile'
+    },
+    theme() {
+      return this.$store.state.settings.theme
+    },
+    duration() {
+      return this.$store.state.settings.duration
+    },
+    region() {
+      return this.config.region_domain.region
+    },
+    // 是否多选游戏
+    gameMul() {
+      return typeof this.query.gameid === 'object'
+    },
+    // 是否多选包
+    packageMul() {
+      return typeof this.query.pkgbnd === 'object'
+    },
+    isBegin() {
+      return typeof this.query.begintime != 'undefined'
+    },
+    isEnd() {
+      return typeof this.query.endtime != 'undefined'
+    },
+    format() {
+      return typeof this.query.format === 'undefined' ? 'yyyy-MM-dd' : this.query.format
+    },
+    // 最终赋值给begintime或endtime的格式,值参考 parseTime format参数
+    outFmt() {
+      return typeof this.query.outfmt === 'undefined' ? '{y}-{m}-{d}' : this.query.outfmt
+    },
+    // 管理员编辑页设置的默认选中游戏
+    defaultGid() {
+      if (typeof this.userinfo.extension.gid == 'undefined') {
+        return ''
       }
-      if (this.isEnd)
-      {
-        // 可传true或者-N的天数
-        const day = this.query.endtime === true ? 0 : this.query.endtime
-        this.end = beforeDay(day)
-      }
-
-      // 默认选中的游戏
-      if (this.defaultGid != '')
-      {
-        if (typeof this.query.gameid == 'object' && this.query.gameid.indexOf(this.defaultGid) < 0)
-        {
-          this.query.gameid.push(this.defaultGid)
-        }
-        else if (typeof this.query.gameid == 'string' && this.query.gameid == '')
-        {
-          this.query.gameid = this.defaultGid
-        }
-
-        // 等待侦听器执行完成
-        setTimeout(() => this.search(), 500)
+      const gid = this.userinfo.extension.gid
+      return gid == '' ? gid : parseInt(gid)
+    }
+  },
+  watch: {
+    // 侦听器替代onchange
+    'query.gameid': {
+      immediate: true,
+      handler: function(newVal, oldVal) {
+        this.changeGame(newVal)
       }
     },
-    watch: {
-      // 侦听器替代onchange
-      'query.gameid': {
-        immediate: true,
-        handler: function (newVal, oldVal) {
-          this.changeGame(newVal)
-        }
-      },
-      begin: function(newVal, oldVal) {
-        if (!isNaN(newVal)) {
-          this.$set(this.query, 'begintime', parseTime(newVal, this.outFmt))
-        }
-      },
-      end: function(newVal, oldVal) {
-        if (!isNaN(newVal)) {
-          this.$set(this.query, 'endtime', parseTime(newVal, this.outFmt))
-        }
+    begin: function(newVal, oldVal) {
+      if (!isNaN(newVal)) {
+        this.$set(this.query, 'begintime', parseTime(newVal, this.outFmt))
       }
     },
-    props: {
-      query: {
-        // required: true,
-        type: Object,
-        default () {
-          return {}
-        }
-      },
-      loading: {
-        type: Boolean,
-        default: false
-      },
-      // need search
-      nsch: {
-        type: Boolean,
-        default: true
+    end: function(newVal, oldVal) {
+      if (!isNaN(newVal)) {
+        this.$set(this.query, 'endtime', parseTime(newVal, this.outFmt))
       }
-    },
-    data() {
-      return {
-        begin: '',
-        end: '',
-        packagelist: [],
-        show: true
-      }
-    },
-    methods: {
-      changeGame(gameid) {
-        // 不需要包信息
-        if (typeof this.query.pkgbnd == 'undefined')
-        {
-          return;
-        }
+    }
+  },
+  mounted() {
+    this.$bus.$on('changeFilterShow', this.setShowTimeout)
 
-        if (gameid.length == 0) {
-          // 清空
-          this.packagelist = []
-          this.query.pkgbnd = this.packageMul ? [] : ''
-          return
-        }
+    // 时间
+    if (this.isBegin) {
+      this.begin = beforeDay(this.query.begintime)
+    }
+    if (this.isEnd) {
+      // 可传true或者-N的天数
+      const day = this.query.endtime === true ? 0 : this.query.endtime
+      this.end = beforeDay(day)
+    }
 
-        if (this.gameMul) {
-          gameid = gameid.join(',')
-        }
-        packageChildOption({ gameid: gameid }).then(resp => {
-          this.packagelist = resp.data
-        })
-      },
-      fastdate(val) {
-        const time = new Date()
-        switch (val) {
-          case 1: // 今天
-            this.begin = this.end = beforeDay(0)
-            break
-          case 2: // 昨天
-            this.begin = this.end = beforeDay(-1)
-                break
-          case 3: // 本月
-            this.begin = (new Date(time.getFullYear(), time.getMonth(), 1)).getTime()
-            this.end = beforeDay(0)
-            break
-          case 4: // 上月
-            // 这个月第一天减一天
-            this.end = new Date(time.getFullYear(), time.getMonth(), 1, 0, 0, 0).getTime() - 86400 * 1000
-            const lastDate = new Date(this.end)
-            const start4 = new Date(lastDate.getFullYear(), lastDate.getMonth(), 1, 0, 0, 0)
-            this.begin = start4.getTime()
-            break
-          case 5: // 近7天
-            this.begin = beforeDay(-7)
-            this.end = beforeDay(0)
-            break
-          case 6: // 近30天
-            this.begin = beforeDay(-30)
-            this.end = beforeDay(0)
-            break
-          case 7: // 近90天
-            this.begin = beforeDay(-90)
-            this.end = beforeDay(0)
-            break
-          case 8: // 近一年
-            const start8 = new Date(time.getFullYear() - 1, time.getMonth(), time.getDate(), time.getHours(), time.getMinutes(), time.getSeconds())
-            this.begin = start8.getTime()
-            this.end = beforeDay(0)
-            break
-        }
-      },
-      search() {
-        this.setShowTimeout(false)
-        this.$emit('search')
-      },
-      // 改变时区
-      chgTzn(val) {
-        this.$emit('chgTzn', val)
-      },
-      // 动画结束
-      afterLeave() {
-        this.$bus.$emit('setHeight')
-      },
-      // 在动画时间结束后执行
-      setShowTimeout(val) {
-        setTimeout(() => this.show = val, this.duration)
+    // 默认选中的游戏
+    if (this.defaultGid != '') {
+      if (typeof this.query.gameid == 'object' && this.query.gameid.indexOf(this.defaultGid) < 0) {
+        this.query.gameid.push(this.defaultGid)
+      } else if (typeof this.query.gameid == 'string' && this.query.gameid == '') {
+        this.query.gameid = this.defaultGid
+      }
+
+      // 等待侦听器执行完成
+      setTimeout(() => this.search(), 500)
+    }
+  },
+  beforeDestroy() {
+    this.$bus.$off('changeFilterShow')
+  },
+  methods: {
+    changeGame(gameid) {
+      // 不需要包信息
+      if (typeof this.query.pkgbnd == 'undefined') {
+        return
+      }
+
+      if (gameid.length == 0) {
+        // 清空
+        this.packagelist = []
+        this.query.pkgbnd = this.packageMul ? [] : ''
+        return
+      }
+
+      if (this.gameMul) {
+        gameid = gameid.join(',')
+      }
+      packageChildOption({ gameid: gameid }).then(resp => {
+        this.packagelist = resp.data
+      })
+    },
+    fastdate(val) {
+      const time = new Date()
+      switch (val) {
+        case 1: // 今天
+          this.begin = this.end = beforeDay(0)
+          break
+        case 2: // 昨天
+          this.begin = this.end = beforeDay(-1)
+          break
+        case 3: // 本月
+          this.begin = (new Date(time.getFullYear(), time.getMonth(), 1)).getTime()
+          this.end = beforeDay(0)
+          break
+        case 4: // 上月
+          // 这个月第一天减一天
+          this.end = new Date(time.getFullYear(), time.getMonth(), 1, 0, 0, 0).getTime() - 86400 * 1000
+          var lastDate = new Date(this.end)
+          var start4 = new Date(lastDate.getFullYear(), lastDate.getMonth(), 1, 0, 0, 0)
+          this.begin = start4.getTime()
+          break
+        case 5: // 近7天
+          this.begin = beforeDay(-7)
+          this.end = beforeDay(0)
+          break
+        case 6: // 近30天
+          this.begin = beforeDay(-30)
+          this.end = beforeDay(0)
+          break
+        case 7: // 近90天
+          this.begin = beforeDay(-90)
+          this.end = beforeDay(0)
+          break
+        case 8: // 近一年
+          var start8 = new Date(time.getFullYear() - 1, time.getMonth(), time.getDate(), time.getHours(), time.getMinutes(), time.getSeconds())
+          this.begin = start8.getTime()
+          this.end = beforeDay(0)
+          break
       }
     },
-    beforeDestroy() {
-      this.$bus.$off('changeFilterShow')
+    search() {
+      this.setShowTimeout(false)
+      this.$emit('search')
+    },
+    // 改变时区
+    chgTzn(val) {
+      this.$emit('chgTzn', val)
+    },
+    // 动画结束
+    afterLeave() {
+      this.$bus.$emit('setHeight')
+    },
+    // 在动画时间结束后执行
+    setShowTimeout(val) {
+      setTimeout(() => {
+        this.show = val
+      }, this.duration)
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

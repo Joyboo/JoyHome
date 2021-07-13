@@ -18,7 +18,7 @@
     </el-form-item>
 
     <el-form-item label="变量类型">
-      <el-radio v-model="form.extension.type" v-for="(t, n) in valopn" :key="n" :label="n" border>{{t}}</el-radio>
+      <el-radio v-for="(t, n) in valopn" :key="n" v-model="form.extension.type" :label="n" border>{{ t }}</el-radio>
     </el-form-item>
 
     <el-form-item label="变量值">
@@ -31,53 +31,52 @@
       />
     </el-form-item>
 
-    <button-tpl index="/sysinfo/index" @submit="submit"></button-tpl>
+    <button-tpl index="/sysinfo/index" @submit="submit" />
   </el-form>
 </template>
 
 <script>
-  import ButtonTpl from '@/components/ButtonTpl'
-  import {mapGetters} from "vuex";
-  export default {
-    components: {
-      ButtonTpl
-    },
-    computed: {
-      ...mapGetters(['size', 'device']),
-    },
-    mounted() {
-      // 获取配置
-    },
-    props: {
-      form: {
-        type: Object,
-        default: {}
-      }
-    },
-    data() {
-      return {
-        grpid: {
-          1: '基本信息',
-          2: '优化信息',
-          3: '第三方模块',
-          4: '数据库'
-        },
-        valopn: {
-          text: '文本',
-          radio: '选项',
-          textarea: '多行文本',
-          date: '日期',
-          array: '数组',
-          file: '文件'
-        }
-      }
-    },
-    methods: {
-      submit() {
-        this.$emit('submit')
+import ButtonTpl from '@/components/ButtonTpl'
+import { mapGetters } from 'vuex'
+export default {
+  components: {
+    ButtonTpl
+  },
+  props: {
+    form: {
+      type: Object,
+      default() {
+        return {}
       }
     }
+  },
+  data() {
+    return {
+      grpid: {
+        1: '基本信息',
+        2: '优化信息',
+        3: '第三方模块',
+        4: '数据库'
+      },
+      valopn: {
+        text: '文本',
+        radio: '选项',
+        textarea: '多行文本',
+        date: '日期',
+        array: '数组',
+        file: '文件'
+      }
+    }
+  },
+  computed: {
+    ...mapGetters(['size', 'device'])
+  },
+  methods: {
+    submit() {
+      this.$emit('submit')
+    }
   }
+}
 </script>
 
 <style scoped>

@@ -1,6 +1,6 @@
 import store from '@/store'
 const version = require('element-ui/package.json').version
-import {Message} from "element-ui";
+import { Message } from 'element-ui'
 import i18n from '@/lang'
 import variables from '@/styles/element-variables.scss'
 
@@ -8,8 +8,7 @@ const ORIGINAL_THEME = '#409EFF' // default color
 
 export default {
   chalk: '',
-  async set (val) {
-
+  async set(val) {
     const oldVal = this.chalk ? store.state.settings.theme : ORIGINAL_THEME
     if (typeof val !== 'string') return
     const themeCluster = this.getThemeCluster(val.replace('#', ''))
@@ -54,7 +53,7 @@ export default {
         return new RegExp(oldVal, 'i').test(text) && !/Chalk Variables/.test(text)
       })
     styles.forEach(style => {
-      const {innerText} = style
+      const { innerText } = style
       if (typeof innerText !== 'string') return
       style.innerText = this.updateStyle(innerText, originalCluster, themeCluster)
     })
@@ -130,5 +129,4 @@ export default {
     return clusters
   }
 }
-
 

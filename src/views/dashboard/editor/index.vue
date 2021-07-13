@@ -4,7 +4,7 @@
     <el-row :gutter="40" class="panel-group">
 
       <el-col :xs="24" :sm="24" :lg="6" class="card-panel-col">
-        <div class="card-panel" v-loading="loading">
+        <div v-loading="loading" class="card-panel">
           <div class="card-panel-icon-wrapper icon-people">
             <svg-icon icon-class="money" class-name="card-panel-icon" />
           </div>
@@ -18,14 +18,14 @@
               <i v-else-if="revenue.today < revenue.yesterday" class="el-icon-bottom danger arrow" />
             </div>
             <div style="margin-top: 10px;font-size: 12px;">
-              <span class="danger">对比昨天</span><count-to :start-val="0"  prefix="$ " :end-val="revenue.yesterday" :duration="3000" />
+              <span class="danger">对比昨天</span><count-to :start-val="0" prefix="$ " :end-val="revenue.yesterday" :duration="3000" />
             </div>
           </div>
         </div>
       </el-col>
 
       <el-col :xs="24" :sm="24" :lg="6" class="card-panel-col">
-        <div class="card-panel" v-loading="loading">
+        <div v-loading="loading" class="card-panel">
           <div class="card-panel-icon-wrapper icon-message">
             <svg-icon icon-class="money" class-name="card-panel-icon" />
           </div>
@@ -34,7 +34,7 @@
               本月营收
             </div>
             <div>
-              <count-to :start-val="0" :end-val="revenue.month"  prefix="$ " :duration="2600" class="card-panel-num" />
+              <count-to :start-val="0" :end-val="revenue.month" prefix="$ " :duration="2600" class="card-panel-num" />
               <i v-if="revenue.month > revenue.lastmonth" class="el-icon-top success arrow" />
               <i v-else-if="revenue.month < revenue.lastmonth" class="el-icon-bottom danger arrow" />
             </div>
@@ -62,16 +62,16 @@
 
       <el-col :xs="24" :sm="24" :lg="6" class="card-panel-col">
         <div class="card-panel" style="line-height: 128px;text-align: center;">
-          <admin-card></admin-card>
+          <admin-card />
         </div>
       </el-col>
 
     </el-row>
 
     <el-row :gutter="32">
-      <el-col :xs="24" :sm="24" :lg="8" class="mychart" v-for="(item, key) in chart" :key="key">
-        <div class="chart-wrapper" v-loading="loading">
-          <line-chart v-bind="item"/>
+      <el-col v-for="(item, key) in chart" :key="key" :xs="24" :sm="24" :lg="8" class="mychart">
+        <div v-loading="loading" class="chart-wrapper">
+          <line-chart v-bind="item" />
         </div>
       </el-col>
     </el-row>
@@ -79,107 +79,104 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-  import CountTo from 'vue-count-to'
-  import LineChart from './components/LineChart'
-  import {dashboard} from '@/api/dashboard'
-  import AdminCard from "./components/AdminCard";
+import { mapGetters } from 'vuex'
+import CountTo from 'vue-count-to'
+import LineChart from './components/LineChart'
+import { dashboard } from '@/api/dashboard'
+import AdminCard from './components/AdminCard'
 
-  export default {
-    name: 'DashboardEditor',
-    components: { LineChart, CountTo, AdminCard },
-    computed: {
-      ...mapGetters(['gamelist', 'device'])
-    },
-    watch: {
-      gameid: {
-        immediate: true, // 侦听开始后立即调用，用于编辑时立即触发角色权限选中
-        handler: function (newVal, oldVal) {
-          this.chgGame(newVal)
-        }
-      }
-    },
-    data() {
-      const chart = {
-        week: [],
-        last: []
-      }
-      return {
-        loading: false,
+export default {
+  name: 'DashboardEditor',
+  components: { LineChart, CountTo, AdminCard },
+  data() {
+    const chart = {
+      week: [],
+      last: []
+    }
+    return {
+      loading: false,
 
-        gameid: '',
-        revenue: {
-          today: 0,
-          yesterday: 0,
-          month: 0,
-          lastmonth: 0
+      gameid: '',
+      revenue: {
+        today: 0,
+        yesterday: 0,
+        month: 0,
+        lastmonth: 0
+      },
+      chart: {
+        reg: {
+          title: '新增账号',
+          ystart: '',
+          yend: '',
+          chartData: chart
         },
-        chart: {
-          reg: {
-            title: '新增账号',
-            ystart: '',
-            yend: '',
-            chartData: chart
-          },
-          dau: {
-            title: 'DAU',
-            ystart: '',
-            yend: '',
-            chartData: chart
-          },
-          money: {
-            title: '付费',
-            ystart: '$ ',
-            yend: '',
-            chartData: chart
-          },
-          ffl: {
-            title: '付费率',
-            yend: '%',
-            ystart: '',
-            chartData: chart
-          },
-          arppu: {
-            title: 'ARPPU',
-            ystart: '$ ',
-            yend: '',
-            chartData: chart
-          },
-          arpu: {
-            title: 'ARPU',
-            ystart: '$ ',
-            yend: '',
-            chartData: chart
-          }
+        dau: {
+          title: 'DAU',
+          ystart: '',
+          yend: '',
+          chartData: chart
+        },
+        money: {
+          title: '付费',
+          ystart: '$ ',
+          yend: '',
+          chartData: chart
+        },
+        ffl: {
+          title: '付费率',
+          yend: '%',
+          ystart: '',
+          chartData: chart
+        },
+        arppu: {
+          title: 'ARPPU',
+          ystart: '$ ',
+          yend: '',
+          chartData: chart
+        },
+        arpu: {
+          title: 'ARPU',
+          ystart: '$ ',
+          yend: '',
+          chartData: chart
         }
-      }
-    },
-    methods: {
-      chgGame(val) {
-        this.loading = true
-        dashboard({gameid: val})
-          .then(({code, msg, data}) => {
-            if (code)
-            {
-              const {revenue, chart} = data
-              this.revenue = revenue
-
-              for (const i in chart)
-              {
-                this.chart[i].chartData = chart[i]
-              }
-            }
-            else {
-              this.$message.error(msg)
-            }
-          })
-          .catch(error => {})
-          .finally(_ => {
-            this.loading = false
-          })
       }
     }
+  },
+  computed: {
+    ...mapGetters(['gamelist', 'device'])
+  },
+  watch: {
+    gameid: {
+      immediate: true, // 侦听开始后立即调用，用于编辑时立即触发角色权限选中
+      handler: function(newVal, oldVal) {
+        this.chgGame(newVal)
+      }
+    }
+  },
+  methods: {
+    chgGame(val) {
+      this.loading = true
+      dashboard({ gameid: val })
+        .then(({ code, msg, data }) => {
+          if (code) {
+            const { revenue, chart } = data
+            this.revenue = revenue
+
+            for (const i in chart) {
+              this.chart[i].chartData = chart[i]
+            }
+          } else {
+            this.$message.error(msg)
+          }
+        })
+        .catch(_ => {})
+        .finally(_ => {
+          this.loading = false
+        })
+    }
   }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -207,7 +204,6 @@
         top: 25px;
       }
     }
-
 
     .mychart {
       padding: 10px!important;

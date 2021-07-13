@@ -9,23 +9,14 @@ import resize from '@/components/Charts/mixins/resize'
 
 export default {
   mixins: [resize],
-  computed: {
-    style() {
-      return {
-        height: this.height,
-        width: this.width,
-        padding: this.padding
-      }
-    }
-  },
   props: {
     title: {
       type: String,
-      required: true,
+      required: true
     },
     data: {
       type: Array,
-      required: true,
+      required: true
     },
 
     className: {
@@ -50,8 +41,22 @@ export default {
       chart: null
     }
   },
+  computed: {
+    style() {
+      return {
+        height: this.height,
+        width: this.width,
+        padding: this.padding
+      }
+    }
+  },
+  watch: {
+    data: function(newVal, oldVal) {
+      this.initChart()
+    }
+  },
   mounted() {
-    /*this.$nextTick(() => {
+    /* this.$nextTick(() => {
       this.initChart()
     })*/
   },
@@ -62,14 +67,8 @@ export default {
     this.chart.dispose()
     this.chart = null
   },
-  watch: {
-    data: function (newVal, oldVal) {
-      this.initChart()
-    }
-  },
   methods: {
     initChart() {
-
       this.chart = echarts.init(this.$el, 'macarons')
 
       const legend = []
@@ -107,7 +106,7 @@ export default {
             }
           }
         ]
-      };
+      }
 
       this.chart.setOption(option)
     }

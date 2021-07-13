@@ -5,7 +5,7 @@
 <script>
 import gameInfo from './component/index'
 import { gameAdd } from '@/api/game'
-import {closeTab} from "@/utils";
+import { closeTab } from '@/utils'
 
 export default {
   name: 'gameadd',
@@ -54,7 +54,7 @@ export default {
     submit() {
       this.loading = true
       gameAdd(this.form)
-        .then(({code}) => {
+        .then(({ code }) => {
           if (code) {
             this.$message.success('操作成功')
             closeTab(this.$route.path, '/game/index')

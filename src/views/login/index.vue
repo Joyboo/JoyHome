@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
+// import { validUsername } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
 import SocialSign from './components/SocialSignin'
 import BubbleBg from '@/components/BubbleBg'
@@ -90,21 +90,7 @@ export default {
   name: 'Login',
   components: { LangSelect, SocialSign, BubbleBg },
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
-      } else {
-        callback()
-      }
-    }
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
-      } else {
-        callback()
-      }
-    }
-
+    // todo 校验账号和密码，因为Eslint的关系已删除了，请自行实现
     // 本地开发环境
     const local = process.env.NODE_ENV === 'development'
     return {
@@ -115,7 +101,7 @@ export default {
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur'/*, validator: validateUsername*/ }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        password: [{ required: true, trigger: 'blur'/*, validator: validatePassword */ }]
       },
       passwordType: 'password',
       capsTooltip: false,

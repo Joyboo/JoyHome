@@ -1,7 +1,7 @@
 <template>
   <div class="view-container">
 
-    <layout-filter :query="query" @search="search" :loading="loading">
+    <layout-filter :query="query" :loading="loading" @search="search">
       <el-form-item>
         <el-input v-model="query.keyword" placeholder="包名或包id" clearable />
       </el-form-item>
@@ -37,23 +37,23 @@
 
       <el-table-column align="center" label="登录密钥">
         <template slot-scope="scope">
-            <span
-              style="cursor: pointer"
-              @click="openAlter(scope.row.extension.logkey || '')"
-            >
-              {{ scope.row.extension.logkey || '' }}
-            </span>
+          <span
+            style="cursor: pointer"
+            @click="openAlter(scope.row.extension.logkey || '')"
+          >
+            {{ scope.row.extension.logkey || '' }}
+          </span>
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="支付密钥">
         <template slot-scope="scope">
-            <span
-              style="cursor: pointer"
-              @click="openAlter(scope.row.extension.paykey || '')"
-            >
-              {{ scope.row.extension.paykey || '' }}
-            </span>
+          <span
+            style="cursor: pointer"
+            @click="openAlter(scope.row.extension.paykey || '')"
+          >
+            {{ scope.row.extension.paykey || '' }}
+          </span>
         </template>
       </el-table-column>
 
@@ -88,13 +88,6 @@ export default {
     TableData,
     LayoutFilter
   },
-  computed: {
-    ...mapGetters([
-      'size',
-      'gamelist',
-      'packos'
-    ])
-  },
   data() {
     return {
       loading: false,
@@ -107,13 +100,19 @@ export default {
       tableData: []
     }
   },
+  computed: {
+    ...mapGetters([
+      'size',
+      'gamelist',
+      'packos'
+    ])
+  },
   methods: {
     search() {
       this.loading = true
       packageindex(this.query)
-        .then(({code, msg, data}) => {
-          if (!code)
-          {
+        .then(({ code, msg, data }) => {
+          if (!code) {
             return this.$message.error(msg)
           }
           this.loading = false

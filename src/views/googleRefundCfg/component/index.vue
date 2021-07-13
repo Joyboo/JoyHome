@@ -20,44 +20,45 @@
         <el-input v-model="form.file" clearable />
       </el-form-item>
 
-      <button-tpl index="/googleRefundCfg/index" @submit="submit" ></button-tpl>
+      <button-tpl index="/googleRefundCfg/index" @submit="submit" />
     </el-form>
   </div>
 </template>
 
 <script>
-  import {mapGetters} from "vuex";
-  import ButtonTpl from '@/components/ButtonTpl'
-  import {packageChildOption} from "@/api/package";
+import { mapGetters } from 'vuex'
+import ButtonTpl from '@/components/ButtonTpl'
 
-  export default {
-    components: {
-      ButtonTpl
+export default {
+  components: {
+    ButtonTpl
+  },
+  props: {
+    loading: {
+      type: Boolean,
+      default: false
     },
-    computed: {
-      ...mapGetters(['size', 'device', 'gamelist'])
-    },
-    props: {
-      loading: {
-        type: Boolean,
-        default: false
-      },
-      form: {
-        type: Object,
-        default: {}
+    form: {
+      type: Object,
+      default() {
+        return {}
       }
-    },
-    data() {
-      return {
-        packagelist: []
-      }
-    },
-    methods: {
-      submit() {
-        this.$emit('submit')
-      },
+    }
+  },
+  data() {
+    return {
+      packagelist: []
+    }
+  },
+  computed: {
+    ...mapGetters(['size', 'device', 'gamelist'])
+  },
+  methods: {
+    submit() {
+      this.$emit('submit')
     }
   }
+}
 </script>
 
 <style scoped>

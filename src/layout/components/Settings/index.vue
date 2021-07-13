@@ -29,21 +29,21 @@
       </div>
 
       <div class="drawer-item">
-        <span>{{$t('settings.accordion')}}</span>
+        <span>{{ $t('settings.accordion') }}</span>
         <el-switch v-model="sidebarMode" class="drawer-switch" />
       </div>
 
       <div class="drawer-item">
-        <span>{{$t('settings.topMenu')}}</span>
+        <span>{{ $t('settings.topMenu') }}</span>
         <el-switch v-model="topMenuMode" :disabled="device === 'mobile'" class="drawer-switch" />
       </div>
 
       <fieldset class="fieldset">
-        <legend>&nbsp;&nbsp;{{$t('settings.duration')}}&nbsp;&nbsp;</legend>
+        <legend>&nbsp;&nbsp;{{ $t('settings.duration') }}&nbsp;&nbsp;</legend>
         <div class="block">
-          <el-slider v-model="duration" :min="1" :max="700" :show-tooltip="false"></el-slider>
+          <el-slider v-model="duration" :min="1" :max="700" :show-tooltip="false" />
         </div>
-        <div class="block slider-number">{{duration}}</div>
+        <div class="block slider-number">{{ duration }}</div>
       </fieldset>
 
     </div>
@@ -52,8 +52,8 @@
 
 <script>
 import ThemePicker from '@/components/ThemePicker'
-import {getSettingsLocalStorage} from '@/utils'
-import {mapGetters} from "vuex";
+import { getSettingsLocalStorage } from '@/utils'
+import { mapGetters } from 'vuex'
 
 export default {
   components: { ThemePicker },

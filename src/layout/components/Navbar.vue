@@ -3,21 +3,21 @@
     <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
     <el-menu
+      v-if="topMenuMode"
       ref="refTopMenu"
       class="header-el-menu"
       mode="horizontal"
       background-color="#304156"
       text-color="#FFF"
       active-text-color="#FFF"
-      v-if="topMenuMode"
       @select="handleSelect"
     >
       <el-menu-item v-for="(menu, mk) in topmenu" :key="mk" :index="menu.id">
-        <item :icon="menu.meta.icon" :title="menu.meta.fulltitle || menu.meta.title"></item>
+        <item :icon="menu.meta.icon" :title="menu.meta.fulltitle || menu.meta.title" />
       </el-menu-item>
     </el-menu>
 
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container"/>
+    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
 
     <div class="right-menu">
       <template>
@@ -31,7 +31,7 @@
           <screenfull id="screenfull" class="right-menu-item hover-effect" />
         </el-tooltip>
 
-        <el-tooltip  v-if="!isMobile" :content="$t('navbar.size')" effect="dark" placement="bottom">
+        <el-tooltip v-if="!isMobile" :content="$t('navbar.size')" effect="dark" placement="bottom">
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
 
@@ -106,7 +106,7 @@ export default {
       return process.env.NODE_ENV === 'development'
     },
     isMobile() {
-      return  this.device === 'mobile'
+      return this.device === 'mobile'
     },
     topMenuMode() {
       return this.$store.state.permission.mode

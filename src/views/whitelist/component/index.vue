@@ -15,35 +15,35 @@
       </el-radio-group>
     </el-form-item>
 
-    <button-tpl index="/whitelist/index" @submit="submit"></button-tpl>
+    <button-tpl index="/whitelist/index" @submit="submit" />
   </el-form>
 </template>
 
 <script>
-  import {mapGetters} from "vuex";
-  import ButtonTpl from '@/components/ButtonTpl'
+import { mapGetters } from 'vuex'
+import ButtonTpl from '@/components/ButtonTpl'
 
-  export default {
-    components: {
-      ButtonTpl
-    },
-    computed: {
-      ...mapGetters(['size', 'device']),
-    },
-    props: {
-      form: Object,
-      default: {}
-    },
-    data() {
-      return {
-      }
-    },
-    methods: {
-      submit() {
-        this.$emit('submit')
+export default {
+  components: {
+    ButtonTpl
+  },
+  props: {
+    form: {
+      type: Object,
+      default() {
+        return {}
       }
     }
+  },
+  computed: {
+    ...mapGetters(['size', 'device'])
+  },
+  methods: {
+    submit() {
+      this.$emit('submit')
+    }
   }
+}
 </script>
 
 <style scoped>

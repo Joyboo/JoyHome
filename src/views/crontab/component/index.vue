@@ -1,27 +1,27 @@
 <template>
   <el-form ref="menu-info" :rules="rules" :model="form" :size="size" label-width="15rem" :label-position="device === 'mobile' ? 'top' : 'right'">
     <el-form-item label="任务名">
-      <el-input type="text" v-model="form.name" clearable />
+      <el-input v-model="form.name" type="text" clearable />
     </el-form-item>
 
     <el-form-item label="执行规则">
-      <el-input type="text" v-model="form.rule" placeholder="" clearable />
+      <el-input v-model="form.rule" type="text" placeholder="" clearable />
     </el-form-item>
 
     <el-form-item label="异步任务模板类">
-      <el-input type="text" v-model="form.rclass" placeholder="" clearable />
+      <el-input v-model="form.rclass" type="text" placeholder="" clearable />
     </el-form-item>
 
     <el-form-item label="运行类和方法">
       <el-row :gutter="10">
-        <el-col  :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 8}" :xl="{span: 8}">
-          <el-input type="text" v-model="form.eclass" clearable />
+        <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 8}" :xl="{span: 8}">
+          <el-input v-model="form.eclass" type="text" clearable />
         </el-col>
         <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 1}" :xl="{span: 1}" style="text-align: center;">
           <i class="el-icon-right" />
         </el-col>
         <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 8}" :xl="{span: 8}">
-          <el-input type="text" v-model="form.method" clearable />
+          <el-input v-model="form.method" type="text" clearable />
         </el-col>
       </el-row>
     </el-form-item>
@@ -44,7 +44,7 @@
     </el-form-item>
 
     <el-form-item label="备注">
-      <el-input type="text" v-model="form.remark" placeholder="" clearable />
+      <el-input v-model="form.remark" type="text" placeholder="" clearable />
     </el-form-item>
 
     <el-form-item label="状态">
@@ -68,55 +68,57 @@
       </el-checkbox-group>
     </el-form-item>
 
-    <button-tpl index="/crontab/index" @submit="submit"></button-tpl>
+    <button-tpl index="/crontab/index" @submit="submit" />
   </el-form>
 </template>
 
 <script>
-  import {mapGetters} from "vuex";
-  import ButtonTpl from '@/components/ButtonTpl'
+import { mapGetters } from 'vuex'
+import ButtonTpl from '@/components/ButtonTpl'
 
-  export default {
-    components: {
-      ButtonTpl
-    },
-    computed: {
-      ...mapGetters(['size', 'device'])
-    },
-    props: {
-      form: {
-        type: Object,
-        default: {}
+export default {
+  components: {
+    ButtonTpl
+  },
+  props: {
+    form: {
+      type: Object,
+      default() {
+        return {}
       }
-    },
-    data() {
-      return {
-        rules: {
-          requre: [
-            { required: true, message: '请填写', trigger: 'blur' },
-            { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
-          ]
-        }
+    }
+  },
+  data() {
+    return {
+      rules: {
+        requre: [
+          { required: true, message: '请填写', trigger: 'blur' },
+          { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
+        ]
       }
+    }
+  },
+  computed: {
+    ...mapGetters(['size', 'device'])
+  },
+  methods: {
+    submit() {
+      this.$emit('submit')
     },
-    methods: {
-      submit() {
-        this.$emit('submit')
-      },
-      cp_param() {
-        this.form.args.push({
-          key: '',
-          value: ''
-        })
-      },
-      del_param(ipt) {
-        var index = this.form.args.indexOf(ipt)
-        if (index !== -1) {
-          this.form.args.splice(index, 1)
-        }
+    cp_param() {
+      this.form.args.push({
+        key: '',
+        value: ''
+      })
+    },
+    del_param(ipt) {
+      var index = this.form.args.indexOf(ipt)
+      if (index !== -1) {
+        this.form.args.splice(index, 1)
       }
     }
   }
+}
 </script>
 
 <style scoped>

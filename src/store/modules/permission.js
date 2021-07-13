@@ -2,7 +2,7 @@ import router from '@/router'
 import { getmenu } from '@/api/menu'
 import Layout from '@/layout'
 import RouterView from '@/layout/components/RouterView'
-import {getSettingsLocalStorage} from "@/utils";
+import { getSettingsLocalStorage } from '@/utils'
 
 /**
  * Use meta.role to determine if the current user has permission
@@ -41,13 +41,12 @@ export function filterAsyncRoutes(routes, roles) {
 export function adminRouter(routerMap) {
   const arr = []
 
-  let keys = ['name', 'redirect', 'always', 'meta', 'hidden']
+  const keys = ['name', 'redirect', 'always', 'meta', 'hidden']
 
-  for(let i in routerMap)
-  {
-    let item = routerMap[i]
+  for (const i in routerMap) {
+    const item = routerMap[i]
 
-    let obj = { path: item.path }
+    const obj = { path: item.path }
     if (item.component == 'Layout') {
       obj.component = Layout
     } else if (item.component == 'RouterView') {
@@ -56,7 +55,7 @@ export function adminRouter(routerMap) {
       obj.component = resolve => require([`@/views/${item.component}.vue`], resolve)
     }
 
-    for (let i in keys) {
+    for (const i in keys) {
       if (typeof item[keys[i]] !== 'undefined') {
         obj[keys[i]] = item[keys[i]]
       }
@@ -96,10 +95,9 @@ const mutations = {
     }
   },
   // 设置sidebar
-  SET_SIDEBAR(state, {mode, device}) {
+  SET_SIDEBAR(state, { mode, device }) {
     state.mode = device !== 'mobile' && mode
-    if (state.mode)
-    {
+    if (state.mode) {
       state.topmenu = state.allmenu
 
       if (state.topmenu.length > 0) {
@@ -122,23 +120,21 @@ const actions = {
     commit('SET_ROUTES', pid)
   },
   // 设备类型改变
-  setSidebarByDevice({commit}, device) {
+  setSidebarByDevice({ commit }, device) {
     const mode = getSettingsLocalStorage('topMenuMode')
-    commit('SET_SIDEBAR', {mode: mode, device: device})
+    commit('SET_SIDEBAR', { mode: mode, device: device })
   },
   // 菜单模式改变
-  setSidebarByMode({commit, rootState}, mode) {
+  setSidebarByMode({ commit, rootState }, mode) {
     const device = rootState.app.device
-    commit('SET_SIDEBAR', {mode: mode, device: device})
+    commit('SET_SIDEBAR', { mode: mode, device: device })
   },
 
   getRouter({ commit, rootState }) {
-
     return new Promise((resolve, reject) => {
       getmenu()
         .then(({ code, msg, data }) => {
-          if (!code)
-          {
+          if (!code) {
             reject(msg)
           } else {
             commit('SET_MENU', data)

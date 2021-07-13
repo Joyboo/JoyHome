@@ -53,7 +53,7 @@ export default {
   watch: {
     device: {
       immediate: true,
-      handler: function (newVal, oldVal) {
+      handler: function(newVal, oldVal) {
         this.$store.dispatch('permission/setSidebarByDevice', newVal)
       }
     }

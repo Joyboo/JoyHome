@@ -3,7 +3,7 @@
     <el-form ref="menu-info" :rules="rules" :model="form" :size="size" label-width="15rem" :label-position="device === 'mobile' ? 'top' : 'right'">
 
       <el-form-item label="上级菜单">
-        <menu-cascader :pid="form.pid" @setpid="setpid"></menu-cascader>
+        <menu-cascader :pid="form.pid" @setpid="setpid" />
       </el-form-item>
 
       <el-form-item label="名称">
@@ -52,19 +52,19 @@
       </el-form-item>
 
       <el-form-item label="是否隐藏">
-        <el-switch v-model="form.hidden == '1'" @change="changeHidden()" />
+        <el-switch :value="form.hidden == '1'" @change="changeHidden()" />
       </el-form-item>
 
       <el-form-item label="是否需要Keep-alive缓存">
-        <el-switch v-model="form.noCache == '0'" @change="changeKeepAlive()" />
+        <el-switch :value="form.noCache == '0'" @change="changeKeepAlive()" />
       </el-form-item>
 
       <el-form-item label="是否固定在标签页">
-        <el-switch v-model="form.affix == '1'" @change="changeAffix()" />
+        <el-switch :value="form.affix == '1'" @change="changeAffix()" />
       </el-form-item>
 
       <el-form-item label="是否显示在面包屑">
-        <el-switch v-model="form.pid != 0 && form.breadcrumb == '1'" @change="changeBreadcrumb()" />
+        <el-switch :value="form.pid != 0 && form.breadcrumb == '1'" @change="changeBreadcrumb()" />
       </el-form-item>
 
       <el-form-item label="排序号">
@@ -85,17 +85,22 @@ import MenuCascader from '@/components/MenuCascader'
 
 export default {
   // name: 'MenuInfo',
-  computed: {
-    ...mapGetters(['size', 'device']),
-    theme() {
-      return this.$store.state.settings.theme
-    }
-  },
   components: {
     ButtonTpl,
     MenuCascader
   },
-  props: ['form', 'loading'],
+  props: {
+    form: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
+    loading: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       rules: {
@@ -105,9 +110,16 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters(['size', 'device']),
+    theme() {
+      return this.$store.state.settings.theme
+    }
+  },
   methods: {
     onSubmit() {
       if (typeof this.form.pid === 'object') {
+        // todo
         // 级联选择器传递的是包含父节点的多级数组，取最后一个
         this.form.pid = this.form.pid[this.form.pid.length - 1]
       }

@@ -10,7 +10,7 @@
 <script>
 import menuInfo from './component'
 import { menuAdd } from '@/api/menu'
-import {closeTab} from "@/utils";
+import { closeTab } from '@/utils'
 
 export default {
   name: 'menuadd',
@@ -40,11 +40,10 @@ export default {
   },
   methods: {
     onSubmit() {
-
       this.loading = true
 
       menuAdd(this.form)
-        .then(({code}) => {
+        .then(({ code }) => {
           if (code) {
             this.$message.success('操作成功')
             closeTab()

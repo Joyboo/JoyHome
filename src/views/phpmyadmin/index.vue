@@ -1,17 +1,25 @@
 <template>
   <el-row :class="{pma: device == 'desktop', pmaMobile: device == 'mobile'}">
     <!-- 有一个el-col-offset-1 -->
-    <el-col :xs="{span: 22}" :sm="{span: 22}" :md="{span: 22}" :lg="{span: 10}" :xl="{span: 10}"
-            style="margin-top: 3rem;"
-            v-for="(o, index) in pma" :key="index" :offset="1">
+    <el-col
+      v-for="(o, index) in pma"
+      :key="index"
+      :xs="{span: 22}"
+      :sm="{span: 22}"
+      :md="{span: 22}"
+      :lg="{span: 10}"
+      :xl="{span: 10}"
+      style="margin-top: 3rem;"
+      :offset="1"
+    >
       <el-card :body-style="{ padding: '0px' }">
         <svg-icon style="width: 100%;height: 100%;" icon-class="phpmyadmin" />
         <div style="padding: 14px;">
-          <span :class="o.class">{{o.name}}</span>
+          <span :class="o.class">{{ o.name }}</span>
           <div class="bottom clearfix">
             <span class="time">{{ o.url }}</span>
             <el-link :href="o.url + '?mytoken=' + token" :underline="false" target="_blank" class="tolink">
-              <el-button type="text" class="button">{{$t('open')}}</el-button>
+              <el-button type="text" class="button">{{ $t('open') }}</el-button>
             </el-link>
           </div>
         </div>
@@ -21,23 +29,23 @@
 </template>
 
 <script>
-  import {getToken} from "@/utils/auth";
-  import {mapGetters} from "vuex";
+import { getToken } from '@/utils/auth'
+import { mapGetters } from 'vuex'
 
-  export default {
-    name: "phpmyadminindex",
-    computed: {
-      ...mapGetters(['config', 'device']),
-      pma() {
-        return this.config.pma
-      }
-    },
-    data() {
-      return {
-        token: getToken()
-      };
+export default {
+  name: 'phpmyadminindex',
+  data() {
+    return {
+      token: getToken()
+    }
+  },
+  computed: {
+    ...mapGetters(['config', 'device']),
+    pma() {
+      return this.config.pma
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

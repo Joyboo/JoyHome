@@ -1,5 +1,5 @@
 <template>
-  <game-info :form="form" :loading="loading" @submit="submit" >
+  <game-info :form="form" :loading="loading" @submit="submit">
 
     <!--默认插槽-->
     <el-form-item label="密钥">
@@ -20,9 +20,8 @@
       <template slot="label">
         ID <i class="labeli">gameid</i>
       </template>
-      <el-input v-model="form.id" disabled></el-input>
+      <el-input v-model="form.id" disabled />
     </el-form-item>
-
 
     <!--h5sdk插槽-->
     <template #h5sdk>
@@ -50,8 +49,7 @@
               :key="item.pkgbnd"
               :label="item.name"
               :value="item.pkgbnd"
-            >
-            </el-option>
+            />
           </el-select>
         </el-form-item>
 
@@ -123,181 +121,176 @@
 </template>
 
 <script>
-  import {gameEdit, gkey} from '@/api/game'
-  import gameInfo from './component'
-  import {closeTab, copyTo} from "@/utils";
-  import {packageChildOption} from "@/api/package";
-  import {uploadHttpRequest} from "@/api/upload";
-  import {mapGetters} from "vuex";
+import { gameEdit, gkey } from '@/api/game'
+import gameInfo from './component'
+import { closeTab, copyTo } from '@/utils'
+import { packageChildOption } from '@/api/package'
+import { uploadHttpRequest } from '@/api/upload'
+import { mapGetters } from 'vuex'
 
-  export default {
-    components: {
-      gameInfo
+export default {
+  components: {
+    gameInfo
+  },
+  data() {
+    return {
+      form: {
+        id: '',
+        name: '',
+        extension: {
+          type: '0',
+          logkey: '',
+          paykey: '',
+          logurl: '',
+          payurl: '',
+          h5entry: '',
+          goodsids: '',
+          facebook: {
+            fansurl: ''
+          },
+          google: {
+            privacy: ''
+          },
+          divide: {
+            cp: 20,
+            ios: 30,
+            google: 30,
+            paypal: 6,
+            'paypal-fix': 0.05,
+            payssion: 30,
+            huawei: 0
+          },
+          mtn: {
+            switch: '0',
+            begintime: '',
+            endtime: '',
+            notice: ''
+          },
+          h5sdk: {
+            isshow: '0',
+            name: '',
+            gameid: '',
+            pkgbnd: '',
+            isshowmnlogo: '1',
+            mnlogo: '', // 角标
+            gamelogo: '', // logo
+            carousel: '' // 轮播图
+          }
+        }
+      },
+      loading: false,
+      packagelist: []
+    }
+  },
+  computed: {
+    ...mapGetters(['size']),
+    viewmnurl() {
+      return this.form.extension.h5sdk.mnlogo ? [{ url: this.form.default_path + this.form.extension.h5sdk.mnlogo }] : []
     },
-    computed: {
-      ...mapGetters(['size']),
-      viewmnurl() {
-        return this.form.extension.h5sdk.mnlogo ? [{ url: this.form.default_path + this.form.extension.h5sdk.mnlogo }] : []
-      },
-      viewgamelogo() {
-        return this.form.extension.h5sdk.gamelogo ? [{ url: this.form.default_path + this.form.extension.h5sdk.gamelogo }] : []
-      },
-      viewcarousel() {
-        let arr = []
-        const carousel = this.form.extension.h5sdk.carousel.split(',')
-        carousel.forEach(item => {
-          if (item)
-          {
-            arr.push({url: this.form.default_path + item})
+    viewgamelogo() {
+      return this.form.extension.h5sdk.gamelogo ? [{ url: this.form.default_path + this.form.extension.h5sdk.gamelogo }] : []
+    },
+    viewcarousel() {
+      const arr = []
+      const carousel = this.form.extension.h5sdk.carousel.split(',')
+      carousel.forEach(item => {
+        if (item) {
+          arr.push({ url: this.form.default_path + item })
+        }
+      })
+      return arr
+    }
+  },
+  async mounted() {
+    try {
+      this.form.id = this.$route.query.id
+      const { code, msg, data } = await gameEdit('get', { id: this.form.id })
+      if (!code) {
+        this.$message.error(msg)
+        return
+      }
+
+      this.form = copyTo(this.form, data.data)
+      this.form.extension.h5sdk['gameid'] = this.form.id
+
+      const pkg = await packageChildOption({ gameid: this.form.id })
+      if (pkg.code) {
+        this.packagelist = pkg.data
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  },
+  methods: {
+    submit() {
+      this.loading = true
+
+      gameEdit('post', this.form)
+        .then(({ code }) => {
+          if (code) {
+            this.$message.success('操作成功')
+            closeTab()
+          } else {
+            this.$message.error('操作失败')
           }
         })
-        return arr
-      }
-    },
-    data() {
-      return {
-        form: {
-          id: '',
-          name: '',
-          extension: {
-            type: '0',
-            logkey: '',
-            paykey: '',
-            logurl: '',
-            payurl: '',
-            h5entry: '',
-            goodsids: '',
-            facebook: {
-              fansurl: ''
-            },
-            google: {
-              privacy: ''
-            },
-            divide: {
-              cp: 20,
-              ios: 30,
-              google: 30,
-              paypal: 6,
-              'paypal-fix': 0.05,
-              payssion: 30,
-              huawei: 0
-            },
-            mtn: {
-              switch: '0',
-              begintime: '',
-              endtime: '',
-              notice: ''
-            },
-            h5sdk: {
-              isshow: '0',
-              name: '',
-              gameid: '',
-              pkgbnd: '',
-              isshowmnlogo: '1',
-              mnlogo: '', // 角标
-              gamelogo: '', // logo
-              carousel: ''  // 轮播图
-            }
-          }
-        },
-        loading: false,
-        packagelist: []
-      }
-    },
-    async mounted() {
-      try{
-        this.form.id = this.$route.query.id
-        const {code, msg, data} = await gameEdit('get', { id: this.form.id })
-        if (!code)
-        {
-          this.$message.error(msg)
-          return
-        }
-
-        this.form = copyTo(this.form, data.data)
-        this.form.extension.h5sdk['gameid'] = this.form.id
-
-        const pkg = await packageChildOption({ gameid: this.form.id })
-        if (pkg.code)
-        {
-          this.packagelist = pkg.data
-        }
-
-      } catch (e) {
-        console.error(e)
-      }
-    },
-    methods: {
-      submit() {
-        this.loading = true
-
-        gameEdit('post', this.form)
-          .then(({code}) => {
-            if (code) {
-              this.$message.success('操作成功')
-              closeTab()
-            } else {
-              this.$message.error('操作失败')
-            }
-          })
-          .catch(error => {
-            this.$message.error(error)
-          })
-          .finally(() => {
-            this.loading = false
-          })
-      },
-
-      // 随机生成key
-      get_gkey(column) {
-        gkey(column).then(({data}) => {
-          this.form.extension[column] = data
-        }).catch(error => {
+        .catch(error => {
           this.$message.error(error)
         })
-      },
-
-      // 上传角标
-      uploadMnlogoUrl(params) {
-        uploadHttpRequest(params, {url: '/admin/game/upload'})
-          .then(data => {
-            this.form.extension.h5sdk.mnlogo = data
-          })
-          .catch(error => {})
-      },
-
-      // 上传游戏logo
-      uploadgamelogo(params) {
-        uploadHttpRequest(params, {url: '/admin/game/upload'})
-          .then(data => {
-            this.form.extension.h5sdk.gamelogo = data
-          })
-          .catch(error => {})
-      },
-
-      // 上传轮播图，批量上传
-      uploadcarousel(params) {
-        uploadHttpRequest(params, {url: '/admin/game/upload'})
-          .then(data => {
-            const arr = this.form.extension.h5sdk.carousel.split(',')
-            arr.push(data)
-            this.form.extension.h5sdk.carousel = arr.join(',')
-          })
-          .catch(error => {})
-      },
-      // 移除时的勾子,批量上传时组件会调用多次http-request而不是一次上传多个
-      removecarousel(file, fileList) {
-        let arr = []
-        this.form.extension.h5sdk.carousel.split(',').forEach(item => {
-          if (file.url.indexOf(item) < 0)
-          {
-            arr.push(item)
-          }
+        .finally(() => {
+          this.loading = false
         })
-        this.form.extension.h5sdk.carousel = arr.join(',')
-      }
+    },
+
+    // 随机生成key
+    get_gkey(column) {
+      gkey(column).then(({ data }) => {
+        this.form.extension[column] = data
+      }).catch(error => {
+        this.$message.error(error)
+      })
+    },
+
+    // 上传角标
+    uploadMnlogoUrl(params) {
+      uploadHttpRequest(params, { url: '/admin/game/upload' })
+        .then(data => {
+          this.form.extension.h5sdk.mnlogo = data
+        })
+        .catch(_ => {})
+    },
+
+    // 上传游戏logo
+    uploadgamelogo(params) {
+      uploadHttpRequest(params, { url: '/admin/game/upload' })
+        .then(data => {
+          this.form.extension.h5sdk.gamelogo = data
+        })
+        .catch(_ => {})
+    },
+
+    // 上传轮播图，批量上传
+    uploadcarousel(params) {
+      uploadHttpRequest(params, { url: '/admin/game/upload' })
+        .then(data => {
+          const arr = this.form.extension.h5sdk.carousel.split(',')
+          arr.push(data)
+          this.form.extension.h5sdk.carousel = arr.join(',')
+        })
+        .catch(_ => {})
+    },
+    // 移除时的勾子,批量上传时组件会调用多次http-request而不是一次上传多个
+    removecarousel(file, fileList) {
+      const arr = []
+      this.form.extension.h5sdk.carousel.split(',').forEach(item => {
+        if (file.url.indexOf(item) < 0) {
+          arr.push(item)
+        }
+      })
+      this.form.extension.h5sdk.carousel = arr.join(',')
     }
   }
+}
 </script>
 
 <style scoped>

@@ -6,9 +6,9 @@
     </el-col>
     <el-col :xs="{span: 12}" :sm="{span: 12}" :md="{span: 14}" :lg="{span: 16}" :xl="{span: 16}" style="height:128px;">
       <div class="admin-text">
-        <b>{{userinfo.realname}}</b>
+        <b>{{ userinfo.realname }}</b>
         &nbsp;&nbsp;&nbsp;
-        <b>{{userinfo.username}}</b>
+        <b>{{ userinfo.username }}</b>
       </div>
     </el-col>
   </el-row>
@@ -16,32 +16,30 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-  import PanThumb from '@/components/PanThumb'
+import { mapGetters } from 'vuex'
 
-  export default {
-    components: { PanThumb },
-    computed: {
-      ...mapGetters(['userinfo', 'avatar', 'name'])
-    },
-    filters: {
-      statusFilter(status) {
-        const statusMap = {
-          success: 'success',
-          pending: 'danger'
-        }
-        return statusMap[status]
+export default {
+  filters: {
+    statusFilter(status) {
+      const statusMap = {
+        success: 'success',
+        pending: 'danger'
       }
-    },
-    data() {
-      return {
-        statisticsData: {
-          article_count: 1024,
-          pageviews_count: 1024
-        }
+      return statusMap[status]
+    }
+  },
+  data() {
+    return {
+      statisticsData: {
+        article_count: 1024,
+        pageviews_count: 1024
       }
     }
+  },
+  computed: {
+    ...mapGetters(['userinfo', 'avatar', 'name'])
   }
+}
 </script>
 
 <style lang="scss" >

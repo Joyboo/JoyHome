@@ -4,7 +4,7 @@
 import router from '@/router'
 import store from '@/store'
 import Vue from 'vue'
-import {localStorageKey} from '@/settings'
+import { localStorageKey } from '@/settings'
 
 /**
  * Parse the time to string
@@ -398,16 +398,14 @@ export function beforeDay(day) {
   return d.getTime()
 }
 
-export function ymd_to_date(ymd)
-{
+export function ymd_to_date(ymd) {
   if (isNaN(ymd)) {
-    return '<div style="color:red;" align="center">' + ymd + '</div>';
+    return '<div style="color:red;" align="center">' + ymd + '</div>'
   }
 
-  ymd = String(ymd);
-  if (ymd.length === 6)
-  {
-    ymd = '20' + ymd.substr(0,2) + '-' + ymd.substr(2,2) + '-'  + ymd.substr(4,2);
+  ymd = String(ymd)
+  if (ymd.length === 6) {
+    ymd = '20' + ymd.substr(0, 2) + '-' + ymd.substr(2, 2) + '-' + ymd.substr(4, 2)
   }
   return ymd
 }
@@ -421,12 +419,10 @@ export function ymd_to_date(ymd)
  */
 export function copyTo(origin, data) {
   data = data || {}
-  for(let i in data)
-  {
-    let item = data[i]
+  for (const i in data) {
+    const item = data[i]
     // 如果是数组，直接赋值，如package/edit页的adjust是一个 [{key: '', value: ''}]
-     if (typeof item == 'object' && data.constructor !== Array)
-    {
+    if (typeof item == 'object' && data.constructor !== Array) {
       origin[i] = copyTo(origin[i], item)
     } else {
       // origin[i] = item
@@ -441,7 +437,6 @@ export function copyTo(origin, data) {
  * @author Joyboo
  */
 export function closeTab() {
-
   // const tab = store.getters.visitedViews
   // const view = tab.find(item => item.path == path)
 
@@ -468,25 +463,24 @@ export function closeTab() {
 // add by Joyboo 将用户设置存储到localstorage
 export function setSettingsLocalStorage(key, val) {
   // 设置保存为一个json内 {settings: {theme: '#abc', tagsView: []}}
-  let settings = window.localStorage.getItem(localStorageKey)
-  let json = typeof settings == 'string' ? JSON.parse(settings) : {}
+  const settings = window.localStorage.getItem(localStorageKey)
+  const json = typeof settings == 'string' ? JSON.parse(settings) : {}
   json[key] = val
   window.localStorage.setItem(localStorageKey, JSON.stringify(json))
 }
 
 export function getSettingsLocalStorage(key, _default) {
-  let settings = window.localStorage.getItem(localStorageKey)
-  let json = typeof settings == 'string' ? JSON.parse(settings) : {}
+  const settings = window.localStorage.getItem(localStorageKey)
+  const json = typeof settings == 'string' ? JSON.parse(settings) : {}
 
   // 如果有值，将vuex值更新
-  if (typeof json[key] != 'undefined')
-  {
+  if (typeof json[key] != 'undefined') {
     if (store && json[key] != store.state.settings[key]) {
-      store.dispatch('settings/changeSetting', {key: key, value: json[key]})
+      store.dispatch('settings/changeSetting', { key: key, value: json[key] })
     }
     return json[key]
   }
-  return _default ? _default : ((store && store.state.settings[key]) ? store.state.settings[key] : false)
+  return _default || ((store && store.state.settings[key]) ? store.state.settings[key] : false)
 }
 
 export function calcHeight(offset, _default) {
