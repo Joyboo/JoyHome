@@ -45,7 +45,7 @@
       </el-form-item>
 
       <el-form-item label="默认打开菜单">
-        <menu-cascader :pid.sync="form.extension.newnid" :uid="userinfo.id" @setpid="setpid" />
+        <menu-cascader :pid.sync="form.extension.newnid" :uid="userinfo.id" />
       </el-form-item>
 
       <el-footer>
@@ -60,6 +60,7 @@ import MenuCascader from '@/components/MenuCascader'
 import { adminModify } from '@/api/admin'
 import { mapGetters } from 'vuex'
 import { validUsername } from '@/utils/validate'
+import { copyTo } from '@/utils'
 
 export default {
   name: 'mofidy',
@@ -118,26 +119,17 @@ export default {
       if (!code) {
         return this.$message.error(msg)
       }
-      for (const i in data.data) {
-        // 追加，不要覆盖
-        this.form[i] = data.data[i]
-      }
+      this.form = copyTo(this.form, data.data)
     } catch (e) {
       this.$message.error(e)
     }
     this.loading = false
   },
   methods: {
-    setpid(pid) {
-      this.form.extension.newnid = pid
-    },
     submit() {
       this.$refs.ModifyForm.validate((valid) => {
         if (!valid) {
           return false
-        }
-        if (typeof this.form.extension.newnid === 'object') {
-          this.form.extension.newnid = this.form.extension.newnid[this.form.extension.newnid.length - 1]
         }
         this.loading = true
         adminModify('post', this.form)

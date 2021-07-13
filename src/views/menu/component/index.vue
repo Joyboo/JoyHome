@@ -3,7 +3,7 @@
     <el-form ref="menu-info" :rules="rules" :model="form" :size="size" label-width="15rem" :label-position="device === 'mobile' ? 'top' : 'right'">
 
       <el-form-item label="上级菜单">
-        <menu-cascader :pid="form.pid" @setpid="setpid" />
+        <menu-cascader :pid.sync="form.pid" />
       </el-form-item>
 
       <el-form-item label="名称">
@@ -118,11 +118,6 @@ export default {
   },
   methods: {
     onSubmit() {
-      if (typeof this.form.pid === 'object') {
-        // todo
-        // 级联选择器传递的是包含父节点的多级数组，取最后一个
-        this.form.pid = this.form.pid[this.form.pid.length - 1]
-      }
       this.$emit('onsubmit')
     },
     changeHidden() {
@@ -139,9 +134,6 @@ export default {
     },
     changeSwitch(key) {
       this.$emit('changeSwitch', key)
-    },
-    setpid(pid) {
-      this.form.pid = pid
     }
   }
 }

@@ -55,7 +55,7 @@
           </el-form-item>
 
           <el-form-item label="默认打开菜单">
-            <menu-cascader :pid.sync="form.extension.newnid" @setpid="setpid" />
+            <menu-cascader :pid.sync="form.extension.newnid"/>
           </el-form-item>
 
         </el-tab-pane>
@@ -281,15 +281,8 @@ export default {
           this.$message.error('表单校验失败，请检查填写的信息')
           return false
         }
-        if (typeof this.form.extension.newnid === 'object') {
-          // 级联选择器传递的是包含父节点的多级数组，取最后一个
-          this.form.extension.newnid = this.form.extension.newnid[this.form.extension.newnid.length - 1]
-        }
         this.$emit('submit')
       })
-    },
-    setpid(pid) {
-      this.form.extension.newnid = pid
     },
     setChecked(rid) {
       if (!rid) {

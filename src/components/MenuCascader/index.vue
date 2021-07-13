@@ -12,6 +12,7 @@
 
 <script>
 import { cascaderTree } from '@/api/menu'
+import { isArray } from '@/utils/validate'
 
 export default {
   name: 'MenuCascader',
@@ -32,7 +33,6 @@ export default {
       // 级联选择器
       cascader: {
         options: [], // 数据
-        optioned: [], // 默认选中, value值
         props: {
           checkStrictly: true
           /* lazy: true, // 懒加载
@@ -48,7 +48,12 @@ export default {
         return this.pid
       },
       set(val) {
-        this.$emit('setpid', val)
+        // 级联选择器传递的是包含父节点的多级数组，取最后一个
+        if (isArray(val)) {
+          val = val[val.length - 1]
+        }
+        // 重要，如果点击叉叉取消选中后，val为undefined后端会直接清掉这个字段
+        this.$emit('update:pid', val || '')
       }
     }
   },
