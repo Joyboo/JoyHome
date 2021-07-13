@@ -92,7 +92,7 @@
           <slot />
 
           <el-form-item v-if="nsch">
-            <el-button :loading="loading" type="primary" icon="el-icon-search" @click="search">查询
+            <el-button :loading="load" type="primary" icon="el-icon-search" @click="search">查询
             </el-button>
           </el-form-item>
 
@@ -156,6 +156,14 @@ export default {
       'device',
       'gamelist'
     ]),
+    load: {
+      get() {
+        return this.loading
+      },
+      set(val) {
+        this.$emit('update:loading', val)
+      }
+    },
     isMobile() {
       return this.device === 'mobile'
     },

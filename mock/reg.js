@@ -13,18 +13,17 @@ module.exports = [
     url: '/admin/reg/index',
     type: 'get',
     response: config => {
-
       const data = []
       list.forEach(item => {
         const stamp = parseInt((new Date(item)).getTime() / 1000)
         data.push({
           uid: makeRound(10),
-          username: "Joyboo",
+          username: 'Joyboo',
           devid: makeRoundString(20),
           sdkver: 1.0,
           pkgbnd: 'package8',
           ip: (makeRound(3) % 255) + '.' + (makeRound(3) % 255) + '.' + (makeRound(3) % 255) + '.' + (makeRound(3) % 255),
-          exmodel: 'iphone ' + ((makeRound(2) % 10 ) + 10),
+          exmodel: 'iphone ' + ((makeRound(2) % 10) + 10),
           instime: stamp,
           itime: item
         })
@@ -57,12 +56,12 @@ module.exports = [
           },
           data: {
             uid: uid,
-            username: "Joyboo",
+            username: 'Joyboo',
             devid: makeRoundString(20),
             sdkver: 1.0,
             pkgbnd: 'package8',
             ip: (makeRound(3) % 255) + '.' + (makeRound(3) % 255) + '.' + (makeRound(3) % 255) + '.' + (makeRound(3) % 255),
-            exmodel: 'iPhone ' + ((makeRound(2) % 10 ) + 10),
+            exmodel: 'iPhone ' + ((makeRound(2) % 10) + 10)
           }
         }
       }
@@ -71,7 +70,6 @@ module.exports = [
     url: '/admin/pay/index',
     type: 'get',
     response: config => {
-
       const data = []
 
       let max = 7932
@@ -87,14 +85,14 @@ module.exports = [
           receipts: makeRound(3),
           paysn: makeRound(15),
           status: makeRound(3) % 3,
-          sdkver: "1.0",
+          sdkver: '1.0',
           devid: makeRoundString(20),
           pkgbnd: 'package8',
           ip: (makeRound(3) % 255) + '.' + (makeRound(3) % 255) + '.' + (makeRound(3) % 255) + '.' + (makeRound(3) % 255),
           os: makeRound(2) % 2,
-          osver: "14.5",
-          exmodel: 'iPhone ' + ((makeRound(2) % 10 ) + 10),
-          versioncode: "6.0",
+          osver: '14.5',
+          exmodel: 'iPhone ' + ((makeRound(2) % 10) + 10),
+          versioncode: '6.0',
           gno: makeRound(1) % 2,
           instime: stamp,
           updtime: stamp,
@@ -105,10 +103,10 @@ module.exports = [
             vip: makeRound(1),
             istest: 0,
             roleid: makeRound(10),
-            rolename: "Joyboo",
-            productid: "productid",
-            productdesc: "productdesc",
-            productname: "productname"
+            rolename: 'Joyboo',
+            productid: 'productid',
+            productdesc: 'productdesc',
+            productname: 'productname'
           }
         })
         --max
@@ -120,8 +118,8 @@ module.exports = [
         data.unshift({
           pk: item,
           id: 'sum',
-          money: makeRound(4,2),
-          receipts: makeRound(4,2),
+          money: makeRound(4, 2),
+          receipts: makeRound(4, 2)
         })
       })
 
@@ -150,9 +148,9 @@ module.exports = [
           pkgbnd: 'package8',
           ip: (makeRound(3) % 255) + '.' + (makeRound(3) % 255) + '.' + (makeRound(3) % 255) + '.' + (makeRound(3) % 255),
           os: makeRound(2) % 2,
-          osver: "14.5",
-          exmodel: 'iPhone ' + ((makeRound(2) % 10 ) + 10),
-          versioncode: "6.0",
+          osver: '14.5',
+          exmodel: 'iPhone ' + ((makeRound(2) % 10) + 10),
+          versioncode: '6.0',
           dtorid: '3',
           fastpay: 0,
           instime: stamp,
@@ -169,8 +167,8 @@ module.exports = [
         }
       }
     }
-  }
-  , {
+  },
+  {
     url: '/admin/pay/detail',
     type: 'get',
     response: config => {
@@ -202,14 +200,14 @@ module.exports = [
             vip: makeRound(1),
             istest: 0,
             roleid: makeRound(10),
-            rolename: "Joyboo",
-            productid: "productid",
-            productname: "productname"
+            rolename: 'Joyboo',
+            productid: 'productid',
+            productname: 'productname'
           },
-          gname: "炉石传说",
+          gname: '炉石传说',
           package: {
-            name: "炉石-正式包",
-            pkgbnd: "Joyboo"
+            name: '炉石-正式包',
+            pkgbnd: 'Joyboo'
           }
         }
       }

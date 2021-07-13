@@ -1,7 +1,7 @@
 <template>
   <div class="view-container">
 
-    <layout-filter :query="query" :loading="loading" @search="search">
+    <layout-filter :query="query" :loading.sync="loading" @search="search">
       <template #after>
         <el-form-item style="float: right;">
           <export-data />
@@ -9,7 +9,7 @@
       </template>
     </layout-filter>
 
-    <daily-component :loading="loading" :data="tableData" />
+    <daily-component :loading.sync="loading" :data="tableData" />
 
   </div>
 
@@ -71,9 +71,6 @@ export default {
         .finally(() => {
           this.loading = false
         })
-    },
-    setLoading(val) {
-      this.loading = val
     }
   }
 }

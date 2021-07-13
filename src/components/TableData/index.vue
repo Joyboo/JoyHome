@@ -130,7 +130,7 @@ export default {
         return this.loading
       },
       set(val) {
-        this.$emit('setLoading', val)
+        this.$emit('update:loading', val)
       }
     }
   },

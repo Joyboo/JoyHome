@@ -2,7 +2,7 @@
   <div class="view-container">
 
     <table-data
-      :loading="loading"
+      :loading.sync="loading"
       :data="tableData"
       pathname="role"
       @search="search"

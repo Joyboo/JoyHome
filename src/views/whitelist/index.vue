@@ -14,7 +14,7 @@
     </el-form>
 
     <table-data
-      :loading="loading"
+      :loading.sync="loading"
       :data="data"
       pathname="whitelist"
       @search="search"

@@ -27,7 +27,7 @@
     </div>
 
     <table-data
-      :loading="loading"
+      :loading.sync="loading"
       :data="tableData"
       pathname="game"
       @search="search"

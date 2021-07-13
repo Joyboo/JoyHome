@@ -13,22 +13,20 @@ module.exports = [
     url: '/admin/game/gamelist',
     type: 'get',
     response: config => {
-
       return {
         code: 1,
         msg: 'success',
         data: games
       }
     }
-  }
-  , {
+  },
+  {
     url: '/admin/game/index',
     type: 'get',
     response: config => {
       const data = []
 
-      for(let i in games)
-      {
+      for (const i in games) {
         // 实际上参数远不止这些，此处仅mock需要的参数
         data.push({
           id: i,
@@ -53,20 +51,19 @@ module.exports = [
         }
       }
     }
-  }
-  , {
+  },
+  {
     url: '/amdin/game/del',
     type: 'get',
     response: config => {
-
       return {
         code: 1,
         msg: '操作成功',
         data: []
       }
     }
-  }
-  , {
+  },
+  {
     url: '/admin/game/add',
     type: 'post',
     response: config => {
@@ -76,8 +73,8 @@ module.exports = [
         data: []
       }
     }
-  }
-  , {
+  },
+  {
     url: '/admin/game/edit',
     type: 'post',
     response: config => {
@@ -87,8 +84,8 @@ module.exports = [
         data: []
       }
     }
-  }
-  , {
+  },
+  {
     url: '/admin/game/edit',
     type: 'get',
     response: config => {

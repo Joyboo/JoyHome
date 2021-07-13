@@ -95,7 +95,7 @@ export default {
         return this.loading
       },
       set(val) {
-        this.$emit('setloading', val)
+        this.$emit('update:loading', val)
       }
     }
   },

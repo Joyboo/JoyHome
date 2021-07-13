@@ -1,6 +1,6 @@
 <template>
 
-  <table-index :loading="loading" :data="data" :column="column" />
+  <table-index :loading.sync="load" :data="data" :column="column" />
 
 </template>
 
@@ -73,11 +73,14 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['size', 'gamelist'])
-  },
-  methods: {
-    setLoading(val) {
-      this.$emit('setLoading', val)
+    ...mapGetters(['size', 'gamelist']),
+    load: {
+      get() {
+        return this.loading
+      },
+      set(val) {
+        this.$emit('update:loading', val)
+      }
     }
   }
 }

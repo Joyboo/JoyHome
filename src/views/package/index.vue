@@ -1,7 +1,7 @@
 <template>
   <div class="view-container">
 
-    <layout-filter :query="query" :loading="loading" @search="search">
+    <layout-filter :query="query" :loading.sync="loading" @search="search">
       <el-form-item>
         <el-input v-model="query.keyword" placeholder="包名或包id" clearable />
       </el-form-item>
@@ -12,7 +12,7 @@
     </layout-filter>
 
     <table-data
-      :loading="loading"
+      :loading.sync="loading"
       :data="tableData"
       pathname="package"
       @search="search"

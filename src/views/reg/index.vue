@@ -1,7 +1,7 @@
 <template>
   <div class="view-container">
 
-    <layout-filter :query="query" :loading="loading" @search="search">
+    <layout-filter :query="query" :loading.sync="loading" @search="search">
 
       <el-form-item>
         <el-input v-model="query.uid" placeholder="账号或玩家id" clearable @change="search" />
@@ -14,7 +14,7 @@
       </template>
     </layout-filter>
 
-    <table-index :column="column" :loading="loading" :data="tableData">
+    <table-index :column="column" :loading.sync="loading" :data="tableData">
 
       <el-table-column align="center" label="操作" width="120">
         <template slot-scope="scope">
@@ -131,9 +131,6 @@ export default {
         .finally(() => {
           this.loading = false
         })
-    },
-    setLoading(val) {
-      this.loading = val
     },
     detail(index, row) {
       this.$router.push({ path: '/reg/detail', query: { uid: row.uid, gameid: this.query.gameid, ProxyRegion: this.query.ProxyRegion }})

@@ -1,7 +1,7 @@
 <template>
   <div class="view-container">
 
-    <layout-filter :query="query" :loading="loading" @search="search">
+    <layout-filter :query="query" :loading.sync="loading" @search="search">
       <template>
         <el-form-item>
           <el-input v-model="query.username" type="text" placeholder="账号 | 用户名" clearable />
@@ -17,7 +17,7 @@
       </template>
     </layout-filter>
 
-    <table-index :data="tableData" :loading="loading" :column="column" :border="false" />
+    <table-index :data="tableData" :loading.sync="loading" :column="column" :border="false" />
 
     <pagination :total="total" :query="query" @search="search" />
   </div>
@@ -91,9 +91,6 @@ export default {
     ...mapGetters(['size'])
   },
   methods: {
-    setloading(val) {
-      this.loading = val
-    },
     search() {
       this.loading = true
       cerrorIndex(this.query)

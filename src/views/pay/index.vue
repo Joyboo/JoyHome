@@ -1,7 +1,7 @@
 <template>
   <div class="view-container">
 
-    <layout-filter :query="query" :loading="loading" @search="search">
+    <layout-filter :query="query" :loading.sync="loading" @search="search">
       <el-form-item>
         <el-select v-model="query.pf" placeholder="请选择充值平台">
           <el-option label="全部" value="" />
@@ -31,7 +31,7 @@
       </template>
     </layout-filter>
 
-    <table-index :column="column" :loading="loading" :data="tableData">
+    <table-index :column="column" :loading.sync="loading" :data="tableData">
 
       <el-table-column align="center" label="操作" width="120">
         <template slot-scope="scope">
@@ -50,7 +50,7 @@
     />
 
     <!--详情-->
-    <detail :query="detailQuery" :dialog="dialog" @setdialog="setdialog" />
+    <detail :query="detailQuery" :dialog.sync="dialog"/>
   </div>
 </template>
 
@@ -240,10 +240,6 @@ export default {
         gameid: row.gameid,
         updtime: row.updtime
       }
-    },
-    // 详情页子组件设置dialog状态
-    setdialog(val) {
-      this.dialog = val
     }
   }
 }

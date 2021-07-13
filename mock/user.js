@@ -5,11 +5,9 @@ module.exports = [
     url: '/admin/pub/login',
     type: 'post',
     response: config => {
+      const { username, password } = config.body
 
-      const { username,password } = config.body
-
-      if (username == 'Joyboo' && password == '123456')
-      {
+      if (username == 'Joyboo' && password == '123456') {
         return {
           code: 1,
           data: {
@@ -33,25 +31,25 @@ module.exports = [
     response: config => {
       return {
         code: 1,
-        msg: "success",
+        msg: 'success',
         data: {
-          roles: ["admin"],
+          roles: ['admin'],
           id: 4,
-          username:"18666666666",
-          realname:"Joyboo",
-          rid:"1",
-          sort:"2",
-          extension:{
-            gid:"2",
+          username: '18666666666',
+          realname: 'Joyboo',
+          rid: '1',
+          sort: '2',
+          extension: {
+            gid: '2',
             // newnid:"/statistics/daily", // 打开菜单跳转的页面
-            ntcids:"0,2,4",
-            status:"1",
-            gameids:"0,1,2,3,4"
+            ntcids: '0,2,4',
+            status: '1',
+            gameids: '0,1,2,3,4'
           },
-          instime:"1615960868",
-          deltime:"0",
-          itime:"2021-03-17 14:01:08",
-          name:"系统管理员",
+          instime: '1615960868',
+          deltime: '0',
+          itime: '2021-03-17 14:01:08',
+          name: '系统管理员',
           gamelist: {
             1: '炉石传说',
             2: '和平精英'
@@ -67,7 +65,7 @@ module.exports = [
     response: config => {
       return {
         code: 1,
-        msg: "success",
+        msg: 'success'
       }
     }
   }

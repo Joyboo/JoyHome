@@ -1,6 +1,6 @@
 <template>
   <div class="view-container">
-    <layout-filter :query="query" :loading="loading" @search="search">
+    <layout-filter :query="query" :loading.sync="loading" @search="search">
 
       <el-form-item>
         <el-select v-model="query.voidedReason" placeholder="退款原因">
@@ -30,7 +30,7 @@
       </template>
     </layout-filter>
 
-    <table-index :column="column" :loading="loading" :data="tableData" />
+    <table-index :column="column" :loading.sync="loading" :data="tableData" />
 
     <pagination
       :total="total"

@@ -34,7 +34,7 @@
     </el-form>
 
     <table-data
-      :loading="loading"
+      :loading.sync="loading"
       :data="data"
       :btn-width="300"
       pathname="admin"

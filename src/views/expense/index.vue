@@ -1,9 +1,9 @@
 <template>
   <div class="view-container">
 
-    <layout-filter :query="query" :loading="loading" @search="search" />
+    <layout-filter :query="query" :loading.sync="loading" @search="search" />
 
-    <table-info :loading="loading" :data="tableData" pathname="expense" @search="search">
+    <table-info :loading.sync="loading" :data="tableData" pathname="expense" @search="search">
 
       <el-table-column width="80" align="center" prop="id" label="ID" sortable />
       <el-table-column align="center" sortable prop="etime" label="日期" />

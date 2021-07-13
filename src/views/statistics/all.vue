@@ -1,6 +1,6 @@
 <template>
   <div class="view-container">
-    <layout-filter :query="query" :nsch="false" :loading="loading" @search="search" @chgTzn="chgTzn">
+    <layout-filter :query="query" :nsch="false" :loading.sync="loading" @search="search" @chgTzn="chgTzn">
       <template>
         <el-form-item v-for="(name, key) in menulist" :key="key">
           <el-button
@@ -19,7 +19,7 @@
       </template>
     </layout-filter>
 
-    <component :is="using" :data="tableData" :loading="loading" />
+    <component :is="using" :data="tableData" :loading.sync="loading" />
   </div>
 </template>
 

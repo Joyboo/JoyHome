@@ -7,46 +7,45 @@ module.exports = [
     url: '/admin/package/childOption*',
     type: 'get',
     response: config => {
-
       return {
-        "code": 1,
-        "msg": "success",
-        "data": {
-          "3": {
-            "id": "3",
-            "name": "包3",
-            "pkgbnd": "package3"
+        'code': 1,
+        'msg': 'success',
+        'data': {
+          '3': {
+            'id': '3',
+            'name': '包3',
+            'pkgbnd': 'package3'
           },
-          "6": {
-            "id": "6",
-            "name": "包6",
-            "pkgbnd": "package6"
+          '6': {
+            'id': '6',
+            'name': '包6',
+            'pkgbnd': 'package6'
           },
-          "8": {
-            "id": "8",
-            "name": "包8",
-            "pkgbnd": "package8"
+          '8': {
+            'id': '8',
+            'name': '包8',
+            'pkgbnd': 'package8'
           },
-          "9": {
-            "id": "9",
-            "name": "包9",
-            "pkgbnd": "package9"
+          '9': {
+            'id': '9',
+            'name': '包9',
+            'pkgbnd': 'package9'
           },
-          "10": {
-            "id": "10",
-            "name": "包10",
-            "pkgbnd": "package10"
+          '10': {
+            'id': '10',
+            'name': '包10',
+            'pkgbnd': 'package10'
           },
-          "11": {
-            "id": "11",
-            "name": "包11",
-            "pkgbnd": "package11"
+          '11': {
+            'id': '11',
+            'name': '包11',
+            'pkgbnd': 'package11'
           }
         }
       }
     }
-  }
-  , {
+  },
+  {
     url: '/admin/package/index',
     type: 'get',
     response: config => {
@@ -79,8 +78,8 @@ module.exports = [
         }
       }
     }
-  }
-  ,{
+  },
+  {
     url: '/admin/package/del',
     type: 'get',
     response: config => {
@@ -90,15 +89,13 @@ module.exports = [
         data: []
       }
     }
-  }
-  , {
+  },
+  {
     url: '/admin/package/edit',
     type: 'get',
     response: config => {
-
       const event = []
-      for(let i=0; i<10; i++)
-      {
+      for (let i = 0; i < 10; i++) {
         event.push({
           Key: makeRoundString(6),
           Value: makeRoundString(10)
@@ -196,8 +193,8 @@ module.exports = [
         data: { data }
       }
     }
-  }
-  , {
+  },
+  {
     url: '/admin/package/edit',
     type: 'post',
     response: config => {
@@ -207,8 +204,8 @@ module.exports = [
         data: []
       }
     }
-  }
-  , {
+  },
+  {
     url: '/admin/package/add',
     type: 'post',
     response: config => {

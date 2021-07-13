@@ -67,7 +67,7 @@ export default {
         return this.dialog
       },
       set(val) {
-        this.$emit('setRepairDialog', val)
+        this.$emit('update:dialog', val)
       }
     }
   },

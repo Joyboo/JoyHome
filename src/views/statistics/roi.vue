@@ -1,7 +1,7 @@
 <template>
   <div class="view-container">
 
-    <layout-filter :query="query" :loading="loading" @search="search">
+    <layout-filter :query="query" :loading.sync="loading" @search="search">
       <template #after>
         <el-form-item style="float: right;">
           <export-data />
@@ -9,7 +9,7 @@
       </template>
     </layout-filter>
 
-    <roi-component :data="tableData" :loading="loading" />
+    <roi-component :data="tableData" :loading.sync="loading" />
 
   </div>
 </template>
@@ -70,9 +70,6 @@ export default {
         .finally(() => {
           this.loading = false
         })
-    },
-    setLoading(val) {
-      this.loading = val
     }
   }
 }

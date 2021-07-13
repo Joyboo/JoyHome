@@ -1,7 +1,7 @@
 <template>
   <div class="view-container">
 
-    <layout-filter :query="query" :loading="loading" @search="search">
+    <layout-filter :query="query" :loading.sync="loading" @search="search">
       <el-form-item>
         <el-select v-model="query.status" placeholder="请选择订单状态" class="mySelect">
           <el-option label="全部" value="" />
@@ -38,7 +38,7 @@
       </template>
     </layout-filter>
 
-    <table-index :column="column" :loading="loading" :data="tableData">
+    <table-index :column="column" :loading.sync="loading" :data="tableData">
 
       <el-table-column align="center" label="操作" width="150">
         <template slot-scope="scope">
@@ -67,10 +67,10 @@
     />
 
     <!--详情-->
-    <detail :query="detailQuery" :dialog="dialog" @setdialog="setdialog" />
+    <detail :query="detailQuery" :dialog.sync="dialog" />
 
     <!--补单-->
-    <repair :query="repairQuery" :dialog="repairDialog" @setRepairDialog="setRepairDialog" />
+    <repair :query="repairQuery" :dialog.sync="repairDialog" />
   </div>
 </template>
 
@@ -278,14 +278,6 @@ export default {
           ordersn: row.gameid + '-' + row.id + '-' + row.instime
         }
       }
-    },
-    // 详情页子组件设置dialog状态
-    setdialog(val) {
-      this.dialog = val
-    },
-    // 补单子组件设置dialog状态
-    setRepairDialog() {
-      this.repairDialog = false
     }
   }
 }

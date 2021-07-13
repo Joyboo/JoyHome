@@ -1,9 +1,9 @@
 <template>
   <div class="view-container">
-    <layout-filter :query="query" :loading="loading" @search="search" />
+    <layout-filter :query="query" :loading.sync="loading" @search="search" />
 
     <table-data
-      :loading="loading"
+      :loading.sync="loading"
       :data="tableData"
       pathname="googleRefundCfg"
       @search="search"

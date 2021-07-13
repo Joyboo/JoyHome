@@ -136,7 +136,7 @@ export default {
         return this.dialog
       },
       set(val) {
-        this.$emit('setdialog', val)
+        this.$emit('update:dialog', val)
       }
     }
   },
