@@ -13,6 +13,7 @@ const order = require('./order')
 const cerror = require('./cerror')
 const role = require('./role')
 const admin = require('./admin')
+const crontab = require('./crontab')
 
 const mocks = [
   ...user,
@@ -26,7 +27,8 @@ const mocks = [
   ...order,
   ...cerror,
   ...role,
-  ...admin
+  ...admin,
+  ...crontab
 ]
 
 // for front mock

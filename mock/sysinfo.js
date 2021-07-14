@@ -28,7 +28,7 @@ module.exports = [
             sizelist: [20, 100, 200, 300, 500, 1000, 2000],
             type: 'bootstrap',
             var_page: 'cPage',
-            var_pagesize: 'pSiz'
+            var_pagesize: 'pSize'
           },
           pma: [
             {

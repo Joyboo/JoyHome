@@ -15,9 +15,10 @@ module.exports = [
     url: '/admin/cerror/index',
     type: 'get',
     response: config => {
+      const size = config.query['pSize'] || 20
       const data = []
       const today = parseTime((new Date()).getTime())
-      for (let i = 50; i > 0; i--) {
+      for (let i = size; i > 0; i--) {
         data.push({
           'id': i,
           'uid': '4',

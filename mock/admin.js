@@ -5,8 +5,9 @@ module.exports = [
     url: '/admin/admin/index',
     type: 'get',
     response: config => {
+      const size = config.query['pSize'] || 20
       const data = []
-      for (let i = 50; i > 0; i--) {
+      for (let i = size; i > 0; i--) {
         data.push({
           'id': i,
           'username': '18666666666',
