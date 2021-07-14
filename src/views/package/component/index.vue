@@ -15,7 +15,7 @@
           </el-form-item>
 
           <el-form-item label="包操作系统">
-            <el-radio v-for="(pack, key) in packos" v-model="form.os" :key="key" :label="key" border>{{ pack }}</el-radio>
+            <el-radio v-for="(pack, key) in packos" :key="key" v-model="form.os" :label="key" border>{{ pack }}</el-radio>
           </el-form-item>
 
           <el-form-item label="包">
@@ -331,7 +331,7 @@
           </el-form-item>
 
           <el-form-item label="事件">
-            <br v-if="device !== 'mobile'" />
+            <br v-if="device !== 'mobile'">
             <el-row v-for="(ipt, key) in form.extension.adjust.event" :key="key" :gutter="10">
               <el-col :span="9">
                 <el-input v-model="ipt.Key" class="colInput" clearable placeholder="Key" />
@@ -345,7 +345,7 @@
             </el-row>
             <el-row>
               <el-button icon="el-icon-plus" :size="size" type="primary" plain @click="cp_param" />
-              <slot name="adjust"></slot>
+              <slot name="adjust" />
             </el-row>
           </el-form-item>
 
@@ -358,7 +358,7 @@
           </el-form-item>
 
           <el-form-item label="定时器">
-            <el-input v-model="form.extension.rating.time" style="width: 300px;" clearable>
+            <el-input v-model.number="form.extension.rating.time" style="width: 300px;" clearable>
               <span slot="suffix">分钟后弹出（开关打开时有效）</span>
             </el-input>
           </el-form-item>
@@ -497,7 +497,18 @@ export default {
   components: {
     ButtonTpl
   },
-  props: ['form', 'loading'],
+  props: {
+    form: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
+    loading: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       rules: {
@@ -605,7 +616,7 @@ export default {
         }
 
         uploadJb('/admin/package/upload', params)
-          .then(({status, data}) => {
+          .then(({ status, data }) => {
             if (status == 200) {
               this.$message.success('上传成功')
               resolve(data)

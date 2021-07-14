@@ -1,22 +1,22 @@
 // 获取文件上传的url
-import axios from "axios";
+import axios from 'axios'
 import { Message } from 'element-ui'
-import {getToken} from "@/utils/auth";
+import { getToken } from '@/utils/auth'
 
 export async function uploadJb(uri, params) {
   const file = params.file
-    , action = process.env.VUE_APP_BASE_API + uri;
+  const action = process.env.VUE_APP_BASE_API + uri
 
-  const form = new FormData();
-  form.append("file", file);
+  const form = new FormData()
+  form.append('file', file)
 
   const doSend = params => {
     return axios.post(action, params, {
       timeout: 30000,
       timeoutErrorMessage: '上传超时 ^_^',
       headers: {
-        "Content-Type": "multipart/form-data",
-        "Token": getToken()
+        'Content-Type': 'multipart/form-data',
+        'Token': getToken()
       }
     })
   }
@@ -24,7 +24,7 @@ export async function uploadJb(uri, params) {
   return await doSend(form)
 }
 
-export function uploadHttpRequest(params, {url, size, type}) {
+export function uploadHttpRequest(params, { url, size, type }) {
   return new Promise((resolve) => {
     const file = params.file
     const fileType = file.type

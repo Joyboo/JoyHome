@@ -92,16 +92,14 @@ function beforeDay(day) {
   return d.getTime()
 }
 
-function listdate(beginday, endday, fmt)
-{
+function listdate(beginday, endday, fmt) {
   endday = endday || 0
   fmt = fmt || '{y}{m}{d}'
   let beginStamp = beforeDay(beginday)
   const endStamp = beforeDay(endday)
 
   const list = []
-  while (beginStamp <= endStamp)
-  {
+  while (beginStamp <= endStamp) {
     list.push(parseTime(beginStamp, fmt))
     beginStamp += 86400 * 1000
   }
@@ -114,27 +112,24 @@ function listdate(beginday, endday, fmt)
  * @param {number} f 小数位长度
  * @returns {string}
  */
-function makeRound(n, f){
+function makeRound(n, f) {
   f = f || 0
-  let t = '';
+  let t = ''
   const len = n + f
-  for(let i = 0; i < len;){
-    const rd = Math.floor(Math.random()*10);
+  for (let i = 0; i < len;) {
+    const rd = Math.floor(Math.random() * 10)
     // 避免出现类似 0012 的数字
-    if (t !== '' || rd !== 0)
-    {
+    if (t !== '' || rd !== 0) {
       t += rd
       i++
     }
   }
 
-  if (f > 0)
-  {
+  if (f > 0) {
     // 1位小数/10, 2位/100, 3位/1000 ...
     const func = n => {
-      let mul = 1;
-      for(let i = 1; i<= n; i++)
-      {
+      let mul = 1
+      for (let i = 1; i <= n; i++) {
         mul *= 10
       }
       return mul
@@ -143,7 +138,7 @@ function makeRound(n, f){
   } else {
     t = parseInt(t)
   }
-  return t;
+  return t
 }
 
 /**
@@ -152,11 +147,11 @@ function makeRound(n, f){
  * @returns {string}
  */
 function makeRoundString(e) {
-  e = e || 32;
-  let t = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678",
-    a = t.length,
-    n = "";
-  for (i = 0; i < e; i++) n += t.charAt(Math.floor(Math.random() * a));
+  e = e || 32
+  const t = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'
+  const a = t.length
+  let n = ''
+  for (let i = 0; i < e; i++) n += t.charAt(Math.floor(Math.random() * a))
   return n
 }
 

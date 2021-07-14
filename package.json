@@ -99,10 +99,15 @@
   ],
   "license": "MIT",
   "lint-staged": {
-    "src/**/*.{js,vue}": [
+    "src/*": [
       "eslint --fix",
       "git add"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "repository": {
     "type": "git",

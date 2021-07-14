@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { MessageBox, Message, Notification } from 'element-ui'
+import { MessageBox, Notification } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 
@@ -11,7 +11,6 @@ const service = axios.create({
   timeoutErrorMessage: '请求超时 ^_^'
 })
 
-// todo 是否需要全局loading
 // request interceptor
 service.interceptors.request.use(
   config => {
@@ -26,7 +25,7 @@ service.interceptors.request.use(
 
     config.headers['Accept-Language'] = store.getters.language
 
-    /*if (config.method.toLowerCase() == 'post') {
+    /* if (config.method.toLowerCase() == 'post') {
       config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
       if (typeof config.data === 'object') {
         config.data = queryParams(config.data)
@@ -70,9 +69,8 @@ service.interceptors.response.use(
           location.reload()
         })
       })
-    }
-    // 服务端程序异常
-    else if (res.code === 500) {
+    } else if (res.code === 500) {
+      // 服务端程序异常
       const message = res.msg || 'default Error 500'
       Notification({
         title: '服务端异常',
@@ -82,8 +80,7 @@ service.interceptors.response.use(
         // offset: 10
       })
       return Promise.reject(new Error(message))
-    }
-    else {
+    } else {
       return res
     }
   },

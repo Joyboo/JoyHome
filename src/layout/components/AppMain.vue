@@ -13,23 +13,23 @@
 </template>
 
 <script>
-  import BackToTop from '@/components/BackToTop'
+import BackToTop from '@/components/BackToTop'
 
-  export default {
-    name: 'AppMain',
-    components: { BackToTop },
-    computed: {
-      cachedViews() {
-        return this.$store.state.tagsView.cachedViews
-      },
-      key() {
-        return this.$route.path
-      },
-      duration() {
-        return this.$store.state.settings.duration
-      }
+export default {
+  name: 'AppMain',
+  components: { BackToTop },
+  computed: {
+    cachedViews() {
+      return this.$store.state.tagsView.cachedViews
+    },
+    key() {
+      return this.$route.path
+    },
+    duration() {
+      return this.$store.state.settings.duration
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

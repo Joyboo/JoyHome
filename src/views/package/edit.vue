@@ -1,24 +1,21 @@
 <template>
-  <package-info :form="form" :loading="loading" @submit="submit" >
+  <package-info :form="form" :loading="loading" @submit="submit">
     <template #adjust>
-      <el-button type="success" :size="size" icon="el-icon-check" plain @click="saceAdjust"></el-button>
+      <el-button type="success" :size="size" icon="el-icon-check" plain @click="saceAdjust" />
     </template>
   </package-info>
 </template>
 
 <script>
 import packageInfo from './component'
-import { packageEdit,saveAdjustEvent } from '@/api/package'
-import {closeTab, copyTo} from "@/utils";
-import {mapGetters} from "vuex";
+import { packageEdit, saveAdjustEvent } from '@/api/package'
+import { closeTab, copyTo } from '@/utils'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Edit',
   components: {
     packageInfo
-  },
-  computed: {
-    ...mapGetters(['size'])
   },
   data() {
     return {
@@ -114,13 +111,15 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters(['size'])
+  },
   mounted() {
     this.loading = true
     this.form.id = this.$route.query.id
     packageEdit('get', { id: this.form.id })
-      .then(({code, msg, data}) => {
-        if (!code)
-        {
+      .then(({ code, msg, data }) => {
+        if (!code) {
           return this.$message.error(msg)
         }
         this.form = copyTo(this.form, data.data)
@@ -134,7 +133,7 @@ export default {
       this.loading = true
 
       packageEdit('post', this.form)
-        .then(({code, msg}) => {
+        .then(({ code, msg }) => {
           if (code) {
             this.$message.success('操作成功')
             closeTab()
@@ -157,7 +156,7 @@ export default {
         event: this.form.extension.adjust.event
       }
       saveAdjustEvent(post)
-        .then(({code, msg}) => {
+        .then(({ code, msg }) => {
           if (code) {
             this.$message.success(msg)
           } else {

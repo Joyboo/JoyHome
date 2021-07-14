@@ -19,8 +19,8 @@
 
 <script>
 import { scrollTo } from '@/utils/scroll-to'
-import {isArray} from "@/utils/validate";
-import {mapGetters} from "vuex";
+import { isArray } from '@/utils/validate'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Pagination',
@@ -69,16 +69,14 @@ export default {
       return this.device === 'mobile'
     },
     sizelist() {
-      if (this.pageSizes.length > 0)
-      {
-        return this.pageSizes;
+      if (this.pageSizes.length > 0) {
+        return this.pageSizes
       }
       return this.config.paginate.sizelist || []
     },
     currentPage: {
       get() {
-        if (typeof this.query[this.cPageKey] != 'undefined')
-        {
+        if (typeof this.query[this.cPageKey] != 'undefined') {
           return this.query[this.cPageKey]
         }
         return 1
@@ -91,21 +89,15 @@ export default {
     pageSize: {
       get() {
         // Props传值
-        if (typeof this.query[this.pSizeKey] != 'undefined')
-        {
+        if (typeof this.query[this.pSizeKey] != 'undefined') {
           return this.query[this.pSizeKey]
-        }
-        // 后台配置,列表页
-        else if (typeof this.config.paginate[this.row] != 'undefined')
-        {
+        } else if (typeof this.config.paginate[this.row] != 'undefined') {
+          // 后台配置,列表页
           return this.config.paginate[this.row]
-        }
-        // 第一个值
-        else if (isArray(this.sizelist) && this.sizelist.length > 0)
-        {
+        } else if (isArray(this.sizelist) && this.sizelist.length > 0) {
+          // 第一个值
           return this.sizelist[0]
-        }
-        else {
+        } else {
           return 20
         }
       },
@@ -120,13 +112,13 @@ export default {
     },
     pSizeKey() {
       return this.$store.state.config.pSizeKey
-    },
+    }
   },
   // 全局config为异步获取，需要侦听器
   watch: {
     cPageKey: {
       immediate: true,
-      handler: function (newVal, oldVal) {
+      handler: function(newVal, oldVal) {
         if (newVal) {
           this.$set(this.query, newVal, this.currentPage)
         }
@@ -134,7 +126,7 @@ export default {
     },
     pSizeKey: {
       immediate: true,
-      handler: function (newVal, oldVal) {
+      handler: function(newVal, oldVal) {
         if (newVal) {
           this.$set(this.query, newVal, this.pageSize)
         }

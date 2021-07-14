@@ -10,23 +10,23 @@
           border
           lazy
         >
-          <el-table-column align="center" prop="var" width="150" label="变量名"></el-table-column>
+          <el-table-column align="center" prop="var" width="150" label="变量名" />
 
           <el-table-column align="left" label="值">
             <template slot-scope="scope">
-              <span v-html="scope.row.value"></span>
+              <span v-html="scope.row.value" />
             </template>
           </el-table-column>
 
           <el-table-column align="center" width="300" label="说明">
             <template slot-scope="scope">
-              {{scope.row.extension.comment}}
+              {{ scope.row.extension.comment }}
             </template>
           </el-table-column>
 
           <el-table-column align="center" width="100" label="类型">
             <template slot-scope="scope">
-              {{scope.row.extension.type}}
+              {{ scope.row.extension.type }}
             </template>
           </el-table-column>
 
@@ -55,61 +55,61 @@
 </template>
 
 <script>
-  import {mapGetters} from "vuex";
-  import {sysinfoIndex, sysinfoDel} from '@/api/sysinfo'
+import { mapGetters } from 'vuex'
+import { sysinfoIndex, sysinfoDel } from '@/api/sysinfo'
 
-  export default {
-    name: 'sysinfoindex',
-    computed: {
-      ...mapGetters(['size'])
+export default {
+  name: 'sysinfoindex',
+  data() {
+    return {
+      loading: false,
+      sysgrp: {},
+      tableData: []
+    }
+  },
+  computed: {
+    ...mapGetters(['size'])
+  },
+  activated() {
+    this.search()
+  },
+  methods: {
+    search() {
+      this.loading = true
+      sysinfoIndex()
+        .then(resp => {
+          const { sysgrp, data } = resp.data
+          this.sysgrp = sysgrp
+          this.tableData = data
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
-    data() {
-      return {
-        loading: false,
-        sysgrp: {},
-        tableData: []
-      }
+    confirmDelete(index, row) {
+      this.loading = true
+      sysinfoDel({ id: row.id })
+        .then(resp => {
+          const { code, msg } = resp
+          if (code) {
+            this.$message.success(msg)
+            this.getData()
+          } else {
+            this.$message.error(msg || 'Error')
+          }
+        })
+        .catch(error => {
+          this.$message.error(error)
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
-    activated() {
-      this.search()
-    },
-    methods: {
-      search() {
-        this.loading = true
-        sysinfoIndex()
-          .then(resp => {
-            const {sysgrp, data} = resp.data
-            this.sysgrp = sysgrp
-            this.tableData = data
-          })
-          .finally(() => {
-            this.loading = false
-          })
-      },
-      confirmDelete(index, row) {
-        this.loading = true
-        sysinfoDel({id: row.id})
-          .then(resp => {
-            const {code, msg} = resp
-            if (code) {
-              this.$message.success(msg);
-              this.getData()
-            } else {
-              this.$message.error(msg || 'Error')
-            }
-          })
-          .catch(error => {
-            this.$message.error(error)
-          })
-          .finally(() => {
-            this.loading = false
-          })
-      },
-      edit(index, row) {
-        this.$router.push({ path: '/sysinfo/edit', query: { id: row.id }})
-      }
+    edit(index, row) {
+      this.$router.push({ path: '/sysinfo/edit', query: { id: row.id }})
     }
   }
+}
 </script>
 
 <style scoped>

@@ -1,7 +1,7 @@
 <template>
   <div id="JoybooBubble" @click="onClick">
     <i id="bubbleradius" />
-    <span v-for="c in circles" :key="c.key" :style="style(c)" :class="{ popped: c.popped }">{{$t('login.hk')}}</span>
+    <span v-for="c in circles" :key="c.key" :style="style(c)" :class="{ popped: c.popped }">{{ $t('login.hk') }}</span>
   </div>
 </template>
 
@@ -94,46 +94,41 @@ export default {
           var b = couple[1]
 
           if (a.collisionFree && b.collisionFree) {
-            if (false) {
-              a.new_vx = (a.vx * (a.mass - b.mass) + (2 * b.mass * b.vx)) / (a.mass + b.mass)
-              a.new_vy = (a.vy * (a.mass - b.mass) + (2 * b.mass * b.vy)) / (a.mass + b.mass)
-            } else {
-              var dx = b.x - a.x
-              var dy = b.y - a.y
-              var collisionAngle = Math.atan2(dy, dx)
-              var sin = Math.sin(collisionAngle)
-              var cos = Math.cos(collisionAngle)
-              var pos_a = { x: 0, y: 0 }
-              var pos_b = rotate(dx, dy, sin, cos, true)
-              var vel_a = rotate(a.vx, a.vy, sin, cos, true)
-              var vel_b = rotate(b.vx, b.vy, sin, cos, true)
-              var vxTotal = vel_a.x - vel_b.x
-              vel_a.x = ((a.mass - b.mass) * vel_a.x + 2 * b.mass * vel_b.x) / (a.mass + b.mass)
-              vel_b.x = vxTotal + vel_a.x
-              pos_a.x += vel_a.x
-              pos_b.x += vel_b.x
+            var dx = b.x - a.x
+            var dy = b.y - a.y
+            var collisionAngle = Math.atan2(dy, dx)
+            var sin = Math.sin(collisionAngle)
+            var cos = Math.cos(collisionAngle)
+            var pos_a = { x: 0, y: 0 }
+            var pos_b = rotate(dx, dy, sin, cos, true)
+            var vel_a = rotate(a.vx, a.vy, sin, cos, true)
+            var vel_b = rotate(b.vx, b.vy, sin, cos, true)
+            var vxTotal = vel_a.x - vel_b.x
+            vel_a.x = ((a.mass - b.mass) * vel_a.x + 2 * b.mass * vel_b.x) / (a.mass + b.mass)
+            vel_b.x = vxTotal + vel_a.x
+            pos_a.x += vel_a.x
+            pos_b.x += vel_b.x
 
-              var pos_a_final = rotate(pos_a.x, pos_a.y, sin, cos, false)
-              var vel_a_final = rotate(vel_a.x, vel_a.y, sin, cos, false)
-              a.new_x = a.x + pos_a_final.x
-              a.new_y = a.y + pos_a_final.y
-              a.new_vx = vel_a_final.x
-              a.new_vy = vel_a_final.y
+            var pos_a_final = rotate(pos_a.x, pos_a.y, sin, cos, false)
+            var vel_a_final = rotate(vel_a.x, vel_a.y, sin, cos, false)
+            a.new_x = a.x + pos_a_final.x
+            a.new_y = a.y + pos_a_final.y
+            a.new_vx = vel_a_final.x
+            a.new_vy = vel_a_final.y
 
-              // each collision shows up in array twice: a->b and b->a
-              // var pos_b_final = rotate(pos_b.x, pos_b.y, sin, cos, false)
-              // var vel_b_final = rotate(vel_b.x, vel_b.y, sin, cos, false)
-              // b.x = a.x + pos_b_final.x
-              // b.y = a.y + pos_b_final.y
-              // b.new_vx = vel_b_final.x;
-              // b.new_vy = vel_b_final.y;
-            }
+            // each collision shows up in array twice: a->b and b->a
+            // var pos_b_final = rotate(pos_b.x, pos_b.y, sin, cos, false)
+            // var vel_b_final = rotate(vel_b.x, vel_b.y, sin, cos, false)
+            // b.x = a.x + pos_b_final.x
+            // b.y = a.y + pos_b_final.y
+            // b.new_vx = vel_b_final.x;
+            // b.new_vy = vel_b_final.y;
           }
         })
 
         newcollisions.forEach(couple => {
           var a = couple[0]
-          var b = couple[1]
+          // var b = couple[1]
           if (a.new_vy) {
             a.vx = a.new_vx
             a.vy = a.new_vy

@@ -1,6 +1,6 @@
 import variables from '@/styles/element-variables.scss'
 import defaultSettings from '@/settings'
-import {setSettingsLocalStorage} from '@/utils'
+import { setSettingsLocalStorage } from '@/utils'
 
 const { showSettings, tagsView, fixedHeader, sidebarLogo, supportPinyinSearch } = defaultSettings
 
@@ -14,7 +14,7 @@ const state = {
   rightPanel: false, // 右侧设置面板开关
   sidebarMode: true, // 菜单是否风琴条模式
   topMenuMode: true, // top菜单模式
-  duration: 350        // transition过渡时间
+  duration: 350 // transition过渡时间
 }
 
 const mutations = {
@@ -26,6 +26,7 @@ const mutations = {
     }
   },
   BOOL_SETTING: (state, key) => {
+    // eslint-disable-next-line no-prototype-builtins
     if (state.hasOwnProperty(key)) {
       state[key] = !state[key]
     }

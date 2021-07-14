@@ -5,9 +5,14 @@
         <el-tab-pane label="对接信息">
 
           <el-form-item label="名称">
-            <el-input v-model="form.name" placeholder="产品名称"
-                      :style="{width: device === 'mobile' ? '100%' : '50%'}"
-                      maxlength="50" show-word-limit clearable />
+            <el-input
+              v-model="form.name"
+              placeholder="产品名称"
+              :style="{width: device === 'mobile' ? '100%' : '50%'}"
+              maxlength="50"
+              show-word-limit
+              clearable
+            />
           </el-form-item>
 
           <el-form-item label="类型">
@@ -17,7 +22,7 @@
             </el-radio-group>
           </el-form-item>
 
-          <slot></slot>
+          <slot />
 
           <el-form-item>
             <template slot="label">
@@ -134,7 +139,7 @@
 
         </el-tab-pane>
 
-        <slot name="h5sdk"></slot>
+        <slot name="h5sdk" />
       </el-tabs>
 
       <button-tpl index="/game/index" @submit="submit" />
@@ -150,23 +155,32 @@ export default {
   components: {
     ButtonTpl
   },
-  // name: 'gameInfoComponent',
-  props: ['form', 'loading'],
-  computed: {
-    ...mapGetters([
-      'size',
-      'device'
-    ])
+  props: {
+    form: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
+    loading: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
       date: []
     }
   },
+  computed: {
+    ...mapGetters([
+      'size',
+      'device'
+    ])
+  },
   watch: {
     date(val) {
-      if (typeof val != 'object')
-      {
+      if (typeof val != 'object') {
         return
       }
 
@@ -175,11 +189,10 @@ export default {
     },
     'form.extension': {
       immediate: true,
-      handler: function (newVal, oldVal) {
+      handler: function(newVal, oldVal) {
         // 默认的开始和结束时间
-        if (typeof newVal.mtn.begintime != 'undefined' && typeof newVal.mtn.endtime != 'undefined'
-          && newVal.mtn.begintime != '' && newVal.mtn.endtime != '')
-        {
+        if (typeof newVal.mtn.begintime != 'undefined' && typeof newVal.mtn.endtime != 'undefined' &&
+          newVal.mtn.begintime != '' && newVal.mtn.endtime != '') {
           this.date = [new Date(newVal.mtn.begintime), new Date(newVal.mtn.endtime)]
         }
       }

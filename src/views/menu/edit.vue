@@ -10,7 +10,7 @@
 <script>
 import menuInfo from './component'
 import { menuEdit } from '@/api/menu'
-import {closeTab} from "@/utils";
+import { closeTab } from '@/utils'
 
 export default {
   components: {
@@ -44,9 +44,8 @@ export default {
     /* 编辑页参数 */
     this.form.id = this.$route.query.id
     menuEdit('get', { id: this.form.id })
-      .then(({code, msg, data}) => {
-        if (!code)
-        {
+      .then(({ code, msg, data }) => {
+        if (!code) {
           return this.$message.error(msg)
         }
         this.form = data.data
@@ -58,7 +57,6 @@ export default {
   },
   methods: {
     onSubmit() {
-
       if (this.form.id <= 0) {
         this.$message.error('id出错了')
         return
@@ -67,7 +65,7 @@ export default {
       this.loading = true
 
       menuEdit('post', this.form)
-        .then(({code}) => {
+        .then(({ code }) => {
           if (code) {
             this.$message.success('操作成功')
             closeTab()

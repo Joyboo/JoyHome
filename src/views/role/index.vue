@@ -2,7 +2,7 @@
   <div class="view-container">
 
     <table-data
-      :loading="loading"
+      :loading.sync="loading"
       :data="tableData"
       pathname="role"
       @search="search"
@@ -16,43 +16,42 @@
 
 <script>
 
-  import TableData from '@/components/TableData/info'
-  import {roleIndex} from '@/api/role'
+import TableData from '@/components/TableData/info'
+import { roleIndex } from '@/api/role'
 
-  export default {
-    name: 'roleindex',
-    components: {
-      TableData
-    },
-    data () {
-      return {
-        loading: false,
-        tableData: []
-      }
-    },
-    activated() {
-      this.search()
-    },
-    methods: {
-      search() {
-        this.loading = true
-        roleIndex()
-          .then(({code, msg, data}) => {
-            if (!code)
-            {
-              return this.$message.error(msg)
-            }
-            this.tableData = data.data || []
-          })
-          .catch(error => {
-            this.$message.error(error)
-          })
-          .finally(() => {
-            this.loading = false
-          })
-      }
+export default {
+  name: 'roleindex',
+  components: {
+    TableData
+  },
+  data() {
+    return {
+      loading: false,
+      tableData: []
+    }
+  },
+  activated() {
+    this.search()
+  },
+  methods: {
+    search() {
+      this.loading = true
+      roleIndex()
+        .then(({ code, msg, data }) => {
+          if (!code) {
+            return this.$message.error(msg)
+          }
+          this.tableData = data.data || []
+        })
+        .catch(error => {
+          this.$message.error(error)
+        })
+        .finally(() => {
+          this.loading = false
+        })
     }
   }
+}
 </script>
 
 <style scoped>

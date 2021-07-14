@@ -3,7 +3,7 @@
     <el-badge :is-dot="true" style="line-height: 25px;margin-top: -5px;" @click.native="dialogTableVisible = true">
       <el-button style="padding: 8px 10px;" size="small" type="danger">
         <!-- 上报中，转圈圈 -->
-        <i v-if="reporting" class="el-icon-loading"></i>
+        <i v-if="reporting" class="el-icon-loading" />
         <svg-icon v-else icon-class="bug" />
       </el-button>
     </el-badge>
@@ -74,7 +74,7 @@ export default {
     }
   },
   watch: {
-    dialogTableVisible: function (newVal) {
+    dialogTableVisible: function(newVal) {
       if (newVal) {
         this.$store.dispatch('errorLog/doreport')
       }

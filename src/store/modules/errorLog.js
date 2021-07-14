@@ -1,11 +1,11 @@
-import {errorLogAdd} from "@/api/cerror";
+import { errorLogAdd } from '@/api/cerror'
 
 const state = {
-  logs: [],           // 所有日志，客户端展示用
-  report: [],         // 需上报的日志
+  logs: [], // 所有日志，客户端展示用
+  report: [], // 需上报的日志
   limit: 30000,
-  reporting: false,   // 正在上报中,用于右上角icon转圈圈
-  len: 50            // report长度超过此值立即触发上报
+  reporting: false, // 正在上报中,用于右上角icon转圈圈
+  len: 50 // report长度超过此值立即触发上报
 }
 
 const mutations = {
@@ -26,22 +26,19 @@ const actions = {
     commit('ADD_ERROR_LOG', log)
 
     // 如果长度超过设定值，立即触发上报
-    if (state.report.length >= state.len)
-    {
+    if (state.report.length >= state.len) {
       dispatch('doreport')
     }
   },
   clearErrorLog({ commit }) {
     commit('CLEAR_ERROR_LOG')
   },
-  doreport: async ({commit, state, rootGetters}) => {
-
+  doreport: async({ commit, state, rootGetters }) => {
     commit('CHG_REPORTING', true)
 
     const userinfo = rootGetters.userinfo
 
-    while (state.report.length > 0)
-    {
+    while (state.report.length > 0) {
       const item = state.report.pop()
       try {
         await errorLogAdd({
@@ -49,7 +46,7 @@ const actions = {
           username: userinfo.username || '',
           realname: userinfo.realname || '',
           msg: item.err.message || '',
-          tag: (item.vm && item.vm.$vnode && item.vm.$vnode.tag) ? item.vm.$vnode.tag :  '',
+          tag: (item.vm && item.vm.$vnode && item.vm.$vnode.tag) ? item.vm.$vnode.tag : '',
           info: item.info || '',
           url: item.url,
           content: item.err.stack || '',
@@ -65,7 +62,7 @@ const actions = {
     commit('CHG_REPORTING', false)
   },
   // 监听上报错误日志
-  listen({dispatch, state}) {
+  listen({ dispatch, state }) {
     setInterval(() => dispatch('doreport'), state.limit)
   }
 }

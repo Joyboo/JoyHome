@@ -41,9 +41,9 @@ module.exports = [
             sid: makeRound(4),
             vip: makeRound(1),
             roleid: makeRound(10),
-            rolename: "Joyboo",
-            productid: "productid",
-            productname: "productname"
+            rolename: 'Joyboo',
+            productid: 'productid',
+            productname: 'productname'
           }
 
         })
@@ -59,8 +59,8 @@ module.exports = [
         }
       }
     }
-  }
-  , {
+  },
+  {
     url: '/admin/order/detail',
     type: 'get',
     response: config => {
@@ -92,20 +92,20 @@ module.exports = [
             vip: makeRound(1),
             istest: 0,
             roleid: makeRound(10),
-            rolename: "Joyboo",
-            productid: "productid",
-            productname: "productname"
+            rolename: 'Joyboo',
+            productid: 'productid',
+            productname: 'productname'
           },
-          gname: "炉石传说",
+          gname: '炉石传说',
           package: {
-            name: "炉石-正式包",
-            pkgbnd: "Joyboo"
+            name: '炉石-正式包',
+            pkgbnd: 'Joyboo'
           }
         }
       }
     }
-  }
-  ,{
+  },
+  {
     url: '/admin/order/callBackOrder',
     type: 'post',
     response: config => {
@@ -127,8 +127,8 @@ module.exports = [
         }
       }
     }
-  }
-  , {
+  },
+  {
     url: '/admin/order/repairOrder',
     type: 'post',
     response: config => {

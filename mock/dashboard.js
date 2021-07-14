@@ -5,7 +5,6 @@ module.exports = [
     url: '/admin/index/dashboard',
     type: 'get',
     response: config => {
-
       // 今日
       const today = makeRound(5)
       // 昨日
@@ -17,11 +16,10 @@ module.exports = [
 
       // 折线图
       const chartKey = ['reg', 'dau', 'money', 'ffl', 'arppu', 'arpu']
-      let chartData = {}
+      const chartData = {}
       chartKey.forEach(item => {
-        const week = [], last = []
-        for(let i=0; i<7; ++i)
-        {
+        const week = []; const last = []
+        for (let i = 0; i < 7; ++i) {
           week.push(makeRound(5))
           last.push(makeRound(5))
         }

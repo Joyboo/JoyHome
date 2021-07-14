@@ -23,7 +23,9 @@ module.exports = {
     }],
     "vue/singleline-html-element-content-newline": "off",
     "vue/multiline-html-element-content-newline":"off",
-    "vue/name-property-casing": ["error", "PascalCase"],
+    // "vue/name-property-casing": ["error", "PascalCase"],
+    // edit by Joyboo 为了兼容以前的组件，不强制驼峰name值 （如果是新项目，建议开启）
+    "vue/name-property-casing": 'off',
     "vue/no-v-html": "off",
     'accessor-pairs': 2,
     'arrow-spacing': [2, {
@@ -47,7 +49,9 @@ module.exports = {
     'curly': [2, 'multi-line'],
     'dot-location': [2, 'property'],
     'eol-last': 2,
-    'eqeqeq': ["error", "always", {"null": "ignore"}],
+    // 'eqeqeq': ["error", "always", {"null": "ignore"}],
+    // edit by Joyboo 不强制使用===, 允许 ==
+    'eqeqeq': 'off',
     'generator-star-spacing': [2, {
       'before': true,
       'after': true
