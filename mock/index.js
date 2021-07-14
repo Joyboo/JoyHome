@@ -15,6 +15,7 @@ const role = require('./role')
 const admin = require('./admin')
 const crontab = require('./crontab')
 const adminLog = require('./admin_log')
+const log = require('./log')
 
 const mocks = [
   ...user,
@@ -30,7 +31,8 @@ const mocks = [
   ...role,
   ...admin,
   ...crontab,
-  ...adminLog
+  ...adminLog,
+  ...log
 ]
 
 // for front mock
