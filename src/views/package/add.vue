@@ -13,12 +13,6 @@ export default {
   components: {
     packageInfo
   },
-  computed: {
-    ...mapGetters(['config']),
-    domain() {
-      return this.config.region_domain.domain
-    }
-  },
   data() {
     return {
       loading: false,
@@ -109,6 +103,12 @@ export default {
           }
         }
       }
+    }
+  },
+  computed: {
+    ...mapGetters(['config']),
+    domain() {
+      return this.config.region_domain.domain
     }
   },
   watch: {

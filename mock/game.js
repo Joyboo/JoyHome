@@ -1,7 +1,5 @@
 
-const { listdate, makeRound, makeRoundString, parseTime } = require('./utils')
-
-const list = listdate(-30, 0, '{y}-{m}-{d} {h}:{i}:{s}')
+const { makeRound, makeRoundString, parseTime } = require('./utils')
 
 const games = {
   1: '炉石传说',
@@ -53,7 +51,7 @@ module.exports = [
     }
   },
   {
-    url: '/amdin/game/del',
+    url: '/admin/game/del',
     type: 'get',
     response: config => {
       return {
@@ -144,6 +142,16 @@ module.exports = [
             }
           }
         }
+      }
+    }
+  }, {
+    url: '/admin/game/gameall',
+    type: 'get',
+    response: config => {
+      return {
+        code: 1,
+        msg: 'success',
+        data: games
       }
     }
   }

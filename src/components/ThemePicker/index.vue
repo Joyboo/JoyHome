@@ -8,8 +8,8 @@
 </template>
 
 <script>
-const version = require('element-ui/package.json').version // element-ui version from node_modules
-const ORIGINAL_THEME = '#409EFF' // default color
+// const version = require('element-ui/package.json').version // element-ui version from node_modules
+// const ORIGINAL_THEME = '#409EFF' // default color
 import setTheme from '@/utils/settings'
 
 export default {
@@ -36,7 +36,7 @@ export default {
         .then(() => {
           this.$emit('change', val)
         })
-        .catch(error => {})
+        .catch(_ => {})
     }
   }
 }

@@ -55,7 +55,7 @@
           </el-form-item>
 
           <el-form-item label="默认打开菜单">
-            <menu-cascader :pid.sync="form.extension.newnid"/>
+            <menu-cascader :pid.sync="form.extension.newnid" />
           </el-form-item>
 
         </el-tab-pane>
@@ -216,7 +216,7 @@ export default {
         return this.loading
       },
       set(val) {
-        this.$emit('loading', val)
+        this.$emit('update:loading', val)
       }
     },
     theme() {
@@ -227,7 +227,7 @@ export default {
   watch: {
     // 这种侦听器写箭头函数时获取不到this.data ，见文档：https://cn.vuejs.org/v2/api/#watch
     'form.rid': {
-      immediate: true, // 侦听开始后立即调用，用于编辑时立即触发角色权限选中
+      // immediate: true, // 侦听开始后立即调用，用于编辑时立即触发角色权限选中
       handler: function(newVal, oldVal) {
         // console.log('watch handler ok', newVal, this.menuTable)
 

@@ -2,7 +2,7 @@ import store from '@/store'
 const version = require('element-ui/package.json').version
 import { Message } from 'element-ui'
 import i18n from '@/lang'
-import variables from '@/styles/element-variables.scss'
+// import variables from '@/styles/element-variables.scss'
 
 const ORIGINAL_THEME = '#409EFF' // default color
 

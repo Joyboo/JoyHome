@@ -23,8 +23,8 @@
     </el-form>
 
     <span slot="footer" class="dialog-footer">
-      <el-button @click="showdialog = false">取 消</el-button>
-      <el-button type="primary" @click="doRepair">确 定</el-button>
+      <el-button :size="size" @click="showdialog = false">取 消</el-button>
+      <el-button :size="size" type="primary" @click="doRepair">确 定</el-button>
     </span>
   </el-dialog>
 </template>

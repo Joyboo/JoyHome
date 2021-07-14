@@ -73,18 +73,18 @@ export default {
     TableData,
     Item
   },
+  data() {
+    return {
+      tableData: [],
+      loading: false
+    }
+  },
   computed: {
     ...mapGetters(['size'])
   },
   // 菜单列表没有按钮主动搜索，每次切换回来就更新一次数据
   activated() {
     this.search()
-  },
-  data() {
-    return {
-      tableData: [],
-      loading: false
-    }
   },
   methods: {
     search() {

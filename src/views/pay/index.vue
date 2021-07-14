@@ -50,7 +50,7 @@
     />
 
     <!--详情-->
-    <detail :query="detailQuery" :dialog.sync="dialog"/>
+    <detail :query="detailQuery" :dialog.sync="dialog" />
   </div>
 </template>
 

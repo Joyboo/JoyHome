@@ -450,8 +450,8 @@ export function closeTab() {
       if (latestView) {
         router.replace(latestView.fullPath)
       } else {
-        if (view.name === 'Dashboard') {
-          router.replace({ path: '/redirect' + view.fullPath })
+        if (route.name === 'Dashboard') {
+          router.replace({ path: '/redirect' + route.fullPath })
         } else {
           router.push('/')
         }

@@ -10,6 +10,9 @@ const _package = require('./package')
 const dashboard = require('./dashboard')
 const reg = require('./reg')
 const order = require('./order')
+const cerror = require('./cerror')
+const role = require('./role')
+const admin = require('./admin')
 
 const mocks = [
   ...user,
@@ -20,7 +23,10 @@ const mocks = [
   ..._package,
   ...dashboard,
   ...reg,
-  ...order
+  ...order,
+  ...cerror,
+  ...role,
+  ...admin
 ]
 
 // for front mock
