@@ -1,5 +1,9 @@
 > 本项目基础框架为 [https://github.com/PanJiaChen/vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
 
+## 预览: [ http://joyhome.vveq.com](http://joyhome.vveq.com)
+
+- 由于没有上CDN，部署服务器带宽也不太够，本地需要mock等等原因，首次可能会很慢，请耐心等待。
+- 生产环境部署可实现秒开，不用担心上述慢的问题。
 
 ## 前序准备
 
