@@ -12,6 +12,16 @@ module.exports = [
       }
     }
   }, {
+    url: '/admin/cerror/multiple',
+    type: 'post',
+    response: config => {
+      return {
+        code: 1,
+        msg: 'success',
+        data: []
+      }
+    }
+  }, {
     url: '/admin/cerror/index',
     type: 'get',
     response: config => {
