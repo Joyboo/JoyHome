@@ -91,7 +91,9 @@ export default {
     thirdpartyTips: 'Can not be simulated on local, so please combine you own business simulation! ! !',
     hk: 'Joyboo',
     inputUsername: 'Please enter the correct user name',
-    inputPassword: 'The password can not be less than 6 digits'
+    inputPassword: 'The password can not be less than 6 digits',
+    reLogin: 'Re-Login',
+    confirmLogout: 'Confirm Logout'
   },
   documentation: {
     documentation: 'Documentation',
@@ -188,5 +190,9 @@ export default {
     topMenu: 'Top Menu Mode',
     duration: 'Transition duration'
   },
-  open: 'Open'
+  open: 'Open',
+  confirm: 'Confirm',
+  cancel: 'Cancel',
+  serverError: 'Server Error',
+  requestTimeout: 'Request Timeout'
 }

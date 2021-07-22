@@ -1,11 +1,11 @@
-import { errorLogAdd } from '@/api/cerror'
+import { errorLogMultiple } from '@/api/cerror'
 
 const state = {
   logs: [], // 所有日志，客户端展示用
   report: [], // 需上报的日志
-  limit: 30000,
+  limit: 30000, // 定时器
   reporting: false, // 正在上报中,用于右上角icon转圈圈
-  len: 50 // report长度超过此值立即触发上报
+  len: 10 // 除了定时器定时上报，当report长度超过此值也会立即触发上报
 }
 
 const mutations = {
@@ -37,11 +37,11 @@ const actions = {
     commit('CHG_REPORTING', true)
 
     const userinfo = rootGetters.userinfo
-
-    while (state.report.length > 0) {
-      const item = state.report.pop()
-      try {
-        await errorLogAdd({
+    const data = []
+    try {
+      while (state.report.length > 0) {
+        const item = state.report.pop()
+        data.push({
           uid: userinfo.id || '',
           username: userinfo.username || '',
           realname: userinfo.realname || '',
@@ -52,13 +52,14 @@ const actions = {
           content: item.err.stack || '',
           instime: parseInt(item.time / 1000)
         })
-      } catch (e) {
-        console.error('doreport error ', e)
-        // push回去可能导致死循环，慎开!
-        // state.report.push(item)
       }
-    }
 
+      if (data.length > 0) {
+        await errorLogMultiple(data)
+      }
+    } catch (e) {
+      console.error('doreport error ', e)
+    }
     commit('CHG_REPORTING', false)
   },
   // 监听上报错误日志

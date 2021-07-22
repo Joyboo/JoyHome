@@ -18,7 +18,7 @@
           <span :class="o.class">{{ o.name }}</span>
           <div class="bottom clearfix">
             <span class="time">{{ o.url }}</span>
-            <el-link :href="o.url + '?mytoken=' + token" :underline="false" target="_blank" class="tolink">
+            <el-link :href="o.url" :underline="false" target="_blank" class="tolink">
               <el-button type="text" class="button">{{ $t('open') }}</el-button>
             </el-link>
           </div>
@@ -29,16 +29,10 @@
 </template>
 
 <script>
-import { getToken } from '@/utils/auth'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'phpmyadminindex',
-  data() {
-    return {
-      token: getToken()
-    }
-  },
   computed: {
     ...mapGetters(['config', 'device']),
     pma() {

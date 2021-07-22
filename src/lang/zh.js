@@ -91,7 +91,9 @@ export default {
     thirdpartyTips: '本地不能模拟，请结合自己业务进行模拟！！！',
     hk: 'Joyboo',
     inputUsername: '请输入用户名',
-    inputPassword: '请输入正确的密码'
+    inputPassword: '请输入正确的密码',
+    reLogin: '重新登录',
+    confirmLogout: '确认退出'
   },
   documentation: {
     documentation: '文档',
@@ -188,5 +190,9 @@ export default {
     topMenu: 'TOP菜单模式',
     duration: '过渡效果时长'
   },
-  open: '打开'
+  open: '打开',
+  confirm: '确定',
+  cancel: '取消',
+  serverError: '服务端异常',
+  requestTimeout: '请求超时'
 }

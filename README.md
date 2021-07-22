@@ -1,5 +1,9 @@
-> 本项目基础框架为 [https://github.com/PanJiaChen/vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
+#### 一个完整的后台项目示例， 本项目基础框架为 [https://github.com/PanJiaChen/vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
 
+## 预览:  [joyhome.vveq.com](http://joyhome.vveq.com)
+
+- 由于没有上CDN，部署服务器带宽也不太够，需要mock等等原因，首次可能会很慢，请耐心等待。
+- 生产环境部署可实现秒开，不用担心上述慢的问题。
 
 ## 前序准备
 
@@ -143,6 +147,6 @@ npm run lint -- --fix
 ```
 
 - Mock Data 数据均为随机生成，字段有需要可以自行定义，可能有些地方并不适用，请自行调整
-- 后端仔一枚，多多包涵~~ 交流邮箱：Joyboo@aliyun.com
+- 后端仔一枚，写的不好请多多包涵，如果觉得不错或者对你有帮助，可以点个**star**支持一下下，手动比心 ^_^
 
 更多信息请参考 [使用文档](https://panjiachen.github.io/vue-element-admin-site/zh/)
