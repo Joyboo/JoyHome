@@ -110,6 +110,7 @@ export default {
   },
   beforeDestroy() {
     this.$bus.$off('setHeight')
+    window.removeEventListener('resize', this.autoSetHeight)
   },
   methods: {
     checkPermission,

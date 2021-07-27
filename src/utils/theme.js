@@ -8,7 +8,7 @@ const ORIGINAL_THEME = '#409EFF' // default color
 
 export default {
   chalk: '',
-  async set(val) {
+  async setColor(val) {
     const oldVal = this.chalk ? store.state.settings.theme : ORIGINAL_THEME
     if (typeof val !== 'string') return
     const themeCluster = this.getThemeCluster(val.replace('#', ''))

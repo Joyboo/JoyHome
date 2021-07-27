@@ -1,7 +1,7 @@
 <template>
   <div id="JoybooBubble" @click="onClick">
     <i id="bubbleradius" />
-    <span v-for="c in circles" :key="c.key" :style="style(c)" :class="{ popped: c.popped }">{{ $t('login.hk') }}</span>
+    <span v-for="c in circles" :key="c.key" :style="style(c)" :class="{ popped: c.popped }">Joyboo</span>
   </div>
 </template>
 
@@ -19,7 +19,6 @@ const rotate = (x, y, sin, cos, reverse) => {
 const flatten = arr => arr.reduce((a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), [])
 
 export default {
-  name: 'Bubble',
   data() {
     return {
       globalId: null, // add by Joyboo
@@ -213,7 +212,7 @@ export default {
       num = num || -1
       var box = this.$el.getBoundingClientRect()
       var radius = this.$el.querySelector('#bubbleradius').getBoundingClientRect().width
-      var max = (box.width * box.height) / 300 / Math.pow(radius, 1.2)
+      var max = (box.width * box.height) / 600 / Math.pow(radius, 1.2)
       const created = num > 0 ? num : max
 
       for (var i = 0; i < created; i++) {

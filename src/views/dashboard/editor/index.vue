@@ -3,7 +3,7 @@
 
     <el-row :gutter="40" class="panel-group">
 
-      <el-col :xs="24" :sm="24" :lg="6" class="card-panel-col">
+      <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" class="card-panel-col">
         <div v-loading="loading" class="card-panel">
           <div class="card-panel-icon-wrapper icon-people">
             <svg-icon icon-class="money" class-name="card-panel-icon" />
@@ -24,7 +24,7 @@
         </div>
       </el-col>
 
-      <el-col :xs="24" :sm="24" :lg="6" class="card-panel-col">
+      <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" class="card-panel-col">
         <div v-loading="loading" class="card-panel">
           <div class="card-panel-icon-wrapper icon-message">
             <svg-icon icon-class="money" class-name="card-panel-icon" />
@@ -45,7 +45,7 @@
         </div>
       </el-col>
 
-      <el-col :xs="24" :sm="24" :lg="6" class="card-panel-col">
+      <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" class="card-panel-col">
         <div class="card-panel" style="line-height: 128px;text-align: center;">
           <el-select v-model="gameid" filterable placeholder="全部游戏" clearable>
             <el-option
@@ -60,7 +60,7 @@
         </div>
       </el-col>
 
-      <el-col :xs="24" :sm="24" :lg="6" class="card-panel-col">
+      <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" class="card-panel-col">
         <div class="card-panel" style="line-height: 128px;text-align: center;">
           <admin-card />
         </div>
@@ -69,7 +69,7 @@
     </el-row>
 
     <el-row :gutter="32">
-      <el-col v-for="(item, key) in chart" :key="key" :xs="24" :sm="24" :lg="8" class="mychart">
+      <el-col v-for="(item, key) in chart" :key="key" :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 8}" :xl="{span: 8}" class="mychart">
         <div v-loading="loading" class="chart-wrapper">
           <line-chart v-bind="item" />
         </div>
