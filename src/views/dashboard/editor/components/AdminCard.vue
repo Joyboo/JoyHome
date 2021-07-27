@@ -1,10 +1,10 @@
 <template>
 
   <el-row class="box-card-component">
-    <el-col class="box-card-header" :xs="{span: 12}" :sm="{span: 12}" :md="{span: 10}" :lg="{span: 8}" :xl="{span: 8}" style="height:128px;">
+    <el-col class="box-card-header" :xs="{span: 12}" :sm="{span: 12}" :md="{span: 11}" :lg="{span: 11}" :xl="{span: 11}" style="height:128px;">
       <img :src="avatar">
     </el-col>
-    <el-col :xs="{span: 12}" :sm="{span: 12}" :md="{span: 14}" :lg="{span: 16}" :xl="{span: 16}" style="height:128px;">
+    <el-col :xs="{span: 12}" :sm="{span: 12}" :md="{span: 13}" :lg="{span: 13}" :xl="{span: 13}" style="height:128px;">
       <div class="admin-text">
         <b>{{ userinfo.realname }}</b>
         &nbsp;&nbsp;&nbsp;

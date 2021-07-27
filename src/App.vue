@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import setTheme from '@/utils/settings'
+import theme from '@/utils/theme'
 import { getSettingsLocalStorage } from '@/utils'
 
 export default {
@@ -13,7 +13,7 @@ export default {
   beforeCreate() {
     try {
       // 进入时触发主题设置
-      setTheme.set(getSettingsLocalStorage('theme')).catch(_ => {})
+      theme.setColor(getSettingsLocalStorage('theme')).catch(_ => {})
     } catch (e) {
       console.error('main.js setTheme error', e)
     }

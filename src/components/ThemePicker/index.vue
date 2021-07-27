@@ -10,7 +10,7 @@
 <script>
 // const version = require('element-ui/package.json').version // element-ui version from node_modules
 // const ORIGINAL_THEME = '#409EFF' // default color
-import setTheme from '@/utils/settings'
+import theme from '@/utils/theme'
 
 export default {
   data() {
@@ -32,7 +32,7 @@ export default {
       immediate: true
     },
     theme(val) {
-      setTheme.set(val)
+      theme.setColor(val)
         .then(() => {
           this.$emit('change', val)
         })

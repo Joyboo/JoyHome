@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <bubble-bg />
+    <bubble-bg style="z-index: 10;" />
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
 
       <div class="title-container">
@@ -70,6 +70,12 @@
 
     </el-form>
 
+    <el-carousel ref="loginCarouse" indicator-position="none" arrow="never" :autoplay="false" :height="bgHeight" style="position: fixed;top:0px;left:0;z-index: 9;width: 100%;">
+      <el-carousel-item v-for="item in 3" :key="item">
+        <el-image :fit="isMobile ? 'cover' : 'fill'" :src="require('@/assets/image/login_bg' + item + '.jpg')" style="width: 100%;height: 100%;" alt="" />
+      </el-carousel-item>
+    </el-carousel>
+
     <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog">
       {{ $t('login.thirdpartyTips') }}
       <br>
@@ -85,6 +91,7 @@
 import LangSelect from '@/components/LangSelect'
 import SocialSign from './components/SocialSignin'
 import BubbleBg from '@/components/BubbleBg'
+import { calcHeight } from '@/utils'
 
 export default {
   name: 'Login',
@@ -96,8 +103,8 @@ export default {
     return {
       local: local,
       loginForm: {
-        username: '',
-        password: ''
+        username: 'Joyboo',
+        password: '123456'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur'/*, validator: validateUsername*/ }],
@@ -108,7 +115,9 @@ export default {
       loading: false,
       showDialog: false,
       redirect: undefined,
-      otherQuery: {}
+      otherQuery: {},
+      bgHeight: '',
+      isMobile: false
     }
   },
   watch: {
@@ -125,6 +134,8 @@ export default {
   },
   created() {
     // window.addEventListener('storage', this.afterQRScan)
+    window.addEventListener('resize', this.setBgHeight)
+    this.setBgHeight()
   },
   mounted() {
     if (this.loginForm.username === '') {
@@ -132,11 +143,28 @@ export default {
     } else if (this.loginForm.password === '') {
       this.$refs.password.focus()
     }
+
+    // el-carouse自动切换设置后，当鼠标hover时，就会暂停，此处实现为永久性定时切换
+    const timer = setInterval(() => {
+      if (typeof this.$refs.loginCarouse != 'undefined') {
+        this.$refs.loginCarouse.next()
+      }
+    }, 2000)
+    // hool删除定时器
+    this.$once('hook:beforeDestroy', () => {
+      clearInterval(timer)
+    })
   },
   destroyed() {
     // window.removeEventListener('storage', this.afterQRScan)
+    window.removeEventListener('resize', this.setBgHeight)
   },
   methods: {
+    setBgHeight() {
+      this.bgHeight = calcHeight(0) + 'px'
+      const rect = window.document.body.getBoundingClientRect()
+      this.isMobile = rect.width - 1 < 992
+    },
     checkCapslock(e) {
       const { key } = e
       this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')
@@ -232,9 +260,16 @@ $cursor: #fff;
       caret-color: $cursor;
 
       &:-webkit-autofill {
-        box-shadow: 0 0 0px 1000px $bg inset !important;
         -webkit-text-fill-color: $cursor !important;
       }
+    }
+    /*账号密码input背景设置为透明*/
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+      -webkit-transition-delay: 111111s;
+      -webkit-transition: color 11111s ease-out, background-color 111111s ease-out;
     }
   }
 
@@ -265,6 +300,7 @@ $light_gray:#eee;
     padding: 160px 35px 0;
     margin: 0 auto;
     overflow: hidden;
+    z-index: 11;
   }
 
   .tips {

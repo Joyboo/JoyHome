@@ -141,7 +141,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import { validUsername } from '@/utils/validate'
 import { rolelist, roleEdit } from '@/api/role'
 import ButtonTpl from '@/components/ButtonTpl'
@@ -197,7 +197,6 @@ export default {
       rolelist: [],
       menuTable: [],
       multipleSelection: [], // 默认选中的菜单
-      gametransfer: [], // 穿梭框的全部游戏
       propsObj: {
         disabled: function(data, node) {
           return false
@@ -208,6 +207,9 @@ export default {
   },
   computed: {
     ...mapGetters(['size', 'gamelist', 'device']),
+    ...mapState({
+      theme: state => state.settings.theme
+    }),
     isupd() {
       return typeof this.form.id != 'undefined'
     },
@@ -219,8 +221,16 @@ export default {
         this.$emit('update:loading', val)
       }
     },
-    theme() {
-      return this.$store.state.settings.theme
+    gametransfer() {
+      const vx = this.$store.state.filter.gamelist
+      const list = []
+      for (const i in vx) {
+        list.push({
+          key: parseInt(i),
+          label: vx[i] + ' (id: ' + i + ')'
+        })
+      }
+      return list
     }
   },
   /* 侦听器 */
@@ -255,15 +265,6 @@ export default {
       const resp = await menuIndex()
       this.menuTable = resp.data
       this.setChecked(this.form.rid)
-
-      // 游戏分配穿梭框
-      for (const j in this.gamelist) {
-        this.gametransfer.push({
-          key: parseInt(j),
-          label: this.gamelist[j],
-          disabled: false
-        })
-      }
     } catch (e) {
       console.error('mounted error=>', e)
     }

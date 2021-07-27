@@ -145,6 +145,7 @@ export default {
   },
   beforeDestroy() {
     this.$bus.$off('setHeight')
+    window.removeEventListener('resize', this.autoSetHeight)
   },
   methods: {
     // 按当前视口自动计算表格高度
