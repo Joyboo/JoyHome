@@ -1,6 +1,6 @@
 import store from '@/store'
-const version = require('element-ui/package.json').version
-import { Message } from 'element-ui'
+const version = require('element-plus/package.json').version
+import { ElMessage } from 'element-plus'
 import i18n from '@/lang'
 // import variables from '@/styles/element-variables.scss'
 
@@ -15,7 +15,7 @@ export default {
     const originalCluster = this.getThemeCluster(oldVal.replace('#', ''))
     // console.log(themeCluster, originalCluster)
 
-    const $message = Message({
+    const $message = ElMessage({
       message: '  ' + i18n.t('settings.setThemeIng'),
       customClass: 'theme-message',
       type: 'success',

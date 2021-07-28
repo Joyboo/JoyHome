@@ -1,48 +1,35 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
+import App from './App.vue'
+import ElementPlus from 'element-plus'
+import 'element-plus/lib/theme-chalk/index.css'
+import store from './store'
+import router from './router'
 
 import Cookies from 'js-cookie'
 
 import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 
-import Element from 'element-ui'
 import './styles/element-variables.scss'
 
 import '@/styles/index.scss' // global css
-
-import App from './App'
-import store from './store'
-import router from './router'
-
 import i18n from './lang' // internationalization
 import './icons' // icon
 import './permission' // permission control
 import './utils/error-log' // error log
 
-import * as filters from './filters' // global filters
-
 import { mockXHR } from '../mock'
 mockXHR()
 
-Vue.use(Element, {
-  size: Cookies.get('size') || 'medium', // set element-ui default size
-  i18n: (key, value) => i18n.t(key, value)
+const app = createApp(App)
+
+app.use(ElementPlus, {
+  size: Cookies.get('size') || 'mini',
+  // i18n: (key, value) => i18n.t(key, value)
+  i18n: i18n.global.t
 })
+app.use(store)
+app.use(router)
+app.use(i18n)
+app.mount('#app')
 
-// 全局bus add by Joyboo
-import Bus from '@/utils/bus'
-Vue.use(Bus)
-
-// register global utility filters
-Object.keys(filters).forEach(key => {
-  Vue.filter(key, filters[key])
-})
-
-Vue.config.productionTip = false
-
-new Vue({
-  el: '#app',
-  router,
-  store,
-  i18n,
-  render: h => h(App)
-})
+export default app

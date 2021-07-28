@@ -226,7 +226,7 @@ export default {
     }
   },
   mounted() {
-    this.$bus.$on('changeFilterShow', this.setShowTimeout)
+    // this.$bus.$on('changeFilterShow', this.setShowTimeout)
 
     // 时间
     if (this.isBegin) {
@@ -251,7 +251,7 @@ export default {
     }
   },
   beforeDestroy() {
-    this.$bus.$off('changeFilterShow')
+    // this.$bus.$off('changeFilterShow')
   },
   methods: {
     changeGame(gameid) {
@@ -323,7 +323,7 @@ export default {
     },
     // 动画结束
     afterLeave() {
-      this.$bus.$emit('setHeight')
+      // this.$bus.$emit('setHeight')
     },
     // 在动画时间结束后执行
     setShowTimeout(val) {

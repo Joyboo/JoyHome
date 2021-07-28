@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { MessageBox, Notification } from 'element-ui'
+import { ElMessageBox, ElNotification } from 'element-plus'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 import i18n from '@/lang'
@@ -61,7 +61,7 @@ service.interceptors.response.use(
 
     // 重新登录
     if (res.code === 1000) {
-      MessageBox.confirm(res.data || i18n.t('login.reLogin'), i18n.t('login.confirmLogout'), {
+      ElMessageBox.confirm(res.data || i18n.t('login.reLogin'), i18n.t('login.confirmLogout'), {
         confirmButtonText: i18n.t('login.reLogin'),
         cancelButtonText: i18n.t('cancel'),
         type: 'warning'
@@ -73,7 +73,7 @@ service.interceptors.response.use(
     } else if (res.code === 500) {
       // 服务端程序异常
       const message = res.msg || 'default Error 500'
-      Notification({
+      ElNotification({
         title: i18n.t('serverError'),
         message: message,
         type: 'error',

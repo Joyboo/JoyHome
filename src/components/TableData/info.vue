@@ -106,10 +106,10 @@ export default {
     // 监听视口变化
     window.addEventListener('resize', this.autoSetHeight)
     // 监听Bus
-    this.$bus.$on('setHeight', this.autoSetHeight)
+    // this.$bus.$on('setHeight', this.autoSetHeight)
   },
   beforeDestroy() {
-    this.$bus.$off('setHeight')
+    // this.$bus.$off('setHeight')
     window.removeEventListener('resize', this.autoSetHeight)
   },
   methods: {

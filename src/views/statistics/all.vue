@@ -105,9 +105,6 @@ export default {
   methods: {
     checkPermission,
     search() {
-      // 正常情况是在Layout-filter内search事件触发的Bus事件，此页面较特殊，并没有使用子组件的search来触发查询事件
-      // 虽然在TableData组件加入data变量的侦听器也可以统一处理，但筛选区收起的动作会在data变化之后，这延长了用户等待时间
-      this.$bus.$emit('changeFilterShow', false)
       this.loading = true
       const query = Object.assign({}, this.query, {
         pkgbnd: this.query.pkgbnd.join(','),

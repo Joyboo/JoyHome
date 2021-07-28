@@ -1,6 +1,6 @@
 import router from './router'
 import store from './store'
-import { Message, Loading } from 'element-ui'
+import { ElMessage, ElLoading } from 'element-plus'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
@@ -55,7 +55,7 @@ router.beforeEach(async(to, from, next) => {
         next()
       } else {
         try {
-          const myLoading = Loading.service()
+          const myLoading = ElLoading.service()
 
           // 获取菜单，动态路由
           await store.dispatch('permission/getRouter')
@@ -78,7 +78,7 @@ router.beforeEach(async(to, from, next) => {
           // remove token and go to login page to re-login
           await store.dispatch('user/resetToken')
           console.error('primission error ', error)
-          Message.error(error || 'Has Error')
+          ElMessage.error(error || 'Has Error')
           next(`/login?redirect=${to.path}`)
           NProgress.done()
         }
