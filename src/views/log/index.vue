@@ -1,7 +1,7 @@
 <template>
 
   <div class="view-container">
-    <layout-filter :query="query" :loading.sync="loading" @search="search">
+    <layout-filter :query="query" :loading.sync="loading" :layout-config="layoutConfig" @search="search">
       <template>
         <el-form-item>
           <el-select v-model="query.type" clearable placeholder="操作类型">
@@ -45,10 +45,12 @@ export default {
     return {
       loading: false,
       query: {
-        begintime: true,
-        endtime: true,
         type: '',
         content: ''
+      },
+      layoutConfig: {
+        isBeginTime: true,
+        isEndTime: true
       },
 
       typelist: [

@@ -4,9 +4,8 @@
       <div v-show="show || !isMobile">
         <el-form :model="query" :size="size" :inline="true">
 
-          <!--传递query.gameid表示需要该下拉框，传递类型为字符串时表示为单选，为数组时表示为多选-->
-          <el-form-item v-if="typeof query.gameid != 'undefined'">
-            <el-select v-model="query.gameid" filterable :multiple="gameMul" placeholder="游戏" clearable>
+          <el-form-item v-if="cfg.showGame">
+            <el-select v-model="query.gameid" filterable :multiple="cfg.showGame === 2" :collapse-tags="cfg.collapseGame" placeholder="游戏" clearable>
               <el-option
                 v-for="(_gname, _gid) in gamelist"
                 :key="_gid"
@@ -18,8 +17,8 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item v-if="typeof query.pkgbnd != 'undefined'">
-            <el-select v-model="query.pkgbnd" filterable :multiple="packageMul" placeholder="包" clearable>
+          <el-form-item v-if="cfg.showPackage">
+            <el-select v-model="query.pkgbnd" filterable :multiple="cfg.showPackage === 2" :collapse-tags="cfg.collapsePackage" placeholder="包" clearable>
               <el-option
                 v-for="item in packagelist"
                 :key="item.pkgbnd"
@@ -31,44 +30,44 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item v-if="typeof query.ProxyRegion != 'undefined'">
+          <el-form-item v-if="cfg.ProxyRegion">
             <el-select v-model="query.ProxyRegion" style="width: 100px;" placeholder="地区" class="mySelect">
               <el-option v-for="(rn, rk) in region" :key="rk" :label="rn.name" :value="rk" />
             </el-select>
           </el-form-item>
 
-          <el-form-item v-if="typeof query.tzn != 'undefined'">
+          <el-form-item v-if="cfg.tzn">
             <el-select v-model="query.tzn" style="width: 80px;" placeholder="时区" class="mySelect" @change="chgTzn">
               <el-option v-for="(rn, rk) in region" :key="rk" :label="rn.tzn + '区'" :value="rn.tzn" />
             </el-select>
           </el-form-item>
 
-          <el-form-item v-if="isBegin">
+          <el-form-item v-if="cfg.isBeginTime">
             <el-date-picker
               v-model="begin"
-              :format="format"
-              :type="query.datetype || 'date'"
+              :format="cfg.elFormat"
+              :type="cfg.elType"
               placeholder="开始时间"
               value-format="timestamp"
-              :style="{width: (format.length -2) + 'rem'}"
+              :style="{width: (cfg.elFormat.length - 2) + 'rem'}"
               :clearable="false"
             />
           </el-form-item>
 
-          <el-form-item v-if="isEnd">
+          <el-form-item v-if="cfg.isEndTime">
             <el-date-picker
               v-model="end"
-              :format="format"
-              :type="query.datetype || 'date'"
+              :format="cfg.elFormat"
+              :type="cfg.elType"
               placeholder="结束时间"
               value-format="timestamp"
-              :style="{width: (format.length -2) + 'rem'}"
+              :style="{width: (cfg.elFormat.length - 2) + 'rem'}"
               :clearable="false"
             />
           </el-form-item>
 
           <!--快捷操作-->
-          <el-form-item v-if="isBegin && isEnd">
+          <el-form-item v-if="cfg.isBeginTime && cfg.isEndTime">
             <el-dropdown trigger="click">
               <div>
                 <el-button icon="el-icon-date" />
@@ -88,10 +87,18 @@
             </el-dropdown>
           </el-form-item>
 
+          <el-form-item v-if="cfg.nextbtn">
+            <el-button type="primary" plain @click="fastdate(9)">前一天</el-button>
+          </el-form-item>
+
+          <el-form-item v-if="cfg.nextbtn">
+            <el-button type="primary" plain @click="fastdate(10)">后一天</el-button>
+          </el-form-item>
+
           <!--插槽位-->
           <slot />
 
-          <el-form-item v-if="nsch">
+          <el-form-item v-if="cfg.nsch">
             <el-button :loading="load" type="primary" icon="el-icon-search" @click="search">查询
             </el-button>
           </el-form-item>
@@ -116,15 +123,14 @@
 
 <script>
 
-import { mapGetters } from 'vuex'
-import { packageChildOption } from '@/api/package'
+import { mapGetters, mapState } from 'vuex'
 import { beforeDay, parseTime } from '@/utils'
 
 export default {
   name: 'LayoutFilter',
   props: {
     query: {
-      // required: true,
+      required: true,
       type: Object,
       default() {
         return {}
@@ -134,10 +140,12 @@ export default {
       type: Boolean,
       default: false
     },
-    // need search
-    nsch: {
-      type: Boolean,
-      default: true
+    // 自定义配置项，此对象会与defaultConfig合并为cfg，优先级高于defaultConfig
+    layoutConfig: {
+      type: Object,
+      default() {
+        return {}
+      }
     }
   },
   data() {
@@ -145,17 +153,58 @@ export default {
       begin: '',
       end: '',
       packagelist: [],
-      show: true
+      show: true,
+      defaultConfig: {
+        // 是否需要search查询按钮
+        nsch: true,
+        // 游戏，0-隐藏,1-单选,2-多选
+        showGame: 0,
+        // 游戏多选时是否折叠
+        collapseGame: false,
+        // 包，0-隐藏,1-单选, 2-多选
+        showPackage: 0,
+        // 包多选时是否折叠
+        collapsePackage: false,
+        // 显示地区下拉框
+        ProxyRegion: false,
+        // 显示时区下拉框
+        tzn: false,
+        // 显示开始时间
+        isBeginTime: false,
+        // 开始时间距离当前时间的天数
+        beginDay: -14,
+        // 显示结束时间
+        isEndTime: false,
+        // 结束时间距离当前时间的天数
+        endDay: 0,
+        // ElementUI日期组件显示的格式
+        elFormat: 'yyyy-MM-dd',
+        // ElementUI日期组件类型
+        elType: 'date',
+        // 最终赋值给query.begintime和endtime的格式, 值参考 parseTime format参数
+        outFmt: '{y}-{m}-{d}',
+        // 生命周期中获取数据
+        firstLoading: true,
+        // 显示前后一天按钮
+        nextbtn: false
+      }
     }
   },
   computed: {
     ...mapGetters([
       'size',
+      'gamelist',
       'userinfo',
       'config',
-      'device',
-      'gamelist'
+      'device'
     ]),
+    ...mapState({
+      theme: state => state.settings.theme,
+      duration: state => state.settings.duration
+    }),
+    cfg() {
+      return Object.assign({}, this.defaultConfig, this.layoutConfig)
+    },
     load: {
       get() {
         return this.loading
@@ -167,39 +216,12 @@ export default {
     isMobile() {
       return this.device === 'mobile'
     },
-    theme() {
-      return this.$store.state.settings.theme
-    },
-    duration() {
-      return this.$store.state.settings.duration
-    },
     region() {
       return this.config.region_domain.region
     },
-    // 是否多选游戏
-    gameMul() {
-      return typeof this.query.gameid === 'object'
-    },
-    // 是否多选包
-    packageMul() {
-      return typeof this.query.pkgbnd === 'object'
-    },
-    isBegin() {
-      return typeof this.query.begintime != 'undefined'
-    },
-    isEnd() {
-      return typeof this.query.endtime != 'undefined'
-    },
-    format() {
-      return typeof this.query.format === 'undefined' ? 'yyyy-MM-dd' : this.query.format
-    },
-    // 最终赋值给begintime或endtime的格式,值参考 parseTime format参数
-    outFmt() {
-      return typeof this.query.outfmt === 'undefined' ? '{y}-{m}-{d}' : this.query.outfmt
-    },
     // 管理员编辑页设置的默认选中游戏
     defaultGid() {
-      if (typeof this.userinfo.extension.gid == 'undefined') {
+      if (typeof this.userinfo.extension.gid === 'undefined') {
         return ''
       }
       const gid = this.userinfo.extension.gid
@@ -216,38 +238,48 @@ export default {
     },
     begin: function(newVal, oldVal) {
       if (!isNaN(newVal)) {
-        this.$set(this.query, 'begintime', parseTime(newVal, this.outFmt))
+        this.$set(this.query, 'begintime', parseTime(newVal, this.cfg.outFmt))
       }
     },
     end: function(newVal, oldVal) {
       if (!isNaN(newVal)) {
-        this.$set(this.query, 'endtime', parseTime(newVal, this.outFmt))
+        this.$set(this.query, 'endtime', parseTime(newVal, this.cfg.outFmt))
       }
     }
   },
-  mounted() {
+  created() {
     this.$bus.$on('changeFilterShow', this.setShowTimeout)
 
     // 时间
-    if (this.isBegin) {
-      this.begin = beforeDay(this.query.begintime)
+    if (this.cfg.isBeginTime) {
+      this.begin = beforeDay(this.cfg.beginDay)
     }
-    if (this.isEnd) {
-      // 可传true或者-N的天数
-      const day = this.query.endtime === true ? 0 : this.query.endtime
-      this.end = beforeDay(day)
+    if (this.cfg.isEndTime) {
+      this.end = beforeDay(this.cfg.endDay)
     }
 
     // 默认选中的游戏
     if (this.defaultGid != '') {
-      if (typeof this.query.gameid == 'object' && this.query.gameid.indexOf(this.defaultGid) < 0) {
-        this.query.gameid.push(this.defaultGid)
-      } else if (typeof this.query.gameid == 'string' && this.query.gameid == '') {
-        this.query.gameid = this.defaultGid
+      switch (this.cfg.showGame) {
+        case 1: // 单选
+          if (this.query.gameid === '') {
+            this.$set(this.query, 'gameid', this.defaultGid)
+          }
+          break
+        case 2: // 多选
+          if (this.query.gameid.indexOf(this.defaultGid) === -1) {
+            const old = this.query.gameid
+            old.push(this.defaultGid)
+            this.$set(this.query, 'gameid', old)
+          }
+          break
+        default:break
       }
 
-      // 等待侦听器执行完成
-      setTimeout(() => this.search(), 500)
+      if (this.cfg.firstLoading) {
+        // 等待侦听器执行完成
+        setTimeout(() => this.search(), 500)
+      }
     }
   },
   beforeDestroy() {
@@ -256,23 +288,25 @@ export default {
   methods: {
     changeGame(gameid) {
       // 不需要包信息
-      if (typeof this.query.pkgbnd == 'undefined') {
+      if (this.cfg.showPackage === 0) {
         return
       }
+
+      // 清空
+      this.packagelist = []
+      this.query.pkgbnd = this.cfg.showPackage === 2 ? [] : ''
 
       if (gameid.length == 0) {
-        // 清空
-        this.packagelist = []
-        this.query.pkgbnd = this.packageMul ? [] : ''
         return
       }
 
-      if (this.gameMul) {
+      if (this.cfg.showGame === 2) {
         gameid = gameid.join(',')
       }
-      packageChildOption({ gameid: gameid }).then(resp => {
-        this.packagelist = resp.data
-      })
+      this.$store.dispatch('filter/pkglistByGameid', gameid)
+        .then(list => {
+          this.packagelist = list
+        })
     },
     fastdate(val) {
       const time = new Date()
@@ -311,6 +345,15 @@ export default {
           this.begin = start8.getTime()
           this.end = beforeDay(0)
           break
+        case 9: // 前一天
+          this.begin -= 86400 * 1000
+          this.end -= 86400 * 1000
+          break
+        case 10: // 后一天
+          this.begin += 86400 * 1000
+          this.end += 86400 * 1000
+          break
+        default: break
       }
     },
     search() {

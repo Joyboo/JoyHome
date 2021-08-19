@@ -69,7 +69,7 @@
 
         <el-tab-pane label="充值信息">
 
-          <layout-filter :query="query" :loading.sync="payloading" @search="searchPayment">
+          <layout-filter :query="query" :loading.sync="payloading" :layout-config="layoutConfig" @search="searchPayment">
             <el-form-item>
               <el-select v-model="query.pf" placeholder="请选择充值平台">
                 <el-option label="全部" value="" />
@@ -83,7 +83,7 @@
 
         <el-tab-pane label="登录信息">
 
-          <layout-filter :query="query" :loading.sync="loginloading" @search="searchLogin" />
+          <layout-filter :query="query" :loading.sync="loginloading" :layout-config="layoutConfig" @search="searchLogin" />
           <table-data :loading.sync="loginloading" :column="loginColumn" :data="loginData" />
 
         </el-tab-pane>
@@ -169,6 +169,13 @@ export default {
         ...this.$route.query
       },
       query: query,
+
+      layoutConfig: {
+        isBeginTime: true,
+        isEndTime: true,
+        showGame: 1,
+        showPackage: 2
+      },
 
       // 充值页
       payloading: false,

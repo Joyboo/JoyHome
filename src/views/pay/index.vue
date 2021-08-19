@@ -1,7 +1,7 @@
 <template>
   <div class="view-container">
 
-    <layout-filter :query="query" :loading.sync="loading" @search="search">
+    <layout-filter :query="query" :loading.sync="loading" :layout-config="layoutConfig" @search="search">
       <el-form-item>
         <el-select v-model="query.pf" placeholder="请选择充值平台">
           <el-option label="全部" value="" />
@@ -57,7 +57,7 @@
 <script>
 import LayoutFilter from '@/components/LayoutFilter'
 import TableIndex from '@/components/TableData'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import { payIndex } from '@/api/reg'
 import Pagination from '@/components/Pagination'
 import Detail from './detail'
@@ -82,9 +82,14 @@ export default {
         pkgbnd: [],
         ProxyRegion: '',
         kwtype: 'paysn',
-        kwvalue: '',
-        begintime: true,
-        endtime: true
+        kwvalue: ''
+      },
+      layoutConfig: {
+        isBeginTime: true,
+        isEndTime: true,
+        showGame: 1,
+        showPackage: 2,
+        ProxyRegion: true
       },
       // 查询订单详情参数
       detailQuery: {},
@@ -203,12 +208,10 @@ export default {
   },
   computed: {
     ...mapGetters(['size']),
-    paypf() {
-      return this.$store.state.filter.pay.pf
-    },
-    theme() {
-      return this.$store.state.settings.theme
-    }
+    ...mapState({
+      paypf: state => state.filter.pay.pf,
+      theme: state => state.settings.theme
+    })
   },
   methods: {
     search() {

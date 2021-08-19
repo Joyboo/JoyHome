@@ -1,13 +1,13 @@
 <template>
   <div class="view-container">
-    <layout-filter :query="query" :nsch="false" :loading.sync="loading" @search="search" @chgTzn="chgTzn">
+    <layout-filter :query="query" :layout-config="layoutConfig" :loading.sync="loading" @search="search" @chgTzn="chgTzn">
       <template>
         <el-form-item v-for="(name, key) in menulist" :key="key">
           <el-button
             v-if="checkPermission(['admin', '/statistics/' + key])"
             :type="menu == key ? 'primary' : 'default'"
             round
-            @click="chgRadio(key)"
+            @click="chgRadio(key, true)"
           >{{ name.name }}</el-button>
         </el-form-item>
       </template>
@@ -60,6 +60,15 @@ export default {
         begintime: true,
         endtime: true
       },
+      layoutConfig: {
+        isBeginTime: true,
+        isEndTime: true,
+        showGame: 2,
+        showPackage: 2,
+        ProxyRegion: true,
+        tzn: true,
+        nsch: false
+      },
       tableData: [],
       menu: '',
       menulist: {
@@ -100,7 +109,7 @@ export default {
     ...mapGetters(['size', 'gamelist'])
   },
   mounted() {
-    this.chgRadio('daily')
+    this.chgRadio('daily', false)
   },
   methods: {
     checkPermission,
@@ -128,12 +137,12 @@ export default {
           this.loading = false
         })
     },
-    chgRadio(val) {
+    chgRadio(val, search) {
       this.tableData = []
       this.menu = val
       this.query.tzn = this.menulist[this.menu].tzn
       this.using = this.menulist[this.menu].components
-      this.search()
+      search && this.search()
     },
     chgTzn(val) {
       this.query.tzn = val

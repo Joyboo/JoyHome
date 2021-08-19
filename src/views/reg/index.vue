@@ -1,7 +1,7 @@
 <template>
   <div class="view-container">
 
-    <layout-filter :query="query" :loading.sync="loading" @search="search">
+    <layout-filter :query="query" :loading.sync="loading" :layout-config="layoutConfig" @search="search">
 
       <el-form-item>
         <el-input v-model="query.uid" placeholder="账号或玩家id" clearable @change="search" />
@@ -62,9 +62,14 @@ export default {
         gameid: '',
         pkgbnd: [],
         ProxyRegion: 'omz',
-        begintime: true,
-        endtime: true,
         uid: ''
+      },
+      layoutConfig: {
+        isBeginTime: true,
+        isEndTime: true,
+        showGame: 1,
+        showPackage: 2,
+        ProxyRegion: true
       },
       total: 0,
       tableData: [],

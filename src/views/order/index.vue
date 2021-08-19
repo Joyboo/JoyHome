@@ -77,7 +77,7 @@
 <script>
 import LayoutFilter from '@/components/LayoutFilter'
 import TableIndex from '@/components/TableData'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import { orderIndex } from '@/api/order'
 import Pagination from '@/components/Pagination'
 import Detail from './detail'
@@ -104,9 +104,14 @@ export default {
         status: '',
         ProxyRegion: 'omz',
         kwtype: 'paysn',
-        kwvalue: '',
-        begintime: true,
-        endtime: true
+        kwvalue: ''
+      },
+      layoutConfig: {
+        isBeginTime: true,
+        isEndTime: true,
+        showGame: 1,
+        showPackage: 2,
+        ProxyRegion: true
       },
       // detail组件参数
       dialog: false,
@@ -218,15 +223,11 @@ export default {
   },
   computed: {
     ...mapGetters(['size']),
-    paypf() {
-      return this.$store.state.filter.pay.pf
-    },
-    paystatus() {
-      return this.$store.state.filter.pay.status
-    },
-    theme() {
-      return this.$store.state.settings.theme
-    }
+    ...mapState({
+      paypf: state => state.filter.pay.pf,
+      paystatus: state => state.filter.pay.status,
+      theme: state => state.settings.theme
+    })
   },
   methods: {
     search() {

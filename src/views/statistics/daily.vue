@@ -1,7 +1,7 @@
 <template>
   <div class="view-container">
 
-    <layout-filter :query="query" :loading.sync="loading" @search="search">
+    <layout-filter :query="query" :loading.sync="loading" :layout-config="layoutConfig" @search="search">
       <template #after>
         <el-form-item style="float: right;">
           <export-data />
@@ -36,9 +36,15 @@ export default {
         gameid: [],
         pkgbnd: [],
         ProxyRegion: 'omz',
-        tzn: '-5',
-        begintime: true,
-        endtime: true
+        tzn: '-5'
+      },
+      layoutConfig: {
+        isBeginTime: true,
+        isEndTime: true,
+        showGame: 2,
+        showPackage: 2,
+        ProxyRegion: true,
+        tzn: true
       },
       tableData: []
     }

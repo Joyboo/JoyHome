@@ -1,7 +1,7 @@
 <template>
 
   <div class="view-container">
-    <layout-filter :query="query" :loading.sync="loading" @search="search">
+    <layout-filter :query="query" :loading.sync="loading" :layout-config="layoutConfig" @search="search">
       <template>
         <el-form-item>
           <el-input v-model="query.uid" type="text" placeholder="用户id | 用户名" clearable @change="search" />
@@ -33,9 +33,10 @@ export default {
   data() {
     return {
       loading: false,
-      query: {
-        begintime: true,
-        endtime: true
+      query: {},
+      layoutConfig: {
+        isBeginTime: true,
+        isEndTime: true
       },
       total: 0,
       tableData: [],

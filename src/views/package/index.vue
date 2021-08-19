@@ -1,7 +1,7 @@
 <template>
   <div class="view-container">
 
-    <layout-filter :query="query" :loading.sync="loading" @search="search">
+    <layout-filter :query="query" :loading.sync="loading" :layout-config="layoutConfig" @search="search">
       <el-form-item>
         <el-input v-model="query.keyword" placeholder="包名或包id" clearable />
       </el-form-item>
@@ -95,6 +95,9 @@ export default {
         id: '',
         gameid: '',
         keyword: ''
+      },
+      layoutConfig: {
+        showGame: 1
       },
       total: 0,
       tableData: []
