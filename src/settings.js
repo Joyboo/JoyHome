@@ -43,5 +43,10 @@ module.exports = {
   /**
    * add by Joybo 持久化保存到localStorage中的一个key
    */
-  localStorageKey: 'settings'
+  localStorageKey: 'settings',
+
+  /**
+   * 帅炸的webpack分包调试插件： https://www.npmjs.com/package/webpack-bundle-analyzer
+   */
+  bundleAnalyzerCtl: false
 }
