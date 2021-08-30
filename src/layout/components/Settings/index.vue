@@ -3,6 +3,8 @@
     <div>
       <h3 class="drawer-title">{{ $t('settings.title') }}</h3>
 
+      <settings-menu :mode.sync="topMenuMode" />
+
       <div class="drawer-item">
         <span>{{ $t('settings.theme') }}</span>
         <theme-picker style="float: right;height: 26px;margin: -3px 8px 0 0;" @change="themeChange" />
@@ -52,11 +54,12 @@
 
 <script>
 import ThemePicker from '@/components/ThemePicker'
+import SettingsMenu from './SettingsMenu'
 import { getSettingsLocalStorage } from '@/utils'
 import { mapGetters } from 'vuex'
 
 export default {
-  components: { ThemePicker },
+  components: { ThemePicker, SettingsMenu },
   data() {
     return {}
   },

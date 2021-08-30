@@ -436,27 +436,30 @@ export function copyTo(origin, data) {
  * 关闭当前tab
  * @author Joyboo
  */
-export function closeTab() {
-  // const tab = store.getters.visitedViews
-  // const view = tab.find(item => item.path == path)
-
+export function closeTab(topath) {
   const route = router.app.$route
-
-  // console.log(route)
   if (route) {
-    store.dispatch('tagsView/delView', route).then(({ visitedViews }) => {
-      // 返回到最后一个tagsView
-      const latestView = visitedViews.slice(-1)[0]
-      if (latestView) {
-        router.replace(latestView.fullPath)
-      } else {
-        if (route.name === 'Dashboard') {
-          router.replace({ path: '/redirect' + route.fullPath })
+    store.dispatch('tagsView/delView', route)
+      .then(({ visitedViews }) => {
+        const to = store.getters.visitedViews.find(item => item.path === topath)
+        // 要去的path已经存在TagViews中
+        if (to) {
+          router.replace({ path: to.path })
         } else {
-          router.push('/')
+          // 返回到最后一个tagsView
+          const latestView = visitedViews.slice(-1)[0]
+          if (latestView) {
+            router.replace(latestView.fullPath)
+          } else {
+            // 返回到首页
+            if (route.name === 'Dashboard') {
+              router.replace({ path: '/redirect' + route.fullPath })
+            } else {
+              router.push('/')
+            }
+          }
         }
-      }
-    })
+      })
   }
 }
 
