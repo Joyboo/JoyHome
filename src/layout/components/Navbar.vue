@@ -27,7 +27,7 @@
 
         <error-log class="errLog-container right-menu-item hover-effect" />
 
-        <el-tooltip v-if="!isMobile" :content="$t('navbar.screenfull')" placement="bottom">
+        <el-tooltip :content="$t('navbar.screenfull')" placement="bottom">
           <screenfull id="screenfull" class="right-menu-item hover-effect" />
         </el-tooltip>
 

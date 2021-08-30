@@ -114,6 +114,7 @@ export default {
   transform: translate(100%);
   background: #fff;
   z-index: 40000;
+  overflow-y: auto;
 }
 
 .show {
