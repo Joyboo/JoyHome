@@ -5,6 +5,7 @@ import router from '@/router'
 import store from '@/store'
 import Vue from 'vue'
 import { localStorageKey } from '@/settings'
+import checkPermission from '@/utils/permission'
 
 /**
  * Parse the time to string
@@ -441,15 +442,14 @@ export function closeTab(topath) {
   if (route) {
     store.dispatch('tagsView/delView', route)
       .then(({ visitedViews }) => {
-        const to = store.getters.visitedViews.find(item => item.path === topath)
-        // 要去的path已经存在TagViews中
-        if (to) {
-          router.replace({ path: to.path })
+        // vue-router 4.x 才有hasRoute方法，这里用权限作为替代检验方案
+        if (topath && checkPermission([topath])) {
+          router.replace({ path: topath })
         } else {
           // 返回到最后一个tagsView
-          const latestView = visitedViews.slice(-1)[0]
-          if (latestView) {
-            router.replace(latestView.fullPath)
+          const lastView = visitedViews.slice(-1)[0]
+          if (lastView) {
+            router.replace(lastView.fullPath)
           } else {
             // 返回到首页
             if (route.name === 'Dashboard') {

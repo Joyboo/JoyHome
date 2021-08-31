@@ -125,6 +125,7 @@
 
 import { mapGetters, mapState } from 'vuex'
 import { beforeDay, parseTime } from '@/utils'
+import { packageChildOption } from '@/api/package'
 
 export default {
   name: 'LayoutFilter',
@@ -303,10 +304,9 @@ export default {
       if (this.cfg.showGame === 2) {
         gameid = gameid.join(',')
       }
-      this.$store.dispatch('filter/pkglistByGameid', gameid)
-        .then(list => {
-          this.packagelist = list
-        })
+      packageChildOption({ gameid: gameid }).then(resp => {
+        this.packagelist = resp.data
+      })
     },
     fastdate(val) {
       const time = new Date()

@@ -62,7 +62,22 @@ module.exports = [
             pkgbnd: 'package8',
             ip: (makeRound(3) % 255) + '.' + (makeRound(3) % 255) + '.' + (makeRound(3) % 255) + '.' + (makeRound(3) % 255),
             exmodel: 'iPhone ' + ((makeRound(2) % 10) + 10)
-          }
+          },
+          bind: [
+            {
+              type: 'facebook',
+              value: makeRoundString(21)
+            }, {
+              type: 'gmail',
+              value: ''
+            }, {
+              type: 'huawei',
+              value: ''
+            }, {
+              type: 'uwp',
+              value: makeRoundString(21)
+            }
+          ]
         }
       }
     }
@@ -210,6 +225,17 @@ module.exports = [
             pkgbnd: 'Joyboo'
           }
         }
+      }
+    }
+  },
+  {
+    url: '/admin/reg/unbindBack',
+    type: 'post',
+    response: config => {
+      return {
+        code: 1,
+        msg: 'success',
+        data: []
       }
     }
   }

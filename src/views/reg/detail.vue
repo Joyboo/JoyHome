@@ -39,20 +39,46 @@
 
           <fieldset>
             <legend><b>账号绑定信息</b></legend>
-            <el-form :size="size" :inline="true">
-              <el-form-item v-if="typeof user.facebook != 'undefined'" label="Facebook">
-                <el-input v-model="user.facebook" disabled class="myInput" />
-              </el-form-item>
+            <el-table :data="bindData" :border="false" :size="size">
+              <el-table-column align="center" prop="type" label="平台" />
+              <el-table-column align="center" prop="value" label="绑定信息">
+                <template slot-scope="{ row }">
+                  <span v-if="row.value">
+                    <span style="margin-right: 10px;">{{ row.value }}</span>
+                    <el-tooltip content="复制" placement="bottom">
+                      <i :style="{cursor: 'pointer', color: theme}" class="el-icon-copy-document" @click="clipboard(row.value, $event)" />
+                    </el-tooltip>
+                  </span>
+                  <span v-else>
+                    <el-row v-if="row.isupd">
+                      <el-col :span="13">
+                        <el-input v-model="row.updValue" autofocus class="edit-input" :size="size" />
+                      </el-col>
+                      <el-col :span="1" />
+                      <el-col :span="10">
+                        <el-button :size="size" type="warning" @click="cancelBind(row)">取消</el-button>
+                        <el-button :size="size" type="success" @click="saveBind(row)">保存</el-button>
+                      </el-col>
+                    </el-row>
+                    <span v-else class="danger">未绑定</span>
+                  </span>
+                </template>
+              </el-table-column>
 
-              <el-form-item v-if="typeof user.gmail != 'undefined'" label="Gmail">
-                <el-input v-model="user.gmail" disabled class="myInput" />
-              </el-form-item>
-
-              <el-form-item v-if="typeof user.huawei != 'undefined'" label="华为">
-                <el-input v-model="user.huawei" disabled class="myInput" />
-              </el-form-item>
-
-            </el-form>
+              <el-table-column align="center" label="操作">
+                <template slot-scope="{ row }">
+                  <el-button
+                    v-if="!row.value"
+                    v-permission="['admin', '/user/edit']"
+                    :disabled="row.isupd"
+                    type="text"
+                    @click="row.isupd = true"
+                  >绑定</el-button>
+                  <el-button v-else v-permission="['admin', '/user/edit']" type="text" @click="doUnBind(row)">解绑</el-button>
+                  <el-button type="text" :disabled="!row.value" @click="clearCache(row)">清除缓存</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
           </fieldset>
 
           <fieldset>
@@ -90,44 +116,12 @@
       </el-tabs>
 
       <el-footer>
-        <el-button v-permission="['admin', '/user/edit']" type="primary" icon="el-icon-edit-outline" :size="size" @click="openDialog">操作</el-button>
         <router-link class="joy-btn" to="/reg/index">
           <el-button icon="el-icon-c-scale-to-original" :size="size">列 表</el-button>
         </router-link>
       </el-footer>
     </el-form>
 
-    <!--操作dialog-->
-    <el-dialog title="操作" :visible="dialogFormVisible" :show-close="false" center>
-      <el-form :model="form" :size="size" label-width="150px">
-
-        <el-form-item label="绑定/解绑">
-          <el-select v-model="form.opt" placeholder="请选择操作">
-            <el-option label="绑定" value="bind" />
-            <el-option label="解绑" value="unbind" />
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="第三方平台">
-          <el-select v-model="form.type" placeholder="请选择第三方平台">
-            <el-option label="Facebook" value="facebook" />
-            <el-option label="Gmail" value="gmail" />
-            <el-option label="华为" value="huawei" />
-          </el-select>
-        </el-form-item>
-
-        <el-form-item v-if="form.opt == 'bind'" label="第三方账号">
-          <el-input v-model="form.value" />
-        </el-form-item>
-
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-popconfirm title="确定要提交吗？" @onConfirm="submit">
-          <el-button slot="reference" type="primary">确 定</el-button>
-        </el-popconfirm>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -137,6 +131,7 @@ import { mapGetters } from 'vuex'
 import TableData from '@/components/TableData'
 import LayoutFilter from '@/components/LayoutFilter'
 import permission from '@/directive/permission'
+import clipboard from '@/utils/clipboard'
 
 export default {
   components: {
@@ -149,18 +144,16 @@ export default {
       uid: '',
       gameid: '',
       pf: '',
-      pkgbnd: [],
-      begintime: true,
-      endtime: true
+      pkgbnd: []
     }
     query[this.$store.state.config.cPageKey] = 1
     query[this.$store.state.config.pSizeKey] = 100000 // 不分页，传个比较大的值
 
     return {
-      dialogFormVisible: false,
       loading: false,
       token: '',
-      user: {},
+      user: {}, // 废弃
+      bindData: [],
       view: {},
       form: {
         value: '',
@@ -185,7 +178,7 @@ export default {
           key: 'instime',
           text: '订单号',
           template: (index, row) => {
-            if (row.id == 'sum') {
+            if (row.id === 'sum') {
               return '<span style="color: red;">' + row.pk + '<h3/>'
             } else {
               return row.gameid + '-' + row.id + '-' + index
@@ -203,7 +196,7 @@ export default {
             if (!index) {
               return ''
             }
-            return typeof index.sid == 'undefined' ? '' : index.sid
+            return typeof index.sid === 'undefined' ? '' : index.sid
           }
         },
         {
@@ -213,8 +206,8 @@ export default {
             if (!index) {
               return ''
             }
-            let roleid = typeof index.roleid == 'undefined' ? '' : index.roleid
-            const rolename = typeof index.rolename == 'undefined' ? '' : index.rolename
+            let roleid = typeof index.roleid === 'undefined' ? '' : index.roleid
+            const rolename = typeof index.rolename === 'undefined' ? '' : index.rolename
             if (rolename != '') {
               roleid += '（' + rolename + '）'
             }
@@ -328,13 +321,16 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['size']),
     paypf() {
       return this.$store.state.filter.pay.pf
     },
     gameid() {
       return this.$route.query.gameid
-    }
+    },
+    theme() {
+      return this.$store.state.settings.theme
+    },
+    ...mapGetters(['size'])
   },
   mounted() {
     this.query.gameid = this.gameid
@@ -342,6 +338,7 @@ export default {
     this.search(true)
   },
   methods: {
+    clipboard,
     // 查充值数据
     searchPayment() {
       this.payloading = true
@@ -397,7 +394,16 @@ export default {
             return
           }
           this.token = data.token
-          this.user = data.user
+          // this.user = data.user
+          const bindData = data.bind || []
+          // 给每一个加上是否编辑中的字段
+          this.bindData = bindData.map(v => {
+            this.$set(v, 'isupd', false)
+            this.$set(v, 'originValue', v.value) // 原值
+            // 空值，row.value双向绑定，使用同一流程控制，如不使用新值会导致刚被修改状态就改变了
+            this.$set(v, 'updValue', '')
+            return v
+          })
           this.view = data.data
         })
         .finally(() => {
@@ -406,10 +412,10 @@ export default {
           }
         })
     },
-    submit() {
+    submit(data) {
       this.loading = true
-      const data = this.form
-      data.id = this.view.uid
+      // const data = this.form
+      // data.id = this.view.uid
       unbindBack(data)
         .then(({ code, msg }) => {
           this.$message({
@@ -417,7 +423,6 @@ export default {
             message: msg
           })
           if (code) {
-            this.dialogFormVisible = false
             this.search(false)
           }
         })
@@ -428,9 +433,6 @@ export default {
           this.loading = false
         })
     },
-    openDialog() {
-      this.dialogFormVisible = true
-    },
     // 标签页切换
     tabClick(tab) {
       const tabIndex = tab.index
@@ -439,6 +441,48 @@ export default {
       } else if (tabIndex == 2) {
         this.searchLogin()
       }
+    },
+    // 绑定-取消
+    cancelBind(row) {
+      row.value = row.originValue
+      row.updValue = ''
+      row.isupd = false
+    },
+    // 绑定-提交
+    saveBind(row) {
+      // 提交成功后会重新执行search刷新row数据
+      // row.originValue = row.value
+      // row.updValue = ''
+      // row.isupd = false
+      const data = Object.assign({}, this.$route.query, {
+        type: row.type,
+        id: this.view.uid,
+        value: row.updValue,
+        opt: 'bind'
+      })
+      this.submit(data)
+    },
+    // 解除绑定
+    doUnBind(row) {
+      this.$confirm('确定要解绑吗')
+        .then(() => {
+          const data = Object.assign({}, this.$route.query, {
+            type: row.type,
+            id: this.view.uid,
+            opt: 'unbind'
+          })
+          this.submit(data)
+        })
+        .catch(_ => {})
+    },
+    // 清除缓存
+    clearCache(row) {
+      const data = Object.assign({}, this.$route.query, {
+        type: row.type,
+        id: this.view.uid,
+        opt: 'clear_cache'
+      })
+      this.submit(data)
     }
   }
 }
@@ -459,9 +503,4 @@ export default {
     width: 300px;
   }
 
-  .dialog-footer {
-    .el-button {
-      margin: 0 10px;
-    }
-  }
 </style>
