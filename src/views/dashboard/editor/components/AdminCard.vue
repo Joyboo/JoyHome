@@ -2,7 +2,7 @@
 
   <el-row class="box-card-component">
     <el-col class="box-card-header" :xs="{span: 12}" :sm="{span: 12}" :md="{span: 11}" :lg="{span: 11}" :xl="{span: 11}" style="height:128px;">
-      <img :src="avatar">
+      <magnifier :url="avatar" :width="100" />
     </el-col>
     <el-col :xs="{span: 12}" :sm="{span: 12}" :md="{span: 13}" :lg="{span: 13}" :xl="{span: 13}" style="height:128px;">
       <div class="admin-text">
@@ -17,8 +17,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import Magnifier from 'zx-magnifie'
 
 export default {
+  components: {
+    Magnifier
+  },
   filters: {
     statusFilter(status) {
       const statusMap = {
