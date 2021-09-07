@@ -141,7 +141,9 @@ export default {
         }
         if (router.meta && router.meta.title) {
           // generate internationalized title
-          const i18ntitle = i18n.t(`route.${router.meta.title}`)
+          const hasKey = i18n.te(`route.${router.meta.title}`)
+          const i18ntitle = hasKey ? i18n.t(`route.${router.meta.title}`) : i18n.t(router.meta.title)
+
           data.title = [...data.title, i18ntitle]
           if (router.redirect !== 'noRedirect') {
             // only push the routes with title
