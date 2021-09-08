@@ -140,9 +140,14 @@ export default {
           title: [...prefixTitle]
         }
         if (router.meta && router.meta.title) {
-          // generate internationalized title
-          const hasKey = i18n.te(`route.${router.meta.title}`)
-          const i18ntitle = hasKey ? i18n.t(`route.${router.meta.title}`) : i18n.t(router.meta.title)
+          /**
+           * 1. 从lang文件route节点找
+           * 2. 从lang文件根节点找
+           * 3. 都没有，输出原值
+           */
+          const i18ntitle = i18n.te(`route.${router.meta.title}`)
+            ? i18n.t(`route.${router.meta.title}`)
+            : (i18n.te(router.meta.title) ? i18n.t(router.meta.title) : router.meta.title)
 
           data.title = [...data.title, i18ntitle]
           if (router.redirect !== 'noRedirect') {
