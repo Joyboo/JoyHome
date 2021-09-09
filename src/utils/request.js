@@ -3,6 +3,7 @@ import { MessageBox, Notification } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 import i18n from '@/lang'
+import clientVersion from '@/utils/version'
 
 // create an axios instance
 const service = axios.create({
@@ -82,6 +83,13 @@ service.interceptors.response.use(
       })
       return Promise.reject(new Error(message))
     } else {
+      // todo token自动续期
+
+      // 客户端版本号 { later: 19, force: 6 }
+      if (typeof res.version !== 'undefined') {
+        clientVersion(res.version)
+      }
+
       return res
     }
   },
