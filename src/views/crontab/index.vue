@@ -25,7 +25,33 @@
       </el-form-item>
     </el-form>
 
-    <table-info :loading.sync="loading" :data="tableData" pathname="crontab" @search="search">
+    <table-info
+      :loading.sync="loading"
+      :data="tableData"
+      :expand-row-keys="expandRowKeys"
+      pathname="crontab"
+      @search="search"
+      @rowClickEvent="rowClickEvent"
+    >
+
+      <el-table-column type="expand">
+
+        <template slot="header">
+          <el-button type="text" icon="el-icon-arrow-down" @click="chgExpand" />
+        </template>
+
+        <template slot-scope="{ row }">
+          <json-viewer
+            class="jsonExpand"
+            :value="row.args || {}"
+            :expand-depth="100"
+            :copyable="false"
+            :boxed="false"
+            sort
+          />
+        </template>
+
+      </el-table-column>
 
       <el-table-column width="80" align="center" prop="id" label="ID" sortable />
       <el-table-column align="center" prop="name" label="任务名" />
@@ -38,18 +64,6 @@
             <i class="el-icon-right" />
             {{ scope.row.method }}
           </span>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="left" label="参数">
-        <template slot-scope="scope">
-          <json-viewer
-            :value="scope.row.args || {}"
-            :expand-depth="0"
-            copyable
-            :boxed="false"
-            sort
-          />
         </template>
       </el-table-column>
 
@@ -95,6 +109,10 @@ export default {
   data() {
     return {
       loading: false,
+      // 展开所有行
+      expandAll: false,
+      // 当前展开的行
+      expandRowKeys: [],
       tag: { 0: 'danger', 1: 'success', 2: 'info', 3: 'warning' },
       system: { 1: 'report', 2: 'pay', 3: 'sdk' },
       total: 0,
@@ -180,11 +198,34 @@ export default {
             this.loading = false
           })
       }
+    },
+    // th中的 展开/收起
+    chgExpand() {
+      this.expandAll = !this.expandAll
+      if (!this.expandAll) {
+        this.expandRowKeys = []
+      } else {
+        this.tableData.forEach(item => {
+          this.expandRowKeys.push(item.id)
+        })
+      }
+    },
+    // table某一行被点击时，展开/收起该行
+    rowClickEvent(row, column, event) {
+      const id = row.id
+      if (this.expandRowKeys.indexOf(id) === -1) {
+        this.expandRowKeys.push(id)
+      } else {
+        const filter = this.expandRowKeys.filter((currentValue) => currentValue !== id)
+        this.expandRowKeys = filter
+      }
     }
   }
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+  .jsonExpand {
+    padding: 10px 10px 10px 60px;
+  }
 </style>

@@ -17,12 +17,14 @@
 import { mapGetters } from 'vuex'
 import CardItem from '@/views/phpmyadmin/CardItem'
 import { isArray } from '@/utils/validate'
+import { getToken } from '@/utils/auth'
 
 export default {
   name: 'phpmyadminindex',
   components: { CardItem },
   data() {
     return {
+      token: getToken(),
       colSpan: {
         xs: { span: 22 },
         sm: { span: 22 },
@@ -40,7 +42,14 @@ export default {
       if (!pma || !isArray(pma)) {
         return []
       }
-      return pma
+      const list = pma.map((v, i) => {
+        // class是js关键字，转一下
+        v.className = v.class
+        v.iconClass = 'phpmyadmin'
+        v.fullUrl = v.url + '?_token=' + this.token
+        return v
+      })
+      return list
     },
     cards() {
       const card = this.card

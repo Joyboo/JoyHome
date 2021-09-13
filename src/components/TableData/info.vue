@@ -5,11 +5,13 @@
     row-key="id"
     :size="size"
     :height="height"
+    :expand-row-keys="expandRowKeys"
     border
     lazy
     :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     @cell-mouse-enter="cellMouseEnter"
     @cell-mouse-leave="cellMouseLeave"
+    @row-click="rowClickEvent"
   >
 
     <!--表格插槽-->
@@ -81,6 +83,13 @@ export default {
     btnWidth: {
       type: Number,
       default: 180
+    },
+    // 展开行
+    expandRowKeys: {
+      type: Array,
+      default() {
+        return []
+      }
     }
   },
   data() {
@@ -167,6 +176,10 @@ export default {
     // 当单元格 hover 退出时会触发该事件
     cellMouseLeave(row, column, cell, event) {
       this.$emit('cellMouseLeave', row, column, cell, event)
+    },
+    // 当某一行被点击时会触发该事件
+    rowClickEvent(row, column, event) {
+      this.$emit('rowClickEvent', row, column, event)
     }
   }
 }
